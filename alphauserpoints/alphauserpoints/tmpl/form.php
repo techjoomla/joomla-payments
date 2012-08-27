@@ -28,6 +28,7 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 
 	if(flag==1)
 	{
+	alert(success_message);
 		document.getElementById('js_buy').setAttribute('type', 'submit');
 		 return true;
   }	
@@ -62,9 +63,9 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 	<tfoot>
 	<tr>
 		<?php $not_enough_pts_message="'".JText::_('NOT_ENOUGH_POINTS_MESSAGE')."'";
-			$success_message="'".JText::_('SUCCESS_MESSAGE')."'";
+			$success_message="'".$vars->success_message."'";
 		?>
-		<td><input name='submit' id="js_buy" type='button' value='Buy' onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $vars->amount;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?> );"></td>
+		<td><input name='submit' id="js_buy" type='button' value='Buy' onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $charge_points;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?> );"></td>
 	</tfoot>
 	</tr>
 	</table>
