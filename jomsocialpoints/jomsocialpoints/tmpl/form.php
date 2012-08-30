@@ -58,9 +58,12 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 	<tfoot>
 	<tr>
 		<?php $not_enough_pts_message="'".JText::_('NOT_ENOUGH_POINTS_MESSAGE')."'";
+			/*if(!empty($vars->success_message))
 			$success_message="'".$vars->success_message."'";
+			else*/
+			$success_message="'".JText::sprintf( 'TOTAL_POINTS_DEDUCTED_MESSAGE',$charge_points)."'";
 		?>
-		<td><input name='submit' id="js_buy" type='button' value='Buy' onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $charge_points;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?> );"></td>
+		<td><input name='submit' id="js_buy" type='button' value='Buy' onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $vars->amount;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?>);"></td>
 	</tfoot>
 	</tr>
 	</table>

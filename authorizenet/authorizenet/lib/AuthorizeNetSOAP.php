@@ -1,4 +1,5 @@
 <?php
+defined( '_JEXEC' ) or die( ';)' );
 /**
  * A simple wrapper for the SOAP API as well as a helper function
  * to generate a documentation file from the WSDL.

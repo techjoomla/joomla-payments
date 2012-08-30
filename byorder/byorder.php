@@ -33,6 +33,7 @@ class plgpaymentbyorder extends JPlugin
 	function buildLayoutPath($layout) {
 		if(empty($layout))
 		$layout="default";
+		$app=JFactory::getApplication();
 		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.$layout.'.php';
 		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
 		if(JFile::exists($override))

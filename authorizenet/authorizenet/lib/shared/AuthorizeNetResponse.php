@@ -1,4 +1,5 @@
 <?php
+defined( '_JEXEC' ) or die( ';)' );
 /**
  * Base class for the AuthorizeNet AIM & SIM Responses.
  *

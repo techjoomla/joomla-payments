@@ -6,42 +6,30 @@
  * @link     http://www.techjoomla.com
  */
 		defined('_JEXEC') or die('Restricted access');
-
 		$document =& JFactory::getDocument();
 		JHTML::_('behavior.formvalidation');
-
-
-
-
 		
-
-		$js=" 
-		
-		function myValidate(f)
-		{
-		
-		 if (document.formvalidator.isValid(f)) {
-		 	f.check.value='<?php echo JUtility::getToken(); ?>'; 
-      return true; 
-   }
-   else {
-      var msg = 'Some values are not acceptable.  Please retry.';
-      alert(msg);
-   }
-   return false;
-
-			
-		}
-		
-		";
-		$document->addScriptDeclaration($js);	
 ?>
+<script type="text/javascript">
+function myValidate(f)
+{
+	if (document.formvalidator.isValid(f)) {
+		f.check.value='<?php echo JUtility::getToken(); ?>'; 
+		return true; 
+	}
+	else {
+		var msg = 'Some values are not acceptable.  Please retry.';
+		alert(msg);
+	}
+	return false;
+}		
+</script>
 
 <table class="userlist">
 	<tbody>
 	<tr>
 		<td class="title">		
-			<form name="recurrform" name="recurrform" action="<?php echo $vars->url; ?>"  method="post">			
+			<form name="recurrform" class="form-validate form-horizontal" name="recurrform" onSubmit="return myValidate(this);" action="<?php echo $vars->url; ?>"  method="post">			
 				
 			<table>
 							<tr>
@@ -113,39 +101,39 @@
                 </tr>
                 <tr>
 					<td><?php echo JText::_( 'FIRST_NAME' ) ?></td>
-					<td><input type="text" name="firstName" size="35" value="" /></td>
+					<td><input type="text" name="firstName" class="inputbox required" size="35" value="" /></td>
 				</tr>
 				<tr>
 					<td><?php echo JText::_( 'LAST_NAME' ) ?></td>
-					<td><input type="text" name="lastName" size="35" value="" /></td>
+					<td><input type="text" name="lastName" class="inputbox required" size="35" value="" /></td>
 				</tr>
 				<tr>
 					<td><?php echo JText::_( 'STREET_ADDRESS' ) ?></td>
-					<td><input type="text" name="cardaddress1" size="35" value="" /></td>
+					<td><input type="text" name="cardaddress1" class="inputbox required" size="35" value="" /></td>
 				</tr>
 				<tr>
 					<td><?php echo JText::_( 'STREET_ADDRESS_CONTINUED' ) ?></td>
-					<td><input type="text" name="cardaddress2" size="35" value="" /></td>
+					<td><input type="text" name="cardaddress2" class="inputbox" size="35" value="" /></td>
 				</tr>
 				<tr>
 					<td><?php echo JText::_( 'CITY' ) ?></td>
-					<td><input type="text" name="cardcity" size="35" value="" /></td>
+					<td><input type="text" name="cardcity" class="inputbox required" size="35" value="" /></td>
 				</tr>
 				<tr>
 					<td><?php echo JText::_( 'STATE' ) ?></td>
-					<td><input type="text" name="cardstate" size="10" value="" /></td>
+					<td><input type="text" name="cardstate" class="inputbox required" size="10" value="" /></td>
 				</tr>
 				<tr>
 					<td><?php echo JText::_( 'POSTAL_CODE' ) ?></td>
-					<td><input type="text" name="cardzip" size="10" value="" /></td>
+					<td><input type="text" name="cardzip" class="inputbox required" size="10" value="" /></td>
 				</tr>
 				<tr>
 					<td><?php echo JText::_( 'COUNTRY' ) ?></td>
-					<td><input type="text" name="cardcountry" size="35" value="" /></td>
+					<td><input type="text" name="cardcountry" class="inputbox required" size="35" value="" /></td>
 				</tr>							
 					<tr>
 						<td><?php echo JText::_( 'EMAIL_ADDRESS' ) ?></td>
-						<td><input type="text" name="email" size="35" value="" /></td>
+						<td><input type="text" name="email" class="inputbox required" size="35" value="" /></td>
 					</tr>					
 				<tr>
 					<td colspan="2"><hr/></td>
@@ -165,29 +153,29 @@
 				</tr>
 				<tr>
 					<td><?php echo JText::_( 'CARD_NUMBER' ) ?></td>
-					<td><input type="text" name="cardNumber" size="35" value="" /></td>
+					<td><input type="text" name="cardNumber" class="inputbox required" size="35" value="" /></td>
 				</tr>
 				<tr>
 					<td><?php echo JText::_( 'EXPIRATION_DATE_IN_FORMAT_MMYY' ) ?></td>
-					<td><input type="text" name="expirationDate" size="10" value="" /></td>
+					<td><input type="text" name="expirationDate" class="inputbox required" size="10" value="" /></td>
 				</tr>
 				<tr>
 					<td><?php echo JText::_( 'CARD_CVV_NUMBER' ) ?></td>
-					<td><input type="text" name="cardcode" size="10" value="" /></td>
+					<td><input type="text" name="cardcode" class="inputbox required" size="10" value="" /></td>
 
 				</tr>
 
 								 <td colspan="2" align="center">
 								 </br>								 </br>								 </br>
 									<input type="hidden" name="check" value="post"/>
-									<input type="hidden" name="amount" size="10" value="<?php echo $vars->amount;?>" />
-									<input type="hidden" name="startDate" size="10" value="<?php echo $vars->recurring_startdate;?>" />
-									<input type="hidden" name="totalOccurrences" size="10" value="<?php echo $vars->recurring_payment_interval_totaloccurances;?>" />
-									<input type="hidden" name="intervalLength" size="10" value="<?php echo $vars->recurring_payment_interval_length;?>" />
-									<input type="hidden" name="intervalUnit" size="10" value="<?php echo $vars->recurring_payment_interval_unit;?>" />
-									<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
-									<input type="hidden" name="return" size="10" value="<?php echo $vars->return;?>" />
-									<input type="hidden" name="order_id" size="10" value="<?php echo $vars->order_id;?>" />
+									<input type="hidden" class="inputbox required" name="amount" size="10" value="<?php echo $vars->amount;?>" />
+									<input type="hidden" class="inputbox required" name="startDate" size="10" value="<?php echo $vars->recurring_startdate;?>" />
+									<input type="hidden" class="inputbox required" name="totalOccurrences" size="10" value="<?php echo $vars->recurring_payment_interval_totaloccurances;?>" />
+									<input type="hidden" class="inputbox required" name="intervalLength" size="10" value="<?php echo $vars->recurring_payment_interval_length;?>" />
+									<input type="hidden" class="inputbox required" name="intervalUnit" size="10" value="<?php echo $vars->recurring_payment_interval_unit;?>" />
+									<input type="hidden"  name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
+									<input type="hidden"   name="return" size="10" value="<?php echo $vars->return;?>" />
+									<input type="hidden" class="inputbox required" name="order_id" size="10" value="<?php echo $vars->order_id;?>" />
 								 	<input type="hidden"  name="payment_type" value="recurring" />
 												<input type="hidden" name="plugin_payment_method" value="onsite" />
 									<input type="submit" 	name="submit" id="submit"   value="<?php echo JText::_('MAKE_PAYMENT');?>" />

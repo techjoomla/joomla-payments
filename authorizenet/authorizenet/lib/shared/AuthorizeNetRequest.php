@@ -1,4 +1,5 @@
 <?php
+defined( '_JEXEC' ) or die( ';)' );
 /**
  * Sends requests to the Authorize.Net gateways.
  *

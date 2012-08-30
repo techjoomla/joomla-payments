@@ -1,6 +1,6 @@
 <?php
 
-
+defined( '_JEXEC' ) or die( ';)' );
 		/* lphp.php  LINKPOINT PHP MODULE */
 	
 		/* A php interlocutor CLASS for

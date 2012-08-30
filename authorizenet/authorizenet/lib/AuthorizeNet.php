@@ -1,4 +1,5 @@
 <?php
+defined( '_JEXEC' ) or die( ';)' );
 /**
  * The AuthorizeNet PHP SDK. Include this file in your project.
  *

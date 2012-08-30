@@ -12,37 +12,56 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	else
 		$email = $vars->custom_email;
 ?>
+<script type="text/javascript">
+function myValidate(f)
+{
+alert('HERE');
+	if (document.formvalidator.isValid(f)) {
+		f.check.value='<?php echo JUtility::getToken(); ?>'; 
+		return true; 
+	}
+	else {
+		var msg = 'Some values are not acceptable.  Please retry.';
+		alert(msg);
+	}
+	return false;
+}		
+</script>
 <table >
 	<tbody>
 	<tr>
 		<td >	
 		
-  		<form  method="post"  name="checkForm" action="<?php  echo $vars->url ?>">
+  		<form  method="post"  name="checkForm" class="form-validate" onSubmit="return myValidate(this);" action="<?php  echo $vars->url ?>">
 				<table>
-							<tr>
-									<td class='ad-price-lable'><?php  echo JText::_('COMMENT');?></td>
-									<td>
-											<textarea id='comment' name='comment' rows='3' maxlength='135' size='28'></textarea>
-									</td>
-							</tr>
-							<tr>
-									<td class='ad-price-lable'><?php  echo JText::_('CON_PAY_PRO');?> : </td>
-									<td>
-								
-							<?php  echo $email;?>
-									</td>
-							</tr>
-							<tr>
+					<tr>
+						<td class='ad-price-lable' colspan="2"><?php  echo JText::sprintf( 'ORDER_INFO', $vars->custom_name);?></td>
+					</tr>
+					<tr>
+							<td class='ad-price-lable'><?php  echo JText::_('COMMENT');?></td>
 							<td>
-								<input type='hidden' name='order_id' value="<?php echo $vars->order_id;?>" />
-								<input type='hidden' name="total" value="<?php echo sprintf('%02.2f',$vars->amount) ?>" />
-								<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
-								<input type='hidden' name='return' value="<?php echo $vars->return;?>" >
-								<input type="hidden" name="plugin_payment_method" value="onsite" />
-								<input type='submit' name='btn_check' id='btn_check'  value="<?php echo JText::_('SUBMIT'); ?>">
+									<textarea id='comment' name='comment' class="inputbox required" rows='3' maxlength='135' size='28'></textarea>
 							</td>
-							</tr>
-				</table>			
+					</tr>
+					<tr>
+							<td class='ad-price-lable'><?php  echo JText::_('CON_PAY_PRO');?> : </td>
+							<td>
+						
+					<?php  echo $email;?>
+							</td>
+					</tr>
+					<tr>
+					<td>
+																				<input type='hidden' name='check' value="" />
+						<input type='hidden' name='order_id' value="<?php echo $vars->order_id;?>" />
+						<input type='hidden' name="total" value="<?php echo sprintf('%02.2f',$vars->amount) ?>" />
+						<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
+						<input type='hidden' name='return' value="<?php echo $vars->return;?>" >
+						<input type="hidden" name="plugin_payment_method" value="onsite" />
+						<input type='submit' name='btn_check' id='btn_check'  value="<?php echo JText::_('SUBMIT'); ?>">
+					</td>
+					</tr>
+			</table>			
 	</form>
 		</td>
 	</tr>

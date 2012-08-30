@@ -1,4 +1,5 @@
 <?php
+defined( '_JEXEC' ) or die( ';)' );
 	jimport('joomla.html.html');
 	jimport( 'joomla.plugin.helper' );
 class plgPaymentLinkpointHelper

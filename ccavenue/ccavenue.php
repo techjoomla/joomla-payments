@@ -27,6 +27,7 @@ class  plgPaymentCcavenue extends JPlugin
 	}
 
 	function buildLayoutPath($layout) {
+			$app = JFactory::getApplication();
 	if(empty($layout))
 		$layout="default";
 

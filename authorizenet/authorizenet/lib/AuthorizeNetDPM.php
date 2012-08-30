@@ -1,4 +1,5 @@
 <?php
+defined( '_JEXEC' ) or die( ';)' );
 /**
  * Demonstrates the Direct Post Method.
  *

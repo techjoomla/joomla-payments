@@ -89,7 +89,7 @@ class plgpaymentalphauserpoints extends JPlugin
 		$db->setQuery($query);
 		$points_count = $db->loadResult();
 		$convert_val = $this->params->get('conversion');
-		$points_charge=$data['total'] * $convert_val;
+		$points_charge=$data['total']*$convert_val;
 		
 		if($points_charge <= $points_count)
 		{

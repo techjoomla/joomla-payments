@@ -1,4 +1,5 @@
 <?php
+defined( '_JEXEC' ) or die( ';)' );
 /**
  * Easily interact with the Authorize.Net AIM API.
  *

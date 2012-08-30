@@ -1,4 +1,5 @@
 <?php
+defined( '_JEXEC' ) or die( ';)' );
 /**
  * Easily use the Authorize.Net Server Integration Method(SIM).
  *
