@@ -104,6 +104,8 @@ class plgpaymentalphauserpoints extends JPlugin
 				{
 					$payment_status=$this->translateResponse('Success');
 				}
+				else
+				$payment_status=$this->translateResponse('Failure');
 			}
 			else
 				$payment_status=$this->translateResponse('Failure');
