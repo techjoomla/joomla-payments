@@ -15,7 +15,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <script type="text/javascript">
 function myValidate(f)
 {
-alert('HERE');
 	if (document.formvalidator.isValid(f)) {
 		f.check.value='<?php echo JUtility::getToken(); ?>'; 
 		return true; 
@@ -44,7 +43,7 @@ alert('HERE');
 							</td>
 					</tr>
 					<tr>
-							<td class='ad-price-lable'><?php  echo JText::_('CON_PAY_PRO');?> : </td>
+							<td class='ad-price-lable'><?php  echo JText::_('CON_PAY_PRO');?> </td>
 							<td>
 						
 					<?php  echo $email;?>

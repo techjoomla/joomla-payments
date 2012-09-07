@@ -6,6 +6,7 @@
  * @link     http://www.techjoomla.com
  */
 defined('_JEXEC') or die('Restricted access'); 
+//print_r($vars);
 ?>
 
 			<form name="frmccavenue" id="frmccavenue" method="post" action="https://www.ccavenue.com/shopzone/cc_details.jsp">			

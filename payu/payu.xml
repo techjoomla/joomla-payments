@@ -19,40 +19,28 @@
 		
 		
 		<params>
+		<param name="plugin_name" type="text" default="Payu Credit Card/Debit Card/Net Banking" label="PLG_NAME" description="" />			
   		<param name="key" type="text" default="" label="PAYU_EMAIL" description="PAYU_EMAIL_DESC"/>
   		<param name="salt" type="text" default="" label="PAYU_SALT" description="PAYU_SALT_DESC"/>  		
   		<param type="spacer" />
 		<param name="sandbox" type="radio" default="0" label="PAYU_SANDBOX" description="PAYU_SANDBOX_DESC">
 		  <option value="0">NO</option>
 		  <option value="1">YES</option>
-		</param>
-		<!--<param type="spacer" label=""/> 
-			<param name="apiuser" type="text" default="" label="API_USER" description="API_USER_DESC"/>		
-			<param name="apipass" type="text" default="" label="API_PASS" description="API_PASS_DESC"/>		
-			<param name="apisign" type="text" default="" label="API_SIGN" description="API_SIGN_DESC"/>		
-						<param name="apiend" type="text" default="" label="API_END" description="API_END_DESC"/>		
-			<param name="apiv" type="text" default="" label="API_VER" description="API_VER_DESC"/>	-->
-  		
+		</param>		
 	</params>
 	
 	<!-- Fields for Joomla 1.6.x and onwards -->
  	<config>
 		<fields name="params">
 			<fieldset name="basic">
-						<field name="key" type="text" default="" label="PAYU_EMAIL" description="PAYU_EMAIL_DESC"/>
+					<field name="plugin_name" type="text" default="Payu Credit Card/Debit Card/Net Banking" label="PLG_NAME" description="" />				
+					<field name="key" type="text" default="" label="PAYU_EMAIL" description="PAYU_EMAIL_DESC"/>
 			  		<field name="salt" type="text" default="" label="PAYU_SALT" description="PAYU_SALT_DESC"/>  								
 						<field name="sandbox" type="radio" default="0" label="PAYU_SANDBOX" description="PAYU_SANDBOX_DESC">
 						<option value="0">NO</option>
 						<option value="1">YES</option>
-						</field>
+					</field>
 				</fieldset>			
-			<!--<fieldset name="apifields"   label="PAYU API Field For Masspayment">
-					<field name="apiuser" type="text" default="" label="API_USER" description="API_USER_DESC"/>		
-					<field name="apipass" type="text" default="" label="API_PASS" description="API_PASS_DESC"/>		
-					<field name="apisign" type="text" default="" label="API_SIGN" description="API_SIGN_DESC"/>		
-					<field name="apiend" type="text" default="" label="API_END" description="API_END_DESC"/>		
-					<field name="apiv" type="text" default="" label="API_VER" description="API_VER_DESC"/>	
-			</fieldset>-->
 		</fields>
 	</config>
 </install>

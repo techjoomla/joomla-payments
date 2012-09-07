@@ -48,7 +48,7 @@ function myValidate(f)
 									</td>
 							</tr>
 							<tr>
-									<td class='ad-price-lable'><?php  echo JText::_('CON_PAY_PRO');?> : </td>
+									<td class='ad-price-lable'><?php  echo JText::_('CON_PAY_PRO');?> </td>
 									<td>
 								
 							<?php  echo $email;?>

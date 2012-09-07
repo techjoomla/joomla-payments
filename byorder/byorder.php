@@ -73,7 +73,7 @@ class plgpaymentbyorder extends JPlugin
 		if(!in_array($this->_name,$config))
 		return;
 		$obj 		= new stdClass;
-		$obj->name 	=ucfirst($this->_name);
+		$obj->name 	=$this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
