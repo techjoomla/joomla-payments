@@ -62,7 +62,7 @@ class plgpaymentbyorder extends JPlugin
 	function onTP_GetHTML($vars)
 	{
 		$vars->custom_name= $this->params->get( 'plugin_name' );
-		$vars->custom_email=$this->params->get( 'plugin_email' );
+		$vars->custom_email=$this->params->get( 'plugin_mail' );
 		$html = $this->buildLayout($vars);
 		return $html;
 	}
