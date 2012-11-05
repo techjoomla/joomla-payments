@@ -25,7 +25,7 @@ class plgpaymentbyorder extends JPlugin
 		$this->responseStatus= array(
 			'Success' =>'C',
 			'Failure' =>'X',
-			'Pending' =>'P',
+			'Pending' =>'P'
 		);
 	}
 

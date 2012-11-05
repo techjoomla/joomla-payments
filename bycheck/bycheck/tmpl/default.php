@@ -7,10 +7,9 @@
  */
 defined('_JEXEC') or die('Restricted access'); ?>
 <?php
-	if($vars->custom_email=="")
-		$email = JText::_('NO_ADDRS');
-	else
-		$email = $vars->custom_email;
+JHTML::_('behavior.formvalidation');	
+
+
 ?>
 <script type="text/javascript">
 function myValidate(f)
@@ -44,9 +43,15 @@ function myValidate(f)
 					</tr>
 					<tr>
 							<td class='ad-price-lable'><?php  echo JText::_('CON_PAY_PRO');?> </td>
-							<td>
-						
-					<?php  echo $email;?>
+							<td>						
+								<?php
+								if($vars->custom_email=="")
+									$email = JText::_('NO_ADDRS');
+								else
+									$email = $vars->custom_email;
+								?>
+								<input type='hidden' name='mail_addr' value="<?php echo $email;?>" />
+								<?php  echo $email;?>
 							</td>
 					</tr>
 					<tr>
