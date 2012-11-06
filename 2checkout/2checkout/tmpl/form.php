@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
  ?>
 
 
-<p align="center">
+<div>
 <form action="<?php echo $vars->action_url ?>"  method="post" id="paymentForm">
 	<input type="hidden" name="sid" value="<?php echo $vars->sid?>" />
 	<input type="hidden" name="cart_order_id" value="<?php echo $vars->order_id ?>" />
@@ -26,6 +26,6 @@ defined('_JEXEC') or die('Restricted access');
 	<input type="hidden" name="id_type" value="1" />
 
 
-<input name='submit' type='submit' value='Buy from 2CO' >
+<input name="submit" type='submit' class="btn btn-success btn-large" value="Buy from 2CO" >
 </form>
-</p>
+</div>

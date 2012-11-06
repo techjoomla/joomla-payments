@@ -20,7 +20,6 @@ $document =&JFactory::getDocument();
 function myValidate(f)
 {
 if (document.formvalidator.isValid(f)) {
-	if (validateflag) {
 		f.check.value='<?php echo JUtility::getToken(); ?>'; 
 		return true; 
 	}
