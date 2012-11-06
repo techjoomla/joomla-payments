@@ -26,6 +26,6 @@ defined('_JEXEC') or die('Restricted access');
 	<input type="hidden" name="id_type" value="1" />
 
 
-<input name="submit" type='submit' class="btn btn-success btn-large" value="Buy from 2CO" >
+<input name="submit" type='submit' class="btn btn-success btn-large" value="Pay Now" >
 </form>
 </div>
