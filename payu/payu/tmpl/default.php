@@ -15,7 +15,7 @@ $txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
 	<input type="hidden" name="txnid" value="<?php echo $txnid ?>" />
 	<input type="hidden" name="udf1" value="<?php echo $vars->order_id ?>" />				
 	<input type="hidden" name="productinfo" value="<?php echo $vars->item_name ?>" />
-	<input type="hidden" name="Firstname" value="<?php echo $vars->user_firstname; ?>" />
+	<input type="hidden" name="Firstname" value="<?php if($vars->user_firstname) echo $vars->user_firstname; ?>" />
 	<input type="hidden" name="Email" value="<?php echo $vars->user_email; ?>" />						
 	<input type="hidden" name="phone" value="<?php echo $vars->phone; ?>" />
 	<input type="hidden" name="curl" value="<?php echo $vars->cancel_return ?>" />

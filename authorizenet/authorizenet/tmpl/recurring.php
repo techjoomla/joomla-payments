@@ -29,7 +29,7 @@ function myValidate(f)
 	<tbody>
 	<tr>
 		<td class="title">		
-			<form name="recurrform" class="form-validate form-horizontal" name="recurrform" onSubmit="return myValidate(this);" action="<?php echo $vars->url; ?>"  method="post">			
+			<form name="adminForm" id="adminForm" class="form-validate form-horizontal" name="recurrform" onSubmit="return myValidate(this);" action="<?php echo $vars->url; ?>"  method="post">			
 				
 			<table>
 							<tr>
