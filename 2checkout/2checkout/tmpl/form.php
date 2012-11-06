@@ -12,6 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="akeeba-bootstrap">
 <form action="<?php echo $vars->action_url ?>" class="form-horizontal" method="post" id="paymentForm">
+
 	<input type="hidden" name="sid" value="<?php echo $vars->sid?>" />
 	<input type="hidden" name="cart_order_id" value="<?php echo $vars->order_id ?>" />
 	<input type="hidden" name="total" value="<?php echo sprintf('%02.2f',$vars->amount) ?>" />
