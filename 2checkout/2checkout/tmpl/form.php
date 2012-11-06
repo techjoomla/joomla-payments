@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 	<input type="hidden" name="pay_method" value="<?php echo strtoupper($vars->pay_method); ?>" />
 	<input type="hidden" name="id_type" value="1" />
 	<div class="form-actions">
-		<input name="submit" type='submit' class="btn btn-success btn-large" value="Pay Now" >
+		<input name="submit" type="submit" class="btn btn-success btn-large" value="Pay Now" >
 	</div>
 </form>
 </div>

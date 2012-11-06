@@ -23,9 +23,11 @@ defined('_JEXEC') or die('Restricted access');
 	<input type='hidden' name='return_url' value="<?php echo $vars->return;?>" >
 	<input type='hidden' name='x_receipt_link_url' value="<?php echo $vars->notify_url;?>" >
 	<input type="hidden" name="pay_method" value="<?php echo strtoupper($vars->pay_method); ?>" />
-	<input name='submit' type='submit' class="btn btn-success btn-large" value="<?php echo JText::_('SUBMIT'); ?>" >
 	<input type="hidden" name="id_type" value="1" />
-</div>
+		<div class="form-actions">
+			<input name='submit' type='submit' class="btn btn-success btn-large" value="<?php echo JText::_('SUBMIT'); ?>" >
+		</div>
+	</div>
 </form>
 </div>
 
