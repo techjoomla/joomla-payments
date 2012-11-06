@@ -19,8 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 	else
 		$email = $vars->custom_email;
 
-$document->addScript(JURI::root().'components/com_jticketing/assets/javascript/jquery-1.8.0.min.js');
-$document->addScript(JURI::base().'components/com_jticketing/assets/javascript/jquery.validate.js');
+
 
 
 ?>

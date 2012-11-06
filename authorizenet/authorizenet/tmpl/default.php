@@ -10,15 +10,8 @@
 	defined('_JEXEC') or die('Restricted access'); 
 
 $document =&JFactory::getDocument();
-$document->addScript(JURI::base().'components/com_jticketing/assets/javascript/jquery.validate.js');
 JHTML::_('behavior.formvalidation');
-$document->addScript(JURI::base().'components/com_jticketing/assets/javascript/jquery-1.8.0.min.js');
-$document->addScript(JURI::base().'components/com_jticketing/assets/javascript/addmore.js');
-$document->addScript(JURI::base().'components/com_jticketing/assets/javascript/jticketing.js');
-$document->addScript(JURI::base().'components/com_jticketing/assets/javascript/jquery.validate.js');
-//load bootstrap
-$document->addStyleSheet(JURI::base().'components/com_jticketing/bootstrap/css/bootstrap.min.css');
-$document->addScript(JURI::base().'components/com_jticketing/bootstrap/js/bootstrap.min.js');////
+
 ?>
 <script type="text/javascript">
 function myValidate(f)
