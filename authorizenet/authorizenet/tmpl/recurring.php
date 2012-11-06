@@ -164,7 +164,7 @@ function myValidate(f)
 					<td><input type="text" name="cardcode" class="inputbox required" size="10" value="" /></td>
 
 				</tr>
-
+		<div class="form-actions">
 								 <td colspan="2" align="center">
 								 </br>								 </br>								 </br>
 									<input type="hidden" name="check" value="post"/>
@@ -177,8 +177,9 @@ function myValidate(f)
 									<input type="hidden"   name="return" size="10" value="<?php echo $vars->return;?>" />
 									<input type="hidden" class="inputbox required" name="order_id" size="10" value="<?php echo $vars->order_id;?>" />
 								 	<input type="hidden"  name="payment_type" value="recurring" />
-												<input type="hidden" name="plugin_payment_method" value="onsite" />
+									<input type="hidden" name="plugin_payment_method" value="onsite" />
 									<input type="submit" 	name="submit" id="submit"   value="<?php echo JText::_('MAKE_PAYMENT');?>" />
+								</div>
 								</td>
                 </tr>
 

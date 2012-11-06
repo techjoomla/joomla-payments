@@ -25,7 +25,7 @@ function myValidate(f)
 	return false;
 }		
 </script>
-<div>		
+<div class="akeeba-bootstrap">
 	<form action="<?php echo $vars->url;?>" class="form-validate form-horizontal" onSubmit="return myValidate(this);" method="post" >			
 		<div>						
 		<div class="control-group">
@@ -114,7 +114,7 @@ function myValidate(f)
 			<input type="hidden" name="return" size="10" value="<?php echo $vars->return;?>" />
 			<input type="hidden" name="plugin_payment_method" value="onsite" />
 		</div>
-		</div>		
+	</div>		
 	</form>
 </div>
 

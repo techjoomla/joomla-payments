@@ -10,8 +10,8 @@ defined('_JEXEC') or die('Restricted access');
  ?>
 
 
-<div>
-<form action="<?php echo $vars->action_url ?>"  method="post" id="paymentForm">
+<div class="akeeba-bootstrap">
+<form action="<?php echo $vars->action_url ?>" class="form-horizontal" method="post" id="paymentForm">
 	<input type="hidden" name="sid" value="<?php echo $vars->sid?>" />
 	<input type="hidden" name="cart_order_id" value="<?php echo $vars->order_id ?>" />
 	<input type="hidden" name="total" value="<?php echo sprintf('%02.2f',$vars->amount) ?>" />
@@ -24,8 +24,8 @@ defined('_JEXEC') or die('Restricted access');
 	<input type='hidden' name='x_receipt_link_url' value="<?php echo $vars->notify_url;?>" >
 	<input type="hidden" name="pay_method" value="<?php echo strtoupper($vars->pay_method); ?>" />
 	<input type="hidden" name="id_type" value="1" />
-
-
-<input name="submit" type='submit' class="btn btn-success btn-large" value="Pay Now" >
+	<div class="form-actions">
+		<input name="submit" type='submit' class="btn btn-success btn-large" value="Pay Now" >
+	</div>
 </form>
 </div>

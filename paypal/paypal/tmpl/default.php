@@ -10,8 +10,8 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 
-<div>
-	<form action="<?php echo $vars->action_url ?>" method="post">			
+<div class="akeeba-bootstrap">
+	<form action="<?php echo $vars->action_url ?>" class="form-horizontal" method="post">			
 		<input type="hidden" name="business" value="<?php echo $vars->business ?>" />
 		<input type="hidden" name="custom" value="<?php echo $vars->order_id ?>" />
 		<input type="hidden" name="item_name" value="<?php echo $vars->item_name ?>" />
@@ -23,7 +23,8 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="hidden" name="rm" value="2" />
 		<input type="hidden" name="amount" value="<?php echo $vars->amount ?>" />
 		<input type="hidden" name="cmd" value="_xclick" />
-		<input type="submit" class="btn btn-success btn-large" src="https://www.paypal.com/en_US/i/btn/x-click-but02.gif" border="0" value="Pay Now" alt="Make payments with PayPal - it's fast, free and secure!" />
-	
+		<div class="form-actions">
+			<input type="submit" class="btn btn-success btn-large" src="https://www.paypal.com/en_US/i/btn/x-click-but02.gif" border="0" value="Pay Now" alt="Make payments with PayPal - it's fast, free and secure!" />
+	</div>
 	</form>
 </div>

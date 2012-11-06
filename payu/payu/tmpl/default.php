@@ -9,8 +9,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
 ?>
-<div>
-<form action="<?php echo $vars->action_url ?>" method="post">			
+<div class="akeeba-bootstrap">
+<form action="<?php echo $vars->action_url ?>" class="form-horizontal" method="post">			
 	<input type="hidden" name="key" value="<?php echo $vars->key ?>" />
 	<input type="hidden" name="txnid" value="<?php echo $txnid ?>" />
 	<input type="hidden" name="udf1" value="<?php echo $vars->order_id ?>" />				
@@ -29,6 +29,8 @@ $txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
 //echo hash('sha512',$text);
 ?>
 	<input type="hidden" name="Hash" value="<?php echo strtolower(hash('sha512',$text)); ?>" />
-	<input type="submit" class="btn btn-success btn-large" border="0" value="Pay Now" alt="PayU India" />			
+	<div class="form-actions">
+		<input type="submit" class="btn btn-success btn-large" border="0" value="Pay Now" alt="PayU India" />	
+	</div>		
 </form>
 </div>
