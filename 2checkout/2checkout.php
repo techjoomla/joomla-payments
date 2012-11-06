@@ -96,10 +96,7 @@ class  plgPayment2checkout extends JPlugin
 		$id = array_key_exists('vendor_order_id', $data) ? (int)$data['vendor_order_id'] : -1;		
 
 		$message_type=$data['message_type'];		
-		if($message_type == 'ORDER_CREATED')
-		{
-			$payment_status=$this->translateResponse($data['invoice_status']);
-		}
+		$payment_status=$this->translateResponse($data['invoice_status']);
 		if($message_type == 'REFUND_ISSUED'){
 			$payment_status='RF';
 		}
