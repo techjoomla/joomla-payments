@@ -30,7 +30,7 @@ $txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
 ?>
 	<input type="hidden" name="Hash" value="<?php echo strtolower(hash('sha512',$text)); ?>" />
 	<div class="form-actions">
-		<input type="submit" class="btn btn-success btn-large" border="0" value="Pay Now" alt="PayU India" />	
+		<input type="submit" class="btn btn-success btn-large" border="0"  value="<?php echo JText::_('SUBMIT'); ?>" alt="PayU India" />	
 	</div>		
 </form>
 </div>

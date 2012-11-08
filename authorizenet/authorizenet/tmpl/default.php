@@ -106,7 +106,7 @@ function myValidate(f)
 			<input type="hidden" name="return" size="10" value="<?php echo $vars->return;?>" />
 			<input type="hidden" name="order_id" size="10" value="<?php echo $vars->order_id;?>" />
 			<input type="hidden" name="plugin_payment_method" value="onsite" />
-			<input type="submit" name="submit" class="btn btn-success btn-large" value="<?php echo JText::_('MAKE_PAYMENT');?>" />
+			<input type="submit" name="submit" class="btn btn-success btn-large" value="<?php echo JText::_('SUBMIT');?>" />
 		</div>			
 	</div>
 </form>

@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="hidden" name="amount" value="<?php echo $vars->amount ?>" />
 		<input type="hidden" name="cmd" value="_xclick" />
 		<div class="form-actions">
-			<input type="submit" class="btn btn-success btn-large" src="https://www.paypal.com/en_US/i/btn/x-click-but02.gif" border="0" value="Pay Now" alt="Make payments with PayPal - it's fast, free and secure!" />
+			<input type="submit" class="btn btn-success btn-large" src="https://www.paypal.com/en_US/i/btn/x-click-but02.gif" border="0"  value="<?php echo JText::_('SUBMIT'); ?>" alt="Make payments with PayPal - it's fast, free and secure!" />
 	</div>
 	</form>
 </div>
