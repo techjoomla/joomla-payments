@@ -71,7 +71,7 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 		?>
 		
 		<div class="form-actions">
-			<input name="submit" class="btn btn-success btn-large" id="js_buy" type="button" value="<?php JText::_('SUBMIT');?>" onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $vars->amount;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?>);">
+			<input name="submit" class="btn btn-success btn-large" id="js_buy" type="button" value="<?php echo JText::_('SUBMIT');?>" onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $vars->amount;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?>);">
 			<input type="hidden" name="order_id" value="<?php echo $vars->order_id ?>" />
 			<input type="hidden" name="total" value="<?php echo sprintf('%02.2f',$vars->amount) ?>" />
 			<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
