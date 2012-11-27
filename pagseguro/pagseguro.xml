@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment - Pagseguro</name>
+	<author>Techjoomla</author>
+	<creationDate>June 2012</creationDate>
+	<copyright></copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail></authorEmail>
+	<authorUrl></authorUrl>
+	<version>0.1Alpha1</version>
+	<description>Pagseguro payment plugin</description>
+	<files>
+		<filename plugin="pagseguro">pagseguro.php</filename>
+		<folder>pagseguro</folder>
+		<folder>lib</folder>
+	</files>
+	<languages> 
+		<language tag="en-GB">en-GB/en-GB.plg_payment_pagseguro.ini</language>
+	</languages>
+		
+		
+		<params>
+		<param name="plugin_name" type="text" default="Pagseguro Credit Card/Debit Card/Net Banking" label="PLG_NAME" description="Pagseguro" />			
+  		<param name="sellar_email" type="text" default="" label="PAGSEGURU_EMAIL" description="PAGSEGURU_EMAIL_DESC"/>
+  		<param name="token" type="text" default="" label="PAGSEGURU_SALT" description="PAGSEGURU_SALT_DESC"/>  		
+  		<param type="spacer" />
+		<param name="sandbox" type="radio" default="0" label="PAGSEGURU_SANDBOX" description="PAGSEGURU_SANDBOX_DESC">
+		  <option value="0">NO</option>
+		  <option value="1">YES</option>
+		</param>		
+	</params>
+	
+	<!-- Fields for Joomla 1.6.x and onwards -->
+ 	<config>
+		<fields name="params">
+			<fieldset name="basic">
+					<field name="plugin_name" type="text" default="PAGSEGURU Credit Card/Debit Card/Net Banking" label="PLG_NAME" description="Pagseguro" />				
+					<field name="sellar_email" type="text" default="" label="PAGSEGURU_EMAIL" description="PAGSEGURU_EMAIL_DESC"/>
+			  		<field name="token" type="text" default="" label="PAGSEGURU_SALT" description="PAGSEGURU_SALT_DESC"/>  								
+						<field name="sandbox" type="radio" default="0" label="PAGSEGURU_SANDBOX" description="PAGSEGURU_SANDBOX_DESC">
+						<option value="0">NO</option>
+						<option value="1">YES</option>
+					</field>
+				</fieldset>			
+		</fields>
+	</config>
+</extension>
