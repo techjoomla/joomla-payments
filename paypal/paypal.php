@@ -16,14 +16,14 @@ class  plgPaymentPaypal extends JPlugin
 		//Set the language in the class
 		$config =& JFactory::getConfig();
 
-		
+
 		//Define Payment Status codes in Paypal  And Respective Alias in Framework
 		$this->responseStatus= array(
  	 'Completed'  => 'C','Pending'  => 'P',
  	 'Failed'=>'E','Denied'=>'D',
  	 'Refunded'=>'RF','Canceled_Reversal'=>'CRV',
  	 'Reversed'=>'RV'
-  
+
 		);
 	}
 
@@ -41,7 +41,7 @@ class  plgPaymentPaypal extends JPlugin
 	  	return  $core_file;
 	}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -49,7 +49,7 @@ class  plgPaymentPaypal extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
@@ -72,21 +72,24 @@ class  plgPaymentPaypal extends JPlugin
 		$vars->action_url = plgPaymentPaypalHelper::buildPaypalUrl();
 		//Take this receiver email address from plugin if component not provided it
 		if(empty($vars->business))
-		$vars->business = $this->params->get('business');
-		
+			$vars->business=$this->params->get('business');
+
+		//if component does not provide cmd
+		if(empty($vars->cmd))
+			echo $vars->cmd='_xclick';
+
 		$html = $this->buildLayout($vars);
 
 		return $html;
 	}
 
-	
-	
-	function onTP_Processpayment($data) 
+
+	function onTP_Processpayment($data)
 	{
 		$verify = plgPaymentPaypalHelper::validateIPN($data);
-		if (!$verify) { return false; }	
-		
-		$payment_status=$this->translateResponse($data['payment_status']);		
+		if (!$verify) { return false; }
+
+		$payment_status=$this->translateResponse($data['payment_status']);
 
 		$result = array(
 						'order_id'=>$data['custom'],
@@ -99,19 +102,19 @@ class  plgPaymentPaypal extends JPlugin
 						'raw_data'=>$data,
 						'error'=>$error,
 						);
-		return $result;						
-	}	
-	
+		return $result;
+	}
+
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
 				if($key==$payment_status)
-				return $value;		
+				return $value;
 			}
 	}
 	function onTP_Storelog($data)
 	{
 			$log = plgPaymentPaypalHelper::Storelog($this->_name,$data);
-	
+
 	}
 }
