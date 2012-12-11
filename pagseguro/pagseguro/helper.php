@@ -12,7 +12,7 @@ class plgPaymentPagseguroHelper
 		$paymentRequest = new PagSeguroPaymentRequest();
 		
 		// Sets the currency
-		$paymentRequest->setCurrency("BRL");
+		$paymentRequest->setCurrency($vars->currency_code);
 		if(empty($vars->item_code))
 		$vars->item_code='0001';
 		
@@ -84,15 +84,19 @@ class plgPaymentPagseguroHelper
 	
 	function validateIPN($data,$vars)
 	{
-		$notificationCode=$code=$data->get('notificationCode');
-		$type=$data->get('notificationType');
-
-		if(empty($notificationCode))
-		$code=$data['notificationCode'];
-
-		if(empty($notificationType))
-		$type=$data['notificationType'];
+		if(is_array($data))
+		{
+			$code=$data['notificationCode'];
+			$type=$data['notificationType'];
+		}
+		else if(is_object($data))
+		{
+			$code=$data->get('notificationCode');
+			$type=$data->get('notificationType');
+		
+		}
 			
+    	
     	if ( $code && $type ) {
 			
     		$notificationType = new PagSeguroNotificationType($type);
@@ -102,13 +106,23 @@ class plgPaymentPagseguroHelper
 				
 				case 'TRANSACTION':
 						$credentials = new PagSeguroAccountCredentials($vars->sellar_email,$vars->token);
-						$credentials = PagSeguroConfig::getAccountCredentials();
+
 						try {
-							$transaction = PagSeguroNotificationService::checkTransaction($credentials, $notificationCode);
+							$transaction = PagSeguroNotificationService::checkTransaction($credentials, $code);
+							$returndata['transaction_id']=$transaction->getCode(); 
+							$returndata['payment_status']=$transaction->getStatus()->getTypeFromValue();
+							$returndata['payment_statuscode']=$transaction->getStatus()->getValue();
+							$returndata['order_id']=$transaction->getReference();
+							$returndata['buyer_email']=$transaction->getSender()->getEmail();
+							$returndata['payment_method']=$transaction->getpaymentMethod()->gettype()->getTypeFromValue();
+							$returndata['total_paid_amt']=$transaction->getgrossAmount();
+							$returndata['raw_data']=json_encode($returndata);							
+							return $returndata;
 						} catch (PagSeguroServiceException $e) {
 							$error=array();
 							$error['code']	=''; //@TODO change these $data indexes afterwards
 							$error['desc']	=$e->getMessage();
+							return $error;
 						}
 					break;
 				
@@ -116,6 +130,8 @@ class plgPaymentPagseguroHelper
 				$error=array();
 				$error['code']	=''; //@TODO change these $data indexes afterwards
 				$error['desc']	="Unknown notification type [".$notificationType->getValue()."]";
+				
+				return $error;
 				break;
 					
 			}
@@ -126,10 +142,12 @@ class plgPaymentPagseguroHelper
 		$error=array();
 		$error['code']	=''; //@TODO change these $data indexes afterwards
 		$error['desc']	='Unknown notification type';
+						return $error;
 			
 			}
 			
 	}
+
 	
 	
 	
@@ -148,9 +166,6 @@ class plgPaymentPagseguroHelper
 
 	}	
 	
-	function validateIPN()
-	{
 	
-	}
 
 }

@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 ?>
-<div>
+<div class="akeeba-bootstrap">
 <form action="<?php echo $vars->action_url ?>" class="form-horizontal" method="post">			
 <div class="form-actions"><div align="center"><input type="submit" class="btn btn-success btn-large" border="0" value="Pay Now" alt="Pay Now" />			</div></div>
 </form>

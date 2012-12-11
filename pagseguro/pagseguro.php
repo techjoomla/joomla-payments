@@ -19,12 +19,24 @@ class  plgPaymentPagseguro extends JPlugin
 		//Set the language in the class
 		$config =& JFactory::getConfig();
 
-		
+		/*
+1	Waiting for payment : the buyer initiated the transaction, but so far the PagSeguro not received any payment information.
+2	In Review : The buyer chose to pay with a credit card and PagSeguro is analyzing the risk of the transaction.
+3	Pay : the transaction was paid by the buyer and PagSeguro already received a confirmation from the financial institution responsible for processing.
+4	Available : the transaction was paid and reached the end of their period of release and returned without having been without any dispute opened.
+5	In dispute : the buyer, the deadline for release of the transaction, opened a dispute.
+6	Returned : The value of the transaction was returned to the buyer.
+7	Canceled : the transaction was canceled without having been finalized.
+*/
 		//Define Payment Status codes in Pagseguro  And Respective Alias in Framework
 		$this->responseStatus= array(
- 	 'success'  => 'C','pending'  => 'P',
- 	 'failure'=>'E'
-  
+ 	'1'=>'P',
+ 	'2'=>'UR',
+ 	'3'=>'C',
+  '4'=>'RV',
+  '5'=>'DP',
+  '6'=>'RT',
+  '7'=>'D',
 		);
 	}
 
@@ -85,23 +97,24 @@ class  plgPaymentPagseguro extends JPlugin
 	
 	function onTP_Processpayment($data) 
 	{
-	$vars->sellar_email = $this->params->get('sellar_email');
+		$vars->sellar_email = $this->params->get('sellar_email');
 		$vars->token = $this->params->get('token');		
-		$verify = plgPaymentPagseguroHelper::validateIPN($data,$vars);
+		$verified_Data = plgPaymentPagseguroHelper::validateIPN($data,$vars);
 		//if (!$verify) { return false; }	
-		$pstatus=$data->get('status');
+		$pstatus=$verified_Data['payment_statuscode'];
 		$status=$this->translateResponse($pstatus);		
-
+		if(!$status)
+		$status='P';
 		
 
 		$result = array(
-						'order_id'=>$data->get('udf1'),
-						'transaction_id'=>$data->get('mihpayid'),
-						'buyer_email'=>$data->get('email'),
-						'status'=>$data->get('status'),
-						'txn_type'=>$data->get('mode'),
-						'total_paid_amt'=>$data->get('amount'),
-						'raw_data'=>$data,
+						'order_id'=>$verified_Data['order_id'],
+						'transaction_id'=>$verified_Data['transaction_id'],
+						'buyer_email'=>$verified_Data['buyer_email'],
+						'status'=>$status,
+						'txn_type'=>$verified_Data['payment_method'],
+						'total_paid_amt'=>$verified_Data['total_paid_amt'],
+						'raw_data'=>$verified_Data['raw_data'],
 						'error'=>$error,
 						);
 		return $result;						
