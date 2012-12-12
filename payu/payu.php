@@ -2,8 +2,9 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 jimport( 'joomla.plugin.plugin' );
+$lang=JFactory::getLanguage();
+$lang->load('plg_payment_payu', JPATH_ADMINISTRATOR);
 if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/payu/payu/helper.php');
 else
@@ -17,12 +18,12 @@ class  plgPaymentPayu extends JPlugin
 		//Set the language in the class
 		$config =& JFactory::getConfig();
 
-		
+
 		//Define Payment Status codes in payu  And Respective Alias in Framework
 		$this->responseStatus= array(
  	 'success'  => 'C','pending'  => 'P',
  	 'failure'=>'E'
-  
+
 		);
 	}
 
@@ -40,7 +41,7 @@ class  plgPaymentPayu extends JPlugin
 	  	return  $core_file;
 	}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -48,7 +49,7 @@ class  plgPaymentPayu extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
@@ -73,20 +74,20 @@ class  plgPaymentPayu extends JPlugin
 //		if(empty($vars->business))
 
 			$vars->key = $this->params->get('key');
-			$vars->salt = $this->params->get('salt');		
+			$vars->salt = $this->params->get('salt');
 		$html = $this->buildLayout($vars);
 
 		return $html;
 	}
 
-	
-	
-	function onTP_Processpayment($data) 
+
+
+	function onTP_Processpayment($data)
 	{
 		//$verify = plgPaymentPayuHelper::validateIPN($data);
-		//if (!$verify) { return false; }	
-		
-		$data['status']=$this->translateResponse($data['status']);		
+		//if (!$verify) { return false; }
+
+		$data['status']=$this->translateResponse($data['status']);
 
 		//Error Handling
 		$error=array();
@@ -103,19 +104,19 @@ class  plgPaymentPayu extends JPlugin
 						'raw_data'=>$data,
 						'error'=>$error,
 						);
-		return $result;						
-	}	
-	
+		return $result;
+	}
+
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
 				if($key==$payment_status)
-				return $value;		
+				return $value;
 			}
 	}
 	function onTP_Storelog($data)
 	{
 			$log = plgPaymentPayuHelper::Storelog($this->_name,$data);
-	
-	}	
+
+	}
 }

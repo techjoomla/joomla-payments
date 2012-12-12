@@ -3,6 +3,8 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
+$lang=JFactory::getLanguage();
+$lang->load('plg_payment_2checkout', JPATH_ADMINISTRATOR);
 if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/2checkout/2checkout/helper.php');
 else
@@ -16,7 +18,7 @@ class  plgPayment2checkout extends JPlugin
 		//Set the language in the class
 		$config =& JFactory::getConfig();
 
-		
+
 		//Define Payment Status codes in Paypal  And Respective Alias in Framework
 		$this->responseStatus= array(
  	 		 'deposited'  => 'C',
@@ -32,7 +34,7 @@ class  plgPayment2checkout extends JPlugin
 	$layout=trim($layout);
 	if(empty($layout))
 	$layout='default';
-	
+
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.$layout.'.php';
 		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
@@ -45,7 +47,7 @@ class  plgPayment2checkout extends JPlugin
 	  	return  $core_file;
 	}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -53,7 +55,7 @@ class  plgPayment2checkout extends JPlugin
 				ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
@@ -77,25 +79,25 @@ class  plgPayment2checkout extends JPlugin
 		 $vars->sid = $this->params->get('sid','');
 		 $vars->demo = $this->params->get('demo',0) ? 'Y' : 'N';
 		 $vars->lang = $this->params->get('lang','en');
-		 $vars->pay_method = $this->params->get('pay_method','cc');	
-		
+		 $vars->pay_method = $this->params->get('pay_method','cc');
+
 
 		$html = $this->buildLayout($vars);
 		return $html;
 	}
 
-	
-	
-	function onTP_Processpayment($data) 
+
+
+	function onTP_Processpayment($data)
 	{
-		$secret = $this->params->get('secret','cc');	
+		$secret = $this->params->get('secret','cc');
 		/*$verify = plgPayment2checkoutHelper::validateIPN($data,$secret);
-		if (!$verify) { return false; 
+		if (!$verify) { return false;
 		}	*/
 
-		$id = array_key_exists('vendor_order_id', $data) ? (int)$data['vendor_order_id'] : -1;		
+		$id = array_key_exists('vendor_order_id', $data) ? (int)$data['vendor_order_id'] : -1;
 
-		$message_type=$data['message_type'];		
+		$message_type=$data['message_type'];
 		$payment_status=$this->translateResponse($data['invoice_status']);
 		if($message_type == 'REFUND_ISSUED'){
 			$payment_status='RF';
@@ -116,20 +118,20 @@ class  plgPayment2checkout extends JPlugin
 						'error'=>$error,
 						);
 		}
-		return $result;						
-	}	
-	
+		return $result;
+	}
+
 	function translateResponse($invoice_status){
-			
+
     	foreach($this->responseStatus as $key=>$value)
 				{
 					if($key==$invoice_status)
-					return $value;		
+					return $value;
 				}
 	}
 	function onTP_Storelog($data)
 	{
 			$log = plgPayment2checkoutHelper::Storelog($this->_name,$data);
-	
+
 	}
 }

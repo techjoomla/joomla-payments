@@ -3,6 +3,8 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
+$lang=JFactory::getLanguage();
+$lang->load('plg_payment_paypal', JPATH_ADMINISTRATOR);
 if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/paypal/paypal/helper.php');
 else
