@@ -13,27 +13,22 @@
 		<filename plugin="ccavenue">ccavenue.php</filename>
 		<folder>ccavenue</folder>
 	</files>
-	<languages> 
-		<language tag="en-GB">en-GB/en-GB.plg_payment_ccavenue.ini</language>
-	</languages>
-		
-		
-	<params>
-  		<param name="plugin_name" type="text" default="Credit Card/Debit Card/Net Banking" label="Plugin Name" description=""/>
+		<params>
+  		<param name="plugin_name" type="text" default="CCAvenue" label="Plugin Name" description=""/>
   		<param name="merchant_id" type="text" default="" label="Merchant ID" description="Your Merchant ID"/>
-  		<param name="working_key" type="text" default="" label="Working Key" description="Your Working Key"/>
-  		<param name="plugin_hidname" type="hidden" default="ccavenue" />
+  		<param name="working_key" type="text" default="" label="Working Key" description="Your Working Key"/>  		
   		<param type="spacer" />
+	
+  		
 	</params>
 	
 	<!-- Fields for Joomla 1.6.x and onwards -->
  	<config>
 		<fields name="params">
 			<fieldset name="basic">
-					<field name="plugin_name" type="text" default="Credit Card/Debit Card/Net Banking" label="Plugin Name" description=""/>
 					<field name="merchant_id" type="text" default="" label="Merchant ID" description="Your Merchant ID"/>
-			  		<field name="working_key" type="text" default="" label="Working Key" description="Your Working Key"/>
-			  		<field name="plugin_hidname" type="hidden" default="ccavenue" />
+			  		<field name="working_key" type="text" default="" label="Working Key" description="Your Working Key"/>  		
+					<field name="plugin_name" type="text" default="CCAvenue" label="Plugin Label" description="Plugin name appears at frontend"/>						
 				</fieldset>			
 		</fields>
 	</config>

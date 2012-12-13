@@ -4,9 +4,8 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
 jimport( 'joomla.plugin.plugin' );
-$lang=JFactory::getLanguage();
-$lang->load('plg_payment_ccavenue', JPATH_ADMINISTRATOR);
 if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/ccavenue/ccavenue/helper.php');
 else
@@ -20,7 +19,7 @@ class  plgPaymentCcavenue extends JPlugin
 		//Set the language in the class
 		$config =& JFactory::getConfig();
 
-
+		
 		//Define Payment Status codes in payu  And Respective Alias in Framework
 		$this->responseStatus= array( 'Y'=>'C', 'B'=>'P', 'N'=>'D' );
 	}
@@ -41,7 +40,7 @@ class  plgPaymentCcavenue extends JPlugin
 	  	return  $core_file;
 	}
 	}
-
+	
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -49,7 +48,7 @@ class  plgPaymentCcavenue extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents();
+        $html = ob_get_contents(); 
         ob_end_clean();
 		return $html;
 	}
@@ -69,16 +68,18 @@ class  plgPaymentCcavenue extends JPlugin
 	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Payu
 	function onTP_GetHTML($vars)
 	{
-
+	//print_r($vars);die;
 		$vars->action_url = plgPaymentCcavenueHelper::buildCcavenueUrl();
 		//Take this receiver email address from plugin if component not provided it
 //		if(empty($vars->business))
 
-		$vars->merchant_id = $this->params->get('merchant_id');
-		$vars->working_key = $this->params->get('working_key');
-		$vars->notify_url=JURI::base().'ccavenue.php';
+		$vars->merchant_id = trim($this->params->get('merchant_id'));
+		$vars->working_key = trim($this->params->get('working_key'));
+		$vars->amount = (float)$vars->amount;
+		//$vars->notify_url = JURI::base().'ccavenue.'.JRequest::getCmd('option').'.php';
+		$vars->order_id = (string) $vars->order_id;
 		$vars->checksumval = $this->getCheckSum($vars->merchant_id,$vars->amount,$vars->order_id,$vars->notify_url,$vars->working_key);
-
+		
 		$html = $this->buildLayout($vars);
 
 		return $html;
@@ -86,6 +87,7 @@ class  plgPaymentCcavenue extends JPlugin
 
 	function getchecksum($MerchantId,$Amount,$OrderId,$URL,$WorkingKey) {
 		$str ="$MerchantId|$OrderId|$Amount|$URL|$WorkingKey";
+
 		$adler = 1;
 		$adler = $this->adler32($adler,$str);
 		return $adler;
@@ -96,7 +98,7 @@ class  plgPaymentCcavenue extends JPlugin
 		$str = "$MerchantId|$OrderId|$Amount|$AuthDesc|$WorkingKey";
 		$adler = 1;
 		$adler = $this->adler32($adler,$str);
-
+		
 		if($adler == $CheckSum)
 			return "true" ;
 		else
@@ -147,19 +149,20 @@ class  plgPaymentCcavenue extends JPlugin
 
 		return $dec;
 	}
-
+	
 	function onTP_Processpayment($data) {
-
+		//echo "in pp";
+		//print_r($data);die;
 		$working_key = $this->params->get('working_key');
 		$verify = $this->verifychecksum($data['Merchant_Id'], $data['Order_Id'], $data['Amount'], $data['AuthDesc'], $data['Checksum'], $working_key);
-
+		
 //commented by Dipti @7/9/12
-//		if (!$verify) { return false; }
+//		if (!$verify) { return false; }	
 
-		$payment_status = $this->translateResponse($data['AuthDesc']);
+		$payment_status = $this->translateResponse($data['AuthDesc']);		
 		$data['verify'] = $verify;
-
-		//Error Handling
+				
+		//Error Handling		
 		$error=array();
 		if (!$verify) {
 			$error['code']	='501'; //@TODO change these $data indexes afterwards
@@ -176,21 +179,22 @@ class  plgPaymentCcavenue extends JPlugin
 						'raw_data'=>$data,
 						'error'=>$error,
 						);
-		return $result;
-	}
-
+					//	print_r($result);die;
+		return $result;						
+	}	
+	
 	function translateResponse($payment_status){
 		foreach($this->responseStatus as $key=>$value)
 		{
 			if($key==$payment_status)
-			return $value;
+			return $value;		
 		}
 	}
-
+	
 	function onTP_Storelog($data)
 	{
 			$log = plgPaymentCcavenueHelper::Storelog($this->_name,$data);
-
-	}
-
+	
+	}	
+	
 }
