@@ -78,7 +78,7 @@ class  plgPaymentPaypal extends JPlugin
 
 		//if component does not provide cmd
 		if(empty($vars->cmd))
-			echo $vars->cmd='_xclick';
+			 $vars->cmd='_xclick';
 
 		$html = $this->buildLayout($vars);
 
