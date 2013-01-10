@@ -45,7 +45,7 @@
 				}
 				echo $form;
 				?>
-			<div align="center">	<input type="submit" class="btn btn-success" value="Pay Now" ></div>
+			<div align="center">	<input type="submit" class="btn btn-success" value="<?php echo JText::_('SUBMIT');?>" ></div>
 		</form>
 	</div>
 

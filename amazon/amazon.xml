@@ -29,10 +29,6 @@
 		  <option value="0">NO</option>
 		  <option value="1">YES</option>
 		</param>
-		<param name="secure_post" type="radio" default="1"  label="secure post(use	https)?" description="Use https for secure post">
-			<option value="0">NO</option>
-			<option value="1">YES</option>
-		</param>
 		<!--<param type="spacer" label=""/> 
 			<param name="apiuser" type="text" default="" label="API_USER" description="API_USER_DESC"/>		
 			<param name="apipass" type="text" default="" label="API_PASS" description="API_PASS_DESC"/>		
@@ -52,10 +48,6 @@
 						<field name="sandbox" type="radio" default="0" label="AMAZON_SANDBOX" description="AMAZON_SANDBOX_DESC">
 						<option value="0">NO</option>
 						<option value="1">YES</option>
-						</field>
-						<field name="secure_post" type="radio" default="1"  label="secure post(use	https)?" description="Use https for secure post">
-							<option value="0">NO</option>
-							<option value="1">YES</option>
 						</field>
 						<field name="plugin_name" type="text" default="Amazon" label="PLG_NAME" description="" />
 						<field name="plugin_hidname" type="hidden" default="amazon" />
