@@ -1,4 +1,5 @@
 <?php
+defined( '_JEXEC' ) or die( ';)' );
 /*******************************************************************************
  *	Copyright 2008-2012 Amazon Technologies, Inc.
  *	Licensed under the Apache License, Version 2.0 (the 'License');
