@@ -49,7 +49,7 @@ if (document.formvalidator.isValid(f)) {
 		</div>
 		<div class="control-group">
 			<label for="cardlname" class="control-label"><?php echo JText::_( 'COMMENT' ); ?></label>
-			<div class="controls"><textarea id='comment' name='comment' class="inputbox required" rows='3' maxlength='135' size='28'></textarea></div>
+			<div class="controls"><textarea id='comment' name='comment' class="inputbox" rows='3' maxlength='135' size='28'></textarea></div>
 		</div>
 		<div class="control-group">
 			<label for="cardaddress1" class="control-label"><?php echo JText::_( 'CON_PAY_PRO' ) ?></label>
