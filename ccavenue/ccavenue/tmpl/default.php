@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 				<input type="hidden" name="billing_cust_state" value="">
 				<input type="hidden" name="billing_cust_city" value="">
 				<input type="hidden" name="billing_zip" value=""> 
-				<input type="hidden" name="billing_cust_tel" value="<?php echo $vars->phone; ?>">
+				<input type="hidden" name="billing_cust_tel" value="<?php if(isset($vars->phone) ) echo $vars->phone; ?>">
 				<input type="hidden" name="delivery_cust_name" value=""> 
 				<input type="hidden" name="delivery_cust_address" value="">
 				<input type="hidden" name="delivery_cust_country" value="">
