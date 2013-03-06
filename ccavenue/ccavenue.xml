@@ -13,6 +13,10 @@
 		<filename plugin="ccavenue">ccavenue.php</filename>
 		<folder>ccavenue</folder>
 	</files>
+	<languages> 
+		<language tag="en-GB">en-GB/en-GB.plg_payment_ccavenue.ini</language>
+	</languages>
+
 		<params>
   		<param name="plugin_name" type="text" default="CCAvenue" label="Plugin Name" description=""/>
   		<param name="merchant_id" type="text" default="" label="Merchant ID" description="Your Merchant ID"/>

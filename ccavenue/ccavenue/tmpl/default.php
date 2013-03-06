@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 				<input type="hidden" name="billing_zip_code" value="">
 				<input type="hidden" name="delivery_cust_city" value="">
 				<input type="hidden" name="delivery_zip_code" value="">
-				<input type="submit" class="btn btn-success btn-large" border="0" value="Pay Now" alt="PayU India" />
+				<input type="submit" class="btn btn-success btn-large" border="0" value="<?php echo JText::_('SUBMIT'); ?>" alt="CCAvenue Pay" />
 			
 		</form>
 
