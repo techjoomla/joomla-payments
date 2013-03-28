@@ -76,12 +76,42 @@ function myValidate(f)
 		<div class="control-group">
 			<label for="" class="control-label"><?php echo JText::_( 'CREDIT_CARD_TYPE' ) ?></label>
 			<div class="controls"><?php $types = array();
-		$types[] = JHTML::_('select.option', 'Visa', JText::_( "VISA" ) );
+			$credit_cards=$this->params->get( 'credit_cards', '' );
+			$creditcardarray=array(JText::_( "VISA" )=>'Visa', JText::_( "MASTERCARD" )=>'Mastercard',JText::_( "AMERICAN_EXPRESS" )=>'AmericanExpress',
+									JText::_( "DISCOVER" )=>'Discover',JText::_( "DINERS_CLUB" )=>'DinersClub',JText::_( "AUT_JCB" )=>'JCB');
+			if(!empty($credit_cards))
+			{
+				foreach($credit_cards as $credit_card)
+				{
+					if(in_array($credit_card,$creditcardarray))
+					{
+						foreach($creditcardarray as $creditkey=>$credit_cardall)
+						{
+							if($credit_card==$credit_cardall)						
+								$types[] = JHTML::_('select.option', $credit_cardall, $creditkey );
+						}
+
+							
+					}
+					
+				}
+				
+				
+			}
+			else 
+			{
+				foreach($creditcardarray as $creditkey=>$credit_cardall)
+				{
+						$types[] = JHTML::_('select.option', $credit_cardall, $creditkey );
+				}
+			}
+			
+		/*$types[] = JHTML::_('select.option', 'Visa', JText::_( "VISA" ) );
 		$types[] = JHTML::_('select.option', 'Mastercard', JText::_( "MASTERCARD" ) );
 		$types[] = JHTML::_('select.option', 'AmericanExpress', JText::_( "AMERICAN_EXPRESS" ) );
 		$types[] = JHTML::_('select.option', 'Discover', JText::_( "DISCOVER" ) );
 		$types[] = JHTML::_('select.option', 'DinersClub', JText::_( "DINERS_CLUB" ) );
-		$types[] = JHTML::_('select.option', 'JCB', JText::_( "AUT_JCB" ) );
+		$types[] = JHTML::_('select.option', 'JCB', JText::_( "AUT_JCB" ) );*/
 		
 		$return = JHTML::_('select.genericlist', $types,'activated',null, 'value','text', 0);
 		echo $return; ?>
