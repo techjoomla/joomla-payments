@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>plg_transfirst</name>
+	<author>Techjoomla</author>
+	<authorEmail>extensions@techjoomla.com</authorEmail>
+	<authorUrl>www.techjoomla.com</authorUrl>
+	<copyright>Copyright(C)2012-13 TechJoomla</copyright>
+	<creationDate>31st May 2013</creationDate>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.0</version>
+	<description>PLG_TRANSFIRST_DESC</description>
+	<files>
+		<filename plugin="transfirst">transfirst.php</filename>
+		<folder>transfirst</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB/en-GB.plg_payment_transfirst.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_payment_transfirst.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="merchant_id" type="text" default="" label="PLG_TRANSFIRST_MERCHANT_ID" description="PLG_TRANSFIRST_MERCHANT_ID_DESC"/>
+				<field name="reg_key" type="text" default="" label="PLG_TRANSFIRST_REG_KEY" description="PLG_TRANSFIRST_REG_KEY_DESC"/>
+				<field name="sandbox" class="btn-group" type="radio" default="0" label="PLG_TRANSFIRST_SANDBOX" description="PLG_TRANSFIRST_SANDBOX_DESC">
+					<option value="0">PLG_TRANSFIRST_NO</option>
+					<option value="1">PLG_TRANSFIRST_YES</option>
+				</field>
+				<field name="plugin_name" type="text" default="transfirst" label="PLG_TRANSFIRST_PLG_NAME" description="PLG_TRANSFIRST_PLG_DESC" />
+				<field name="plugin_hidname" type="hidden" default="transfirst" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
