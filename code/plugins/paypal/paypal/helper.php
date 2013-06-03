@@ -1,4 +1,8 @@
 <?php
+/**
+ *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @license    GNU General Public License version 2, or later
+ */
 defined( '_JEXEC' ) or die( ';)' );
 	jimport('joomla.html.html');
 	jimport( 'joomla.plugin.helper' );
@@ -8,8 +12,12 @@ class plgPaymentPaypalHelper
 	//gets the paypal URL
 	function buildPaypalUrl($secure = true)
 	{
-		$secure_post = $this->params->get('secure_post');
-		$url = $this->params->get('sandbox') ? 'www.sandbox.paypal.com' : 'www.paypal.com';
+		$plugin = JPluginHelper::getPlugin('payment', 'paypal');
+		$params=json_decode($plugin->params);
+		$secure_post = $params->secure_post ;
+		$url= $params->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';		
+		/*	$secure_post = $this->params->get('secure_post');
+		$url = $this->params->get('sandbox') ? 'www.sandbox.paypal.com' : 'www.paypal.com';*/
 		if ($secure_post) 
 			$url = 'https://' . $url . '/cgi-bin/webscr';
 		else
@@ -20,16 +28,31 @@ class plgPaymentPaypalHelper
 	
 	function Storelog($name,$logdata)
 	{
-
 		jimport('joomla.error.log');
-    $options = array('format' => "{DATE}\t{TIME}\t{USER}\t{DESC}");
+		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 		if(JVERSION >='1.6.0')
-		$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
+			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
 		else
-		$path=JPATH_SITE.'/plugins/payment/'.$name.'/';	  
-	  $my = &JFactory::getUser();        
-		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
-    $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
+			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';	  
+		$my = JFactory::getUser();     
+	
+		JLog::addLogger(
+			array(
+				'text_file' => $logdata['JT_CLIENT'].'_'.$name.'.log',
+				'text_entry_format' => $options ,
+				'text_file_path' => $path
+			),
+			JLog::INFO,
+			$logdata['JT_CLIENT']
+		);
+
+		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry->user= $my->name.'('.$my->id.')';
+		$logEntry->desc=json_encode($logdata['raw_data']);
+
+		JLog::add($logEntry);
+//		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
+//    $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
 
 	}
 		function validateIPN( $data)

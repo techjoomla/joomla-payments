@@ -1,4 +1,8 @@
 <?php
+/**
+ *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @license    GNU General Public License version 2, or later
+ */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.plugin.plugin' );
@@ -7,7 +11,7 @@ if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/authorizenet/authorizenet/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/authorizenet/helper.php');
-$lang = & JFactory::getLanguage();
+$lang =  JFactory::getLanguage();
 $lang->load('plg_payment_authorizenet', JPATH_ADMINISTRATOR);
 
 class plgpaymentAuthorizenet extends JPlugin 
@@ -19,7 +23,7 @@ class plgpaymentAuthorizenet extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 
 		
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
