@@ -92,7 +92,7 @@ class  plgPaymentPayu extends JPlugin
 		//Error Handling
 		$error=array();
 		$error['code']	=$data['unmappedstatus']; //@TODO change these $data indexes afterwards
-		$error['desc']	=$data['field9'];
+		$error['desc']	=(isset($data['field9'])?$data['field9']:'');
 
 		$result = array(
 						'order_id'=>$data['udf1'],

@@ -47,6 +47,16 @@
 			<option value="0">P_NO</option>
 			<option value="1">P_YES</option>
 		</param>
+		<param name="credit_cards" type="list" default="1" label="CREDIT_CARDS_ALLOWED" description="CREDIT_CARDS_ALLOWED" size="6" multiple="multiple">
+							<option value="Visa">VISA</option>
+							<option value="Mastercard">MASTERCARD</option>
+							<option value="AmericanExpress">AMERICAN_EXPRESS</option>
+							<option value="Discover">DISCOVER</option>
+							<option value="DinersClub">DINERS_CLUB</option>
+							<option value="JCB">AUT_JCB</option>
+
+
+		</param>
 		<param name="plugin_name" type="text" default="Authorize.Net" label="PLG_NAME" description="PLG_DESC" />
 		<param name="plugin_hidname" type="hidden" default="authorizenet" />
 		
@@ -73,6 +83,17 @@
 						<field name="arb_enforce" type="radio" default="0" label="AUTHONET_ENFORCE_ARB"	description="AUTHONET_ENFORCE_ARB_DESC">
 							<option value="0">P_NO</option>
 							<option value="1">P_YES</option>
+						</field>
+						
+						<field name="credit_cards" type="list" default="1" label="CREDIT_CARDS_ALLOWED" description="CREDIT_CARDS_ALLOWED" size="6" multiple="multiple">
+							<option value="Visa">VISA</option>
+							<option value="Mastercard">MASTERCARD</option>
+							<option value="AmericanExpress">AMERICAN_EXPRESS</option>
+							<option value="Discover">DISCOVER</option>
+							<option value="DinersClub">DINERS_CLUB</option>
+							<option value="JCB">AUT_JCB</option>
+
+
 						</field>
 						<field name="plugin_name" type="text" default="Authorize.Net" label="PLG_NAME" description="PLG_DESC" />
 						<field name="plugin_hidname" type="hidden" default="authorizenet" />

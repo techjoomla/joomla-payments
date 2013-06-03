@@ -10,6 +10,8 @@ if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/ccavenue/ccavenue/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/ccavenue/helper.php');
+$lang =  JFactory::getLanguage();
+$lang->load('plg_payment_ccavenue', JPATH_ADMINISTRATOR);
 class  plgPaymentCcavenue extends JPlugin
 {
 

@@ -141,6 +141,8 @@ function myValidate(f)
 				<tr>
 					<td><?php echo JText::_( 'CREDIT_CARD_TYPE' ) ?></td>
 					<td><?php $types = array();
+					$credit_cards=$this->params->get( 'credit_cards', '' );
+			print_r($credit_cards);
 		$types[] = JHTML::_('select.option', 'Visa', JText::_( "VISA" ) );
 		$types[] = JHTML::_('select.option', 'Mastercard', JText::_( "MASTERCARD" ) );
 		$types[] = JHTML::_('select.option', 'AmericanExpress', JText::_( "AMERICAN_EXPRESS" ) );
