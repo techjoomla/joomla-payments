@@ -9,6 +9,7 @@ if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/2checkout/2checkout/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/2checkout/helper.php');
+
 class  plgPayment2checkout extends JPlugin
 {
 
@@ -21,11 +22,11 @@ class  plgPayment2checkout extends JPlugin
 
 		//Define Payment Status codes in Paypal  And Respective Alias in Framework
 		$this->responseStatus= array(
- 	 		 'deposited'  => 'C',
-			 'pending'  => 'P',
-			 'approved'=>'p',
-			 'declined'=>'X',
- 	     'Refunded'=>'RF'
+			'deposited'  => 'C',
+			'pending'  => 'P',
+			'approved'=>'p',
+			'declined'=>'X',
+			'Refunded'=>'RF'
 		);
 	}
 
@@ -38,21 +39,18 @@ class  plgPayment2checkout extends JPlugin
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.$layout.'.php';
 		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
-		if(JFile::exists($override))
-		{
+		if(JFile::exists($override)) {
 			return $override;
+		} else {
+			return  $core_file;
 		}
-		else
-		{
-	  	return  $core_file;
-	}
 	}
 
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
 		// Load the layout & push variables
-				ob_start();
+		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
         $html = ob_get_contents();
