@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment - eway</name>
+	<author>Techjoomla</author>
+	<creationDate>28th Aug 2013</creationDate>
+	<copyright></copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail></authorEmail>
+	<authorUrl></authorUrl>
+	<version>0.1</version>
+	<description>eway payment plugin</description>
+	<files>
+		<filename plugin="eway">eway.php</filename>
+		<folder>eway</folder>
+	</files>
+	<languages> 
+		<language tag="en-GB">en-GB/en-GB.plg_payment_eway.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_payment_eway.sys.ini</language>
+		
+	</languages>
+	
+	<!-- Fields for Joomla 1.6.x and onwards -->
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="plugin_name" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_TITLE_LABEL" description="PLG_PAYMENT_EWAY_TITLE_DESC"/>
+				<field name="ppimage" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_PPIMAGE_LABEL" description="PLG_PAYMENT_EWAY_PPIMAGE_DESC" />
+				
+				<field type="spacer" />
+				<field name="site" type="radio" default="0" label="PLG_PAYMENT_EWAY_SITE_LABEL" description="PLG_PAYMENT_EWAY_SITE_DESC">
+					<option value="0">PLG_PAYMENT_EWAY_SITE_AUSTRALIA</option>
+					<option value="1">PLG_PAYMENT_EWAY_SITE_UK</option>
+					<option value="2">PLG_PAYMENT_EWAY_SITE_NZ</option>
+				</field>
+				
+				<field type="spacer" />
+				<field name="customerid" type="text" size="50" default="87654321" label="PLG_PAYMENT_EWAY_CUSTOMERID_LABEL" description="PLG_PAYMENT_EWAY_CUSTOMERID_DESC"/>
+				<field name="username" type="text" size="50" default="TestAccount" label="PLG_PAYMENT_EWAY_USERNAME_LABEL" description="PLG_PAYMENT_EWAY_USERNAME_DESC"/>
+				<field name="companylogo" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_COMPANYLOGO_LABEL" description="PLG_PAYMENT_EWAY_COMPANYLOGO_DESC"/>
+				<field name="pagebanner" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_PAGEBANNER_LABEL" description="PLG_PAYMENT_EWAY_PAGEBANNER_DESC"/>
+				<field name="language" type="radio" default="EN" label="PLG_PAYMENT_EWAY_LANGUAGE_LABEL" description="PLG_PAYMENT_EWAY_LANGUAGE_DESC">
+					<option value="EN">PLG_PAYMENT_EWAY_LANGUAGE_EN</option>
+					<option value="ES">PLG_PAYMENT_EWAY_LANGUAGE_ES</option>
+					<option value="FR">PLG_PAYMENT_EWAY_LANGUAGE_FR</option>
+					<option value="DE">PLG_PAYMENT_EWAY_LANGUAGE_DE</option>
+					<option value="NL">PLG_PAYMENT_EWAY_LANGUAGE_NL</option>
+				</field>
+				<field name="companyname" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_COMPANYNAME_LABEL" description="PLG_PAYMENT_EWAY_COMPANYNAME_DESC"/>
+				<field name="pagetitle" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_PAGETITLE_LABEL" description="PLG_PAYMENT_EWAY_PAGETITLE_DESC"/>
+				<field name="pagedescription" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_PAGEDESCRIPTION_LABEL" description="PLG_PAYMENT_EWAY_PAGEDESCRIPTION_DESC"/>
+				<field name="pagefooter" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_PAGEFOOTER_LABEL" description="PLG_PAYMENT_EWAY_PAGEFOOTER_DESC"/>
+			</fieldset>
+		</fields>
+	</config>
+	
+</extension>
