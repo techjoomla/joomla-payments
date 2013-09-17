@@ -36,15 +36,15 @@ $notify_url=str_replace('&amp;','&',$vars->notify_url);
 	<input type="hidden" name="amount" value="<?php echo $vars->amount; ?>" />
 	<input type="hidden" name="item_name" value="<?php echo trim($vars->item_name) ?>" />
 	<input type="hidden" name="item_description" value="<?php echo trim($vars->item_name) ?>" />
-	<!-- <input type="hidden" name="custom_str1" value="<?php //echo $vars->custom_str1 ?>" /> -->
+	<input type="hidden" name="custom_str1" value="<?php echo $txnid ?>" /> 
 	<?php
 	//1. CREATING SIGNATURE  STRING 
-		echo $sigString="merchant_id=".urlencode($vars->merchant_id).		"&merchant_key=".urlencode($vars->merchant_key).
+		 $sigString="merchant_id=".urlencode($vars->merchant_id).		"&merchant_key=".urlencode($vars->merchant_key).
 						"&return_url=".urlencode($return_url).					"&cancel_url=".urlencode($cancel_url).
 						"&notify_url=".urlencode($notify_url).			"&name_first=".urlencode($vars->user_firstname).
 						"&name_last=".urlencode($vars->user_firstname).	"&email_address=".urlencode($vars->user_email).
 						"&amount=".urlencode($vars->amount).							"&item_name=".urlencode($vars->item_name).
-						"&item_description=".urlencode($vars->item_name);
+						"&item_description=".urlencode($vars->item_name)."&custom_str1=".urlencode($txnid);
 
 	//2.SIGNATURE :: MD5 generation(Encoded):
 	$vars->signature = md5($sigString);

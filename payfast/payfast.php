@@ -99,12 +99,18 @@ class  plgPaymentPayfast extends JPlugin
 	
 	function onTP_Processpayment($data) 
 	{
-		//$verify = plgPaymentPayfastHelper::validateIPN($data);
-		//if (!$verify) { return false; }	
-	
+		
+			$file = 'payfastPlugin.txt';
+		// The new person to add to the file
+		$person = json_encode($data);
+		$person.= json_encode($_SERVER);
+		file_put_contents($file, $person, FILE_APPEND | LOCK_EX);
+		
 	// 1.Check IPN data for validity (i.e. protect against fraud attempt)
 		$isValid = $this->isValidIPN($data);
-		if(!$isValid) $data['error'] = 'Invalid response received.';
+		if(!$isValid){
+			$data['error'] = 'Invalid response received.';
+		}
 		
 		//2. Check that merchant_id is correct
 		if($isValid ) {
@@ -113,7 +119,6 @@ class  plgPaymentPayfast extends JPlugin
 				$data['error'] = "The received merchant_id does not match the one that was sent.";
 			}
 		}
-		
 		// Fraud attempt? Do nothing more!
 		if(!$isValid) return false;
 		
@@ -121,9 +126,9 @@ class  plgPaymentPayfast extends JPlugin
 		$newStatus='';
 		if($data['payment_status'] == 'COMPLETE') {
 			$newStatus = 'C';
-		} else {
-			$newStatus = 'X';
-		}
+		}/* else {
+			$newStatus = 'E'; // AS WE ADD OTHER STATUS IN MODEL FUNTION
+		}*/
 	
 	//3. Check that pf_payment_id has not been previously processed
 		/*if($isValid && !is_null($subscription)) {
@@ -135,22 +140,33 @@ class  plgPaymentPayfast extends JPlugin
 		
 		
 		// 4.Check that amount_gross is correct
-		//$data['status']=$this->translateResponse($data['status']);
+		$isPartialRefund = false;
+		if($isValid) {
+			$mc_gross = floatval($data['amount_gross']);
+			$gross = $subscription->gross_amount;
+			if($mc_gross > 0) {
+				// A positive value means "payment". The prices MUST match! // Important: NEVER, EVER compare two floating point values for equality.
+				$isValid = ($gross - $mc_gross) < 0.01;
+			}
+			if(!$isValid) $data['error'] = 'Paid amount does not match the subscription amount';
+		}
+		
+		$data['status']=$newStatus;
 
 		//Error Handling
 		$error=array();
-		$error['code']	=$data['unmappedstatus']; //@TODO change these $data indexes afterwards
-		$error['desc']	=(isset($data['field9'])?$data['field9']:'');
+		$error['code']	='ERROR';
+		$error['desc']	=(isset($data['error'])?$data['error']:'');
 
 		$result = array(
-						'order_id'=>$data['udf1'],
-						'transaction_id'=>$data['mihpayid'],
-						'buyer_email'=>$data['email'],
+						'order_id'=>$data['custom_str1'],
+						'transaction_id'=>$data['pf_payment_id'],
+						'buyer_email'=>$data['email_address'],
 						'status'=>$newStatus,
-						'txn_type'=>$data['mode'],
-						'total_paid_amt'=>$data['amount'],
+						'txn_type'=>'',
+						'total_paid_amt'=>(float)$data['amount_gross'],
 						'raw_data'=>$data,
-						'error'=>$error,
+						'error'=>$error ,
 						);
 		return $result;
 	}	
@@ -158,20 +174,24 @@ class  plgPaymentPayfast extends JPlugin
 	 * Validates the incoming data.
 	 */
 	private function isValidIPN($data)
-	{			
+	{
+			$person="  \n in isValidIPN funtion data= ".$data ."	***********\n\n ";
+						file_put_contents('payfast_ValidIPN.txt', $person, FILE_APPEND | LOCK_EX);
 		// 1. Check valid host
 		$validIps = array();
 		foreach($this->validHosts as $validHost){
+			//Returns a list of IPv4 addresses to which the Internet host specified by hostname resolves. 
 			$ips = gethostbynamel($validHost);
 			if($ips !== false) {
 				$validIps = array_merge($validIps, $ips);	
 			}
 		}
+
 		$validIps = array_unique($validIps);
-		if(! in_array($_SERVER['REMOTE_ADDR'], $validIps)) {
-			return false;
+		if(!in_array($_SERVER['REMOTE_ADDR'], $validIps)) {
+			//return false;
 		}
-	
+
 		// 2. Check signature
 		// Build returnString from 'm_payment_id' onwards and exclude 'signature'
 		foreach($data as $key => $val ) {
@@ -180,8 +200,12 @@ class  plgPaymentPayfast extends JPlugin
 				if($key == 'signature') continue;
 				$returnString .= $key . '=' . urlencode($val) . '&';
 		}
+
 		$returnString = substr($returnString, 0, -1);
 		
+	$person="  \n final returnString= ".$returnString ."    \n MD5 = ".md5($returnString)." \n data['signature']=".$data['signature']."	***********\n\n ";
+						file_put_contents('payfast_ValidIPN.txt', $person, FILE_APPEND | LOCK_EX);
+						
 		if(md5($returnString) != $data['signature']) {
 			return false;
 		}
@@ -191,13 +215,17 @@ class  plgPaymentPayfast extends JPlugin
 		$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
 		$header .= "Content-Length: " . strlen($returnString) . "\r\n\r\n";
 		
+		// Connect to server
 		$fp = fsockopen($this->getCallbackURL(), 443, $errno, $errstr, 10);
 		
 		if (!$fp) {
 			// HTTP ERROR
 			return false;
 		} else {
+			 // Send command to server
 			fputs($fp, $header . $returnString);
+			
+			// Read the response from the server
 			while(! feof($fp)) {
 				$res = fgets($fp, 1024);
 				if (strcmp($res, "VALID") == 0) {
@@ -245,5 +273,18 @@ class  plgPaymentPayfast extends JPlugin
 		return trim($this->params->get('merchant_id',''));
 		
 	}
+	/**
+	 * Gets the IPN callback URL
+	 */
+	private function getCallbackURL()
+	{
+		$sandbox = $this->params->get('sandbox',0);
+		if($sandbox) {
+			return 'ssl://sandbox.payfast.co.za';
+		} else {
+			return 'ssl://www.payfast.co.za';
+		}
+	}
+	
 	
 }
