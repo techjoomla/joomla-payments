@@ -99,13 +99,6 @@ class  plgPaymentPayfast extends JPlugin
 	
 	function onTP_Processpayment($data) 
 	{
-		
-			$file = 'payfastPlugin.txt';
-		// The new person to add to the file
-		$person = json_encode($data);
-		$person.= json_encode($_SERVER);
-		file_put_contents($file, $person, FILE_APPEND | LOCK_EX);
-		
 	// 1.Check IPN data for validity (i.e. protect against fraud attempt)
 		$isValid = $this->isValidIPN($data);
 		if(!$isValid){
@@ -126,18 +119,7 @@ class  plgPaymentPayfast extends JPlugin
 		$newStatus='';
 		if($data['payment_status'] == 'COMPLETE') {
 			$newStatus = 'C';
-		}/* else {
-			$newStatus = 'E'; // AS WE ADD OTHER STATUS IN MODEL FUNTION
-		}*/
-	
-	//3. Check that pf_payment_id has not been previously processed
-		/*if($isValid && !is_null($subscription)) {
-			if($subscription->processor_key == $data['pf_payment_id']) {
-				$isValid = false;
-				$data['akeebasubs_failure_reason'] = "I will not process the same pf_payment_id twice";
-			}
-		}*/
-		
+		}
 		
 		// 4.Check that amount_gross is correct
 		$isPartialRefund = false;
@@ -175,8 +157,6 @@ class  plgPaymentPayfast extends JPlugin
 	 */
 	private function isValidIPN($data)
 	{
-			$person="  \n in isValidIPN funtion data= ".$data ."	***********\n\n ";
-						file_put_contents('payfast_ValidIPN.txt', $person, FILE_APPEND | LOCK_EX);
 		// 1. Check valid host
 		$validIps = array();
 		foreach($this->validHosts as $validHost){
@@ -202,9 +182,6 @@ class  plgPaymentPayfast extends JPlugin
 		}
 
 		$returnString = substr($returnString, 0, -1);
-		
-	$person="  \n final returnString= ".$returnString ."    \n MD5 = ".md5($returnString)." \n data['signature']=".$data['signature']."	***********\n\n ";
-						file_put_contents('payfast_ValidIPN.txt', $person, FILE_APPEND | LOCK_EX);
 						
 		if(md5($returnString) != $data['signature']) {
 			return false;

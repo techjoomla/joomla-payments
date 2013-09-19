@@ -32,9 +32,6 @@ class plgPaymentPayfastHelper
 	
 	function Storelog($name,$logdata)
 	{
-		$person=json_encode($logdata);
-		file_put_contents('payfast_storelog.txt'," \n inside helper Storelog() \n ". $person, FILE_APPEND | LOCK_EX);
-			
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 		//if(JVERSION >='1.6.0')
@@ -60,7 +57,6 @@ class plgPaymentPayfastHelper
 
 
 		$person=json_encode($logEntry);
-		file_put_contents('payfast_storelog.txt'," \n BEFORE LOGGING  \n ". $person, FILE_APPEND | LOCK_EX);
 		JLog::add($logEntry);
 //		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
 //    $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
