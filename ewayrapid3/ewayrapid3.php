@@ -160,7 +160,7 @@ class  plgPaymentEwayrapid3 extends JPlugin
 			// Call RapidAPI
 			$result = $this->ewayService->CreateAccessCode($request);
 		} catch(Exception $e) {
-			JError::raiseError(500, 'You have an error in your eWay setup: ' . $e->getMessage());
+			JError::raiseError(500, 'You have an error in your eWay Rapid 3.0 setup: ' . $e->getMessage());
 			return false;
 		}
 		if(isset($result->Errors)) {
@@ -169,7 +169,7 @@ class  plgPaymentEwayrapid3 extends JPlugin
 				$errorMsg .= $this->ewayService->APIConfig[$e] . ', ';
 			}
 			$errorMsg = substr($errorMsg, 0, -2);
-			JError::raiseError(500, 'You have an error in your eWay setup: ' . $errorMsg);
+			JError::raiseError(500, 'You have an error in your eWay Rapid 3.0  setup: ' . $errorMsg);
 			return false;
 		}
 
