@@ -103,7 +103,8 @@ class  plgPaymentEwayrapid3 extends JPlugin
 	 * */
 	function onTP_GetHTML($vars)
 	{
-		$plgPaymentEwayrapid3Helper= new plgPaymentEwayrapid3Helper();
+			$this->preFormatingData($vars);	 // fomating on data
+			$plgPaymentEwayrapid3Helper= new plgPaymentEwayrapid3Helper();
 			// Split the name in first and last name
 			$user= JFactory::getUser();
 			
@@ -121,7 +122,6 @@ class  plgPaymentEwayrapid3 extends JPlugin
 			// Customer
 		$request = new CreateAccessCodeRequest();
 		$request->Customer->Reference = $vars->order_id;
-	//	$request->Customer->TokenCustomerID="91665902";
 	//	$request->Customer->TokenCustomerID="91665902";
 		$request->Customer->Title = 'Mr.';
 		$request->Customer->FirstName = $firstName;
@@ -146,11 +146,15 @@ class  plgPaymentEwayrapid3 extends JPlugin
 		$request->Payment->CurrencyCode = strtoupper($vars->currency_code);
 		// Url to the page for getting the result with an AccessCode
 		$vars->return=trim($vars->return);
-		$request->RedirectUrl = (string)$vars->return;
+		$request->RedirectUrl = (string)$vars->notify_url;
+		
+		//Populate values for Options
+    $opt1 = new Option();
+    $opt1->Value = $vars->user_email;    
+    $request->Options->Option[0]= $opt1;
 		
 		// Method for this request. e.g. ProcessPayment, Create TokenCustomer, Update TokenCustomer & TokenPayment
 		$request->Method = 'ProcessPayment';
-		
 		
 		try {
 			// Call RapidAPI
@@ -172,105 +176,96 @@ class  plgPaymentEwayrapid3 extends JPlugin
 		@ob_start();
 		include dirname(__FILE__).'/ewayrapid3/form.php';
 		$html = @ob_get_clean();
-
 		return $html;
-	}
 
-	
+	}
 	
 	function onTP_Processpayment($data) 
 	{
-		JLoader::import('joomla.utilities.date');
-		// Check if we're supposed to handle this
-		JLoader::import('joomla.environment.uri');
-		
-		switch($this->params->get('site', 0))
-		{
-			case '0':
-			default:
-				$apiURL = 'https://au.ewaygateway.com/Result';
-				break;
-			case '1':
-				$apiURL = 'https://payment.ewaygateway.com/Result';
-				break;
-			case '2':
-				$apiURL = 'https://nz.ewaygateway.com/Result';
-				break;
-		}
-		
-		$eWayrapid3URL = new JURI($apiURL);
-		$eWayrapid3URL->setVar('CustomerID', urlencode($this->params->get('customerid','')));
-		$eWayrapid3URL->setVar('UserName', urlencode($this->params->get('username','')));
-		$eWayrapid3URL->setVar('AccessPaymentCode', urlencode($data['AccessPaymentCode']));
-		
-		$posturl=$eWayrapid3URL->toString();
-		$posturl = str_replace('Result?', 'Result/?', $posturl);
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $posturl);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		if(defined('CURL_PROXY_REQUIRED')) if (CURL_PROXY_REQUIRED == 'True')
-		{
-			$proxy_tunnel_flag = (defined('CURL_PROXY_TUNNEL_FLAG') && strtoupper(CURL_PROXY_TUNNEL_FLAG) == 'FALSE') ? false : true;
-			curl_setopt ($ch, CURLOPT_HTTPPROXYTUNNEL, $proxy_tunnel_flag);
-			curl_setopt ($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
-			curl_setopt ($ch, CURLOPT_PROXY, CURL_PROXY_SERVER_DETAILS);
-		}
-		$response = curl_exec($ch);
-
-		$authecode = $this->fetch_data($response, '<authCode>', '</authCode>');
-		$responsecode = $this->fetch_data($response, '<responsecode>', '</responsecode>');
-		$retrunamount = $this->fetch_data($response, '<returnamount>', '</returnamount>');
-		$trxnnumber = $this->fetch_data($response, '<trxnnumber>', '</trxnnumber>');
-		$trxnstatus = $this->fetch_data($response, '<trxnstatus>', '</trxnstatus>');
-		$trxnresponsemessage = $this->fetch_data($response, '<trxnresponsemessage>', '</trxnresponsemessage>');
-		// order id
-		$MerchantOption1_orderid=$this->fetch_data($response, '<MerchantOption1>', '</MerchantOption1>');
-		$MerchantOption2_email=$this->fetch_data($response, '<MerchantOption2>', '</MerchantOption2>');
-		$merchantreference = $this->fetch_data($response, '<merchantreference>', '</merchantreference>');
-		
+		JLoader::import('joomla.utilities.date');;
 		$isValid = true;
-		// Check that the amount is correct // checked in model payment 
-		$rootURL = rtrim(JURI::base(),'/');
-		$subpathURL = JURI::base(true);
-		if(!empty($subpathURL) && ($subpathURL != '/')) {
-			$rootURL = substr($rootURL, 0, -1 * strlen($subpathURL));
-		}
-		$order_status='';
-		switch($trxnstatus) {
-				case 'True':	
-				$order_status = 'C';
-				break;
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
+		
+		if($isValid) {
+			// Build request for getting the result with the access code
+			$request = new GetAccessCodeResultRequest();
+			$request->AccessCode = $data['AccessCode'];
+			// Call RapidAPI to get the result
+			$result = $this->ewayService->GetAccessCodeResult($request);
+			
+			// CHECK FOR ERROR
+			if(isset($result->Errors)) {
+				$errorMsg = '';
+				$ERROR=explode(',', $result->Errors);
+				$error['code']=json_encode($ERROR); 
+				foreach($ERROR as $e) {
+					$errorMsg .= $this->ewayService->APIConfig[$e] . ', ';
+				}
+				$errorMsg = substr($errorMsg, 0, -2);
+				$isValid = false;
+				$error['desc']	= $errorMsg;
+			}
 		}
 		
-		// IF REQUIRE:: add the AfterPaymentCallback events
-	
-		$data['status']=$trxnstatus;
-
-		//Error Handling
-		$responseCodes=$this->responseCodes;
-		$error=array();
-		if($responsecode!= '00')
-		{
-		$error['code']	=$responsecode;
-		$error['desc']	=(isset($responsecode)?$responseCodes[$responsecode]:'');
+			// CHECK RESPONSE MASSAGE
+		if($isValid) {
+			$errorMsg = '';
+			$RESMSG=explode(',', $result->ResponseMessage);
+			foreach($RESMSG as $m) {
+				if($m != 'A2000'){
+					// NOT APPROVED
+					 $isValid = false;
+				}
+				$errorMsg .= $this->ewayService->APIConfig[$m] . ', ';
+			}
+			if(!$isValid) {
+				// NOT APPROVED
+				$errorMsg = substr($errorMsg, 0, -2);
+				$error['code']	= json_encode($RESMSG);
+				$error['desc']	= $errorMsg;
+			}
 		}
-
-		$result = array(
-						'order_id'=>$MerchantOption1_orderid,
-						'transaction_id'=>$authecode,
-						'buyer_email'=>$MerchantOption2_email,
-						'status'=>$order_status,
-						'txn_type'=>'',
-						'total_paid_amt'=>(float)$retrunamount,
-						'raw_data'=>$response,
-						'error'=>$error ,
-						);
-		//return true;
-		return $result;
-	}	
+		
+		// CHECK OF ORDER ID
+		$res_orderid='';
+		if($isValid) {
+			$res_orderid=$result->InvoiceReference;
+			if($result->InvoiceReference != $data['orderid']) {
+				// RESPONSE ORDER ID NOT MATCH WITH URL
+					$isValid = false;
+					$error['desc']	= "Response order id doesn't match with URL orderid.";
+			}
+		}
+		
+		// Payment status
+		$newStatus='';
+		if($result->TransactionStatus) {
+			$newStatus = 'C';
+		}
+		$txn_id= !empty($result->ResponseMessage)?$result->ResponseMessage :'';
+		//	print"<pre>"; print_r($result	); die;
+		$OPTIONS=(array)$result->Options->Option;
+		$buyer_email=$OPTIONS['Value'];
+		
+		
+		// RETURN URL OR CANCEL URL IS NOT USED PREVIOUSLY
+		// response amount in cent
+		$gross_amt=(float)(($result->TotalAmount) / (100));
+		$ret_result = array(
+					'order_id'=>$res_orderid,
+					'transaction_id'=>$txn_id,
+					'buyer_email'=>$buyer_email,
+					'status'=>$newStatus,
+					'txn_type'=>'',
+					'total_paid_amt'=>(float)$gross_amt,
+					'raw_data'=>$result,
+					'error'=>$error ,
+					);
+		return $ret_result;
+			
+	}	// END OF FUN
 	
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
@@ -289,7 +284,7 @@ class  plgPaymentEwayrapid3 extends JPlugin
 		@return $vars :: formatted object 
 	*/
 	function preFormatingData($vars)
-	{		
+	{
 		foreach($vars as $key=>$value)
 		{
 			$vars->$key=trim($value);	

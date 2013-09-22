@@ -13,20 +13,20 @@ class plgPaymentEwayrapid3Helper
 	
 	//gets the Eway URL
 	function buildEwayrapid3Url($secure = true)
-	{
-		$plugin = JPluginHelper::getPlugin('payment', 'eway');
+	{/*
+		$plugin = JPluginHelper::getPlugin('payment', 'ewayrapid3');
 		$params=json_decode($plugin->params);
 		$sandbox=$params->sandbox;
 		if(!empty($sandbox)) {
 			// SANDBOX MODE == ON
-			$url =  'sandbox.eway.co.za/eng/process';
+			$url =  '';
 		} else {
-			$url =  'www.eway.co.za/eng/process';
+			$url =  '';
 		}
 		if ($secure) {
 			$url = 'https://' . $url;
 		}
-		return $url;
+		return $url;*/
 	}
 	
 	
