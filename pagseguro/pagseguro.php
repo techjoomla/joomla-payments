@@ -17,7 +17,7 @@ class  plgPaymentPagseguro extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 
 		/*
 1	Waiting for payment : the buyer initiated the transaction, but so far the PagSeguro not received any payment information.
@@ -84,7 +84,8 @@ class  plgPaymentPagseguro extends JPlugin
 	{
 		$vars->sellar_email = $this->params->get('sellar_email');
 		$vars->token = $this->params->get('token');		
-		$vars->action_url = plgPaymentPagseguroHelper::buildPagseguroUrl($vars,1);
+		$plgPaymentPagseguroHelper = new plgPaymentPagseguroHelper();
+		$vars->action_url = $plgPaymentPagseguroHelper->buildPagseguroUrl($vars,1);
 		//Take this receiver email address from plugin if component not provided it
 
 		
@@ -98,8 +99,9 @@ class  plgPaymentPagseguro extends JPlugin
 	function onTP_Processpayment($data) 
 	{
 		$vars->sellar_email = $this->params->get('sellar_email');
-		$vars->token = $this->params->get('token');		
-		$verified_Data = plgPaymentPagseguroHelper::validateIPN($data,$vars);
+		$vars->token = $this->params->get('token');
+		$plgPaymentPagseguroHelper = new plgPaymentPagseguroHelper();
+		$verified_Data = $plgPaymentPagseguroHelper->validateIPN($data,$vars);
 		//if (!$verify) { return false; }	
 		$pstatus=$verified_Data['payment_statuscode'];
 		$status=$this->translateResponse($pstatus);		
@@ -117,7 +119,7 @@ class  plgPaymentPagseguro extends JPlugin
 						'raw_data'=>$verified_Data['raw_data'],
 						'error'=>$error,
 						);
-		return $result;						
+		return $result;
 	}	
 	
 	function translateResponse($payment_status){
