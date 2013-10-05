@@ -27,7 +27,7 @@
 						<option value="1">YES</option>
 						</field>
 						<field name="plugin_name" type="text" default="Paypal Adaptive Payment" label="PLG_ADAPTIVE_PLG_NAME" description="" />
-						<field name="plugin_hidname" type="hidden" default="paypal" />
+						<field name="plugin_hidname" type="hidden" default="Paypal Adaptive Payment" />
 				</fieldset>
 			<fieldset name="apifields"   label="Paypal API Field For Masspayment">
 					<field name="apiuser" type="text" default="" label="PLG_ADAPTIVE_PAYPAL_API_USER" description="API_ADAPTIVE_PAYPAL_USER_DESC"/>		
