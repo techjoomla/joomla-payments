@@ -17,7 +17,7 @@ class  plgPaymentPagseguro_jgive extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 
 		/*
 1	Waiting for payment : the buyer initiated the transaction, but so far the PagSeguro not received any payment information.
@@ -37,6 +37,7 @@ class  plgPaymentPagseguro_jgive extends JPlugin
   '5'=>'DP',
   '6'=>'RT',
   '7'=>'D',
+  'ERROR'  => 'E',
 		);
 	}
 
@@ -83,13 +84,14 @@ class  plgPaymentPagseguro_jgive extends JPlugin
 	function onTP_GetHTML($vars)
 	{
 
-		if(!strstr($vars->client,'jgive'))
-		return;
+		if( !isset($vars->client) || !strstr($vars->client,'jgive'))
+			return;
 		require_once JPATH_SITE.'/plugins/payment/pagseguro_jgive/lib/PagSeguroLibrary.php';
 		$vars->sellar_email = $this->params->get('sellar_email');
 		$vars->token = $this->params->get('token');
 		//$vars->order_id=$vars->client.'__'.$vars->order_id;
-		$vars->action_url = plgPaymentPagseguro_jgiveHelper::buildPagseguroUrl($vars,1);
+		$plgPaymentPagseguro_jgiveHelper=new plgPaymentPagseguro_jgiveHelper();
+		$vars->action_url = $plgPaymentPagseguro_jgiveHelper->buildPagseguroUrl($vars,1);
 
 
 		//Take this receiver email address from plugin if component not provided it
@@ -102,20 +104,60 @@ class  plgPaymentPagseguro_jgive extends JPlugin
 
 
 
-	function onTP_Processpayment($data)
+	function onTP_Processpayment($data,$vars=array()) 
 	{
+		$isValid = true;
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
+		$trxnstatus='';
 
 		require_once JPATH_SITE.'/plugins/payment/pagseguro_jgive/lib/PagSeguroLibrary.php';
 		$vars->sellar_email = $this->params->get('sellar_email');
 		$vars->token = $this->params->get('token');
-		$verified_Data = plgPaymentPagseguro_jgiveHelper::validateIPN($data,$vars);
+		$plgPaymentPagseguro_jgiveHelper= new plgPaymentPagseguro_jgiveHelper();
+		$verified_Data = $plgPaymentPagseguro_jgiveHelper->validateIPN($data,$vars);
 		
 		//$order_idstr=explode('__',$verified_Data['order_id']);
 		//$verified_Data['order_id']=$order_idstr['1'];
-
-
 		$pstatus=$verified_Data['payment_statuscode'];
-		$status=$this->translateResponse($pstatus);
+		
+				
+		//3.compare response order id and send order id in notify URL 
+		$res_orderid='';
+		if($isValid ) {
+		 $res_orderid = $verified_Data['order_id'];
+			if(!empty($vars) && $res_orderid != $vars->order_id )
+			{
+				$trxnstatus = 'ERROR';
+				$isValid = false;
+				$error['desc'] = "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+			}
+		}
+				// amount check
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$verified_Data['total_paid_amt'];
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
+					$isValid = false;
+					$error['desc'] = "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+		// END OF AMOUNT CHECK
+		
+		if($trxnstatus == 'ERROR'){
+			$status= $this->translateResponse($trxnstatus);
+		}else {
+			$status=$this->translateResponse($pstatus);		
+		}
 		if(!$status)
 		$status='P';
 
@@ -143,6 +185,7 @@ class  plgPaymentPagseguro_jgive extends JPlugin
 	}
 	function onTP_Storelog($data)
 	{
+			//$plgPaymentPagseguro_jgiveHelper =  new plgPaymentPagseguro_jgiveHelper();
 			//$log = @plgPaymentPagseguro_jgiveHelper::Storelog($this->_name,$data);
 
 	}
