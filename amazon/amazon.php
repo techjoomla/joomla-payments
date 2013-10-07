@@ -127,7 +127,6 @@ SubscriptionSuccessful The subscription was created successfully.
 		 $res_orderid = $data['referenceId'];
 			if(!empty($vars) && $res_orderid != $vars->order_id )
 			{
-				file_put_contents("TST1.txt", "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid, FILE_APPEND | LOCK_EX);
 				$trxnstatus = 'ERROR';
 				$isValid = false;
 				$error['desc'] = "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
@@ -149,7 +148,6 @@ SubscriptionSuccessful The subscription was created successfully.
 				
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
-					file_put_contents("TST2.txt", "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount, FILE_APPEND | LOCK_EX);
 					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
 					$isValid = false;
 					$error['desc'] = "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;

@@ -16,7 +16,7 @@ class  plgPaymentOgone extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 
 /*
 5 Authorised 
@@ -44,7 +44,8 @@ refused
  	 '0'=>'E',
  	 '91'=>'PU',
  	 '92'=>'RF',
- 	 '93'=>'D'
+ 	 '93'=>'D',
+ 	 'ERROR'  => 'E',
 
 		);
 	}
@@ -96,11 +97,61 @@ refused
 	}
 
 
-	function onTP_Processpayment($data)
+	function onTP_Processpayment($data,$vars=array()) 
 	{
-		$verify = plgPaymentOgoneHelper::validateIPN($data);
+		/*{"orderID":"JT_MB2FG_00000112","currency":"USD","amount":"0.01","PM":"CreditCard","ACCEPTANCE":"test123","STATUS":"9","CARDNO":"XXXXXXXXXXXX1111","ED":"0214","CN":"sagar_c@tekdi.net","TRXDATE":"01\/14\/13","PAYID":"18603030","NCERROR":"0","BRAND":"VISA","IP":"202.88.154.166","SHASIGN":"FA6E601B154B96CE1F5C09CA40DDB29D1B7B6602"}
+		 * */
+		$isValid = true;
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
+		$trxnstatus='';
+		
+		$plgPaymentOgoneHelper = new plgPaymentOgoneHelper;
+		$verify = $plgPaymentOgoneHelper->validateIPN($data);
+
 		if(!$verify)
-		return false;
+			return false;
+			
+			//3.compare response order id and send order id in notify URL 
+		$res_orderid='';
+		if($isValid ) {
+		 $res_orderid=$data['orderID'];
+		 
+		 //$vars->order_id = 'JT_MB2FG_00000112'; // @TODO REMOVE
+		 
+			if(!empty($vars) && $res_orderid != $vars->order_id )
+			{
+				$trxnstatus = 'ERROR';
+				$isValid = false;
+				$error['desc'] = "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+			}
+		}
+		
+		// amount check
+		// response amount in cent
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$data['amount'];
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
+					$isValid = false;
+					$error['desc'] = "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+		// END OF AMOUNT CHECK
+		if($trxnstatus == 'ERROR'){
+			$payment_status= $this->translateResponse($trxnstatus);
+		}else {
+			$payment_status=$this->translateResponse($data['STATUS']);
+		}
 
 		$payment_status=$this->translateResponse($data['STATUS']);
 		$result = array(
@@ -111,8 +162,8 @@ refused
 			'subscribe_id'=>$data['subscr_id'],
 			'txn_type'=>$data['paymentMethod'],
 			'total_paid_amt'=>$data['amount'],
-			'raw_data'=>json_encode($data),
-			'error'=>json_encode($error),
+			'raw_data'=>$data,
+			'error'=>$error,
 		);
 
 
@@ -129,7 +180,8 @@ refused
 	}
 	function onTP_Storelog($data)
 	{
-			$log = plgPaymentOgoneHelper::Storelog($this->_name,$data);
+			$plgPaymentOgoneHelper = new plgPaymentOgoneHelper;
+			$log = $plgPaymentOgoneHelper->Storelog($this->_name,$data);
 
 	}
 }
