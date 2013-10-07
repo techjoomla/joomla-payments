@@ -159,7 +159,7 @@ class  plgPaymentPagseguro_jgive extends JPlugin
 			$status=$this->translateResponse($pstatus);		
 		}
 		if(!$status)
-		$status='P';
+			$status='P';
 
 
 		$result = array(

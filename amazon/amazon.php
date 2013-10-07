@@ -16,7 +16,7 @@ class  plgPaymentAmazon extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 
 /*
 PS The payment transaction was successful.
@@ -50,7 +50,8 @@ SubscriptionSuccessful The subscription was created successfully.
  	 'PF'=>'E','Denied'=>'D',
  	 'PR'=>'C',
  	 'RS'=>'RF',
- 	 'Reversed'=>'RV'
+ 	 'Reversed'=>'RV',
+ 	 'ERROR'  => 'E',
 
 		);
 	}
@@ -102,31 +103,78 @@ SubscriptionSuccessful The subscription was created successfully.
 	}
 
 
-	function onTP_Processpayment($data)
+	function onTP_Processpayment($data,$vars=array()) 
 	{
-
+		$isValid = true;
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
+		$trxnstatus='';
 		//$file="jtt4.log";
 
 		$urlEndPoint=JURI::getInstance()->toString();
 		//$data=json_decode('{"paymentReason":"1234578jticketing jomsocail","signatureMethod":"RSA-SHA1","transactionAmount":"USD 3.000000","transactionId":"17G2TGQO126924NNZ1RFBIMMBVUGSO88VLA","status":"PS","buyerEmail":"sagar_c@mailinator.com","referenceId":"JT_00016","recipientEmail":"sagar_c@tekdi.net","transactionDate":"1357307734","buyerName":"sagar","operation":"pay","recipientName":"sagar chinchavade","signatureVersion":"2","certificateUrl":"https:\/\/fps.sandbox.amazonaws.com\/certs\/090911\/PKICert.pem?requestId=5v3w76vo20x0th5zoyr220qvodpaiganjsd695svculh0","paymentMethod":"CC","signature":"oMSb1OZFJaH\/w9MBKp9qtyInUZY5S50hfk5bVHR72C9kE0ng+e7EWW8TmCwdxGbIizrhISiKN\/cy\n0x8+0lrXo6KJdFYhg9L35+RtvQHRA8P3pzB\/ypvUrKLkcTykxo+s2NFtC8G9WSc+UOx+LpAFmNDk\nIZQvTcJklMbTkvyIxIA="}',true);
-		$verify = plgPaymentAmazonHelper::validateIPN($data,$urlEndPoint);
-		if(!strtoupper($verify)=='SUCCESS')
-		return false;
+		$plgPaymentAmazonHelper= new plgPaymentAmazonHelper;
+		$verify = $plgPaymentAmazonHelper->validateIPN($data,$urlEndPoint);
+
+	/*	if(!strtoupper($verify)=='SUCCESS')
+		return false;*/
 
 
-
-		$payment_status=$this->translateResponse($data['status']);
-
+	//3.compare response order id and send order id in notify URL 
+		$res_orderid='';
+		if($isValid ) {
+		 $res_orderid = $data['referenceId'];
+			if(!empty($vars) && $res_orderid != $vars->order_id )
+			{
+				file_put_contents("TST1.txt", "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid, FILE_APPEND | LOCK_EX);
+				$trxnstatus = 'ERROR';
+				$isValid = false;
+				$error['desc'] = "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+			}
+		}
+				// amount check 
+		if(!empty($data['transactionAmount']))  // as it contains transactionAmount="USD 5.000"
+		{
+				$data['transactionAmount'] = trim($data['transactionAmount'],$vars->currency_code);
+				$data['transactionAmount']= trim($data['transactionAmount']);
+		}
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$data['transactionAmount'];
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					file_put_contents("TST2.txt", "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount, FILE_APPEND | LOCK_EX);
+					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
+					$isValid = false;
+					$error['desc'] = "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+		// END OF AMOUNT CHECK
+		
+		if($trxnstatus == 'ERROR'){
+			$payment_status= $this->translateResponse($trxnstatus);
+		}else {
+			$payment_status=$this->translateResponse($data['status']);
+		}
+		//print $payment_status; die;
+		file_put_contents("TST3.txt", "status - order amount= ".$payment_status . ' response order amount = ', FILE_APPEND | LOCK_EX);
 		$result = array(
 						'order_id'=>$data['referenceId'],
 						'transaction_id'=>$data['transactionId'],
-						'buyer_email'=>$data['payer_email'],
+						'buyer_email'=>@$data['payer_email'],
 						'status'=>$payment_status,
-						'subscribe_id'=>$data['subscr_id'],
+						'subscribe_id'=>@$data['subscr_id'],
 						'txn_type'=>$data['paymentMethod'],
 						'total_paid_amt'=>$data['transactionAmount'],
-						'raw_data'=>json_encode($data),
-						'error'=>json_encode($error),
+						'raw_data'=>$data,
+						'error'=>$error,
 						);
 
 		return $result;
@@ -141,7 +189,8 @@ SubscriptionSuccessful The subscription was created successfully.
 	}
 	function onTP_Storelog($data)
 	{
-			$log = plgPaymentAmazonHelper::Storelog($this->_name,$data);
+		$plgPaymentAmazonHelper= new plgPaymentAmazonHelper;
+		$log = $plgPaymentAmazonHelper->Storelog($this->_name,$data);
 
 	}
 }
