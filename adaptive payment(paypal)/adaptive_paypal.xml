@@ -29,7 +29,7 @@
 						<field name="plugin_name" type="text" default="Paypal Adaptive Payment" label="PLG_ADAPTIVE_PLG_NAME" description="" />
 						<field name="plugin_hidname" type="hidden" default="Paypal Adaptive Payment" />
 				</fieldset>
-			<fieldset name="apifields"   label="Paypal API Field For Masspayment">
+			<fieldset name="apifields"   label="API Credential">
 					<field name="apiuser" type="text" default="" label="PLG_ADAPTIVE_PAYPAL_API_USER" description="API_ADAPTIVE_PAYPAL_USER_DESC"/>		
 					<field name="apipass" type="text" default="" label="API_ADAPTIVE_PAYPAL_PASS" description="API_ADAPTIVE_PAYPAL_PASS_DESC"/>		
 					<field name="apisign" type="text" default="" label="API_ADAPTIVE_PAYPAL_SIGN" description="API_ADAPTIVE_PAYPAL_SIGN_DESC"/>		
