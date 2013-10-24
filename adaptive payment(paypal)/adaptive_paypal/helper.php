@@ -7,25 +7,17 @@ defined( '_JEXEC' ) or die( ';)' );
 	jimport('joomla.html.html');
 	jimport( 'joomla.plugin.helper' );
 class plgPaymentAdaptivePaypalHelper
-{ 	
-	
+{
+	//gets the paypal URL
 	//gets the paypal URL
 	function buildPaypalUrl($secure = true)
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'adaptive_paypal');
 		$params=json_decode($plugin->params);
-		$secure_post = $params->secure_post ; //https://www.sandbox.paypal.com/cgi-bin/webscr
 		$url= $params->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
-		/*	$secure_post = $this->params->get('secure_post');
-		$url = $this->params->get('sandbox') ? 'www.sandbox.paypal.com' : 'www.paypal.com';*/
-		if ($secure_post) 
-			$url = 'https://' . $url . '/cgi-bin/webscr';
-		else
-			$url = 'http://' . $url . '/cgi-bin/webscr';
-		
-		return $url;
+		return $url = 'https://' . $url . '/cgi-bin/webscr';
 	}
-	
+
 	function Storelog($name,$logdata)
 	{
 		jimport('joomla.error.log');
