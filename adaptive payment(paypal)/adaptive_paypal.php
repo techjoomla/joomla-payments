@@ -57,20 +57,16 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		if($layout=='recurring')
-			$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'recurring.php';
-		else
-			$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
-
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.'recurring.php';
+		$core_file = dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
+		$override = JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.'recurring.php';
 		if(JFile::exists($override))
 		{
 			return $override;
 		}
 		else
 		{
-	  	return  $core_file;
-	}
+			return  $core_file;
+		}
 	}
 	
 	//Builds the layout to be shown, along with hidden fields.
@@ -130,7 +126,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 				"receiver"=>array(
 					array(
 						"amount"=>$vars->amount,
-						"email"=>$this->com_jgive_params->get('email'),
+						"email"=>$this->params->get('business'),
 						"primary"=>"true"
 					),
 					array(
@@ -180,7 +176,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		$payment_status=$this->translateResponse($data['status']);
 		//print_r($payment_status);die;
 		$paymentDetails=$this->getTransactionDetails($data);
-		file_put_contents('response2.txt', print_r($paymentDetails, true));
+		//file_put_contents('response2.txt', print_r($paymentDetails, true));
 		$result = array(
 						'order_id'=>$data['tracking_id'],
 						'transaction_id'=>$data['pay_key'],
