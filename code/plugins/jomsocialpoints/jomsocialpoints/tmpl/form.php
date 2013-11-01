@@ -1,10 +1,8 @@
 <?php 
 /**
- * @package Social Ads
- * @copyright Copyright (C) 2009 -2010 Techjoomla, Tekdi Web Solutions . All rights reserved.
- * @license GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
- * @link     http://www.techjoomla.com
- */
+ *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @license    GNU General Public License version 2, or later
+ */
 defined('_JEXEC') or die('Restricted access');
  ?>
 <script type="text/javascript">
@@ -38,8 +36,9 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 </script>
 
 
+
 <div class="akeeba-bootstrap">
-<form action="<?php echo $vars->notify_url ?>" class="form-validate form-horizontal"  method="post" id="paymentForm" name="paymentForm">
+<form action="<?php echo $vars->url ?>" class="form-validate form-horizontal"  method="post" id="paymentForm" name="paymentForm">
 		<div>
 			<div>
 				<div class="controls">

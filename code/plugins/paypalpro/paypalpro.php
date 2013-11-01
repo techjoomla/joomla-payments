@@ -1,4 +1,8 @@
 <?php
+/**
+ *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @license    GNU General Public License version 2, or later
+ */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.plugin.plugin' );
@@ -7,7 +11,7 @@ if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/paypalpro/paypalpro/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/paypalpro/helper.php');
-$lang = & JFactory::getLanguage();
+$lang = JFactory::getLanguage();
 $lang->load('plg_payment_paypalpro', JPATH_ADMINISTRATOR);
 
 class plgpaymentpaypalpro extends JPlugin 
@@ -19,7 +23,7 @@ class plgpaymentpaypalpro extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 
 		
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
@@ -29,6 +33,7 @@ class plgpaymentpaypalpro extends JPlugin
 			'SuccessWithWarning' =>'C',
 			'FailureWithWarning' =>'X',
 			'Failure' =>'X',
+			'ERROR'  => 'E',
 		);
 		
 
@@ -102,10 +107,15 @@ class plgpaymentpaypalpro extends JPlugin
 		return $html;
 	}
 	
-	function onTP_Processpayment($data) 
+	
+	function onTP_Processpayment($data,$vars) 
 	{
-		$error=array();		
-		$action_url = plgPaymentpaypalproHelper::buildpaypalproUrl();	
+		$isValid = true;
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
+		$plgPaymentpaypalproHelper= new plgPaymentpaypalproHelper;
+		$action_url = $plgPaymentpaypalproHelper->buildpaypalproUrl();	
 		
 		$exp_month=str_pad($data['expire_month'],2, "0", STR_PAD_LEFT);
     $data['cardexp']=$exp_month.$data['expire_year'];
@@ -132,14 +142,13 @@ class plgpaymentpaypalpro extends JPlugin
 									"COUNTRYCODE"			=>$data['cardcountry'],
 									"INVNUM"			=>$data['order_id'],
 									);
-
 		$fields = "";
 		foreach($pro_values as $key => $value) 
 			$fields .= "$key=".urlencode($value). "&";	
 			
 		//call to curl	
-		$ch = curl_init($action_url); 		
-		curl_setopt($ch, CURLOPT_HEADER, 0); 		
+		$ch = curl_init($action_url); 
+		curl_setopt($ch, CURLOPT_HEADER, 0); 
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
 		curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); 		
 		//echo $ch;die;
@@ -153,12 +162,45 @@ class plgpaymentpaypalpro extends JPlugin
 				$res=explode('=',$r);
 				$final_res[$res[0]]=urldecode($res[1]);
 		}
-    $payment_status=$this->translateResponse($final_res['ACK']);		
- 	  $error['code']=$final_res['L_ERRORCODE0'];
-	  $error['desc']=$final_res['L_LONGMESSAGE0'];
+		$error['code'] .=$final_res['L_ERRORCODE0'];
+	  $error['desc'] .=$final_res['L_LONGMESSAGE0'];
+		//3.compare response order id and send order id in notify URL 
+		$res_orderid='';
+		$res_orderid = $data['order_id'];
+		if($isValid ) {
+			if(!empty($vars) && $res_orderid != $vars->order_id )
+			{
+				$trxnstatus = 'ERROR';
+				$isValid = false;
+				$error['desc'] .= "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+			}
+		}
 		
-		 
-    $transaction_id = $final_res['TRANSACTIONID'];     
+		// amount check
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$final_res['AMT'];
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
+					$isValid = false;
+					$error['desc'] .= "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+		
+		// translate response
+		if(!empty($trxnstatus)){
+			$payment_status=$this->translateResponse($trxnstatus);
+		}else{
+			$payment_status=$this->translateResponse($final_res['ACK']);
+		}
+		$transaction_id = $final_res['TRANSACTIONID'];     
 
     $result = array('transaction_id'=>$transaction_id,
     				'order_id'=>$data['order_id'],

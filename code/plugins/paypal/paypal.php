@@ -1,14 +1,17 @@
 <?php
-
+/**
+ *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @license    GNU General Public License version 2, or later
+ */
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
-$lang=JFactory::getLanguage();
-$lang->load('plg_payment_paypal', JPATH_ADMINISTRATOR);
 if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/paypal/paypal/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/paypal/helper.php');
+$lang =  JFactory::getLanguage();
+$lang->load('plg_payment_paypal', JPATH_ADMINISTRATOR);
 class  plgPaymentPaypal extends JPlugin
 {
 
@@ -16,16 +19,16 @@ class  plgPaymentPaypal extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 
-
+		
 		//Define Payment Status codes in Paypal  And Respective Alias in Framework
 		$this->responseStatus= array(
  	 'Completed'  => 'C','Pending'  => 'P',
  	 'Failed'=>'E','Denied'=>'D',
  	 'Refunded'=>'RF','Canceled_Reversal'=>'CRV',
- 	 'Reversed'=>'RV'
-
+ 	 'Reversed'=>'RV',
+ 	 'ERROR' => 'E'
 		);
 	}
 
@@ -43,7 +46,7 @@ class  plgPaymentPaypal extends JPlugin
 	  	return  $core_file;
 	}
 	}
-
+	
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -51,7 +54,7 @@ class  plgPaymentPaypal extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents();
+        $html = ob_get_contents(); 
         ob_end_clean();
 		return $html;
 	}
@@ -71,26 +74,82 @@ class  plgPaymentPaypal extends JPlugin
 	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Paypal
 	function onTP_GetHTML($vars)
 	{
-		$vars->action_url = plgPaymentPaypalHelper::buildPaypalUrl();
+		$plgPaymentPaypalHelper=new plgPaymentPaypalHelper();
+		$vars->action_url = $plgPaymentPaypalHelper->buildPaypalUrl();
 		//Take this receiver email address from plugin if component not provided it
 		if(empty($vars->business))
 			$vars->business=$this->params->get('business');
 
 		//if component does not provide cmd
 		if(empty($vars->cmd))
-			 $vars->cmd='_xclick';
-
+			$vars->cmd='_xclick';
 		$html = $this->buildLayout($vars);
-
 		return $html;
 	}
+	
+	function onTP_ProcessSubmit($data,$vars) 
+	{
+		//Take this receiver email address from plugin if component not provided it
+		if(empty($vars->business))
+			$submitVaues['business'] = $this->params->get('business');
+		else
+			$submitVaues['business'] =$vars->business;
 
+		//if component does not provide cmd
+		if(empty($vars->cmd))
+			$submitVaues['cmd'] ='_xclick';
+		else
+			$submitVaues['cmd'] =$vars->cmd;
+			
+		$submitVaues['custom'] =$vars->order_id;
+		$submitVaues['item_name'] =$vars->item_name;
+		$submitVaues['return'] =$vars->return;
+		$submitVaues['cancel_return'] =$vars->cancel_return;
+		$submitVaues['notify_url'] =$vars->notify_url;
+		$submitVaues['currency_code'] =$vars->currency_code;
+		$submitVaues['no_note'] ='1';
+		$submitVaues['rm'] ='2';
+		$submitVaues['amount'] =$vars->amount;
+		
+		$plgPaymentPaypalHelper=new plgPaymentPaypalHelper();
+		$postaction = $plgPaymentPaypalHelper->buildPaypalUrl();
+		/* for offsite plugin */
+		$postvalues = http_build_query($submitVaues);
+		header('Location: '.$postaction.'?' . $postvalues);
+	}
 
-	function onTP_Processpayment($data)
+	function onTP_Processpayment($data,$vars=array() ) 
 	{
 		$verify = plgPaymentPaypalHelper::validateIPN($data);
 		if (!$verify) { return false; }
 
+//2.compare response order id and send order id in notify URL 
+		$res_orderid = $data['custom'];
+		if($isValid ) {
+			if(!empty($vars) && $res_orderid != $vars->order_id )
+			{
+				$isValid = false;
+				$error['desc'] = "ORDER_MISMATCH" . "Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+			}
+		}
+		// amount check
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$data['mc_gross'];
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					$data['payment_status'] = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
+					$isValid = false;
+					$error['desc'] = "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+		//  PROCESS PAYMENT STATUS
 		$payment_status=$this->translateResponse($data['payment_status']);
 
 		$result = array(
@@ -117,6 +176,6 @@ class  plgPaymentPaypal extends JPlugin
 	function onTP_Storelog($data)
 	{
 			$log = plgPaymentPaypalHelper::Storelog($this->_name,$data);
-
+	
 	}
 }

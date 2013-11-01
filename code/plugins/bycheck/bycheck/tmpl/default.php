@@ -1,15 +1,13 @@
 <?php 
 /**
- * @package Social Ads
- * @copyright Copyright (C) 2009 -2010 Techjoomla, Tekdi Web Solutions . All rights reserved.
- * @license GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
- * @link     http://www.techjoomla.com
- */
+ *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @license    GNU General Public License version 2, or later
+ */
 	
 // no direct access
 	defined('_JEXEC') or die('Restricted access'); 
 JHTML::_('behavior.formvalidation');
-$document =&JFactory::getDocument();
+$document =JFactory::getDocument();
 	if($vars->custom_email=="")
 		$email = JText::_('NO_ADDRS');
 	else
@@ -20,7 +18,7 @@ $document =&JFactory::getDocument();
 function myValidate(f)
 {
 if (document.formvalidator.isValid(f)) {
-		f.check.value='<?php echo JUtility::getToken(); ?>'; 
+		f.check.value='<?php echo JSession::getFormToken(); ?>'; 
 		return true; 
 	}
 	else {
@@ -42,7 +40,11 @@ if (document.formvalidator.isValid(f)) {
 		</div>
 		<div class="control-group">
 			<label for="cardlname" class="control-label"><?php echo JText::_( 'COMMENT' ); ?></label>
-			<div class="controls"><textarea id='comment' name='comment' class="inputbox" rows='3' maxlength='135' size='28'></textarea></div>
+			<div class="controls">
+				
+				<textarea id='comment' name='comment' class="inputbox" rows='3' maxlength='135' size='28'><?php if(isset($vars->comment)){ echo $vars->comment; } ?></textarea>
+			
+			</div>
 		</div>
 		<div class="control-group">
 			<label for="cardaddress1" class="control-label"><?php echo JText::_( 'CON_PAY_PRO' ) ?></label>

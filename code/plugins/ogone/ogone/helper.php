@@ -14,27 +14,43 @@ class plgPaymentOgoneHelper
 	
 	function Storelog($name,$logdata)
 	{
-	
-		$client='ogone';
 		jimport('joomla.error.log');
-    $options = array('format' => "{DATE}\t{TIME}\t{USER}\t{DESC}");
+		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 		if(JVERSION >='1.6.0')
-		$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
+			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
 		else
-		$path=JPATH_SITE.'/plugins/payment/'.$name.'/';	  
-	  $my = &JFactory::getUser();        
-		$logs = &JLog::getInstance($client.'_'.$name.'.log',$options,$path);
-    $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata)));
+			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';	  
+		$my = JFactory::getUser();     
+	
+		JLog::addLogger(
+			array(
+				'text_file' => $logdata['JT_CLIENT'].'_'.$name.'.log',
+				'text_entry_format' => $options ,
+				'text_file_path' => $path
+			),
+			JLog::INFO,
+			$logdata['JT_CLIENT']
+		);
 
+		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry->user= $my->name.'('.$my->id.')';
+		$logEntry->desc=json_encode($logdata['raw_data']);
+
+		JLog::add($logEntry);
+//		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
+//    $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
 	}
+	
 	function validateIPN($data)
 	{
+		$plugin = JPluginHelper::getPlugin('payment', 'ogone');
+		$params=json_decode($plugin->params);
 		
 			if(JVERSION >='1.6.0')
 			require_once(JPATH_SITE.'/plugins/payment/ogone/ogone/lib/Response.php');
 			else
 			require_once(JPATH_SITE.'/plugins/payment/ogone/lib/Response.php');
-			$options = array('sha1OutPassPhrase' =>$this->params->get('secretkey'),
+			$options = array('sha1OutPassPhrase' =>$params->secretkey,
 			
 			);  
 			

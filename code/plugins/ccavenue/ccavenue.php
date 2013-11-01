@@ -1,4 +1,8 @@
 <?php
+/**
+ *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @license    GNU General Public License version 2, or later
+ */
 //error_reporting(E_ALL);
 //ini_set('display_errors','On');
 
@@ -19,11 +23,11 @@ class  plgPaymentCcavenue extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 
 		
 		//Define Payment Status codes in payu  And Respective Alias in Framework
-		$this->responseStatus= array( 'Y'=>'C', 'B'=>'P', 'N'=>'D' );
+		$this->responseStatus= array( 'Y'=>'C', 'B'=>'P', 'N'=>'D','ERROR'  => 'E' );
 	}
 
 	function buildLayoutPath($layout) {
@@ -70,8 +74,8 @@ class  plgPaymentCcavenue extends JPlugin
 	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Payu
 	function onTP_GetHTML($vars)
 	{
-	//print_r($vars);die;
-		$vars->action_url = plgPaymentCcavenueHelper::buildCcavenueUrl();
+		$plgPaymentCcavenueHelper=new plgPaymentCcavenueHelper();
+		$vars->action_url = $plgPaymentCcavenueHelper->buildCcavenueUrl();
 		//Take this receiver email address from plugin if component not provided it
 //		if(empty($vars->business))
 
@@ -152,24 +156,62 @@ class  plgPaymentCcavenue extends JPlugin
 		return $dec;
 	}
 	
-	function onTP_Processpayment($data) {
-		//echo "in pp";
-		//print_r($data);die;
+	function onTP_Processpayment($data,$vars=array()) 
+	{
+		$isValid = true;
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
+		
 		$working_key = $this->params->get('working_key');
 		$verify = $this->verifychecksum($data['Merchant_Id'], $data['Order_Id'], $data['Amount'], $data['AuthDesc'], $data['Checksum'], $working_key);
-		
+		$data['verify'] = $verify;
+				
+		//Error Handling
+		$error=array();
+		if (!$verify) {
+			$error['code']	.='501'; //@TODO change these $data indexes afterwards
+			$error['desc']	.='Checksum failed';
+		}
 //commented by Dipti @7/9/12
 //		if (!$verify) { return false; }	
 
-		$payment_status = $this->translateResponse($data['AuthDesc']);		
-		$data['verify'] = $verify;
-				
-		//Error Handling		
-		$error=array();
-		if (!$verify) {
-			$error['code']	='501'; //@TODO change these $data indexes afterwards
-			$error['desc']	='Checksum failed';
+		//CHECK :compare response order id and send order id in notify URL 
+		$trxnstatus='';
+		$res_orderid='';
+		$res_orderid = $data['Order_Id'];
+		if($isValid ) {
+			if(!empty($vars) && $res_orderid != $vars->order_id )
+			{
+				$trxnstatus = 'ERROR'; 
+				$isValid = false;
+				$error['desc'] .= "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+			}
 		}
+				// amount check
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$data['Amount'];
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
+					$isValid = false;
+					$error['desc'] .= "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+		// END OF AMOUNT CHECK
+		if(!empty($trxnstatus)){
+		$payment_status = $this->translateResponse($trxnstatus);
+		} else {
+			$payment_status = $this->translateResponse($data['AuthDesc']);
+		}
+		
 
 		$result = array(
 						'order_id'=>$data['Order_Id'],
@@ -182,7 +224,7 @@ class  plgPaymentCcavenue extends JPlugin
 						'error'=>$error,
 						);
 					//	print_r($result);die;
-		return $result;						
+		return $result;
 	}	
 	
 	function translateResponse($payment_status){

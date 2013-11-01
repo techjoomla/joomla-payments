@@ -1,10 +1,8 @@
 <?php 
 /**
- * @package Social Ads
- * @copyright Copyright (C) 2009 -2010 Techjoomla, Tekdi Web Solutions . All rights reserved.
- * @license GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
- * @link     http://www.techjoomla.com
- */
+ *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @license    GNU General Public License version 2, or later
+ */
 		defined('_JEXEC') or die('Restricted access');
 		$document =& JFactory::getDocument();
 		JHTML::_('behavior.formvalidation');
@@ -14,7 +12,7 @@
 function myValidate(f)
 {
 	if (document.formvalidator.isValid(f)) {
-		f.check.value='<?php echo JUtility::getToken(); ?>'; 
+		f.check.value='<?php echo JSession::getFormToken(); ?>'; 
 		return true; 
 	}
 	else {
@@ -141,17 +139,39 @@ function myValidate(f)
 				<tr>
 					<td><?php echo JText::_( 'CREDIT_CARD_TYPE' ) ?></td>
 					<td><?php $types = array();
-					$credit_cards=$this->params->get( 'credit_cards', '' );
-			print_r($credit_cards);
-		$types[] = JHTML::_('select.option', 'Visa', JText::_( "VISA" ) );
-		$types[] = JHTML::_('select.option', 'Mastercard', JText::_( "MASTERCARD" ) );
-		$types[] = JHTML::_('select.option', 'AmericanExpress', JText::_( "AMERICAN_EXPRESS" ) );
-		$types[] = JHTML::_('select.option', 'Discover', JText::_( "DISCOVER" ) );
-		$types[] = JHTML::_('select.option', 'DinersClub', JText::_( "DINERS_CLUB" ) );
-		$types[] = JHTML::_('select.option', 'JCB', JText::_( "AUT_JCB" ) );
+							$credit_cards=$this->params->get( 'credit_cards', '' );
+							$creditcardarray=array(JText::_( "VISA" )=>'Visa', JText::_( "MASTERCARD" )=>'Mastercard',JText::_( "AMERICAN_EXPRESS" )=>'AmericanExpress',
+							JText::_( "DISCOVER" )=>'Discover',JText::_( "DINERS_CLUB" )=>'DinersClub',JText::_( "AUT_JCB" )=>'JCB');
+							if(!empty($credit_cards))
+							{
+								foreach($credit_cards as $credit_card)
+								{
+									if(in_array($credit_card,$creditcardarray))
+									{
+										foreach($creditcardarray as $creditkey=>$credit_cardall)
+										{
+										if($credit_card==$credit_cardall)						
+										$types[] = JHTML::_('select.option', $credit_cardall, $creditkey );
+										}
+
+	
+									}
+
+								}
+
+
+							}
+							else 
+							{
+								foreach($creditcardarray as $creditkey=>$credit_cardall)
+								{
+									$types[] = JHTML::_('select.option', $credit_cardall, $creditkey );
+								}
+							}
+
 		
-		$return = JHTML::_('select.genericlist', $types,'activated',null, 'value','text', 0);
-		echo $return; ?></td>
+				$return = JHTML::_('select.genericlist', $types,'activated',null, 'value','text', 0);
+				echo $return; ?></td>
 				</tr>
 				<tr>
 					<td><?php echo JText::_( 'CARD_NUMBER' ) ?></td>

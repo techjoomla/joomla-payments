@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/plugin-install.dtd">
-<install version="1.5" type="plugin" group="payment" method="upgrade">
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
 	<name>Payment - 2Checkout</name>
 	<author>Techjoomla</author>
-	<creationDate>May 2012</creationDate>
+	<creationDate>28th Aug 2013</creationDate>
 	<copyright></copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>techjoomla@tekdi.net</authorEmail>
 	<authorUrl></authorUrl>
-	<version>1.1</version>
+	<version>2.0</version>
 	<description>2Checkout payment plugin</description>
 	
 	<files>
@@ -102,4 +102,4 @@
 			</fieldset>
 		</fields>
 	</config>
-</install>
+</extension>

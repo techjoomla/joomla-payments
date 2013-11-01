@@ -53,9 +53,11 @@ class plgpaymentTransfirst extends JPlugin
 			'13'=>'E',
 			'14'=>'E',
 			'79'=>'E',
+			'ERROR' => 'E',
 			'02'=>'p',
 			'10'=>'P',
 			'32'=>'P',
+			
 		);
  		$this->merchant_id = $this->params->get('merchant_id', '1' );
 		$this->reg_key = $this->params->get('reg_key', '1' );
@@ -127,8 +129,15 @@ class plgpaymentTransfirst extends JPlugin
 		return $html;
 	}
 
-	function onTP_Processpayment($data)
+	function onTP_Processpayment($data,$vars) 
 	{
+		$resData=$data;
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
+		$trxnstatus='';
+		$isValid = true;
+		
 		//require transfirst.class file
 		require_once(JPATH_SITE.DS.'plugins'.DS.'payment'.DS.'transfirst'.DS.'transfirst'.DS.'Transfirst.class.php');
 		//YYMM Expiration Date: This is the expiration date of the card
@@ -191,6 +200,10 @@ class plgpaymentTransfirst extends JPlugin
 				),
 			'reqAmt'=>$amount, //This contains the amount associated with this transaction in minor denominations. Conditions: No special characters are allowed. A leading zero is required.
 		);
+		/*	"usrDef" => array(
+			'name'=>$data['order_id'],
+			'val'=>$data['order_id']
+			),*/
 		//print_r($parameter_array);die;
 
 		//get the action url to send the data to the gateway
@@ -199,26 +212,55 @@ class plgpaymentTransfirst extends JPlugin
 
 		$Transfirst=new Transfirst($soapUrl,'');
 		$resp=$Transfirst->SendTran($parameter_array);
-		//print_r($resp);die;
-		$payment_status=$this->translateResponse($resp->rspCode);
+
+		$tranData=array();
+		$tranData=$resp->tranData;
+		$transaction_id =$tranData->tranNr;
+		
+		// amount check
+		// response amount in cent
+		$gross_amt=(float)(($tranData->amt) / (100));
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$gross_amt;
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
+					$isValid = false;
+					$error['code'] .= 'ERROR';
+					$error['desc'] .= "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+		// END OF AMOUNT CHECK
+		
+		if($trxnstatus == 'ERROR'){
+			$payment_status=$this->translateResponse($trxnstatus);
+		}else {
+			$payment_status=$this->translateResponse($resp->rspCode);
+		}
 		//Add the status in array status if not exists
 		if(!$payment_status)
 		{
 			$payment_status='P';
 		}
-
-		$error=array();
-		$error['code']=$resp->rspCode;
-		if($resp->rspCode)
-			$error['desc']=JText::_('PLG_TRANSFIRST_RESP_CODE_'.$resp->rspCode);
-
-		$tranData=array();
-		$tranData=$resp->tranData;
-		$transaction_id =$tranData->tranNr;
+		
+		// if error code is present then add error detail in error array
+		if($resp->resCode != '00'){
+			$error['code'] .= $resp->rspCode;
+			if($resp->rspCode)
+				$error['desc'] .=JText::_('PLG_TRANSFIRST_RESP_CODE_'.$resp->rspCode);
+		}
+		
 		$result=array('transaction_id'=>$transaction_id,
 						'order_id'=>$data['order_id'],
 						'status'=>$payment_status,
-						'total_paid_amt'=>$tranData->amt,
+						'total_paid_amt'=>$gross_amt,
 						'raw_data'=>$resp,
 						'error'=>$error,
 						'return'=>$data['return'],
@@ -237,7 +279,8 @@ class plgpaymentTransfirst extends JPlugin
 
 	function onTP_Storelog($data)
 	{
-			$log = plgPaymentTransfirstHelper::Storelog($this->_name,$data);
+			$plgPaymentTransfirstHelper = new plgPaymentTransfirstHelper();
+			$log = $plgPaymentTransfirstHelper->Storelog($this->_name,$data);
 	}
 }
 

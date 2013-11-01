@@ -1,17 +1,15 @@
 <?php 
 /**
- * @package Social Ads
- * @copyright Copyright (C) 2009 -2010 Techjoomla, Tekdi Web Solutions . All rights reserved.
- * @license GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
- * @link     http://www.techjoomla.com
- */
+ *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @license    GNU General Public License version 2, or later
+ */
 defined('_JEXEC') or die('Restricted access'); 
 
 ?>
 
-			<form name="frmccavenue" id="frmccavenue" method="post" action="https://www.ccavenue.com/shopzone/cc_details.jsp">			
+			<form name="frmccavenue" id="frmccavenue" method="post" action="<?php echo $vars->action_url; ?>">			
 				<input type="hidden" name="Merchant_Id" value="<?php echo $vars->merchant_id; ?>" />
-				<input type="hidden" name="Amount" value="<?php echo $vars->amount; ?>" />
+				<input type="hidden" name="Amount" value="<?php echo (float)$vars->amount; ?>" />
 				<input type="hidden" name="Order_Id" value="<?php echo $vars->order_id; ?>" />				
 				<input type="hidden" name="Redirect_Url" value="<?php echo $vars->notify_url; ?>" />
 				<input type="hidden" name="Checksum" value="<?php echo $vars->checksumval; ?>" />
@@ -32,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 				<input type="hidden" name="billing_zip_code" value="">
 				<input type="hidden" name="delivery_cust_city" value="">
 				<input type="hidden" name="delivery_zip_code" value="">
-				<input type="submit" class="btn btn-success btn-large" border="0" value="<?php echo JText::_('SUBMIT'); ?>" alt="CCAvenue Pay" />
+				<input type="submit" class="btn btn-success btn-large" border="0"  value="<?php echo JText::_('SUBMIT'); ?>" alt="CCAvenue Pay" />
 			
 		</form>
 

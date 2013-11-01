@@ -1,8 +1,12 @@
 <?php
+/**
+ *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @license    GNU General Public License version 2, or later
+ */
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
-$lang = & JFactory::getLanguage();
+$lang = JFactory::getLanguage();
 $lang->load('plg_payment_alphauserpoints', JPATH_ADMINISTRATOR);
 if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/alphauserpoints/alphauserpoints/helper.php');
@@ -17,7 +21,7 @@ class plgpaymentalphauserpoints extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 
 		
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
@@ -25,7 +29,7 @@ class plgpaymentalphauserpoints extends JPlugin
 		$this->responseStatus= array(
 			'Success' =>'C',
 			'Failure' =>'X',
-			'Failure' =>'X',
+			'ERROR'  => 'E',
 		);
 	}
 
@@ -60,6 +64,9 @@ class plgpaymentalphauserpoints extends JPlugin
 	function onTP_GetHTML($vars)
 	{
 		$db = JFactory::getDBO();
+		$api_AUP = JPATH_SITE.DS.'components'.DS.'com_alphauserpoints';
+		if ( file_exists($api_AUP))
+		{
 	 	$query="SELECT points FROM #__alpha_userpoints where userid=".$vars->user_id;
 		$db->setQuery($query);
 		$user_points = $db->loadResult();
@@ -68,6 +75,7 @@ class plgpaymentalphauserpoints extends JPlugin
 
 		$html = $this->buildLayout($vars);
 		return $html;
+		}
 	}
 
 	function onTP_GetInfo($config)
@@ -80,41 +88,81 @@ class plgpaymentalphauserpoints extends JPlugin
 		$obj->id	= $this->_name;
 		return $obj;
 	}
-	//Adds a row for the first time in the db, calls the layout view
-	function onTP_Processpayment($data)
-	{
 
+	//Adds a row for the first time in the db, calls the layout view
+	function onTP_Processpayment($data,$vars) 
+	{
+		$isValid = true;
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
+		
 		$db = JFactory::getDBO();
 		$query="SELECT points FROM #__alpha_userpoints where userid=".$data['user_id'];
 		$db->setQuery($query);
 		$points_count = $db->loadResult();
 		$convert_val = $this->params->get('conversion');
 		$points_charge=$data['total']*$convert_val;
-		
+		$payment_status='';
 		if($points_charge <= $points_count)
 		{
 			//$count = $points_count - $points_charge;
 			$api_AUP = JPATH_SITE.DS.'components'.DS.'com_alphauserpoints'.DS.'helper.php';
 			if ( file_exists($api_AUP))
 			{
-
 				require_once ($api_AUP);
-
-				if(AlphaUserPointsHelper::newpoints($data['client'].'_aup', '','',JText::_("PUB_AD"), -$points_charge,true,'', JText::_("EXCHANGE_PTS")))
+				if(AlphaUserPointsHelper::newpoints($data['client'].'_aup', '','',JText::_("PUB_AD"), -$points_charge,true,'', JText::_("SUCCSESS")))
 				{
-					$payment_status=$this->translateResponse('Success');
+					$payment_status='Success';
 				}
 				else
-				$payment_status=$this->translateResponse('Failure');
+					$payment_status='Failure';
+					$isValid = false;
 			}
-			else
-				$payment_status=$this->translateResponse('Failure');
+			else{
+				$payment_status='Failure';
+				$isValid = false;
+			}
 		}
 		else
 		{
-			$payment_status=$this->translateResponse('Failure');
-    }
-		$data['payment_status']=$payment_status;
+			$payment_status='Failure';
+		}
+		
+		//3.compare response order id and send order id in notify URL 
+		$res_orderid='';
+		$res_orderid = $data['order_id'];
+		if($isValid ) {
+			if(!empty($vars) && $res_orderid != $vars->order_id )
+			{
+				$payment_status = 'ERROR';
+				$isValid = false;
+				$error['desc'] = "ORDER_MISMATCH" . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+			}
+		}
+		
+		// amount check
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$data['total'];
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					$payment_status = 'ERROR';
+					$isValid = false;
+					$error['desc'] = "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+		
+		// TRANSLET RESPONSE
+		$payment_status=$this->translateResponse($payment_status);
+		
+		
 			$result = array('transaction_id'=>'',
     				'order_id'=>$data['order_id'],
 						'status'=>$payment_status,
@@ -139,5 +187,3 @@ class plgpaymentalphauserpoints extends JPlugin
 	
 	}
 }	
-
-
