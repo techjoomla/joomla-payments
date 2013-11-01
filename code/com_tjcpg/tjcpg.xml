@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0" method="upgrade">
+   <name>com_tjcpg</name>
+	<creationDate>7th Sep 2013</creationDate>
+	<author>TechJoomla</author>
+	<authorEmail>TechJoomla</authorEmail>
+	<authorUrl>contact@techjoomla.com</authorUrl>
+	<version>2.0.1</version>
+	<description>Using Techjoomla's Common Payment Gateway</description>
+    
+    <install> <!-- Runs on install -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install_tjcpg_orders.sql</file>
+        </sql>
+    </install>
+    <files folder="site">
+        <filename>index.html</filename>
+        <filename>tjcpg.php</filename>
+        <filename>controller.php</filename>
+        <filename>router.php</filename>
+        
+        <folder>views</folder>
+        <folder>models</folder>
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+    </files>
+    <languages folder="site">
+			<language tag="en-GB">language/en-GB.com_tjcpg.ini</language>
+    </languages>
+    <administration>
+        <menu img="components/com_tjcpg/assets/images/s_com_tjcpg.png" >COM_TJCPG</menu>
+       <submenu>          
+					<menu link="option=com_tjcpg&amp;view=tjcpgpayment" view="tjcpgpayment" img="components/com_tjcpg/assets/images/s_tjcpgpayment.png" alt="tjcpg/Tjcpgpayment">COM_TJCPG_TITLE_TJCPGPAYMENT</menu>
+       </submenu>
+        <files folder="administrator">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+            <filename>tjcpg.php</filename>
+            
+            <folder>controllers</folder>
+            <folder>assets</folder>
+            <folder>helpers</folder>
+            <folder>elements</folder>            
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>views</folder>
+        </files>
+        <languages folder="administrator">
+					<language tag="en-GB">language/en-GB.com_tjcpg.ini</language>
+					<language tag="en-GB">language/en-GB.com_tjcpg.sys.ini</language>
+        </languages>
+    </administration>
+</extension>
+<!-- Component built by the Joomla Component Creator -->
+<!-- http://www.notwebdesign.com/joomla-component-creator/ -->
