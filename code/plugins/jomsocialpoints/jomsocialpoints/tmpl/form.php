@@ -38,7 +38,7 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 
 
 <div class="akeeba-bootstrap">
-<form action="<?php echo $vars->notify_url ?>" class="form-validate form-horizontal"  method="post" id="paymentForm" name="paymentForm">
+<form action="<?php echo $vars->url ?>" class="form-validate form-horizontal"  method="post" id="paymentForm" name="paymentForm">
 		<div>
 			<div>
 				<div class="controls">

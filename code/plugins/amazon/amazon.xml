@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="payment" method="upgrade">
+	<name>Payment - Amazon</name>
+	<author>Techjoomla</author>
+	<creationDate>May 2012</creationDate>
+	<copyright></copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail></authorEmail>
+	<authorUrl></authorUrl>
+	<version>1.1</version>
+	<description>Amazon payment plugin for jticketing</description>
+	<files>
+		<filename plugin="amazon">amazon.php</filename>
+		<folder>amazon</folder>
+	</files>
+	<languages> 
+		<language tag="en-GB">en-GB/en-GB.plg_payment_amazon.ini</language>
+	
+	</languages>
+		
+		
+		<params>
+			<param name="accesskey" type="text" default="" label="AMAZON_ACCESSKEY" description="AMAZON_ACCESSKEY_DESC"/>
+			<param name="secretkey" type="text" default="" label="AMAZON_SECRETKEY" description="AMAZON_SECRETKEY_DESC"/>
+						
+  		
+  		<param type="spacer" />
+		<param name="sandbox" type="radio" default="0" label="AMAZON_SANDBOX" description="AMAZON_SANDBOX_DESC">
+		  <option value="0">NO</option>
+		  <option value="1">YES</option>
+		</param>
+		<!--<param type="spacer" label=""/> 
+			<param name="apiuser" type="text" default="" label="API_USER" description="API_USER_DESC"/>		
+			<param name="apipass" type="text" default="" label="API_PASS" description="API_PASS_DESC"/>		
+			<param name="apisign" type="text" default="" label="API_SIGN" description="API_SIGN_DESC"/>		
+						<param name="apiend" type="text" default="" label="API_END" description="API_END_DESC"/>		
+			<param name="apiv" type="text" default="" label="API_VER" description="API_VER_DESC"/>	-->
+		<param name="plugin_name" type="text" default="Amazon" label="PLG_NAME" description="" />
+		<param name="plugin_hidname" type="hidden" default="amazon" />
+	</params>
+	
+	<!-- Fields for Joomla 1.6.x and onwards -->
+ 	<config>
+		<fields name="params">
+			<fieldset name="basic">
+						<field name="accesskey" type="text" default="" label="AMAZON_ACCESSKEY" description="AMAZON_ACCESSKEY_DESC"/>
+						<field name="secretkey" type="text" default="" label="AMAZON_SECRETKEY" description="AMAZON_SECRETKEY_DESC"/>
+						<field name="sandbox" type="radio" default="0" label="AMAZON_SANDBOX" description="AMAZON_SANDBOX_DESC">
+						<option value="0">NO</option>
+						<option value="1">YES</option>
+						</field>
+						<field name="plugin_name" type="text" default="Amazon" label="PLG_NAME" description="" />
+						<field name="plugin_hidname" type="hidden" default="amazon" />
+				</fieldset>			
+			<!--<fieldset name="apifields"   label="Amazon API Field For Masspayment">
+					<field name="apiuser" type="text" default="" label="API_USER" description="API_USER_DESC"/>		
+					<field name="apipass" type="text" default="" label="API_PASS" description="API_PASS_DESC"/>		
+					<field name="apisign" type="text" default="" label="API_SIGN" description="API_SIGN_DESC"/>		
+					<field name="apiend" type="text" default="" label="API_END" description="API_END_DESC"/>		
+					<field name="apiv" type="text" default="" label="API_VER" description="API_VER_DESC"/>	
+			</fieldset>-->
+		</fields>
+	</config>
+</install>

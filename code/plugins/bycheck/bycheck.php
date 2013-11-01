@@ -29,7 +29,8 @@ class plgpaymentbycheck extends JPlugin
 		$this->responseStatus= array(
 			'Success' =>'C',
 			'Failure' =>'X',
-			'Pending' =>'P'			
+			'Pending' =>'P',
+			'ERROR'  => 'E',
 		);
 	}
 
@@ -86,10 +87,46 @@ else
 		return $obj;
 	}
 	//Adds a row for the first time in the db, calls the layout view
-	function onTP_Processpayment($data)
+	function onTP_Processpayment($data,$vars) 
 	{
+		$isValid = true;
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
 		
-			$payment_status=$this->translateResponse('Pending');
+		$trxnstatus="Pending";
+		//3.compare response order id and send order id in notify URL 
+		$res_orderid='';
+		$res_orderid = $data['order_id'];
+		if($isValid ) {
+			if(!empty($vars) && $res_orderid != $vars->order_id )
+			{
+				$trxnstatus = 'ERROR';
+				$isValid = false;
+				$error['desc'] = "ORDER_MISMATCH" . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+			}
+		}
+		
+		// amount check
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$data['total'];
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
+					$isValid = false;
+					$error['desc'] = "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+		// END OF AMOUNT CHECK
+		
+		$payment_status=$this->translateResponse($trxnstatus);
 		
 			$data['payment_status']=$payment_status;
 			$result = array('transaction_id'=>'',

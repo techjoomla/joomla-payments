@@ -87,9 +87,14 @@ class plgpaymentjomsocialpoints extends JPlugin
 		$obj->id	= $this->_name;
 		return $obj;
 	}
+	
 	//Adds a row for the first time in the db, calls the layout view
 	function onTP_Processpayment($data)
 	{
+		$isValid = true;
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
 		$db = JFactory::getDBO();
 		$query="SELECT points FROM #__community_users where userid=".$data['user_id'];
 		$db->setQuery($query);
@@ -103,12 +108,45 @@ class plgpaymentjomsocialpoints extends JPlugin
 			$sql ="UPDATE #__community_users SET points =".$db->quote($count)." WHERE userid=".$data['user_id'];
       $db->setQuery($sql);
       $db->query();
-		  $payment_status=$this->translateResponse('Success');
+		  $payment_status='Success';
 		}
 		else
 		{
-			$payment_status=$this->translateResponse('Failure');
+			$payment_status='Failure';
+			$isValid = false;
     }
+    
+    //3.compare response order id and send order id in notify URL 
+		$res_orderid='';
+		$res_orderid = $data['order_id'];
+		if($isValid ) {
+			if(!empty($vars) && $res_orderid != $vars->order_id )
+			{
+				$payment_status = 'ERROR';
+				$isValid = false;
+				$error['desc'] .= "ORDER_MISMATCH" . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+			}
+		}
+		
+		// amount check
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$data['total'];
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					$payment_status = 'ERROR';
+					$isValid = false;
+					$error['desc'] .= "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+			// TRANSLET RESPONSE
+		$payment_status=$this->translateResponse($payment_status);
 		$data['payment_status']=$payment_status;
 			$result = array('transaction_id'=>'',
     				'order_id'=>$data['order_id'],

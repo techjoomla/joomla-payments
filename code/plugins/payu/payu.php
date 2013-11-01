@@ -89,12 +89,44 @@ class  plgPaymentPayu extends JPlugin
 
 	
 	
-	function onTP_Processpayment($data) 
+	function onTP_Processpayment($data,$vars=array()) 
 	{
 		//$verify = plgPaymentPayuHelper::validateIPN($data);
 		//if (!$verify) { return false; }	
+		$isValid = true;
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
 		
-		$data['status']=$this->translateResponse($data['status']);		
+		//.compare response order id and send order id in notify URL 
+		$res_orderid='';
+		if($isValid ) {
+		$res_orderid = $data['udf1']; 
+			if(!empty($vars) && $res_orderid != $vars->order_id )
+			{
+				$isValid = false;
+				$error['desc'] = "ORDER_MISMATCH" . "Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+			}
+		}
+		
+		// amount check
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$data['amount'];
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					$data['status'] = 'failure';  // change response status to ERROR FOR AMOUNT ONLY
+					$isValid = false;
+					$error['desc'] = "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+		$data['status'] = $this->translateResponse($data['status']);
 
 		//Error Handling
 		$error=array();

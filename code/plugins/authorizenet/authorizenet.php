@@ -27,12 +27,13 @@ class plgpaymentAuthorizenet extends JPlugin
 
 		
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
-		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
+		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review, ERROR=if amount mismatch
 		$this->responseStatus= array(
 			'1' =>'C',
 			'2' =>'D',
 			'3' =>'E',
 			'4'=>'UR',  
+			'ERROR'=>'E',  
 		);
 		
 
@@ -114,14 +115,44 @@ class plgpaymentAuthorizenet extends JPlugin
 		return $html;
 	}
 	
-	function onTP_Processpayment($data) 
+	function onTP_ProcessSubmit($data,$vars) 
 	{
+		$submitVaues['order_id'] =$vars->order_id;
+		$submitVaues['user_id'] =$vars->user_id;
+		$submitVaues['return'] =$vars->return;
+		$submitVaues['amount'] =$vars->amount;
+		$submitVaues['plugin_payment_method'] ='onsite';
+		$submitVaues['cardfname'] =$data['cardfname'];
+		$submitVaues['cardlname'] =$data['cardlname'];
+		$submitVaues['cardaddress1'] =$data['cardaddress1'];
+		$submitVaues['cardaddress2'] =$data['cardaddress2'];
+		$submitVaues['cardcity'] =$data['cardcity'];
+		$submitVaues['cardstate'] =$data['cardstate'];
+		$submitVaues['cardzip'] =$data['cardzip'];
+		$submitVaues['cardcountry'] =$data['cardcountry'];
+		$submitVaues['email'] =$data['email'];
+		$submitVaues['cardnum'] =$data['cardnum'];
+		$submitVaues['cardexp'] =$data['cardexp'];
+		$submitVaues['cardcvv'] =$data['cardcvv'];
+		
+		/* for onsite plugin set the post data into session and redirect to the notify URL */
+		$session = JFactory::getSession();
+		$session->set('payment_submitpost',$submitVaues);
+		JFactory::getApplication()->redirect($vars->url);
+	}
+	
+	function onTP_Processpayment($data,$vars=array()) 
+	{
+		$isValid = true;
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
+		
 		if($data['payment_type']=="recurring")
 		{
 			$response=plgpaymentAuthorizenet::onTP_Processpayment_recurring($data);
 			return $response;
 		}
-		$error=array();		
 		$action_url = plgPaymentAuthorizenetHelper::buildAuthorizenetUrl();	
 		
 		$authnet_values				= array(
@@ -165,10 +196,40 @@ class plgpaymentAuthorizenet extends JPlugin
     $allresp = explode('|',$resp);
 		//call to curl	
 		
-    $payment_status=$this->translateResponse($allresp[0]);		
- 	  $error['code']=$allresp[0];
+		$error['code']=$allresp[0];
 	  $error['desc']=$allresp[3];
-		
+		//3.compare response order id and send order id in notify URL 
+		$res_orderid='';
+		$res_orderid = $data['order_id'];
+		if($isValid ) {
+		 file_put_contents("TST1.txt", "/n<br><br>-------------- ORDER check -------------------<br>\n ". json_encode($vars), FILE_APPEND | LOCK_EX);
+			if(!empty($vars) && $res_orderid != $vars->order_id )
+			{
+				file_put_contents("TSTORDERMISMATCH.txt", "/n<br><br>-------------- ORDER mISMATCH check -------------------<br>\n ", FILE_APPEND | LOCK_EX);
+				$isValid = false;
+				$error['desc'] .= " ORDER_MISMATCH" . "Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+			}
+		}
+		// amount check
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				file_put_contents("TST2.txt", "/n<br><br>-------------- amount check -------------------<br>\n ", FILE_APPEND | LOCK_EX);
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$allresp[9];
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					$allresp[0] = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
+					$isValid = false;
+					$error['desc'] .= "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+		// TRANSLET PAYMENT RESPONSE
+    $payment_status=$this->translateResponse($allresp[0]);
 		 
     $transaction_id = $allresp[6];     
 

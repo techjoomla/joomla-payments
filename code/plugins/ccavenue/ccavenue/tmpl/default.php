@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-			<form name="frmccavenue" id="frmccavenue" method="post" action="https://www.ccavenue.com/shopzone/cc_details.jsp">			
+			<form name="frmccavenue" id="frmccavenue" method="post" action="<?php echo $vars->action_url; ?>">			
 				<input type="hidden" name="Merchant_Id" value="<?php echo $vars->merchant_id; ?>" />
 				<input type="hidden" name="Amount" value="<?php echo (float)$vars->amount; ?>" />
 				<input type="hidden" name="Order_Id" value="<?php echo $vars->order_id; ?>" />				

@@ -2,12 +2,12 @@
 <extension version="3.0" type="plugin" group="payment" method="upgrade">
 	<name>Payment-JomSocialPoints</name>
 	<author>TechJoomla</author>
-	<creationDate>10th May 2012</creationDate>
+	<creationDate>28th Aug 2013</creationDate>
 	<copyright>Techjoomla. All Rights Reserved.</copyright>
 	<authorEmail>extensions@techjoomla.com</authorEmail>
 	<authorUrl>http://www.techjoomla.com</authorUrl>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<version>1.1</version>
+	<version>2.0</version>
 	<description>JomSocialPoints payment plugin for jticketing</description>
 	<files>
 		<filename plugin="jomsocialpoints">jomsocialpoints.php</filename>

@@ -10,6 +10,8 @@ if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/paypal/paypal/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/paypal/helper.php');
+$lang =  JFactory::getLanguage();
+$lang->load('plg_payment_paypal', JPATH_ADMINISTRATOR);
 class  plgPaymentPaypal extends JPlugin
 {
 
@@ -25,8 +27,8 @@ class  plgPaymentPaypal extends JPlugin
  	 'Completed'  => 'C','Pending'  => 'P',
  	 'Failed'=>'E','Denied'=>'D',
  	 'Refunded'=>'RF','Canceled_Reversal'=>'CRV',
- 	 'Reversed'=>'RV'
-  
+ 	 'Reversed'=>'RV',
+ 	 'ERROR' => 'E'
 		);
 	}
 
@@ -80,20 +82,74 @@ class  plgPaymentPaypal extends JPlugin
 
 		//if component does not provide cmd
 		if(empty($vars->cmd))
-			 $vars->cmd='_xclick';
-
+			$vars->cmd='_xclick';
 		$html = $this->buildLayout($vars);
-
 		return $html;
 	}
+	
+	function onTP_ProcessSubmit($data,$vars) 
+	{
+		//Take this receiver email address from plugin if component not provided it
+		if(empty($vars->business))
+			$submitVaues['business'] = $this->params->get('business');
+		else
+			$submitVaues['business'] =$vars->business;
 
-	
-	
-	function onTP_Processpayment($data) 
+		//if component does not provide cmd
+		if(empty($vars->cmd))
+			$submitVaues['cmd'] ='_xclick';
+		else
+			$submitVaues['cmd'] =$vars->cmd;
+			
+		$submitVaues['custom'] =$vars->order_id;
+		$submitVaues['item_name'] =$vars->item_name;
+		$submitVaues['return'] =$vars->return;
+		$submitVaues['cancel_return'] =$vars->cancel_return;
+		$submitVaues['notify_url'] =$vars->notify_url;
+		$submitVaues['currency_code'] =$vars->currency_code;
+		$submitVaues['no_note'] ='1';
+		$submitVaues['rm'] ='2';
+		$submitVaues['amount'] =$vars->amount;
+		
+		$plgPaymentPaypalHelper=new plgPaymentPaypalHelper();
+		$postaction = $plgPaymentPaypalHelper->buildPaypalUrl();
+		/* for offsite plugin */
+		$postvalues = http_build_query($submitVaues);
+		header('Location: '.$postaction.'?' . $postvalues);
+	}
+
+	function onTP_Processpayment($data,$vars=array() ) 
 	{
 		$verify = plgPaymentPaypalHelper::validateIPN($data);
 		if (!$verify) { return false; }
 
+//2.compare response order id and send order id in notify URL 
+		$res_orderid = $data['custom'];
+		if($isValid ) {
+			if(!empty($vars) && $res_orderid != $vars->order_id )
+			{
+				$isValid = false;
+				$error['desc'] = "ORDER_MISMATCH" . "Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+			}
+		}
+		// amount check
+		if($isValid ) {
+			if(!empty($vars))
+			{
+				// Check that the amount is correct
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$data['mc_gross'];
+				$epsilon = 0.01;
+				
+				if(($order_amount - $retrunamount) > $epsilon)
+				{
+					$data['payment_status'] = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
+					$isValid = false;
+					$error['desc'] = "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
+				}
+			}
+		}
+		//  PROCESS PAYMENT STATUS
 		$payment_status=$this->translateResponse($data['payment_status']);
 
 		$result = array(

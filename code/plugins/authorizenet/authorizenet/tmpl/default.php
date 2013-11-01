@@ -30,7 +30,7 @@ function myValidate(f)
 </script> 	
 
 <div class="akeeba-bootstrap">
-<form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);"  class="form-validate form-horizontal"  method="post">			
+<form action="<?php echo $vars->submiturl; //$vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);"  class="form-validate form-horizontal"  method="post">			
 	<div>
 		<div class="control-group">
 			<label for="cardfname" class="control-label"><?php echo JText::_( 'FIRST_NAME' ) ?></label>

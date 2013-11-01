@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment - paymill</name>
+	<author>Techjoomla</author>
+	<creationDate>July 2013</creationDate>
+	<copyright></copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>support@techjoomla.com</authorEmail>
+	<authorUrl>http://techjoomla.com/</authorUrl>
+	<version>1.1</version>
+	<description>Paymill payment plugin</description>
+	<files>
+		<filename plugin="paymill">paymill.php</filename>
+		<folder>paymill</folder>
+	</files>
+	<languages> 
+		<language tag="en-GB">en-GB.plg_payment_paymill.ini</language>	
+	</languages>
+		
+	<params>  		
+  		<param name="public_key" type="text" default="" label="PUBLIC_KEY" description="PUBLIC_KEY_DES"/> 
+	 		<param name="private_key" type="text" default="" label="PRIVATE_KEY" description="PRIVATE_KEY_DES"/>  		 		
+  		<param type="spacer" />
+		<param name="payment_mode" type="radio" default="0" label="ENABLE_PAYMENT_MODE" description="ENABLE_PAYMENT_MODE">
+		  <option value="0">Test</option>
+		  <option value="1">Live</option>
+		</param>
+		<param name="plugin_name" type="text" default="Paymill" label="PLG_NAME" description="PLG_DESC" />
+		<param name="plugin_hidname" type="hidden" default="Paymill" />
+	</params>
+	
+	<!-- Fields for Joomla 1.6.x and onwards -->
+ 	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="public_key" type="text" default="" label="PUBLIC_KEY" description="PUBLIC_KEY_DES"/> 
+				<field name="private_key" type="text" default="" label="PRIVATE_KEY" description="PRIVATE_KEY_DES"/>  
+				<field name="payment_mode" type="radio" default="0" label="ENABLE_PAYMENT_MODE" description="ENABLE_PAYMENT_MODE">
+					<option value="0">Test</option>
+					<option value="1">Live</option>
+				</field>
+				<field name="plugin_name" type="text" default="Paymill" label="PLG_NAME" description="PLG_DESC" />
+				<field name="plugin_hidname" type="hidden" default="authorizenet" />
+			</fieldset>			
+		</fields>
+	</config>
+	
+</extension>
