@@ -27,16 +27,20 @@ class  plgPaymentPaypal extends JPlugin
  	 'Completed'  => 'C','Pending'  => 'P',
  	 'Failed'=>'E','Denied'=>'D',
  	 'Refunded'=>'RF','Canceled_Reversal'=>'CRV',
- 	 'Reversed'=>'RV',
- 	 'ERROR' => 'E'
+ 	 'Reversed'=>'RV'
+  
 		);
 	}
 
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		if($layout=='recurring')
+			$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'recurring.php';
+		else
+			$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
+
+		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.'recurring.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -83,7 +87,11 @@ class  plgPaymentPaypal extends JPlugin
 		//if component does not provide cmd
 		if(empty($vars->cmd))
 			$vars->cmd='_xclick';
-		$html = $this->buildLayout($vars);
+		//@ get recurring layout Amol 
+		if($vars->is_recurring==1)
+			$html = $this->buildLayout($vars,'recurring');
+		else
+			$html = $this->buildLayout($vars);
 		return $html;
 	}
 	
@@ -110,13 +118,60 @@ class  plgPaymentPaypal extends JPlugin
 		$submitVaues['no_note'] ='1';
 		$submitVaues['rm'] ='2';
 		$submitVaues['amount'] =$vars->amount;
-		
+		$submitVaues['lc'] =$vars->country_code;
 		$plgPaymentPaypalHelper=new plgPaymentPaypalHelper();
 		$postaction = $plgPaymentPaypalHelper->buildPaypalUrl();
 		/* for offsite plugin */
 		$postvalues = http_build_query($submitVaues);
 		header('Location: '.$postaction.'?' . $postvalues);
 	}
+
+	//***************************Recurring Payment ***************************
+	function onTP_ProcessSubmitRecurring($data,$vars) 
+	{
+		//Take this receiver email address from plugin if component not provided it
+		if(empty($vars->business))
+			$submitVaues['business'] = $this->params->get('business');
+		else
+			$submitVaues['business'] =$vars->business;
+
+		//if component does not provide cmd
+		if(empty($vars->cmd))
+			$submitVaues['cmd'] ='_xclick-subscriptions';
+		else
+			$submitVaues['cmd'] =$vars->cmd;
+			
+		$submitVaues['custom'] =	$vars->order_id;
+		$submitVaues['item_name'] =	$vars->item_name;
+		$submitVaues['return'] =	$vars->return;
+		$submitVaues['cancel_return']=$vars->cancel_return;
+		$submitVaues['notify_url'] =$vars->notify_url;
+		$submitVaues['currency_code'] =$vars->currency_code;
+		$submitVaues['no_note'] =	'1';
+		$submitVaues['rm'] =		'2';
+		$submitVaues['a3'] =		$vars->amount;
+		if($vars->recurring_frequency=='QUARTERLY')
+		{
+			$submitVaues['p3']=		3;
+			$submitVaues['t3']=		'MONTH';
+		}
+		else
+		{
+			$submitVaues['p3']=		1;
+			$submitVaues['t3']=		$vars->recurring_frequency;
+		}
+		$submitVaues['srt']=		$vars->recurring_count;
+		$submitVaues['src']=		1;
+		$submitVaues['sra']=		1;
+		//$submitVaues['TRIALBILLINGPERIOD']='DAY'; //Parameters to test Recurring payment
+		//$submitVaues['TRIALBILLINGFREQUENCY']=3; //Parameters to test Recurring payment
+		$plgPaymentPaypalHelper=new plgPaymentPaypalHelper();
+		$postaction = $plgPaymentPaypalHelper->buildPaypalUrl();
+		/* for offsite plugin */
+		$postvalues = http_build_query($submitVaues);
+		header('Location: '.$postaction.'?' . $postvalues);
+	}
+
 
 	function onTP_Processpayment($data,$vars=array() ) 
 	{
@@ -155,14 +210,15 @@ class  plgPaymentPaypal extends JPlugin
 		$result = array(
 						'order_id'=>$data['custom'],
 						'transaction_id'=>$data['txn_id'],
+						'subscriber_id'=>$data['subscr_id'],
 						'buyer_email'=>$data['payer_email'],
 						'status'=>$payment_status,
-						'subscribe_id'=>$data['subscr_id'],
 						'txn_type'=>$data['txn_type'],
 						'total_paid_amt'=>$data['mc_gross'],
 						'raw_data'=>$data,
 						'error'=>$error,
 						);
+		//print_r($result);die;
 		return $result;
 	}
 

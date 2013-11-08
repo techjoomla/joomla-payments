@@ -6,24 +6,18 @@
 defined( '_JEXEC' ) or die( ';)' );
 	jimport('joomla.html.html');
 	jimport( 'joomla.plugin.helper' );
-class plgPaymentPaypalHelper
-{ 	
-	
+class plgPaymentAdaptivePaypalHelper
+{
+	//gets the paypal URL
 	//gets the paypal URL
 	function buildPaypalUrl($secure = true)
 	{
-		$plugin = JPluginHelper::getPlugin('payment', 'paypal');
+		$plugin = JPluginHelper::getPlugin('payment', 'adaptive_paypal');
 		$params=json_decode($plugin->params);
-		$secure_post = $params->secure_post ;
-		$url= $params->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';		
-		if ($secure_post) 
-			$url = 'https://' . $url . '/cgi-bin/webscr';
-		else
-			$url = 'http://' . $url . '/cgi-bin/webscr';
-		
-		return $url;
+		$url= $params->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
+		return $url = 'https://' . $url . '/cgi-bin/webscr';
 	}
-	
+
 	function Storelog($name,$logdata)
 	{
 		jimport('joomla.error.log');
@@ -57,7 +51,7 @@ class plgPaymentPaypalHelper
 	{
 
 	 // parse the paypal URL
-     $url=plgPaymentPaypalHelper::buildPaypalUrl();	      
+     $url=plgPaymentAdaptivePaypalHelper::buildPaypalUrl();	      
      $this->paypal_url= $url;
       $url_parsed=parse_url($url);        
 
@@ -74,7 +68,7 @@ class plgPaymentPaypalHelper
          // could not open the connection.  If loggin is on, the error message
          // will be in the log.
          $this->last_error = "fsockopen error no. $errnum: $errstr";
-         plgPaymentPaypalHelper::log_ipn_results(false);       
+         plgPaymentAdaptivePaypalHelper::log_ipn_results(false);       
          return false;
          
       } else { 
@@ -108,42 +102,52 @@ class plgPaymentPaypalHelper
       if (eregi("verified",$post_string)) {
   
          // Valid IPN transaction.
-         plgPaymentPaypalHelper::log_ipn_results(true);
+         plgPaymentAdaptivePaypalHelper::log_ipn_results(true);
          return true;       
          
       } else {
   
          // Invalid IPN transaction.  Check the log for details.
          $this->last_error = 'IPN Validation Failed.';
-         plgPaymentPaypalHelper::log_ipn_results(false);   
+         plgPaymentAdaptivePaypalHelper::log_ipn_results(false);   
          return false;
          
       }
 	
 	}
-		function log_ipn_results($success) {
-       
-      if (!$this->ipn_log) return; 
-      
-      // Timestamp
-      $text = '['.date('m/d/Y g:i A').'] - '; 
-      
-      // Success or failure being logged?
-      if ($success) $text .= "SUCCESS!\n";
-      else $text .= 'FAIL: '.$this->last_error."\n";
-      
-      // Log the POST variables
-      $text .= "IPN POST Vars from Paypal:\n";
-      foreach ($this->ipn_data as $key=>$value) {
-         $text .= "$key=$value, ";
-      }
+	function log_ipn_results($success) {
+	   
+	  if (!$this->ipn_log) return; 
+	  
+	  // Timestamp
+	  $text = '['.date('m/d/Y g:i A').'] - '; 
+	  
+	  // Success or failure being logged?
+	  if ($success) $text .= "SUCCESS!\n";
+	  else $text .= 'FAIL: '.$this->last_error."\n";
+	  
+	  // Log the POST variables
+	  $text .= "IPN POST Vars from Paypal:\n";
+	  foreach ($this->ipn_data as $key=>$value) {
+		 $text .= "$key=$value, ";
+	  }
  
-      // Log the response from the paypal server
-      $text .= "\nIPN Response from Paypal Server:\n ".$this->ipn_response;
-      // Write to log
-      $fp=fopen($this->ipn_log_file,'a');
-      fwrite($fp, $text . "\n\n");
-      fclose($fp);  // close file
+	  // Log the response from the paypal server
+	  $text .= "\nIPN Response from Paypal Server:\n ".$this->ipn_response;
+	  // Write to log
+	  $fp=fopen($this->ipn_log_file,'a');
+	  fwrite($fp, $text . "\n\n");
+	  fclose($fp);  // close file
    }
+	function getFee($order_id)
+	{
+		$db=JFactory::getDBO();
+		$query="SELECT fee FROM #__jg_orders 
+		WHERE order_id='".$order_id."'";
+		$db->setQuery($query);
+		return $result=$db->loadResult();
+	}
+	//curl wrapper to sending things to paypal
+
 
 }
