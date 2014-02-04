@@ -141,11 +141,8 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			"trackingId"=>$vars->order_id,
 			"requestEnvelope"=>$this->envelope
 		);
-																																					$data =array();
-																																					$data['createPacket'] = $createPacket;
-		
+
 		$response=$this->_paypalSend($createPacket,"Pay");
-																																					$data['first response'] = $response;
 		$paykey=$response['payKey'];
 		//Set payment detials
 		$detailsPacket=array(
@@ -153,18 +150,13 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			"payKey"=>$response['payKey'],
 			"receiverOptions"=>$receiver
 		);
-																																					$data['detailsPacket'] = $detailsPacket;
+
 		$response=$this->_paypalSend($detailsPacket,"SetPaymentOptions");
-																																					$data['SetPaymentOptions response'] =$response;
 		$detls=$this->getPaymentOptions($paykey);
-																																					$data[' detls'] =$detls;
-																																					$data=json_encode($data);
+
 		$file = 'testing2.txt';
 		// The new person to add to the file
 		$person = json_encode($_REQUEST);
-		file_put_contents($file, "/n<br><br>-------------- REQUEST data -------------------<br>\n ".$data, FILE_APPEND | LOCK_EX);
-		
-
 		//header to paypal
 		header("Location:".$this->paypalurl.$paykey);
 	}
