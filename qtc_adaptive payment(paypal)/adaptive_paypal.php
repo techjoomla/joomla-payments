@@ -192,7 +192,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		$payment_status=$this->translateResponse($data['status']);
 		//print_r($payment_status);die;
 		$paymentDetails=$this->getTransactionDetails($data);
-		file_put_contents('response2.txt', print_r($paymentDetails, true));
+
 		$result = array(
 						'order_id'=>$data['tracking_id'],
 						'transaction_id'=>$data['pay_key'],
