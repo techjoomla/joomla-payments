@@ -139,14 +139,6 @@ class plgPaymentAdaptivePaypalHelper
 	  fwrite($fp, $text . "\n\n");
 	  fclose($fp);  // close file
    }
-	function getFee($order_id)
-	{
-		$db=JFactory::getDBO();
-		$query="SELECT fee FROM #__jg_orders 
-		WHERE order_id='".$order_id."'";
-		$db->setQuery($query);
-		return $result=$db->loadResult();
-	}
 	//curl wrapper to sending things to paypal
 
 

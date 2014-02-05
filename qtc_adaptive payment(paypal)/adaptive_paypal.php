@@ -108,10 +108,6 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		//if component does not provide cmd
 		if(empty($vars->cmd))
 			$vars->cmd='_xclick';
-		//@ get recurring layout Amol 
-		/*if($vars->is_recurring==1)
-			$html = $this->buildLayout($vars,'recurring');
-		else*/
 			$html = $this->buildLayout($vars);
 		return $html;
 	}
@@ -121,8 +117,6 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		$adaptiveReceiverList = $vars->adaptiveReceiverList;
 		//Take this receiver email address from plugin if component not provided it
 		$plgPaymentAdaptivePaypalHelper=new plgPaymentAdaptivePaypalHelper();
-		//$Fee=$plgPaymentAdaptivePaypalHelper->getFee($vars->order_id);
-		//$AmountToPayToPromoter=$vars->amount-$Fee;
 		$receiver = array();
 		$data = $this->getFormattedReceiver($vars->adaptiveReceiverList);
 		$receiver = $data['receiver'];
@@ -133,7 +127,6 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			"currencyCode"=>$vars->currency_code,
 			"receiverList"=>array(
 				"receiver"=>$receiverOptions
-				
 			),
 			"returnUrl"=>$vars->return,
 			"cancelUrl"=>$vars->cancel_return, 
@@ -165,20 +158,18 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 	function getFormattedReceiver($receiverList) {
 		$receiver = array();
 		$receiverOptions = array();
+
 		foreach($receiverList as $rec) {
 			$temp['amount'] = $rec['amount'];
 			$temp['email'] = $rec['receiver'];
 			$temp['primary'] = $rec['primary'];
 			$receiverOptions[] = $temp;
-			
-			 
 			$emails['email'] = $temp['email'] ;
 			$r = array(); 
 			$r['receiver'] = $emails; 
 			$receiver[] = $r;
-			
 		}
-		
+
 		$data['receiverOptions'] = $receiverOptions;
 		$data['receiver'] = $receiver;
 		
@@ -190,7 +181,6 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		if (!$verify) { return false; }
 		*/
 		$payment_status=$this->translateResponse($data['status']);
-		//print_r($payment_status);die;
 		$paymentDetails=$this->getTransactionDetails($data);
 
 		$result = array(
@@ -219,7 +209,6 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 	}
 
 	function _paypalSend($data,$call){
-		//$apiurl="https://svcs.sandbox.paypal.com/AdaptivePayments/";
 		$ch=curl_init();
 		curl_setopt($ch,CURLOPT_URL,$this->apiurl.$call);
 		curl_setopt($ch,CURLOPT_RETURNTRANSFER,TRUE);
@@ -246,7 +235,6 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		);
 		
 		$res=$this->_paypalSend($detailsPacket,'PaymentDetails');
-		//file_put_contents('response2.txt', print_r($res, true));
 		return $res;
 	}
 }
