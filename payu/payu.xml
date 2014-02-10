@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment - PayU</name>
+	<author>Techjoomla</author>
+	<creationDate>28th Aug 2013</creationDate>
+	<copyright></copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail></authorEmail>
+	<authorUrl></authorUrl>
+	<version>0.1</version>
+	<description>PayU payment plugin</description>
+	<files>
+		<filename plugin="payu">payu.php</filename>
+		<folder>payu</folder>
+	</files>
+	<languages> 
+		<language tag="en-GB">en-GB/en-GB.plg_payment_payu.ini</language>
+	</languages>
+		
+		
+		<params>
+		<param name="plugin_name" type="text" default="Payu Credit Card/Debit Card/Net Banking" label="PAYU_PLG_NAME" description="" />			
+  		<param name="key" type="text" default="" label="PAYU_EMAIL" description="PAYU_EMAIL_DESC"/>
+  		<param name="salt" type="text" default="" label="PAYU_SALT" description="PAYU_SALT_DESC"/>  		
+  		<param type="spacer" />
+		<param name="sandbox" type="radio" default="0" label="PAYU_SANDBOX" description="PAYU_SANDBOX_DESC">
+		  <option value="0">PAYU_NO</option>
+		  <option value="1">PAYU_YES</option>
+		</param>		
+	</params>
+	
+	<!-- Fields for Joomla 1.6.x and onwards -->
+ 	<config>
+		<fields name="params">
+			<fieldset name="basic">
+					<field name="plugin_name" type="text" default="Payu Credit Card/Debit Card/Net Banking" label="PAYU_PLG_NAME" description="" />				
+					<field name="key" type="text" default="" label="PAYU_EMAIL" description="PAYU_EMAIL_DESC"/>
+			  		<field name="salt" type="text" default="" label="PAYU_SALT" description="PAYU_SALT_DESC"/>  								
+						<field name="sandbox" type="radio" default="0" label="PAYU_SANDBOX" description="PAYU_SANDBOX_DESC">
+						<option value="0">PAYU_NO</option>
+						<option value="1">PAYU_YES</option>
+					</field>
+				</fieldset>			
+		</fields>
+	</config>
+</extension>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/plugin-install.dtd">
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment - 2Checkout</name>
+	<author>Techjoomla</author>
+	<creationDate>28th Aug 2013</creationDate>
+	<copyright></copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>techjoomla@tekdi.net</authorEmail>
+	<authorUrl></authorUrl>
+	<version>2.0</version>
+	<description>2Checkout payment plugin</description>
+	
+	<files>
+		<filename plugin="2checkout">2checkout.php</filename>
+		<folder>2checkout</folder>
+	</files>
+	<languages >
+		<language tag="en-GB">en-GB/en-GB.plg_payment_2checkout.ini</language>
+	</languages>                  
+	<params>
+		<param name="sid" type="text" size="50" default="" label="PLG_PAYMENT_2CHECKOUT_SID_LABEL" description="PLG_PAYMENT_2CHECKOUT_SID_DESC"/>
+		<param name="secret" type="text" size="50" default="" label="PLG_PAYMENT_2CHECKOUT_SECRET_LABEL" description="PLG_PAYMENT_2CHECKOUT_SECRET_DESC"/>
+		<param name="demo" type="radio" default="0" label="PLG_PAYMENT_2CHECKOUT_DEMO_LABEL" description="PLG_PAYMENT_2CHECKOUT_DEMO_DESC">
+		  <option value="0">NO</option>
+		  <option value="1">YES</option>
+		</param>
+		<param type="spacer" />
+		<param name="lang" type="radio" default="en"
+			label="PLG_PAYMENT_2CHECKOUT_LANG_LABEL"
+			description="PLG_PAYMENT_2CHECKOUT_LANG_DESC">
+		  <option value="en">PLG_PAYMENT_2CHECKOUT_LANG_EN</option>
+		  <option value="zh">PLG_PAYMENT_2CHECKOUT_LANG_ZH</option>
+		  <option value="da">PLG_PAYMENT_2CHECKOUT_LANG_DA</option>
+		  <option value="nl">PLG_PAYMENT_2CHECKOUT_LANG_NL</option>
+		  <option value="fr">PLG_PAYMENT_2CHECKOUT_LANG_FR</option>
+		  <option value="gr">PLG_PAYMENT_2CHECKOUT_LANG_GR</option>
+		  <option value="el">PLG_PAYMENT_2CHECKOUT_LANG_EL</option>
+		  <option value="it">PLG_PAYMENT_2CHECKOUT_LANG_IT</option>
+		  <option value="jp">PLG_PAYMENT_2CHECKOUT_LANG_JP</option>
+		  <option value="no">PLG_PAYMENT_2CHECKOUT_LANG_NO</option>
+		  <option value="pt">PLG_PAYMENT_2CHECKOUT_LANG_PT</option>
+		  <option value="sl">PLG_PAYMENT_2CHECKOUT_LANG_SL</option>
+		  <option value="es_ib">PLG_PAYMENT_2CHECKOUT_LANG_ES_IB</option>
+		  <option value="es_la">PLG_PAYMENT_2CHECKOUT_LANG_ES_LA</option>
+		  <option value="sv">PLG_PAYMENT_2CHECKOUT_LANG_SV</option>
+		</param>
+		<param name="pay_method" type="radio" default="cc"
+			label="PLG_PAYMENT_2CHECKOUT_PAY_METHOD_LABEL"
+			description="PLG_PAYMENT_2CHECKOUT_PAY_METHOD_DESC">
+		  <option value="cc">PLG_PAYMENT_2CHECKOUT_PAY_METHOD_CC</option>
+		  <option value="al">PLG_PAYMENT_2CHECKOUT_PAY_METHOD_AL</option>
+		  <option value="ppi">PLG_PAYMENT_2CHECKOUT_PAY_METHOD_PPI</option>
+		</param>
+		<param name="plugin_name" type="text" default="2Checkout" label="PLG_NAME" description="" />
+		<param name="plugin_hidname" type="hidden" default="2checkout" />
+	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="sid" type="text" size="50" default=""
+					label="PLG_PAYMENT_2CHECKOUT_SID_LABEL"
+					description="PLG_PAYMENT_2CHECKOUT_SID_DESC"/>
+				<field name="secret" type="text" size="50" default=""
+					label="PLG_PAYMENT_2CHECKOUT_SECRET_LABEL"
+					description="PLG_PAYMENT_2CHECKOUT_SECRET_DESC"/>
+				<field name="demo" type="radio" default="0"
+					label="PLG_PAYMENT_2CHECKOUT_DEMO_LABEL"
+					description="PLG_PAYMENT_2CHECKOUT_DEMO_DESC">
+				  <option value="0">JNO</option>
+				  <option value="1">JYES</option>
+				</field>
+				<field type="spacer" />
+				<field name="lang" type="radio" default="en"
+					label="PLG_PAYMENT_2CHECKOUT_LANG_LABEL"
+					description="PLG_PAYMENT_2CHECKOUT_LANG_DESC">
+				  <option value="en">PLG_PAYMENT_2CHECKOUT_LANG_EN</option>
+				  <option value="zh">PLG_PAYMENT_2CHECKOUT_LANG_ZH</option>
+				  <option value="da">PLG_PAYMENT_2CHECKOUT_LANG_DA</option>
+				  <option value="nl">PLG_PAYMENT_2CHECKOUT_LANG_NL</option>
+				  <option value="fr">PLG_PAYMENT_2CHECKOUT_LANG_FR</option>
+				  <option value="gr">PLG_PAYMENT_2CHECKOUT_LANG_GR</option>
+				  <option value="el">PLG_PAYMENT_2CHECKOUT_LANG_EL</option>
+				  <option value="it">PLG_PAYMENT_2CHECKOUT_LANG_IT</option>
+				  <option value="jp">PLG_PAYMENT_2CHECKOUT_LANG_JP</option>
+				  <option value="no">PLG_PAYMENT_2CHECKOUT_LANG_NO</option>
+				  <option value="pt">PLG_PAYMENT_2CHECKOUT_LANG_PT</option>
+				  <option value="sl">PLG_PAYMENT_2CHECKOUT_LANG_SL</option>
+				  <option value="es_ib">PLG_PAYMENT_2CHECKOUT_LANG_ES_IB</option>
+				  <option value="es_la">PLG_PAYMENT_2CHECKOUT_LANG_ES_LA</option>
+				  <option value="sv">PLG_PAYMENT_2CHECKOUT_LANG_SV</option>
+				</field>
+				<field name="pay_method" type="radio" default="cc"
+					label="PLG_PAYMENT_2CHECKOUT_PAY_METHOD_LABEL"
+					description="PLG_PAYMENT_2CHECKOUT_PAY_METHOD_DESC">
+				  <option value="cc">PLG_PAYMENT_2CHECKOUT_PAY_METHOD_CC</option>
+				  <option value="al">PLG_PAYMENT_2CHECKOUT_PAY_METHOD_AL</option>
+				  <option value="ppi">PLG_PAYMENT_2CHECKOUT_PAY_METHOD_PPI</option>
+				</field>
+				<field name="plugin_name" type="text" default="2Checkout" label="PLG_NAME" description="" />
+				<field name="plugin_hidname" type="hidden" default="2checkout" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>

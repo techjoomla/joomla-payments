@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment - Payfast</name>
+	<author>Techjoomla</author>
+	<creationDate>28th Aug 2013</creationDate>
+	<copyright></copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail></authorEmail>
+	<authorUrl></authorUrl>
+	<version>0.1</version>
+	<description>Payfast payment plugin</description>
+	<files>
+		<filename plugin="payfast">payfast.php</filename>
+		<folder>payfast</folder>
+	</files>
+	<languages> 
+		<language tag="en-GB">en-GB/en-GB.plg_payment_payfast.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_payment_payfast.sys.ini</language>
+		
+	</languages>
+	
+	<!-- Fields for Joomla 1.6.x and onwards -->
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="plugin_name" type="text" size="50" default="Payfast" label="PLG_PAYMENT_PAYFAST_DISPLAY_NAME" description="PLG_PAYMENT_PAYFAST_TITLE_DESC"/>
+				<!-- <field name="ppimage" type="text" size="50" default="" label="PLG_PAYMENT_PAYFAST_PPIMAGE_LABEL" description="PLG_PAYMENT_PAYFAST_PPIMAGE_DESC" /> -->
+				<field type="spacer" />
+				
+				<field name="merchant_id" type="text" size="50" default="" label="PLG_PAYMENT_PAYFAST_MERCHANTID_LABEL" description="PLG_PAYMENT_PAYFAST_MERCHANTID_DESC"/>
+				<field name="merchant_key" type="text" size="50" default="" label="PLG_PAYMENT_PAYFAST_MERCHANTKEY_LABEL" description="PLG_PAYMENT_PAYFAST_MERCHANTKEY_DESC"/>	
+				<field type="spacer" />
+				
+				<field name="sandbox" type="radio" default="0" label="PLG_PAYMENT_PAYFAST_SANDBOX_LABEL" description="PLG_PAYMENT_PAYFAST_SANDBOX_DESC">
+					<option value="0">PLG_PAYMENT_PAYFAST_NO</option>
+					<option value="1">PLG_PAYMENT_PAYFAST_YES</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+	
+</extension>

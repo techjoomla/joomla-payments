@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Pay By Purchase Order</name>
+	<author>TechJoomla</author>
+	<creationDate>31sh Aug 2013</creationDate>
+	<copyright>Techjoomla. All Rights Reserved.</copyright>
+	<authorEmail>extensions@techjoomla.com</authorEmail>
+	<authorUrl>http://www.techjoomla.com</authorUrl>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>2.0.1</version>
+	<description>Pay By Purchase Order plugin  from Techjoomla. </description>
+	<files>
+		<filename plugin="byorder">byorder.php</filename>
+		<folder>byorder</folder>
+	</files>
+		<languages> 
+			<language tag="en-GB">en-GB/en-GB.plg_payment_byorder.ini</language>
+			<language tag="it-IT">it-IT/it-IT.plg_payment_byorder.ini</language>
+			<language tag="de-DE">de-DE/de-DE.plg_payment_byorder.ini</language>
+			<language tag="es-ES">es-ES/es-ES.plg_payment_byorder.ini</language>
+			<language tag="sv-SE">sv-SE/sv-SE.plg_payment_byorder.ini</language>
+			<language tag="nl-NL">nl-NL/nl-NL.plg_payment_byorder.ini</language>
+			<language tag="da-DK">da-DK/da-DK.plg_payment_byorder.ini</language>
+			<language tag="th-TH">th-TH/th-TH.plg_payment_byorder.ini</language>
+			<language tag="pt-PT">pt-PT/pt-PT.plg_payment_byorder.ini</language>	
+  	</languages>
+	<!-- parameters for Joomla 1.5.x -->
+	<params>
+		<param name="plugin_name" type="text" default="PayBy Purchase Order" label="PLG_NAME" description="" />	
+		<param name="plugin_mail" type="textarea" default="" label="PLG_MAIL" description="PLG_MAIL_DES" rows="5" cols="20"  />	
+	</params>
+	<!-- Fields for Joomla 1.6.x and onwards -->
+	<config name="params">
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="plugin_name" type="text" default="PayBy Purchase Order" label="PLG_NAME" description="" />	
+				<field name="plugin_mail" type="textarea" default="" label="PLG_MAIL" description="PLG_MAIL_DES" rows="5" cols="20"  />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
