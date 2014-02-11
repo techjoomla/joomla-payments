@@ -22,11 +22,11 @@ if ( file_exists($api_wallet))
 	}
 }
 
-class plgpaymentewallet extends JPlugin 
+class plgpaymentewallet extends JPlugin
 {
 	var $_payment_gateway = 'payment_ewallet';
 	var $_log = null;
-	
+
 	function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -37,7 +37,10 @@ class plgpaymentewallet extends JPlugin
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
 		$this->responseStatus= array(
 			'Success' =>'C',
-			'Failure' =>'E'
+			'Failure' =>'E',
+			// Manoj - added start.
+			'Refund' => 'RF'
+			// Manoj - added end.
 		);
 	}
 
@@ -54,7 +57,7 @@ class plgpaymentewallet extends JPlugin
 		return  $core_file;
 	}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden f'Failure' =>'X',ields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -63,7 +66,7 @@ class plgpaymentewallet extends JPlugin
 		ob_start();
 		$layout = $this->buildLayoutPath($layout);
 		include($layout);
-		$html = ob_get_contents(); 
+		$html = ob_get_contents();
 		ob_end_clean();
 		return $html;
 	}
@@ -93,8 +96,8 @@ class plgpaymentewallet extends JPlugin
 		$obj->id	= $this->_name;
 		return $obj;
 	}
-	
-	function onTP_ProcessSubmit($data,$vars) 
+
+	function onTP_ProcessSubmit($data,$vars)
 	{
 		$submitVaues['order_id'] =$vars->order_id;
 		$submitVaues['client'] =$vars->client;
@@ -109,7 +112,7 @@ class plgpaymentewallet extends JPlugin
 		$session->set('payment_submitpost',$submitVaues);
 		JFactory::getApplication()->redirect($vars->url);
 	}
-	
+
 	//Adds a row for the first time in the db, calls the layout view
 	function onTP_Processpayment($data)
 	{
@@ -151,6 +154,52 @@ class plgpaymentewallet extends JPlugin
 	{
 		$plgPaymentEwalletHelper = new plgPaymentEwalletHelper();
 			$log = $plgPaymentEwalletHelper->Storelog($this->_name,$data);
-	
+
 	}
-}	
+
+	// Manoj - added refund function start.
+	/*
+	 * Sample $data array data expected -
+	$data                        = array();
+	$data['order_id']            = $orderData->id;
+	$data['user_id']             = $orderData->donor_id;
+	$data['total']               = $orderData->amount;
+	$data['client']              = 'com_jgive';
+	$data['payment_description'] = JText::_('COM_JGIVE_PROCESS_REFUND_DEFAULT_MSG') . ' ' . $orderData->title;
+	$data['return']              = '';
+	*/
+	function onTP_ProcessRefund($data)
+	{
+		$api_wallet     = JPATH_SITE . DS . 'components' . DS . 'com_ewallet' . DS . 'helper.php';
+		$payment_status = $this->translateResponse('Refund');
+
+		if(file_exists($api_wallet))
+		{
+			$comewalletHelper = new comewalletHelper();
+			$points_count     = $comewalletHelper->getUserBalance($data['user_id']);
+			$convert_val      = $this->params->get('conversion');
+			$points_to_add    = $data['total'] * $convert_val;
+
+			// Call comonent api function-> function addTransaction($user_id,$amount,$type,$comment).
+			if($comewalletHelper->addTransaction($data['user_id'], $points_to_add, 'C', $data['payment_description']))
+			{
+				$payment_status = $this->translateResponse('Success');
+			}
+
+		}
+
+		$result = array(
+			'transaction_id'  => '',
+			'order_id'        => $data['order_id'],
+			'client'          => $data['client'],
+			'status'          => $payment_status,
+			'total_paid_amt'  => $data['total'],
+			'raw_data'        => json_encode($data),
+			'error'           => '',
+			'return'          => $data['return'],
+		);
+
+		return $result;
+	}
+	// Manoj - added refund function end.
+}
