@@ -30,12 +30,12 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		 'INCOMPLETE'  => 'P','PROCESSING'=>'P','PENDING'=>'P','CREATED'=>'P',
 		 'ERROR'=>'E','DENIED'=>'D','FAILED'=>'E',
 		 'PARTIALLY_REFUNDED'=>'RF','REVERSALERROR'=>'CRV','REFUNDED'=>'RF',
-		 'REVERSED'=>'RV'  
+		 'REVERSED'=>'RV'
 		);
 
 		$this->headers=array(
 			"X-PAYPAL-SECURITY-USERID:".$this->params->get('apiuser'),
-			"X-PAYPAL-SECURITY-PASSWORD:".$this->params->get('apipass'),   
+			"X-PAYPAL-SECURITY-PASSWORD:".$this->params->get('apipass'),
 			"X-PAYPAL-SECURITY-SIGNATURE:".$this->params->get('apisign'),
 			"X-PAYPAL-REQUEST-DATA-FORMAT:JSON",
 			"X-PAYPAL-RESPONSE-DATA-FORMAT:JSON",
@@ -46,8 +46,6 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			"errorLanguage"=>"en_US",
 			"detailLevel"=>"ReturnAll"
 		);
-		$this->com_jgive_params=JComponentHelper::getParams('com_jgive');
-		//print_r($this->com_jgive_params);die;
 		$plugin = JPluginHelper::getPlugin('payment', 'adaptive_paypal');
 		$params=json_decode($plugin->params);
 		$this->apiurl= $params->sandbox ? 'https://svcs.sandbox.paypal.com/AdaptivePayments/' : 'https://svcs.paypal.com/AdaptivePayments/';
@@ -72,7 +70,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 	  	return  $core_file;
 	}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -80,7 +78,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
@@ -112,7 +110,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		return $html;
 	}
 
-	function onTP_ProcessSubmit($data,$vars) 
+	function onTP_ProcessSubmit($data,$vars)
 	{
 		$adaptiveReceiverList = $vars->adaptiveReceiverList;
 		//Take this receiver email address from plugin if component not provided it
@@ -129,7 +127,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 				"receiver"=>$receiverOptions
 			),
 			"returnUrl"=>$vars->return,
-			"cancelUrl"=>$vars->cancel_return, 
+			"cancelUrl"=>$vars->cancel_return,
 			"ipnNotificationUrl"=>$vars->notify_url,//ipnNotificationUrl notifyUrl
 			"trackingId"=>$vars->order_id,
 			"requestEnvelope"=>$this->envelope
@@ -165,17 +163,17 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			$temp['primary'] = $rec['primary'];
 			$receiverOptions[] = $temp;
 			$emails['email'] = $temp['email'] ;
-			$r = array(); 
-			$r['receiver'] = $emails; 
+			$r = array();
+			$r['receiver'] = $emails;
 			$receiver[] = $r;
 		}
 
 		$data['receiverOptions'] = $receiverOptions;
 		$data['receiver'] = $receiver;
-		
+
 		return $data;
 	}
-	function onTP_Processpayment($data) 
+	function onTP_Processpayment($data)
 	{
 		/*$verify = plgPaymentAdaptivePaypalHelper::validateIPN($data);
 		if (!$verify) { return false; }
@@ -218,7 +216,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		curl_setopt($ch,CURLOPT_HTTPHEADER,$this->headers);
 		return json_decode(curl_exec($ch),TRUE);
 	}
-	//Wrapper for getting payment details 
+	//Wrapper for getting payment details
 	function getPaymentOptions($paykey){
 		$packet=array(
 			"requestEnvelope"=>$this->envelope,
@@ -233,7 +231,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			"payKey"=>$data['pay_key'],
 			"requestEnvelope"=>$this->envelope
 		);
-		
+
 		$res=$this->_paypalSend($detailsPacket,'PaymentDetails');
 		return $res;
 	}
