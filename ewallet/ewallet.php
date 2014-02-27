@@ -180,7 +180,7 @@ class plgpaymentewallet extends JPlugin
 			$convert_val      = $this->params->get('conversion');
 			$points_to_add    = $data['total'] * $convert_val;
 
-			// Call comonent api function-> function addTransaction($user_id,$amount,$type,$comment).
+			// Call component api function-> function addTransaction($user_id,$amount,$type,$comment).
 			if($comewalletHelper->addTransaction($data['user_id'], $points_to_add, 'C', $data['payment_description']))
 			{
 				$payment_status = $this->translateResponse('Success');
