@@ -14,35 +14,35 @@ else
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_authorizenet', JPATH_ADMINISTRATOR);
 
-class plgpaymentAuthorizenet extends JPlugin 
+class plgpaymentAuthorizenet extends JPlugin
 {
 	var $_payment_gateway = 'payment_authorizenet';
 	var $_log = null;
-	
+
 	function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
 		$config = JFactory::getConfig();
 
-		
+
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review, ERROR=if amount mismatch
 		$this->responseStatus= array(
 			'1' =>'C',
 			'2' =>'D',
 			'3' =>'E',
-			'4'=>'UR',  
-			'ERROR'=>'E',  
+			'4'=>'UR',
+			'ERROR'=>'E',
 		);
-		
 
-		
+
+
  		$this->login_id = $this->params->get( 'login_id', '1' );
 		 $this->tran_key = $this->params->get( 'tran_key', '1' );
-		
+
 	}
-	
+
 	/* Internal use functions */
 	function buildLayoutPath($layout="default") {
 		if(empty($layout))
@@ -59,7 +59,7 @@ class plgpaymentAuthorizenet extends JPlugin
 	  	return  $core_file;
 	}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -68,31 +68,31 @@ class plgpaymentAuthorizenet extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
 	//gets param values
-    function getParamResult($name, $default = '') 
+    function getParamResult($name, $default = '')
     {
     	$sandbox_param = "sandbox_$name";
     	$sb_value = $this->params->get($sandbox_param);
-    	
+
         if ($this->params->get('sandbox') && !empty($sb_value)) {
             $param = $this->params->get($sandbox_param, $default);
         }
         else {
         	$param = $this->params->get($name, $default);
         }
-        
+
         return $param;
     }
 
 	// Used to Build List of Payment Gateway in the respective Components
 	function onTP_GetInfo($config)
 	{
-	
-	
+
+
 	if(!in_array($this->_name,$config))
 	return;
 		$obj 		= new stdClass;
@@ -100,13 +100,13 @@ class plgpaymentAuthorizenet extends JPlugin
 		$obj->id	= $this->_name;
 		return $obj;
 	}
-	
-	
+
+
 
 	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Paypal
 	function onTP_GetHTML($vars)
 	{
-	
+
 		if(!empty($vars->payment_type) and $vars->payment_type!='')
 		$payment_type=$vars->payment_type;
 		else
@@ -114,8 +114,8 @@ class plgpaymentAuthorizenet extends JPlugin
 		$html = $this->buildLayout($vars,$payment_type);
 		return $html;
 	}
-	
-	function onTP_ProcessSubmit($data,$vars) 
+
+	function onTP_ProcessSubmit($data,$vars)
 	{
 		$submitVaues['order_id'] =$vars->order_id;
 		$submitVaues['user_id'] =$vars->user_id;
@@ -134,27 +134,28 @@ class plgpaymentAuthorizenet extends JPlugin
 		$submitVaues['cardnum'] =$data['cardnum'];
 		$submitVaues['cardexp'] =$data['cardexp'];
 		$submitVaues['cardcvv'] =$data['cardcvv'];
-		
+
 		/* for onsite plugin set the post data into session and redirect to the notify URL */
 		$session = JFactory::getSession();
 		$session->set('payment_submitpost',$submitVaues);
 		JFactory::getApplication()->redirect($vars->url);
 	}
-	
-	function onTP_Processpayment($data,$vars=array()) 
+
+	function onTP_Processpayment($data,$vars=array())
 	{
 		$isValid = true;
 		$error=array();
 		$error['code']	='';
 		$error['desc']	='';
-		
-		if($data['payment_type']=="recurring")
+
+		if(!empty($data['payment_type']) && $data['payment_type']=="recurring")
 		{
 			$response=plgpaymentAuthorizenet::onTP_Processpayment_recurring($data);
 			return $response;
 		}
-		$action_url = plgPaymentAuthorizenetHelper::buildAuthorizenetUrl();	
-		
+		$plgPaymentAuthorizenetHelper = new plgPaymentAuthorizenetHelper;
+		$action_url = $plgPaymentAuthorizenetHelper->buildAuthorizenetUrl();
+
 		$authnet_values				= array(
 									"x_login"					=> $this->login_id,
 								 	"x_tran_key"			=> $this->tran_key,
@@ -179,26 +180,26 @@ class plgpaymentAuthorizenet extends JPlugin
 									"x_cust_id"				=>$data['user_id'],
 									"x_email"					=>$data['email'],
 									"x_order_id"			=>$data['order_id'],
-		
+
 									);
 
 		$fields = "";
-		foreach($authnet_values as $key => $value) 
-			$fields .= "$key=".urlencode($value). "&";	
-			
-		//call to curl	
-		$ch = curl_init($action_url); 		
-		curl_setopt($ch, CURLOPT_HEADER, 0); 		
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
-		curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); 		
+		foreach($authnet_values as $key => $value)
+			$fields .= "$key=".urlencode($value). "&";
+
+		//call to curl
+		$ch = curl_init($action_url);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " ));
 		$resp = curl_exec($ch); //execute post and get results
 		curl_close ($ch);
     $allresp = explode('|',$resp);
-		//call to curl	
-		
+		//call to curl
+
 		$error['code']=$allresp[0];
 	  $error['desc']=$allresp[3];
-		//3.compare response order id and send order id in notify URL 
+		//3.compare response order id and send order id in notify URL
 		$res_orderid='';
 		$res_orderid = $data['order_id'];
 		if($isValid ) {
@@ -216,7 +217,7 @@ class plgpaymentAuthorizenet extends JPlugin
 				$order_amount=(float) $vars->amount;
 				$retrunamount =  (float)$allresp[9];
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
 					$allresp[0] = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
@@ -227,8 +228,8 @@ class plgpaymentAuthorizenet extends JPlugin
 		}
 		// TRANSLET PAYMENT RESPONSE
     $payment_status=$this->translateResponse($allresp[0]);
-		 
-    $transaction_id = $allresp[6];     
+
+    $transaction_id = $allresp[6];
 
     $result = array('transaction_id'=>$transaction_id,
     				'order_id'=>$data['order_id'],
@@ -239,13 +240,13 @@ class plgpaymentAuthorizenet extends JPlugin
 						'return'=>$data['return'],
 						);
     return $result;
-    
+
 	}
-	
+
 function 	onTP_Processpayment_recurring($data)
-	{	
+	{
 		$order_id=$data['order_id'];
-		
+
 
 		if(JVERSION >=1.6)
 		require_once(JPATH_SITE.DS.'plugins'.DS.'payment'.DS.'authorizenet'.DS.'authorizenet'.DS.'lib'.DS.'AuthorizeNet.php');
@@ -253,23 +254,23 @@ function 	onTP_Processpayment_recurring($data)
 		require_once(JPATH_SITE.DS.'plugins'.DS.'payment'.DS.'authorizenet'.DS.'lib'.DS.'AuthorizeNet.php');
 
 
-		
+
 		 $auth_net_login_id = $this->params->get( 'login_id', '1' );
 		$auth_net_tran_key = $this->params->get( 'tran_key', '1' );
 
-		
-		$auth_net_url = plgPaymentAuthorizenetHelper::buildAuthorizenetUrl();	
+		$plgPaymentAuthorizenetHelper = new plgPaymentAuthorizenetHelper;
+		$auth_net_url = $plgPaymentAuthorizenetHelper->buildAuthorizenetUrl();
 		$auth_net_url;
 		$DEBUGGING					= 1;				# Display additional information to track down problems
 		$TESTING					= 1;				# Set the testing flag so that transactions are not live
 		$ERROR_RETRIES				= 2;				# Number of transactions to post if soft errors occur
-		
+
 		$exp_date = explode('-',$data['expirationDate']);
-		$data['expirationDate'] = $exp_date[1]."-".$exp_date[0];		
-		
+		$data['expirationDate'] = $exp_date[1]."-".$exp_date[0];
+
 		define("AUTHORIZENET_API_LOGIN_ID", $auth_net_login_id);
 		define("AUTHORIZENET_TRANSACTION_KEY", $auth_net_tran_key);
-		
+
 		$subscription = new AuthorizeNet_Subscription;
 
 		$subscription->name = $data['sub_name'];
@@ -288,14 +289,14 @@ function 	onTP_Processpayment_recurring($data)
 		$subscription->billToCity = $data['cardcity'];
 		$subscription->billToState = $data['cardstate'];
 		$subscription->billToZip = $data['cardzip'];
-		
-		// Create the subscription. 
+
+		// Create the subscription.
 		$request = new AuthorizeNetARB;
 		$refId=$subscription->orderInvoiceNumber;
 		$request->setRefId($refId);
 		$testmode = $this->params->get( 'sandbox', '1' );
-		
-		if($testmode == 0){		
+
+		if($testmode == 0){
 			$request->setSandbox(false);	//turn OFF sandbox
 		}
 		else{
@@ -305,25 +306,25 @@ function 	onTP_Processpayment_recurring($data)
 
 
 		$subscription_id = $response->getSubscriptionId();
-		
-	
+
+
 		$error="";
 		if ($response->xml->messages->resultCode != 'Ok')
 		{
 			$payment_status="P";
-			
+
 			$error=JText::_('AUTH_SUB_FAIL').$response->xml->messages->message->text;
-		
+
 
 		}
 		else
 		{
 		$payment_status="C";
 			$success=JText::_('AUTH_SUB_SUCCESS').$subscription_id;
-		
+
 		}
 			$result = array('transaction_id'=>$refId,
-						'subscription_id'=>$subscription_id,							
+						'subscription_id'=>$subscription_id,
     				'order_id'=>$data['order_id'],
 						'status'=>$payment_status,
 						'total_paid_amt'=>$data['amount'],
@@ -342,10 +343,10 @@ function 	onTP_Processpayment_recurring($data)
 		$db = JFactory::getDBO();
 		$data=json_decode($json,true);
 		$payment_status=plgpaymentAuthorizenet::translateResponse($data['x_response_code']);
-			
-					$result = array('transaction_id'=>$data['x_trans_id'],			
-						'subscription_id'=>$data['x_subscription_id'],							
-    				'order_id'=>$data['x_trans_id'],			
+
+					$result = array('transaction_id'=>$data['x_trans_id'],
+						'subscription_id'=>$data['x_subscription_id'],
+    				'order_id'=>$data['x_trans_id'],
 						'status'=>$payment_status,
 						'total_paid_amt'=>$data['x_amount'],
 						'raw_data'=>$json,
@@ -356,20 +357,20 @@ function 	onTP_Processpayment_recurring($data)
 						'return'=>'',
 						);
 						return $result;
-		
-		
-		
-		
 
-	
 
-	
+
+
+
+
+
+
 	}
 	//this is for cancel automated Recurring Billing
 	function cancelsubscription($data)
 	{
-		$subid = $data['0'];	
-		$id=$data['1'];	
+		$subid = $data['0'];
+		$id=$data['1'];
 		$gateway = $data['2'];
 		$ad_id = $data['3'];
 		$db = JFactory::getDBO();
@@ -382,12 +383,13 @@ function 	onTP_Processpayment_recurring($data)
 			$auth_net_login_id = $this->params->get( 'login_id', '1' );
 			$auth_net_tran_key = $this->params->get( 'tran_key', '1' );
 
-			$auth_net_url = plgPaymentAuthorizenetHelper::buildAuthorizenetUrl();	
+			$plgPaymentAuthorizenetHelper = new plgPaymentAuthorizenetHelper;
+			$auth_net_url = $plgPaymentAuthorizenetHelper->buildAuthorizenetUrl();
 			define("AUTHORIZENET_API_LOGIN_ID", $auth_net_login_id);
 			define("AUTHORIZENET_TRANSACTION_KEY", $auth_net_tran_key);
 
 			$refId=$id;
-			// Cancel the subscription. 
+			// Cancel the subscription.
 			$cancellation = new AuthorizeNetARB;
 			$cancellation->setRefId($refId);
 			$response = $cancellation->cancelSubscription($subid);
@@ -406,7 +408,7 @@ function 	onTP_Processpayment_recurring($data)
 
 			}
 				$result = array('transaction_id'=>$refId,
-						'subscription_id'=>$subid,							
+						'subscription_id'=>$subid,
     				'order_id'=>$data['order_id'],
 						'status'=>$payment_status,
 						'total_paid_amt'=>$data['amount'],
@@ -417,22 +419,23 @@ function 	onTP_Processpayment_recurring($data)
 						'return'=>$data['return'],
 						);
 						return $result;
-		
-				
+
+
 		}
 	}
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
 				if($key==$payment_status)
-				return $value;		
+				return $value;
 			}
 	}
 		function onTP_Storelog($data)
 	{
-			$log = plgPaymentAuthorizenetHelper::Storelog($this->_name,$data);
-	
+		$plgPaymentAuthorizenetHelper = new plgPaymentAuthorizenetHelper;
+		$log = $plgPaymentAuthorizenetHelper->Storelog($this->_name,$data);
+
 	}
-	
+
 }
 
