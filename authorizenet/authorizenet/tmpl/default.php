@@ -12,7 +12,7 @@ JHTML::_('behavior.formvalidation');
 $userInfo = array();
 $plg_billStyle = "block";
 $plg_billStyleMsg = JText::_('PLG_AUTHONET_HIDE_BILL_INFO');
-if(0 && !empty($vars->userInfo))
+if(!empty($vars->userInfo))
 {
 	$plg_billStyle="none";
 	$userInfo = $vars->userInfo;
