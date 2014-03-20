@@ -92,9 +92,9 @@ class plgpaymentAuthorizenet extends JPlugin
 	function onTP_GetInfo($config)
 	{
 
+		if(!in_array($this->_name,$config))
+		return;
 
-	if(!in_array($this->_name,$config))
-	return;
 		$obj 		= new stdClass;
 		$obj->name 	=$this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
@@ -153,52 +153,58 @@ class plgpaymentAuthorizenet extends JPlugin
 			$response=plgpaymentAuthorizenet::onTP_Processpayment_recurring($data);
 			return $response;
 		}
+
+
+		$authnet_values	= array(
+							"login"					=> $this->login_id,
+							"tran_key"			=> $this->tran_key,
+							"version"				=> "3.1",
+							"delim_char"		=> "|",
+							"delim_data"		=> "TRUE",
+							"type"					=> "AUTH_CAPTURE",
+							"method"				=> "CC",
+							"relay_response"=> "FALSE",
+							"card_num"			=> $data['cardnum'],
+							"card_code"			=> $data['cardcvv'],
+							"exp_date"			=> $data['cardexp'],
+							"description"		=> "",
+							"amount"				=> $data['amount'],
+							"first_name"		=> $data['cardfname'],
+							"last_name"			=> $data['cardlname'],
+							"address"				=> $data['cardaddress1'],
+							"city"					=> $data['cardcity'],
+							"state"					=> $data['cardstate'],
+							"zip"						=> $data['cardzip'],
+							"country"				=>$data['cardcountry'],
+							"cust_id"				=>$data['user_id'],
+							"email"					=>$data['email'],
+							);
+
+
+
+		require_once 'authorizenet/lib/AuthorizeNet.php';
+		$sale = new AuthorizeNetAIM($this->login_id,$this->tran_key);
+
+		//Check sandbox or live
 		$plgPaymentAuthorizenetHelper = new plgPaymentAuthorizenetHelper;
-		$action_url = $plgPaymentAuthorizenetHelper->buildAuthorizenetUrl();
+		$sandbox = $plgPaymentAuthorizenetHelper->isSandboxEnabled();
+		$sale->setSandbox($sandbox);
 
-		$authnet_values				= array(
-									"x_login"					=> $this->login_id,
-								 	"x_tran_key"			=> $this->tran_key,
-									"x_version"				=> "3.1",
-									"x_delim_char"		=> "|",
-									"x_delim_data"		=> "TRUE",
-									"x_type"					=> "AUTH_CAPTURE",
-									"x_method"				=> "CC",
-								 	"x_relay_response"=> "FALSE",
-									"x_card_num"			=> $data['cardnum'],
-									"x_card_code"			=> $data['cardcvv'],
-									"x_exp_date"			=> $data['cardexp'],
-									"x_description"		=> "",
-									"x_amount"				=> $data['amount'],
-									"x_first_name"		=> $data['cardfname'],
-									"x_last_name"			=> $data['cardlname'],
-									"x_address"				=> $data['cardaddress1'],
-									"x_city"					=> $data['cardcity'],
-									"x_state"					=> $data['cardstate'],
-									"x_zip"						=> $data['cardzip'],
-									"x_country"				=>$data['cardcountry'],
-									"x_cust_id"				=>$data['user_id'],
-									"x_email"					=>$data['email'],
-									"x_order_id"			=>$data['order_id'],
+		$sale->setFields($authnet_values);
 
-									);
+		$allresp = $sale->authorizeAndCapture();
 
-		$fields = "";
-		foreach($authnet_values as $key => $value)
-			$fields .= "$key=".urlencode($value). "&";
+		if ($allresp->approved)
+		{
+			//echo "Sale successful!";
+		}
+		else
+		{
+			$error['desc'] = $allresp->error_message;
+		}
 
-		//call to curl
-		$ch = curl_init($action_url);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " ));
-		$resp = curl_exec($ch); //execute post and get results
-		curl_close ($ch);
-    $allresp = explode('|',$resp);
-		//call to curl
+		//print_r($allresp);die;
 
-		$error['code']=$allresp[0];
-	  $error['desc']=$allresp[3];
 		//3.compare response order id and send order id in notify URL
 		$res_orderid='';
 		$res_orderid = $data['order_id'];
@@ -215,7 +221,7 @@ class plgpaymentAuthorizenet extends JPlugin
 			{
 				// Check that the amount is correct
 				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$allresp[9];
+				$retrunamount =  (float)$allresp->amount;
 				$epsilon = 0.01;
 
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -226,20 +232,21 @@ class plgpaymentAuthorizenet extends JPlugin
 				}
 			}
 		}
+
 		// TRANSLET PAYMENT RESPONSE
-    $payment_status=$this->translateResponse($allresp[0]);
+		$payment_status=$this->translateResponse($allresp->response_code);
 
-    $transaction_id = $allresp[6];
+		$transaction_id = $allresp->transaction_id;
 
-    $result = array('transaction_id'=>$transaction_id,
-    				'order_id'=>$data['order_id'],
-						'status'=>$payment_status,
-						'total_paid_amt'=>$allresp[9],
-						'raw_data'=>$resp,
-						'error'=>$error,
-						'return'=>$data['return'],
-						);
-    return $result;
+		$result = array('transaction_id'=>$transaction_id,
+						'order_id'=>$data['order_id'],
+							'status'=>$payment_status,
+							'total_paid_amt'=>$allresp->amount,
+							'raw_data'=>$allresp,
+							'error'=>$error,
+							'return'=>$data['return'],
+							);
+		return $result;
 
 	}
 
