@@ -187,7 +187,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 						'action_type'=>$data['action_type'],
 						'status'=>$payment_status,
 						'txn_type'=>$data['transaction_type'],
-						'total_paid_amt'=>$paymentDetails['paymentInfoList']['paymentInfo'][0]['receiver']['amount'],
+						'total_paid_amt'=>$paymentDetails['paymentInfoList']['paymentInfo'][1]['receiver']['amount'],
 						'raw_data'=>$paymentDetails,
 						'error'=>$paymentDetails,
 						);
