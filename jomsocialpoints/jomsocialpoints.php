@@ -12,18 +12,18 @@ if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/jomsocialpoints/jomsocialpoints/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/jomsocialpoints/helper.php');
-class plgpaymentjomsocialpoints extends JPlugin 
+class plgpaymentjomsocialpoints extends JPlugin
 {
 	var $_payment_gateway = 'payment_jomsocialpoints';
 	var $_log = null;
-	
+
 	function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
 		$config = JFactory::getConfig();
 
-		
+
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
 		$this->responseStatus= array(
@@ -46,7 +46,7 @@ class plgpaymentjomsocialpoints extends JPlugin
 	  	return  $core_file;
 	}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -55,7 +55,7 @@ class plgpaymentjomsocialpoints extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
@@ -70,6 +70,12 @@ class plgpaymentjomsocialpoints extends JPlugin
 		$db->setQuery($query);
 		$user_points = $db->loadResult();
 		$vars->user_points = $user_points;
+
+		if ($user_points=='')
+		{
+			$vars->user_points = 0;
+		}
+
 		$vars->convert_val = $this->params->get('conversion');
 
 		$html = $this->buildLayout($vars);
@@ -87,7 +93,7 @@ class plgpaymentjomsocialpoints extends JPlugin
 		$obj->id	= $this->_name;
 		return $obj;
 	}
-	
+
 	//Adds a row for the first time in the db, calls the layout view
 	function onTP_Processpayment($data)
 	{
@@ -101,7 +107,7 @@ class plgpaymentjomsocialpoints extends JPlugin
 		$points_count = $db->loadResult();
 		$convert_val = $this->params->get('conversion');
 		$points_charge=$data['total']*$convert_val;
-		
+
 		if($points_charge <= $points_count)
 		{
 			$count=$points_count - $points_charge;
@@ -115,8 +121,8 @@ class plgpaymentjomsocialpoints extends JPlugin
 			$payment_status='Failure';
 			$isValid = false;
     }
-    
-    //3.compare response order id and send order id in notify URL 
+
+    //3.compare response order id and send order id in notify URL
 		$res_orderid='';
 		$res_orderid = $data['order_id'];
 		if($isValid ) {
@@ -127,7 +133,7 @@ class plgpaymentjomsocialpoints extends JPlugin
 				$error['desc'] .= "ORDER_MISMATCH" . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
 			}
 		}
-		
+
 		// amount check
 		if($isValid ) {
 			if(!empty($vars))
@@ -136,7 +142,7 @@ class plgpaymentjomsocialpoints extends JPlugin
 				$order_amount=(float) $vars->amount;
 				$retrunamount =  (float)$data['total'];
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
 					$payment_status = 'ERROR';
@@ -159,18 +165,18 @@ class plgpaymentjomsocialpoints extends JPlugin
     return $result;
   }
 	function translateResponse($invoice_status){
-			
+
     	foreach($this->responseStatus as $key=>$value)
 				{
 					if($key==$invoice_status)
-					return $value;		
+					return $value;
 				}
 	}
 	function onTP_Storelog($data)
 	{
 			$log = plgPaymentJomsocialpointsHelper::Storelog($this->_name,$data);
-	
+
 	}
-}	
+}
 
 
