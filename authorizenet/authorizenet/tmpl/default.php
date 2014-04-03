@@ -64,6 +64,10 @@ function plg_auth_showHide()
 <div class="akeeba-bootstrap">
 <form action="<?php echo $vars->url; //$vars->submiturl; // rollded back  ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);"  class="form-validate form-horizontal"  method="post">
 	<div>
+	<?php
+	if(!empty($vars->userInfo))
+	{
+	?>
 	<div class="control-group">
 
 			<div class="alert alert-success " id="">
@@ -73,6 +77,8 @@ function plg_auth_showHide()
 			</div>
 
 	</div>
+	<?
+	} ?>
 	<div id="tj_payGway_billInfo" style="display:<?php echo $plg_billStyle; ?>">
 		<div class="control-group">
 			<label for="cardfname" class="control-label"><?php echo JText::_( 'FIRST_NAME' ) ?></label>
