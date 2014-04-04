@@ -23,12 +23,12 @@ class  plgPaymentPayu extends JPlugin
 		//Set the language in the class
 		$config = JFactory::getConfig();
 
-		
+
 		//Define Payment Status codes in payu  And Respective Alias in Framework
 		$this->responseStatus= array(
  	 'success'  => 'C','pending'  => 'P',
  	 'failure'=>'E'
-  
+
 		);
 	}
 
@@ -46,7 +46,7 @@ class  plgPaymentPayu extends JPlugin
 	  	return  $core_file;
 	}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -54,7 +54,7 @@ class  plgPaymentPayu extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
@@ -80,35 +80,35 @@ class  plgPaymentPayu extends JPlugin
 //		if(empty($vars->business))
 
 			$vars->key = $this->params->get('key');
-			$vars->salt = $this->params->get('salt');	
+			$vars->salt = $this->params->get('salt');
 			$this->preFormatingData($vars);	 // fomating on data
 			$html = $this->buildLayout($vars);
 
 		return $html;
 	}
 
-	
-	
-	function onTP_Processpayment($data,$vars=array()) 
+
+
+	function onTP_Processpayment($data,$vars=array())
 	{
 		//$verify = plgPaymentPayuHelper::validateIPN($data);
-		//if (!$verify) { return false; }	
+		//if (!$verify) { return false; }
 		$isValid = true;
 		$error=array();
 		$error['code']	='';
 		$error['desc']	='';
-		
-		//.compare response order id and send order id in notify URL 
+
+		//.compare response order id and send order id in notify URL
 		$res_orderid='';
 		if($isValid ) {
-		$res_orderid = $data['udf1']; 
+		$res_orderid = $data['udf1'];
 			if(!empty($vars) && $res_orderid != $vars->order_id )
 			{
 				$isValid = false;
 				$error['desc'] = "ORDER_MISMATCH" . "Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
 			}
 		}
-		
+
 		// amount check
 		if($isValid ) {
 			if(!empty($vars))
@@ -117,7 +117,7 @@ class  plgPaymentPayu extends JPlugin
 				$order_amount=(float) $vars->amount;
 				$retrunamount =  (float)$data['amount'];
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
 					$data['status'] = 'failure';  // change response status to ERROR FOR AMOUNT ONLY
@@ -143,33 +143,37 @@ class  plgPaymentPayu extends JPlugin
 						'raw_data'=>$data,
 						'error'=>$error,
 						);
-		return $result;						
-	}	
-	
+		return $result;
+	}
+
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
 				if($key==$payment_status)
-				return $value;		
+				return $value;
 			}
 	}
 	function onTP_Storelog($data)
 	{
 			$log = plgPaymentPayuHelper::Storelog($this->_name,$data);
-	
-	}	
+
+	}
 	/*
 		@params $vars :: object
-		@return $vars :: formatted object 
+		@return $vars :: formatted object
 	*/
 	function preFormatingData($vars)
-	{		
+	{
+
 		foreach($vars as $key=>$value)
 		{
-			$vars->$key=trim($value);	
-			if($key=='amount')
-				$vars->$key=round($value);
-		}	
+			if(!is_array($value))
+			{
+				$vars->$key=trim($value);
+				if( $key=='amount')
+					$vars->$key=round($value);
+			}
+		}
 	}
-	
+
 }
