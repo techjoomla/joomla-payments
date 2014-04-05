@@ -21,14 +21,14 @@ class  plgPaymentPaypal extends JPlugin
 		//Set the language in the class
 		$config = JFactory::getConfig();
 
-		
+
 		//Define Payment Status codes in Paypal  And Respective Alias in Framework
 		$this->responseStatus= array(
  	 'Completed'  => 'C','Pending'  => 'P',
  	 'Failed'=>'E','Denied'=>'D',
  	 'Refunded'=>'RF','Canceled_Reversal'=>'CRV',
  	 'Reversed'=>'RV'
-  
+
 		);
 	}
 
@@ -50,7 +50,7 @@ class  plgPaymentPaypal extends JPlugin
 	  	return  $core_file;
 	}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -58,7 +58,7 @@ class  plgPaymentPaypal extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
@@ -87,15 +87,15 @@ class  plgPaymentPaypal extends JPlugin
 		//if component does not provide cmd
 		if(empty($vars->cmd))
 			$vars->cmd='_xclick';
-		//@ get recurring layout Amol 
-		if($vars->is_recurring==1)
+		//@ get recurring layout Amol
+		if(property_exists($vars, 'is_recurring') && $vars->is_recurring==1)
 			$html = $this->buildLayout($vars,'recurring');
 		else
 			$html = $this->buildLayout($vars);
 		return $html;
 	}
-	
-	function onTP_ProcessSubmit($data,$vars) 
+
+	function onTP_ProcessSubmit($data,$vars)
 	{
 		//Take this receiver email address from plugin if component not provided it
 		if(empty($vars->business))
@@ -108,7 +108,7 @@ class  plgPaymentPaypal extends JPlugin
 			$submitVaues['cmd'] ='_xclick';
 		else
 			$submitVaues['cmd'] =$vars->cmd;
-			
+
 		$submitVaues['custom'] =$vars->order_id;
 		$submitVaues['item_name'] =$vars->item_name;
 		$submitVaues['return'] =$vars->return;
@@ -127,7 +127,7 @@ class  plgPaymentPaypal extends JPlugin
 	}
 
 	//***************************Recurring Payment ***************************
-	function onTP_ProcessSubmitRecurring($data,$vars) 
+	function onTP_ProcessSubmitRecurring($data,$vars)
 	{
 		//Take this receiver email address from plugin if component not provided it
 		if(empty($vars->business))
@@ -140,7 +140,7 @@ class  plgPaymentPaypal extends JPlugin
 			$submitVaues['cmd'] ='_xclick-subscriptions';
 		else
 			$submitVaues['cmd'] =$vars->cmd;
-			
+
 		$submitVaues['custom'] =	$vars->order_id;
 		$submitVaues['item_name'] =	$vars->item_name;
 		$submitVaues['return'] =	$vars->return;
@@ -173,38 +173,12 @@ class  plgPaymentPaypal extends JPlugin
 	}
 
 
-	function onTP_Processpayment($data,$vars=array() ) 
+	function onTP_Processpayment($data)
 	{
+		//print_r($data);die;
 		$verify = plgPaymentPaypalHelper::validateIPN($data);
 		if (!$verify) { return false; }
 
-//2.compare response order id and send order id in notify URL 
-		$res_orderid = $data['custom'];
-		if($isValid ) {
-			if(!empty($vars) && $res_orderid != $vars->order_id )
-			{
-				$isValid = false;
-				$error['desc'] = "ORDER_MISMATCH" . "Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
-			}
-		}
-		// amount check
-		if($isValid ) {
-			if(!empty($vars))
-			{
-				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$data['mc_gross'];
-				$epsilon = 0.01;
-				
-				if(($order_amount - $retrunamount) > $epsilon)
-				{
-					$data['payment_status'] = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
-					$isValid = false;
-					$error['desc'] = "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
-				}
-			}
-		}
-		//  PROCESS PAYMENT STATUS
 		$payment_status=$this->translateResponse($data['payment_status']);
 
 		$result = array(
@@ -232,6 +206,6 @@ class  plgPaymentPaypal extends JPlugin
 	function onTP_Storelog($data)
 	{
 			$log = plgPaymentPaypalHelper::Storelog($this->_name,$data);
-	
+
 	}
 }

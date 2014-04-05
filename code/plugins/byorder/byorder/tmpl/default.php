@@ -1,17 +1,17 @@
-<?php 
+<?php
 /**
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
-	
+
 // no direct access
-	defined('_JEXEC') or die('Restricted access'); 
+	defined('_JEXEC') or die('Restricted access');
 
 $document =JFactory::getDocument();
 defined('_JEXEC') or die('Restricted access');
 
-	JHTML::_('behavior.formvalidation');	
-	 
+	JHTML::_('behavior.formvalidation');
+
 	if($vars->custom_email=="")
 		$email = JText::_('NO_ADDRS');
 	else
@@ -25,24 +25,24 @@ defined('_JEXEC') or die('Restricted access');
 function myValidate(f)
 {
 if (document.formvalidator.isValid(f)) {
-		f.check.value='<?php echo JSession::getFormToken(); ?>'; 
-		return true; 
+		f.check.value='<?php echo JSession::getFormToken(); ?>';
+		return true;
 	}
 	else {
-		var msg = 'Some values are not acceptable.  Please retry.';
+		var msg = "<?php echo JText::_('PLG_BYORDER_VALIDATION_MSG'); ?>";
 		alert(msg);
 	}
 	return false;
-}	
+}
 
 
-	
-</script> 	
+
+</script>
 <div class="akeeba-bootstrap">
-<form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);" class="form-validate form-horizontal"  method="post">			
+<form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);" class="form-validate form-horizontal"  method="post">
 	<div>
 		<div class="control-group">
-			<label for="cardfname" class="control-label"><?php  echo JText::_( 'Order Information' );?></label>
+			<label for="cardfname" class="control-label"><?php  echo JText::_( 'PLG_BYORDER_INFO' );?></label>
 			<div class="controls">	<?php  echo JText::sprintf( 'ORDER_INFO', $vars->custom_name);?></div>
 		</div>
 		<div class="control-group">

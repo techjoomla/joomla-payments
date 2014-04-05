@@ -8,8 +8,8 @@
 	jimport('joomla.html.html');
 	jimport( 'joomla.plugin.helper' );
 class plgPaymentAuthorizenetHelper
-{ 	
-	
+{
+
 	//gets the paypal URL
 	function buildAuthorizenetUrl($secure = true)
 	{
@@ -19,13 +19,13 @@ class plgPaymentAuthorizenetHelper
 		$url = $params->sandbox ? 'test.authorize.net' : 'secure.authorize.net';
 	/*	$secure_post = $this->params->get('secure_post');
 		$url = $this->params->get('sandbox') ? 'test.authorize.net' : 'secure.authorize.net';*/
-		if ($secure_post) 
+		if ($secure_post)
 			$url = 'https://'.$url.'/gateway/transact.dll' ;
 		else
 			$url = 'http://'.$url.'/gateway/transact.dll' ;
-		
-		return $url;	
-		
+
+		return $url;
+
 	}
 	
 	function Storelog($name,$logdata)
@@ -35,9 +35,9 @@ class plgPaymentAuthorizenetHelper
 		if(JVERSION >='1.6.0')
 			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
 		else
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';	  
-		$my = JFactory::getUser();     
-	
+			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';
+		$my = JFactory::getUser();
+
 		JLog::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'].'_'.$name.'.log',
@@ -53,11 +53,26 @@ class plgPaymentAuthorizenetHelper
 		$logEntry->desc=json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
-     
+
 //		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
 //    $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
 	}
-	
-		
-		
+
+
+	function isSandboxEnabled()
+	{
+		$plugin = JPluginHelper::getPlugin('payment', 'authorizenet');
+		$params=json_decode($plugin->params);
+
+		if($params->sandbox)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+
 }

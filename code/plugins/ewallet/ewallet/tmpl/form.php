@@ -31,7 +31,6 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 	else
 	{
 		document.getElementById('js_buy').disabled='disabled';
-		document.getElementById('edit').disabled='';
 		return false;
 	}
 }
@@ -41,8 +40,11 @@ $comparams = JComponentHelper::getParams( 'com_ewallet' );
 $wallet_currency_nam = $comparams->get( "wallet_currency_nam" );
 ?>
 <div class="techjoomla-bootstrap">
-	<form action="<?php echo $vars->submiturl ?>" class="form-validate form-horizontal"  method="post" id="paymentForm" name="paymentForm">
+	<form action="<?php echo $vars->url ?>" class="form-validate form-horizontal"  method="post" id="paymentForm" name="paymentForm">
 		<div>
+			<div class="alert alert-info">
+				<?php echo JText::_("FULL_WALLET_PAYMENT_MSG_TEXT"); ?>
+			</div>
 			<div class="controls">
 				<?php 
 				echo JText::sprintf( 'CONVERSION_RATE_MESSAGE', $vars->convert_val,$wallet_currency_nam, $vars->currency_code);?>

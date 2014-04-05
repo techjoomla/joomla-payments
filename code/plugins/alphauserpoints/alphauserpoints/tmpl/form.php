@@ -5,16 +5,15 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-
  ?>
 <script type="text/javascript">
 function calculate(convert_val,count,user_points,not_enough_pts_message,success_message)
 {
-  var charge_points = convert_val * count;
+	var charge_points = convert_val * count;
 	var newRow="";
 	var flag=0;
- 	if(user_points==0 || user_points < charge_points)
-  {
+	if(user_points==0 || user_points < charge_points)
+	{
 		newRow=not_enough_pts_message;
 		alert(newRow);
 	}
@@ -28,13 +27,12 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 	alert(success_message);
 		document.getElementById('js_buy').setAttribute('type', 'submit');
 		 return true;
-  }	
+	}
 	else
 	{
-		document.getElementById('js_buy').disabled='disabled';		
-		document.getElementById('edit').disabled='';		
+		document.getElementById('js_buy').disabled='disabled';
 		return false;
-  }
+	}
 }
 
 </script>

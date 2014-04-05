@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment - Paypal Adaptive Payment</name>
+	<author>Techjoomla</author>
+	<creationDate>5th Oct 2013</creationDate>
+	<copyright></copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail></authorEmail>
+	<authorUrl></authorUrl>
+	<version>2.1</version>
+	<description>Paypal Adaptive payment plugin for jGive</description>
+	<files>
+		<filename plugin="adaptive_paypal">adaptive_paypal.php</filename>
+		<folder>adaptive_paypal</folder>
+	</files>
+	<languages> 
+		<language tag="en-GB">en-GB/en-GB.plg_payment_adaptive_paypal.ini</language>
+	</languages>
+
+	<!-- Fields for Joomla 1.6.x and onwards -->
+ 	<config>
+		<fields name="params">
+			<fieldset name="basic">
+						<field name="business" type="text" default="" label="PLG_ADAPTIVE_PAYPAL_EMAIL" description="PLG_ADAPTIVE_PAYPAL_EMAIL_DESC"/>
+						<field name="sandbox" type="radio" default="0" label="PLG_ADAPTIVE_PAYPAL_SANDBOX" description="PLG_ADAPTIVE_PAYPAL_SANDBOX_DESC">
+						<option value="0">NO</option>
+						<option value="1">YES</option>
+						</field>
+						<field name="plugin_name" type="text" default="Paypal Adaptive Payment" label="PLG_ADAPTIVE_PLG_NAME" description="" />
+						<field name="plugin_hidname" type="hidden" default="Paypal Adaptive Payment" />
+				</fieldset>
+			<fieldset name="apifields"   label="API Credential">
+					<field name="apiuser" type="text" default="" label="PLG_ADAPTIVE_PAYPAL_API_USER" description="API_ADAPTIVE_PAYPAL_USER_DESC"/>		
+					<field name="apipass" type="text" default="" label="API_ADAPTIVE_PAYPAL_PASS" description="API_ADAPTIVE_PAYPAL_PASS_DESC"/>		
+					<field name="apisign" type="text" default="" label="API_ADAPTIVE_PAYPAL_SIGN" description="API_ADAPTIVE_PAYPAL_SIGN_DESC"/>		
+					<field name="apiid" type="text" default="" label="API_ADAPTIVE_PAYPAL_ID" description="API_ADAPTIVE_PAYPAL_ID_DESC"/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
