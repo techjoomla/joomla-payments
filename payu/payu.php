@@ -97,7 +97,6 @@ class  plgPaymentPayu extends JPlugin
 		$error=array();
 		$error['code']	='';
 		$error['desc']	='';
-
 		//.compare response order id and send order id in notify URL
 		$res_orderid='';
 		if($isValid ) {
@@ -129,9 +128,8 @@ class  plgPaymentPayu extends JPlugin
 		$data['status'] = $this->translateResponse($data['status']);
 
 		//Error Handling
-		$error=array();
-		$error['code']	=$data['unmappedstatus']; //@TODO change these $data indexes afterwards
-		$error['desc']	=(isset($data['field9'])?$data['field9']:'');
+		$error['code']	.=$data['unmappedstatus']; //@TODO change these $data indexes afterwards
+		$error['desc']	.=(isset($data['field9'])?$data['field9']:'');
 
 		$result = array(
 						'order_id'=>$data['udf1'],
@@ -155,7 +153,8 @@ class  plgPaymentPayu extends JPlugin
 	}
 	function onTP_Storelog($data)
 	{
-			$log = plgPaymentPayuHelper::Storelog($this->_name,$data);
+			$plgPaymentPayuHelper = new plgPaymentPayuHelper;
+			$log = $plgPaymentPayuHelper->Storelog($this->_name,$data);
 
 	}
 	/*
@@ -171,7 +170,7 @@ class  plgPaymentPayu extends JPlugin
 			{
 				$vars->$key=trim($value);
 				if( $key=='amount')
-					$vars->$key=round($value);
+					$vars->$key=ceil($value);
 			}
 		}
 	}
