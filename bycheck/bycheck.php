@@ -12,18 +12,18 @@ if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/bycheck/bycheck/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/bycheck/helper.php');
-class plgpaymentbycheck extends JPlugin 
+class plgpaymentbycheck extends JPlugin
 {
 	var $_payment_gateway = 'payment_bycheck';
 	var $_log = null;
-	
+
 	function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
 		$config = JFactory::getConfig();
 
-		
+
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
 		$this->responseStatus= array(
@@ -50,7 +50,7 @@ class plgpaymentbycheck extends JPlugin
 	  	return  $core_file;
 	}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -62,7 +62,7 @@ class plgpaymentbycheck extends JPlugin
 	require_once(JPATH_SITE.'/plugins/payment/bycheck/bycheck/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/bycheck/helper.php');
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 				return $html;
 	}
@@ -87,15 +87,15 @@ else
 		return $obj;
 	}
 	//Adds a row for the first time in the db, calls the layout view
-	function onTP_Processpayment($data,$vars) 
+	function onTP_Processpayment($data,$vars)
 	{
 		$isValid = true;
 		$error=array();
 		$error['code']	='';
 		$error['desc']	='';
-		
+
 		$trxnstatus="Pending";
-		//3.compare response order id and send order id in notify URL 
+		//3.compare response order id and send order id in notify URL
 		$res_orderid='';
 		$res_orderid = $data['order_id'];
 		if($isValid ) {
@@ -106,7 +106,7 @@ else
 				$error['desc'] = "ORDER_MISMATCH" . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
 			}
 		}
-		
+
 		// amount check
 		if($isValid ) {
 			if(!empty($vars))
@@ -115,7 +115,7 @@ else
 				$order_amount=(float) $vars->amount;
 				$retrunamount =  (float)$data['total'];
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
 					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
@@ -125,33 +125,34 @@ else
 			}
 		}
 		// END OF AMOUNT CHECK
-		
+
 		$payment_status=$this->translateResponse($trxnstatus);
-		
+
 			$data['payment_status']=$payment_status;
 			$result = array('transaction_id'=>'',
     				'order_id'=>$data['order_id'],
 						'status'=>$payment_status,
 						'total_paid_amt'=>$data['total'],
-						'raw_data'=>json_encode($data),
+						'raw_data'=>$data,
 						'error'=>'',
 						'return'=>$data['return'],
 						);
     return $result;
   }
 	function translateResponse($invoice_status){
-			
+
     	foreach($this->responseStatus as $key=>$value)
 				{
 					if($key==$invoice_status)
-					return $value;		
+					return $value;
 				}
 	}
 	function onTP_Storelog($data)
 	{
-			$log = plgPaymentBycheckHelper::Storelog($this->_name,$data);
-	
+			$plgPaymentBycheckHelper = new plgPaymentBycheckHelper;
+			$log = $plgPaymentBycheckHelper->Storelog($this->_name,$data);
+
 	}
-}	
+}
 
 
