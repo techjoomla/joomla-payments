@@ -178,6 +178,8 @@ class plgpaymentAuthorizenet extends JPlugin
 							"country"				=>$data['cardcountry'],
 							"cust_id"				=>$data['user_id'],
 							"email"					=>$data['email'],
+							"invoice_num"			=>$vars->order_id,
+							"description"			=>$vars->item_name
 							);
 
 
