@@ -77,7 +77,7 @@ function plg_auth_showHide()
 			</div>
 
 	</div>
-	<?
+	<?php
 	} ?>
 	<div id="tj_payGway_billInfo" style="display:<?php echo $plg_billStyle; ?>">
 		<div class="control-group">
