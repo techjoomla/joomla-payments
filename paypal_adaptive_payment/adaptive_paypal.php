@@ -130,7 +130,8 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			"cancelUrl"=>$vars->cancel_return,
 			"ipnNotificationUrl"=>$vars->notify_url,//ipnNotificationUrl notifyUrl
 			"trackingId"=>$vars->order_id,
-			"requestEnvelope"=>$this->envelope
+			"requestEnvelope"=>$this->envelope,
+			"feesPayer"=>"PRIMARYRECEIVER"
 		);
 
 		$response=$this->_paypalSend($createPacket,"Pay");
