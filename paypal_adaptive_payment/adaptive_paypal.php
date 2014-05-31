@@ -134,7 +134,13 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			"feesPayer"=>"PRIMARYRECEIVER"
 		);
 
-		$response=$this->_paypalSend($createPacket,"Pay");
+		//send packet
+		$response = $this->_paypalSend($createPacket,"Pay");
+
+		//store packet log
+		//@params packet response, component name, Item name
+		$this->_StorelogBeforePayment($response,$vars->client,$vars->item_name);
+
 		$paykey=$response['payKey'];
 		//Set payment detials
 		$detailsPacket=array(
@@ -205,6 +211,11 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 	function onTP_Storelog($data)
 	{
 		$log = plgPaymentAdaptivePaypalHelper::Storelog($this->_name,$data);
+	}
+
+	function _StorelogBeforePayment($data, $client, $item_name)
+	{
+		$log = plgPaymentAdaptivePaypalHelper::StorelogBeforePayment($this->_name, $data, $client, $item_name);
 	}
 
 	function _paypalSend($data,$call){
