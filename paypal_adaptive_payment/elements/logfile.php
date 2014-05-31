@@ -11,7 +11,7 @@ class JFormFieldLogfile extends JFormField
 	 * @var		string
 	 * @since	1.6
 	 */
-	public $type = 'Cron';
+	public $type = 'Logfile';
 
 	/**
 	 * Method to get the field input markup.
@@ -26,7 +26,7 @@ class JFormFieldLogfile extends JFormField
 	{
 
 		$jgiveLogFilePath = JRoute::_(JUri::root().'plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_com_jgive.log');
-		$return	=	'<a href="'.$jgiveLogFilePath.'">jGive log file</a> <br>';
+		$return	=	'<div style="clear:both"><a href="'.$jgiveLogFilePath.'">jGive log file</a> <br></div>';
 
 	return $return;
 	} //function
