@@ -5,7 +5,7 @@
  */
 	
 // no direct access
-	defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access'); 
 
 $document =JFactory::getDocument();
 JHTML::_('behavior.formvalidation');
@@ -14,7 +14,6 @@ JHTML::_('behavior.formvalidation');
 <script type="text/javascript">
 function myValidate()
 {
- 
   var cardno = document.getElementById('cardnum').value;
   var cardtype = document.getElementById('activated').value;
   var visaregex = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;  

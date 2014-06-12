@@ -14,32 +14,16 @@
 		<folder>offlinecard</folder>
 	</files>
     <languages>
-	<language tag="en-GB">languages/en-GB/en-GB.plg_cpgdetails.ini</language>
-	<language tag="en-GB">languages/en-GB/en-GB.plg_cpgdetails.sys.ini</language>
+	<language tag="en-GB">languages/en-GB/en-GB.plg_offlinecard.ini</language>
+	<language tag="en-GB">languages/en-GB/en-GB.plg_offlinecard.sys.ini</language>
 	</languages>	
-		
-	<params>  		
-  		<param name="public_key" type="text" default="" label="PUBLIC_KEY" description="PUBLIC_KEY_DES"/> 
-	 		<param name="private_key" type="text" default="" label="PRIVATE_KEY" description="PRIVATE_KEY_DES"/>  		 		
-  		<param type="spacer" />
-		<param name="payment_mode" type="radio" default="0" label="ENABLE_PAYMENT_MODE" description="ENABLE_PAYMENT_MODE">
-		  <option value="0">Test</option>
-		  <option value="1">Live</option>
-		</param>
-		<param name="plugin_name" type="text" default="offlinecard" label="PLG_NAME" description="PLG_DESC" />
-		<param name="plugin_hidname" type="hidden" default="offlinecard" />
-	</params>
-	
-	<!-- Fields for Joomla 1.6.x and onwards -->
  	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<!--<field name="public_key" type="text" default="" label="PUBLIC_KEY" description="PUBLIC_KEY_DES"/> -->
-   		<field name="public_key" type="text" default="89605609849e508bfa6522883ade2d06" label="Encryption Key" description="PUBLIC_KEY_DES" />
-				<field name="plugin_name" type="text" default="offlinecard" label="Plugin Name" description="PLG_DESC" />
-				<field name="plugin_hidname" type="hidden" default="offlinecard" />
+				<field name="public_key" type="text" default="89605609849e508bfa6522883ade2d06" label="Encryption Key" description="PUBLIC_KEY_DES" />
+					<field name="plugin_name" type="text" default="offlinecard" label="Plugin Name" description="PLG_DESC" />
+					<field name="plugin_hidname" type="hidden" default="offlinecard" />
 			</fieldset>			
 		</fields>
 	</config>
-	
 </extension>

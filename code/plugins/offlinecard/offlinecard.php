@@ -6,13 +6,12 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.plugin.plugin' );
-$lang =  JFactory::getLanguage();
-$lang->load('plg_cpgdetails', JPATH_ADMINISTRATOR);
+//$lang = & JFactory::getLanguage();
+//$lang->load('plg_offlinecard', JPATH_ADMINISTRATOR);
+JPlugin::loadLanguage('plg_offlinecard');
 class plgpaymentofflinecard extends JPlugin 
 {
 	var $_payment_gateway = 'payment_offlinecard';
-	var $_log = null;
-	
 	function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
@@ -27,26 +26,21 @@ class plgpaymentofflinecard extends JPlugin
 	}
 	
 	/* Internal use functions */
-	function buildLayoutPath($layout="default") {
+	function buildLayoutPath($layout="default") 
+	{
 		if(empty($layout))
 		$layout="default";
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.$layout.'.php';
 		$override	= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
-		if(JFile::exists($override))
-		{
-			return $override;
-		}
-		else
-		{
-	  	return  $core_file;
-	}
+		if(JFile::exists($override)) {
+			return $override;	}
+		else {	return  $core_file;	}
 	}
 	
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
-		// Load the layout & push variables
 		ob_start();
 		$layout = $this->buildLayoutPath($layout);
 		include($layout);
@@ -54,23 +48,7 @@ class plgpaymentofflinecard extends JPlugin
 		ob_end_clean();
 		return $html;
 	}
-	//gets param values
-    function getParamResult($name, $default = '') 
-    {
-		
-    	$sandbox_param = "sandbox_$name";
-    	$sb_value = $this->params->get($sandbox_param);
-    	
-        if ($this->params->get('sandbox') && !empty($sb_value)) {
-            $param = $this->params->get($sandbox_param, $default);
-        }
-        else {
-        	$param = $this->params->get($name, $default);
-        }
-        
-        return $param;
-    }
-
+	
 	// Used to Build List of Payment Gateway in the respective Components
 	function onTP_GetInfo($config)
 	{
@@ -82,10 +60,8 @@ class plgpaymentofflinecard extends JPlugin
 		return $obj;
 	}
 	
-	
 	function onTP_GetHTML($vars)
 	{
-		
 		$session = JFactory::getSession();
 		$session->set('amount', $vars->amount);
 		$session->set('currency_code', $vars->currency_code);
@@ -100,7 +76,6 @@ class plgpaymentofflinecard extends JPlugin
 	function onTP_Processpayment($data) 
 	{
 		$db = JFactory::getDBO();
-		$component = JRequest::getVar('option'); 
 		$post=JRequest::get('post');
 		$cardnum = substr($post['cardnum'], 0, 8);
 		$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_DEV_URANDOM);
@@ -111,54 +86,32 @@ class plgpaymentofflinecard extends JPlugin
 		$arr = array('Card No' => $cardno, 'Expiry Date' => $cardexp, 'CVV Number' => $cardcvv, 'Card Type' => $cardtype);		
 		$params = json_encode($arr);
 		$mainframe =& JFactory::getApplication('site');
-		if($component == 'com_quick2cart') {
-			$order_id = $data["order_id"];
-			$sql = "UPDATE #__kart_orders SET prefix = '".$data["order_id"]."', extra = '".$params."' ORDER BY id DESC LIMIT 1"; 
-			$db->setQuery($sql);
-			$db->query();
-			$mainframe->redirect('index.php?option=com_quick2cart&view=cartcheckout&layout=payment', JText::_('MSG_SAVE'));
-		}
-		if($component == 'com_jgive') {
-			$sql = "UPDATE #__jg_orders SET processor = 'Offline Card', extra = '".$params."' ORDER BY id DESC LIMIT 1"; 
-			$db->setQuery($sql);
-			$db->query();
-			$sql = "SELECT id FROM #__jg_orders WHERE order_id = '".$data["order_id"]."'";
-			$db->setQuery($sql);	
-			$id = $db->loadResult();
-
-			$jconfig = JFactory::getConfig();
-			$jconfig->getValue('config.fromname'); 
-			$params=JComponentHelper::getParams('com_jgive');
-			$email = $params->get('email');
-			$subject= JText::_('CREDIT_CARD_DETAILS');	
-			$lastcardno = substr($post['cardnum'], 8); 
-			$count =  strlen($lastcardno); 
-			$order_id = $data["order_id"];
-			$body=JText::sprintf('SEND_MSG_USER', $order_id, $count, $lastcardno);
+		$sql = "UPDATE #__jg_orders SET processor = 'Offline Card', extra = '".$params."' ORDER BY id DESC LIMIT 1"; 
+		$db->setQuery($sql);
+		$db->query();
+		$sql = "SELECT id FROM #__jg_orders WHERE order_id = '".$data["order_id"]."'";
+		$db->setQuery($sql);	
+		$id = $db->loadResult();
+		$jconfig = JFactory::getConfig();
+		$jconfig->getValue('config.fromname'); 
+		$params=JComponentHelper::getParams('com_jgive');
+		$email = $params->get('email');
+		$subject= JText::_('CREDIT_CARD_DETAILS');	
+		$lastcardno = substr($post['cardnum'], 8); 
+		$count =  strlen($lastcardno); 
+		$order_id = $data["order_id"];
+		$body=JText::sprintf('SEND_MSG_USER', $order_id, $count, $lastcardno);
 			
-			JUtility::sendMail($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.fromname'), $email, $subject, $body, $mode=1, $cc=null, $bcc=null, $attachment=null, $replyto=null, $replytoname=null);			
-			$user = JFactory::getUser();
-			if($user->guest) {
-				$link = $_REQUEST["return"]; 
-				$base = JURI::BASE();
-				$link = str_replace($base, "", $link);
-				$mainframe->redirect($link); 
-			}
-			else { $mainframe->redirect('index.php?option=com_jgive&view=donations&layout=details&donationid='.$id.'&processor=offlinecard&email=&Itemid=0');	}
-
-		 }
-		if($component == 'com_jticketing') {
-			$sql = "UPDATE #__jticketing_orders SET extra = '".$params."' ORDER BY id DESC LIMIT 1"; 
-			$db->setQuery($sql);
-			$db->query();
-			$mainframe->redirect('index.php?option=com_jgive&view=donations&layout=confirm','Card detailsSaved');		 		
-		 }
-		if($component == 'com_socialads') {
-			$sql = "UPDATE #__jticketing_order SET extra = '".$params."' ORDER BY id DESC LIMIT 1"; 
-			$db->setQuery($sql);
-			$db->query();
-			$mainframe->redirect('index.php?option=com_jticketing&view=mytickets','Card detailsSaved');		 }						
-			return true;
+		JUtility::sendMail($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.fromname'), $email, $subject, $body, $mode=1, $cc=null, $bcc=null, $attachment=null, $replyto=null, $replytoname=null);			
+		$user = JFactory::getUser();
+		if($user->guest) {
+			$link = $_REQUEST["return"]; 
+			$base = JURI::BASE();
+			$link = str_replace($base, "", $link);
+			$mainframe->redirect($link); 
+		}
+		else { $mainframe->redirect('index.php?option=com_jgive&view=donations&layout=details&donationid='.$id.'&processor=offlinecard&email=&Itemid=0');	}
+		return true;
 	}
 	
     function onOrderDisplay($id)
@@ -180,7 +133,6 @@ class plgpaymentofflinecard extends JPlugin
 		
 		$iv = substr(base64_decode($obj->{'Card Type'}), 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC));
 		$cardtype = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, hash('sha256', $this->encryption_key, true), substr(base64_decode($obj->{'Card Type'}), mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC)), MCRYPT_MODE_CBC, $iv), "\0");							
-		
 		$html ='<tr>
 						<td>'.JText::_('Card No(1st 8 digits)') .'</td>
 						<td>'.$cardno .'</td>
@@ -197,10 +149,7 @@ class plgpaymentofflinecard extends JPlugin
 						<td>'.JText::_('Card Type') .'</td>
 						<td>'.$cardtype .'</td>
 					</tr>';
-					
-		
 		echo $html;
 	}
-	
 }
 
