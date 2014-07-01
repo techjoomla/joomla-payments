@@ -165,7 +165,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		$receiverOptions = array();
 
 		foreach($receiverList as $rec) {
-			$temp['amount'] = $rec['amount'];
+			$temp['amount'] = round($rec['amount'],2);
 			$temp['email'] = $rec['receiver'];
 			$temp['primary'] = $rec['primary'];
 			$receiverOptions[] = $temp;
