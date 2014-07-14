@@ -90,11 +90,11 @@ class Plgpaymenteasysocialpoints extends JPlugin
 	Public function onTP_GetHTML($vars)
 	{
 		$db = JFactory::getDBO();
-		$jspath = JPATH_ROOT . DS . 'components' . DS . 'com_community';
+		$jspath = JPATH_ROOT . DS . 'components' . DS . 'com_easysocial';
 
 		if (JFolder::exists($jspath))
 		{
-			$query = "SELECT points FROM #__social_points_history where user_id=" . $vars->user_id;
+			$query = "SELECT SUM(points) FROM #__social_points_history where user_id=" . $vars->user_id. " AND state = 1 ";
 			$db->setQuery($query);
 			$user_points = $db->loadResult();
 			$vars->user_points = $user_points;
@@ -134,7 +134,7 @@ class Plgpaymenteasysocialpoints extends JPlugin
 		$error['code'] = '';
 		$error['desc'] = '';
 		$db = JFactory::getDBO();
-		$query = "SELECT points FROM #__social_points_history where user_id=" . $data['user_id'];
+		$query = "SELECT SUM(points) FROM #__social_points_history where user_id=" . $data['user_id']. " AND state = 1 ";
 		$db->setQuery($query);
 		$points_count = $db->loadResult();
 		$convert_val = $this->params->get('conversion');
@@ -142,10 +142,17 @@ class Plgpaymenteasysocialpoints extends JPlugin
 
 		if ($points_charge <= $points_count)
 		{
-			$count = $points_count - $points_charge;
-			$sql = "UPDATE #__social_points_history SET points =" . $db->quote($count) . " WHERE user_id=" . $data['user_id'];
-			$db->setQuery($sql);
-			$db->query();
+			$espoint=new stdClass();
+			$espoint->id = '';
+			$espoint->state = 1;
+			$espoint->points = "-". $points_charge;
+			$espoint->user_id = $data['user_id'];
+			$espoint->created = date("Y-m-d H:i:s"); // 2014-08-12 11:14:54
+			if (!$db->insertObject( '#__social_points_history', $espoint, 'id' ))
+			{
+				echo $db->stderr();
+				return false;
+			}
 			$payment_status = 'Success';
 		}
 		else
