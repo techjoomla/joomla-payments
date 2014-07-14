@@ -142,6 +142,7 @@ class Plgpaymenteasysocialpoints extends JPlugin
 
 		if ($points_charge <= $points_count)
 		{
+			//insert new entry in history table to deduct points
 			$espoint=new stdClass();
 			$espoint->id = '';
 			$espoint->state = 1;
