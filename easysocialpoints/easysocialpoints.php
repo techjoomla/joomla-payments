@@ -29,9 +29,9 @@ else
 
 class Plgpaymenteasysocialpoints extends JPlugin
 {
-	Public var $payment_gateway = 'payment_easysocialpoints';
+	var $payment_gateway = 'payment_easysocialpoints';
 
-	Public var $log = null;
+	var $log = null;
 
 	Public function __construct(& $subject, $config)
 	{
@@ -50,11 +50,11 @@ class Plgpaymenteasysocialpoints extends JPlugin
 
 	/**
 	 * Check Override file exists
-	 * 
+	 *
 	 * @param   string  Return File path.
-	 * 
+	 *
 	 * @return  mixed  file path.
-	 * 
+	 *
 	 * @since   1.6
 	 */
 	Protected function buildLayoutPath($layout)
@@ -182,7 +182,7 @@ class Plgpaymenteasysocialpoints extends JPlugin
 				{
 					$payment_status = 'ERROR';
 					$isValid = false;
-					$error['desc'] . = "ORDER_AMOUNT_MISTMATCH - order amount= " . $order_amount . 'response order amount = ' . $retrunamount;
+					$error['desc'] .= "ORDER_AMOUNT_MISTMATCH - order amount= " . $order_amount . 'response order amount = ' . $retrunamount;
 				}
 			}
 		}
