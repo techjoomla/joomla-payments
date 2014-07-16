@@ -7,3 +7,6 @@ To install component
 - Browse to "/code/com_tjcpg"
 - Zip the contents of folder 'com_tjcpg'
 - Install the zipped archieve using Joomla installer
+
+
+More information here http://www.slideshare.net/coolparth/joomla-common-payments-api
