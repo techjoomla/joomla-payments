@@ -7,10 +7,21 @@ This repository includes a sample Joomla component that uses all CPG plugins whi
 
 Ofcourse all Payment plugins are included as well ! 
 
-To install component
+To Install the Component
 - Browse to "/code/com_tjcpg"
 - Zip the contents of folder 'com_tjcpg'
 - Install the zipped archieve using Joomla installer
 
+To Install the Plugins 
+- Browse to "/code/plugins/"
+- Browse to the plugin of choice
+- Zip the contents of folder of the plugin
+- Install the zipped archieve using Joomla installer
+
+Slide Share about the API 
 
 More information here http://www.slideshare.net/coolparth/joomla-common-payments-api
+
+Detailed Information & Docs
+
+http://techjoomla.com/common-payment-api 
