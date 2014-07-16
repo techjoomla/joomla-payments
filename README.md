@@ -1,7 +1,11 @@
-Common Payment Gateway
-=============================================
+Joomla Common Payments API plugins & Sample Development Extension
+===================================================================
 
-Common Payment API Plugins for Joomla Supporting Multiple payment gateways with a easy 3 step integration process ! This repository includes a sample Joomla component that uses all CPG plugins. It is compatible with Joomla 2.5.x and 3.1.x
+The Joomla Common Payments API plugins are the easiest way to add Payment support in Joomla extensions. Integrating the common payment API gives support to all the CPG plugins. The Integration process is a easy 3 step integration & can be completed in very less time. 
+
+This repository includes a sample Joomla component that uses all CPG plugins which you can use as an integration guideline. It is compatible with Joomla 2.5.x and 3.1.x
+
+Ofcourse all Payment plugins are included as well ! 
 
 To install component
 - Browse to "/code/com_tjcpg"
