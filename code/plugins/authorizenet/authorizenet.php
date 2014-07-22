@@ -3,6 +3,7 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
+ 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.plugin.plugin' );
@@ -48,8 +49,8 @@ class plgpaymentAuthorizenet extends JPlugin
 		if(empty($layout))
 		$layout="default";
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.$layout.'.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html' . '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -256,9 +257,9 @@ function 	onTP_Processpayment_recurring($data)
 
 
 		if(JVERSION >=1.6)
-		require_once(JPATH_SITE.DS.'plugins'.DS.'payment'.DS.'authorizenet'.DS.'authorizenet'.DS.'lib'.DS.'AuthorizeNet.php');
+		require_once(JPATH_SITE . '/' . 'plugins' . '/' . 'payment' . '/' . 'authorizenet' . '/' . 'authorizenet' . '/' . 'lib'. '/' . 'AuthorizeNet.php');
 		else
-		require_once(JPATH_SITE.DS.'plugins'.DS.'payment'.DS.'authorizenet'.DS.'lib'.DS.'AuthorizeNet.php');
+		require_once(JPATH_SITE . '/' . 'plugins' . '/' . 'payment' . '/' . 'authorizenet' . '/' . 'lib' . '/' . 'AuthorizeNet.php');
 
 
 
@@ -384,9 +385,9 @@ function 	onTP_Processpayment_recurring($data)
 		if($subid)
 		{
 			if(JVERSION >=1.6)
-			require_once(JPATH_SITE.DS.'plugins'.DS.'payment'.DS.'authorizenet'.DS.'authorizenet'.DS.'lib'.DS.'AuthorizeNet.php');
+			require_once(JPATH_SITE . '/' . 'plugins' . '/' . 'payment' . '/' . 'authorizenet' . '/' . 'authorizenet' . '/' . 'lib' . '/' . 'AuthorizeNet.php');
 			else
-			require_once(JPATH_SITE.DS.'plugins'.DS.'payment'.DS.'authorizenet'.DS.'lib'.DS.'AuthorizeNet.php');
+			require_once(JPATH_SITE . '/' . 'plugins' . '/' . 'payment' . '/' . 'authorizenet' . '/' . 'lib' . '/' . 'AuthorizeNet.php');
 			$auth_net_login_id = $this->params->get( 'login_id', '1' );
 			$auth_net_tran_key = $this->params->get( 'tran_key', '1' );
 

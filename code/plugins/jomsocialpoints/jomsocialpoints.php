@@ -3,6 +3,7 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
+ 
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
@@ -35,8 +36,8 @@ class plgpaymentjomsocialpoints extends JPlugin
 
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'form.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name. '/'  . 'tmpl' . '/' . 'form.php';
+		$override		= JPATH_BASE. '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html' . '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -63,7 +64,7 @@ class plgpaymentjomsocialpoints extends JPlugin
 	function onTP_GetHTML($vars)
 	{
 		$db = JFactory::getDBO();
-	  $jspath = JPATH_ROOT.DS.'components'.DS.'com_community';
+	  $jspath = JPATH_ROOT . '/' . 'components' . '/' . 'com_community';
      if( JFolder::exists($jspath) )
      {
 		$query="SELECT points FROM #__community_users where userid=$vars->user_id";

@@ -10,6 +10,7 @@ if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/2checkout/2checkout/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/2checkout/helper.php');
+
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_2checkout', JPATH_ADMINISTRATOR);
 class  plgPayment2checkout extends JPlugin
@@ -38,8 +39,9 @@ class  plgPayment2checkout extends JPlugin
 	$layout='default';
 	
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.$layout.'.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+	
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html'. '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;

@@ -29,10 +29,7 @@ class plgPaymentBlankHelper
 	{
 		jimport('joomla.error.log');
 		$options = array('format' => "{DATE}\t{TIME}\t{USER}\t{DESC}");
-		if(JVERSION >='1.6.0')
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
-		else
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';
+		$path= dirname(__FILE__);
 		$my = &JFactory::getUser();
 		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
 		$logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
@@ -52,7 +49,7 @@ class plgPaymentBlankHelper
       // script.
        // append ipn command
       // open the connection to blank
-      $fp = fsockopen($url_parsed[host],"80",$err_num,$err_str,30); 
+      $fp = fsockopen($url_parsed['host'],"80",$err_num,$err_str,30); 
      // $fp = fsockopen ($this->blank_url, 80, $errno, $errstr, 30);
 
       if(!$fp) {

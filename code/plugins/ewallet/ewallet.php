@@ -3,6 +3,7 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
+ 
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
@@ -11,10 +12,10 @@ $lang->load('plg_payment_ewallet', JPATH_ADMINISTRATOR);
 
 require_once(JPATH_SITE.'/plugins/payment/ewallet/ewallet/helper.php');
 
-$api_wallet = JPATH_SITE.DS.'components'.DS.'com_ewallet'.DS.'ewallet.php';
+$api_wallet = JPATH_SITE . '/' . 'components' . '/' . 'com_ewallet' . '/' . 'ewallet.php';
 if ( file_exists($api_wallet))
 {
-	$path = JPATH_SITE.DS.'components'.DS.'com_ewallet'.DS.'helper.php';
+	$path = JPATH_SITE . '/' . 'components' . '/' . 'com_ewallet' . '/' . 'helper.php';
 	if(!class_exists('comewalletHelper'))
 	{
 		JLoader::register('comewalletHelper', $path );
@@ -46,8 +47,8 @@ class plgpaymentewallet extends JPlugin
 
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'form.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . 'form.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html' . '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -74,7 +75,7 @@ class plgpaymentewallet extends JPlugin
 	function onTP_GetHTML($vars)
 	{
 		$db = JFactory::getDBO();
-		$api_wallet = JPATH_SITE.DS.'components'.DS.'com_ewallet'.DS.'ewallet.php';
+		$api_wallet = JPATH_SITE . '/' . 'components' . '/' . 'com_ewallet' . '/' . 'ewallet.php';
 		if ( file_exists($api_wallet))
 		{
 			$comewalletHelper = new comewalletHelper();
@@ -116,7 +117,7 @@ class plgpaymentewallet extends JPlugin
 	//Adds a row for the first time in the db, calls the layout view
 	function onTP_Processpayment($data)
 	{
-		$api_wallet = JPATH_SITE.DS.'components'.DS.'com_ewallet'.DS.'helper.php';
+		$api_wallet = JPATH_SITE . '/' . 'components' . '/' . 'com_ewallet' . '/' . 'helper.php';
 		$payment_status=$this->translateResponse('Failure');
 		if ( file_exists($api_wallet))
 		{
@@ -170,7 +171,7 @@ class plgpaymentewallet extends JPlugin
 	*/
 	function onTP_ProcessRefund($data)
 	{
-		$api_wallet     = JPATH_SITE . DS . 'components' . DS . 'com_ewallet' . DS . 'helper.php';
+		$api_wallet     = JPATH_SITE  . '/' . 'components' . '/' . 'com_ewallet' . '/' .  'helper.php';
 		$payment_status = $this->translateResponse('Refund');
 
 		if(file_exists($api_wallet))

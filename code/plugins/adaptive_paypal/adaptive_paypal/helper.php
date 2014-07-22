@@ -22,10 +22,7 @@ class plgPaymentAdaptivePaypalHelper
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		if(JVERSION >='1.6.0')
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
-		else
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';	  
+		$path= dirname(__FILE__);
 		$my = JFactory::getUser();     
 	
 		JLog::addLogger(
@@ -60,7 +57,7 @@ class plgPaymentAdaptivePaypalHelper
       // script.
        // append ipn command
       // open the connection to paypal
-      $fp = fsockopen($url_parsed[host],"80",$err_num,$err_str,30); 
+      $fp = fsockopen($url_parsed['host'],"80",$err_num,$err_str,30); 
      // $fp = fsockopen ($this->paypal_url, 80, $errno, $errstr, 30);
 
       if(!$fp) {
