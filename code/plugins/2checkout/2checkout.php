@@ -6,10 +6,8 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/2checkout/2checkout/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/2checkout/helper.php');
+
+require_once(dirname(__FILE__) . '/2checkout/helper.php');
 
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_2checkout', JPATH_ADMINISTRATOR);
@@ -41,7 +39,7 @@ class  plgPayment2checkout extends JPlugin
 		$app = JFactory::getApplication();
 	
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
-		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html'. '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;

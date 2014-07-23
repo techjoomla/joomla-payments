@@ -8,10 +8,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.plugin.plugin' );
 
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/authorizenet/authorizenet/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/authorizenet/helper.php');
+require_once(dirname(__FILE__) . '/authorizenet/helper.php');
+
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_authorizenet', JPATH_ADMINISTRATOR);
 
@@ -50,7 +48,7 @@ class plgpaymentAuthorizenet extends JPlugin
 		$layout="default";
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
-		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html' . '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -255,15 +253,9 @@ function 	onTP_Processpayment_recurring($data)
 	{
 		$order_id=$data['order_id'];
 
-
-		if(JVERSION >=1.6)
-		require_once(JPATH_SITE . '/' . 'plugins' . '/' . 'payment' . '/' . 'authorizenet' . '/' . 'authorizenet' . '/' . 'lib'. '/' . 'AuthorizeNet.php');
-		else
-		require_once(JPATH_SITE . '/' . 'plugins' . '/' . 'payment' . '/' . 'authorizenet' . '/' . 'lib' . '/' . 'AuthorizeNet.php');
-
-
-
-		 $auth_net_login_id = $this->params->get( 'login_id', '1' );
+		require_once(dirname(__FILE__) . '/authorizenet/lib/AuthorizeNet.php');
+		
+		$auth_net_login_id = $this->params->get( 'login_id', '1' );
 		$auth_net_tran_key = $this->params->get( 'tran_key', '1' );
 
 		$plgPaymentAuthorizenetHelper = new plgPaymentAuthorizenetHelper;
@@ -384,10 +376,7 @@ function 	onTP_Processpayment_recurring($data)
 		$db = JFactory::getDBO();
 		if($subid)
 		{
-			if(JVERSION >=1.6)
-			require_once(JPATH_SITE . '/' . 'plugins' . '/' . 'payment' . '/' . 'authorizenet' . '/' . 'authorizenet' . '/' . 'lib' . '/' . 'AuthorizeNet.php');
-			else
-			require_once(JPATH_SITE . '/' . 'plugins' . '/' . 'payment' . '/' . 'authorizenet' . '/' . 'lib' . '/' . 'AuthorizeNet.php');
+			require_once(dirname(__FILE__) . '/authorizenet/lib/AuthorizeNet.php');
 			$auth_net_login_id = $this->params->get( 'login_id', '1' );
 			$auth_net_tran_key = $this->params->get( 'tran_key', '1' );
 

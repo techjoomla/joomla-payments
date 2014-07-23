@@ -9,10 +9,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_bycheck', JPATH_ADMINISTRATOR);
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/bycheck/bycheck/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/bycheck/helper.php');
+
+require_once(dirname(__FILE__) . '/bycheck/helper.php');
+
 class plgpaymentbycheck extends JPlugin 
 {
 	var $_payment_gateway = 'payment_bycheck';
@@ -41,7 +40,7 @@ class plgpaymentbycheck extends JPlugin
 		$layout="default";
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
-		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html' . '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -59,10 +58,9 @@ class plgpaymentbycheck extends JPlugin
 				//Load the layout & push variables
 				ob_start();
         $layout = $this->buildLayoutPath($layout);
-        include($layout);if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/bycheck/bycheck/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/bycheck/helper.php');
+        include($layout);
+	require_once(dirname(__FILE__) . '/bycheck/helper.php');
+
         $html = ob_get_contents(); 
         ob_end_clean();
 				return $html;

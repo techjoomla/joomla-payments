@@ -9,10 +9,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_alphauserpoints', JPATH_ADMINISTRATOR);
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/alphauserpoints/alphauserpoints/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/alphauserpoints/helper.php');
+
+require_once(dirname(__FILE__) . '/alphauserpoints/helper.php');
+
 class plgpaymentalphauserpoints extends JPlugin 
 {
 	var $_payment_gateway = 'payment_alphauserpoints';
@@ -38,7 +37,7 @@ class plgpaymentalphauserpoints extends JPlugin
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . 'form.php';
-		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html' . '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate()  . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;

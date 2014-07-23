@@ -5,11 +5,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 
 jimport( 'joomla.plugin.plugin' );
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/pagseguro_jticketing/pagseguro_jticketing/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/pagseguro_jticketing/helper.php');
 
+require_once(dirname(__FILE__) . '/pagseguro_jticketing/helper.php');
 
 class  plgPaymentPagseguro_jticketing extends JPlugin
 {
@@ -46,7 +43,7 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . 'default.php';
-		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html' . '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -86,7 +83,7 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 	{
 			if( !isset($vars->client) || !strstr($vars->client,'jticketing'))
 		return; 
-		require_once JPATH_SITE.'/plugins/payment/pagseguro_jticketing/lib/PagSeguroLibrary.php';
+		require_once (dirname(__FILE__) . '/lib/PagSeguroLibrary.php');
 
 		$vars->sellar_email = $this->params->get('sellar_email');
 		$vars->token = $this->params->get('token');
@@ -113,7 +110,7 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 		$error['desc']	='';
 		$trxnstatus='';
 
-		require_once JPATH_SITE.'/plugins/payment/pagseguro_jticketing/lib/PagSeguroLibrary.php';
+		require_once (dirname(__FILE__) . '/lib/PagSeguroLibrary.php');
 
 		$vars->sellar_email = $this->params->get('sellar_email');
 		$vars->token = $this->params->get('token');

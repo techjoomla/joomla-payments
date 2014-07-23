@@ -9,10 +9,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_linkpoint', JPATH_ADMINISTRATOR);
 jimport( 'joomla.plugin.plugin' );
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/linkpoint/linkpoint/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/linkpoint/helper.php');
+
+require_once(dirname(__FILE__) . '/linkpoint/helper.php');
+
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_linkpoint', JPATH_ADMINISTRATOR);
 class plgPaymentLinkpoint extends JPlugin
@@ -54,7 +53,7 @@ class plgPaymentLinkpoint extends JPlugin
 	{		
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . 'form.php';
-		$override	= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html' . '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
+		$override	= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		
 		return (JFile::exists($override)) ? $override : $core_file;
 	}

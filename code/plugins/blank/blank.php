@@ -9,10 +9,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_blank', JPATH_ADMINISTRATOR);
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/blank/blank/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/blank/helper.php');
+
+require_once(dirname(__FILE__) . '/blank/helper.php');
+
 class plgpaymentblank extends JPlugin 
 {
 	var $_payment_gateway = 'payment_blank';
@@ -172,7 +171,7 @@ translate the status response depending upon you payment gateway*/
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . 'default.php';
-		$override	= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html' . '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
+		$override	= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;

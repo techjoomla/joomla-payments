@@ -5,11 +5,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 
 jimport( 'joomla.plugin.plugin' );
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/pagseguro_socialads/pagseguro_socialads/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/pagseguro_socialads/helper.php');
 
+require_once(dirname(__FILE__) . '/pagseguro_socialads/helper.php');
 
 class  plgPaymentPagseguro_socialads extends JPlugin
 {
@@ -46,7 +43,7 @@ class  plgPaymentPagseguro_socialads extends JPlugin
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . 'default.php';
-		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html' . '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -87,7 +84,7 @@ class  plgPaymentPagseguro_socialads extends JPlugin
 
 		if( !isset($vars->client) || !strstr($vars->client,'socialads'))
 		return;
-		require_once JPATH_SITE.'/plugins/payment/pagseguro_socialads/lib/PagSeguroLibrary.php';
+		require_once (dirname(__FILE__) . '/lib/PagSeguroLibrary.php');
 		$vars->sellar_email = $this->params->get('sellar_email');
 		$vars->token = $this->params->get('token');
 		//$vars->order_id=$vars->client.'__'.$vars->order_id;
@@ -111,7 +108,7 @@ class  plgPaymentPagseguro_socialads extends JPlugin
 		$error['code']	='';
 		$error['desc']	='';
 		$trxnstatus='';
-		require_once JPATH_SITE.'/plugins/payment/pagseguro_socialads/lib/PagSeguroLibrary.php';
+		require_once (dirname(__FILE__) . '/lib/PagSeguroLibrary.php');
 
 		$vars->sellar_email = $this->params->get('sellar_email');
 		$vars->token = $this->params->get('token');

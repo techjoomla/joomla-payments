@@ -10,7 +10,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_ewallet', JPATH_ADMINISTRATOR);
 
-require_once(JPATH_SITE.'/plugins/payment/ewallet/ewallet/helper.php');
+require_once(dirname(__FILE__) . '/ewallet/helper.php');
 
 $api_wallet = JPATH_SITE . '/' . 'components' . '/' . 'com_ewallet' . '/' . 'ewallet.php';
 if ( file_exists($api_wallet))
@@ -48,7 +48,7 @@ class plgpaymentewallet extends JPlugin
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . 'form.php';
-		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/' . 'html' . '/' . 'plugins' . '/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
