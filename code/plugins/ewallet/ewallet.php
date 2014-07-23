@@ -12,10 +12,10 @@ $lang->load('plg_payment_ewallet', JPATH_ADMINISTRATOR);
 
 require_once(dirname(__FILE__) . '/ewallet/helper.php');
 
-$api_wallet = JPATH_SITE . '/' . 'components' . '/' . 'com_ewallet' . '/' . 'ewallet.php';
+$api_wallet = JPATH_SITE . '/components/com_ewallet/ewallet.php';
 if ( file_exists($api_wallet))
 {
-	$path = JPATH_SITE . '/' . 'components' . '/' . 'com_ewallet' . '/' . 'helper.php';
+	$path = JPATH_SITE . '/components/com_ewallet/helper.php';
 	if(!class_exists('comewalletHelper'))
 	{
 		JLoader::register('comewalletHelper', $path );
@@ -75,7 +75,7 @@ class plgpaymentewallet extends JPlugin
 	function onTP_GetHTML($vars)
 	{
 		$db = JFactory::getDBO();
-		$api_wallet = JPATH_SITE . '/' . 'components' . '/' . 'com_ewallet' . '/' . 'ewallet.php';
+		$api_wallet = JPATH_SITE . '/components/com_ewallet/ewallet.php';
 		if ( file_exists($api_wallet))
 		{
 			$comewalletHelper = new comewalletHelper();
@@ -117,7 +117,7 @@ class plgpaymentewallet extends JPlugin
 	//Adds a row for the first time in the db, calls the layout view
 	function onTP_Processpayment($data)
 	{
-		$api_wallet = JPATH_SITE . '/' . 'components' . '/' . 'com_ewallet' . '/' . 'helper.php';
+		$api_wallet = JPATH_SITE . '/components/com_ewallet/helper.php';
 		$payment_status=$this->translateResponse('Failure');
 		if ( file_exists($api_wallet))
 		{
@@ -171,7 +171,7 @@ class plgpaymentewallet extends JPlugin
 	*/
 	function onTP_ProcessRefund($data)
 	{
-		$api_wallet     = JPATH_SITE  . '/' . 'components' . '/' . 'com_ewallet' . '/' .  'helper.php';
+		$api_wallet     = JPATH_SITE  . '/components/com_ewallet/helper.php';
 		$payment_status = $this->translateResponse('Refund');
 
 		if(file_exists($api_wallet))

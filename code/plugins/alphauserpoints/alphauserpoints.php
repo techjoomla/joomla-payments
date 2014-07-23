@@ -64,7 +64,7 @@ class plgpaymentalphauserpoints extends JPlugin
 	function onTP_GetHTML($vars)
 	{
 		$db = JFactory::getDBO();
-		$api_AUP = JPATH_SITE . '/' . 'components' . '/' . 'com_alphauserpoints';
+		$api_AUP = JPATH_SITE . '/components/com_alphauserpoints';
 		if ( file_exists($api_AUP))
 		{
 	 	$query="SELECT points FROM #__alpha_userpoints where userid=".$vars->user_id;
@@ -107,7 +107,7 @@ class plgpaymentalphauserpoints extends JPlugin
 		if($points_charge <= $points_count)
 		{
 			//$count = $points_count - $points_charge;
-			$api_AUP = JPATH_SITE . '/' . 'components' . '/' . 'com_alphauserpoints' . '/' . 'helper.php';
+			$api_AUP = JPATH_SITE . '/components/com_alphauserpoints/helper.php';
 			if ( file_exists($api_AUP))
 			{
 				require_once ($api_AUP);

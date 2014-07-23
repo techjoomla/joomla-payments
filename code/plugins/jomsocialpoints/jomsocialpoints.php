@@ -63,7 +63,7 @@ class plgpaymentjomsocialpoints extends JPlugin
 	function onTP_GetHTML($vars)
 	{
 		$db = JFactory::getDBO();
-	  $jspath = JPATH_ROOT . '/' . 'components' . '/' . 'com_community';
+	  $jspath = JPATH_ROOT . '/components/com_community';
      if( JFolder::exists($jspath) )
      {
 		$query="SELECT points FROM #__community_users where userid=$vars->user_id";
