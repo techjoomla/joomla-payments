@@ -5,9 +5,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 $lang=JFactory::getLanguage();
 $lang->load('plg_payment_amazon', JPATH_ADMINISTRATOR);
-
 require_once(dirname(__FILE__) . '/amazon/helper.php');
-
 class  plgPaymentAmazon extends JPlugin
 {
 

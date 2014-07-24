@@ -6,9 +6,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
 $lang=JFactory::getLanguage();
 $lang->load('plg_payment_ogone', JPATH_ADMINISTRATOR);
-
 require_once(dirname(__FILE__) . '/ogone/helper.php');
-
 class  plgPaymentOgone extends JPlugin
 {
 

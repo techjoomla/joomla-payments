@@ -9,9 +9,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_linkpoint', JPATH_ADMINISTRATOR);
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/linkpoint/helper.php');
-
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_linkpoint', JPATH_ADMINISTRATOR);
 class plgPaymentLinkpoint extends JPlugin

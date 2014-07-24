@@ -2,9 +2,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/transfirst/helper.php');
-
 
 //load language
 $lang =JFactory::getLanguage();

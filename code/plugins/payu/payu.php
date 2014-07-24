@@ -6,11 +6,8 @@
  
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/payu/helper.php');
-
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_payu', JPATH_ADMINISTRATOR);
 class  plgPaymentPayu extends JPlugin

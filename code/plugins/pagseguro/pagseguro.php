@@ -2,12 +2,9 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-
 jimport( 'joomla.plugin.plugin' );
-
-	require_once(dirname(__FILE__) . '/pagseguro/helper.php');
-	require_once (dirname(__FILE__) . '/lib/PagSeguroLibrary.php');
+require_once(dirname(__FILE__) . '/pagseguro/helper.php');
+require_once (dirname(__FILE__) . '/lib/PagSeguroLibrary.php');
 class  plgPaymentPagseguro extends JPlugin
 {
 

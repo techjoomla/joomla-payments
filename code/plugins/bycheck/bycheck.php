@@ -9,9 +9,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_bycheck', JPATH_ADMINISTRATOR);
-
 require_once(dirname(__FILE__) . '/bycheck/helper.php');
-
 class plgpaymentbycheck extends JPlugin 
 {
 	var $_payment_gateway = 'payment_bycheck';

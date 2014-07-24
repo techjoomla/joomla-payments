@@ -7,12 +7,9 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/adaptive_paypal/helper.php');
-
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_adaptive_paypal', JPATH_ADMINISTRATOR);
-
 class  plgPaymentAdaptive_Paypal extends JPlugin
 {
 

@@ -11,9 +11,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/ccavenue/helper.php');
-
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_ccavenue', JPATH_ADMINISTRATOR);
 class  plgPaymentCcavenue extends JPlugin

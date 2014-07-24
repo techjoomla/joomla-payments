@@ -7,9 +7,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/paypal/helper.php');
-
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_paypal', JPATH_ADMINISTRATOR);
 class  plgPaymentPaypal extends JPlugin

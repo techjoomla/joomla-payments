@@ -5,12 +5,8 @@
  */
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/payfast/helper.php');
-
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_payfast', JPATH_ADMINISTRATOR);
 class  plgPaymentPayfast extends JPlugin

@@ -9,9 +9,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_ewallet', JPATH_ADMINISTRATOR);
-
 require_once(dirname(__FILE__) . '/ewallet/helper.php');
-
 $api_wallet = JPATH_SITE . '/components/com_ewallet/ewallet.php';
 if ( file_exists($api_wallet))
 {

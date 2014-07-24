@@ -2,12 +2,8 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/pagseguro_jgive/helper.php');
-
 class  plgPaymentPagseguro_jgive extends JPlugin
 {
 

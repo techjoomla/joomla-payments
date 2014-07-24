@@ -7,9 +7,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/authorizenet/helper.php');
-
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_authorizenet', JPATH_ADMINISTRATOR);
 

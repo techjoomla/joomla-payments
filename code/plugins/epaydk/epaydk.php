@@ -8,9 +8,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/epaydk/helper.php');
-
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_epaydk', JPATH_ADMINISTRATOR);
 class  plgPaymentEpaydk extends JPlugin

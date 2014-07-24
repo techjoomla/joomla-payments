@@ -34,11 +34,8 @@
  */
 
 defined ( '_JEXEC' ) or die ( 'Restricted access' ); 
-
 jimport( 'joomla.filesystem.file' );
-
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/paymill/helper.php');
 
 //Set the language in the class

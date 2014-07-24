@@ -6,9 +6,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/2checkout/helper.php');
-
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_2checkout', JPATH_ADMINISTRATOR);
 class  plgPayment2checkout extends JPlugin

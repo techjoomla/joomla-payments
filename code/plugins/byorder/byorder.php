@@ -9,9 +9,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_byorder', JPATH_ADMINISTRATOR);
-
 require_once(dirname(__FILE__) . '/byorder/helper.php');
-
 class plgpaymentbyorder extends JPlugin 
 {
 	var $_payment_gateway = 'byorder';

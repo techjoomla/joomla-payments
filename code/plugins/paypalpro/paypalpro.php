@@ -7,9 +7,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.plugin.plugin' );
-
 require_once(dirname(__FILE__) . '/paypalpro/helper.php');
-
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_paypalpro', JPATH_ADMINISTRATOR);
 

@@ -8,9 +8,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
- 
-require_once(dirname(__FILE__) . '/ewayrapid3/helper.php');
-
+ require_once(dirname(__FILE__) . '/ewayrapid3/helper.php');
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_ewayrapid3', JPATH_ADMINISTRATOR);
 class  plgPaymentEwayrapid3 extends JPlugin
