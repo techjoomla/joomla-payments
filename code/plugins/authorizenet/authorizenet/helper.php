@@ -14,7 +14,7 @@ class plgPaymentAuthorizenetHelper
 	function buildAuthorizenetUrl($secure = true)
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'authorizenet');
-		$params=json_decode($plugin->params);
+		$params = json_decode($plugin->params);
 		$secure_post = $params->secure_post;
 		$url = $params->sandbox ? 'test.authorize.net' : 'secure.authorize.net';
 	/*	$secure_post = $this->params->get('secure_post');
@@ -32,10 +32,7 @@ class plgPaymentAuthorizenetHelper
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		if(JVERSION >='1.6.0')
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
-		else
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';
+		$path = dirname(__FILE__);
 		$my = JFactory::getUser();
 
 		JLog::addLogger(
@@ -49,8 +46,8 @@ class plgPaymentAuthorizenetHelper
 		);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user= $my->name.'('.$my->id.')';
-		$logEntry->desc=json_encode($logdata['raw_data']);
+		$logEntry->user = $my->name.'('.$my->id.')';
+		$logEntry->desc = json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
 
@@ -62,7 +59,7 @@ class plgPaymentAuthorizenetHelper
 	function isSandboxEnabled()
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'authorizenet');
-		$params=json_decode($plugin->params);
+		$params = json_decode($plugin->params);
 
 		if($params->sandbox)
 		{

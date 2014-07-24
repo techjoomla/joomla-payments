@@ -14,23 +14,23 @@ class plgPaymentPagseguro_jgiveHelper
 		// Sets the currency
 		$paymentRequest->setCurrency($vars->currency_code);
 		if(empty($vars->item_code))
-		$vars->item_code='0001';
+		$vars->item_code = '0001';
 		
 		if(empty($vars->item_quantity))
-		$vars->item_quantity='1';
+		$vars->item_quantity = '1';
 		
 		//format amount to proper format
-		$vars->amount=number_format($vars->amount,2,".",".");
-		if($vars->amount<100)
+		$vars->amount = number_format($vars->amount,2,".",".");
+		if($vars->amount < 100)
 		{
-			if($vars->amount<10)
-			$vars->amount='00'.$vars->amount;
+			if($vars->amount < 10)
+			$vars->amount = '00'.$vars->amount;
 			else
-			$vars->amount='0'.$vars->amount;
+			$vars->amount = '0'.$vars->amount;
 		
 		}
-		if($vars->amount<=0)
-		$vars->amount=1;
+		if($vars->amount <= 0)
+		$vars->amount = 1;
 		
 
 		// Add an item for this payment request
@@ -89,13 +89,13 @@ class plgPaymentPagseguro_jgiveHelper
 	{
 		if(is_array($data))
 		{
-			$code=$data['notificationCode'];
-			$type=$data['notificationType'];
+			$code = $data['notificationCode'];
+			$type = $data['notificationType'];
 		}
 		else if(is_object($data))
 		{
-			$code=$data->get('notificationCode');
-			$type=$data->get('notificationType');
+			$code = $data->get('notificationCode');
+			$type = $data->get('notificationType');
 		
 		}
 			
@@ -112,28 +112,28 @@ class plgPaymentPagseguro_jgiveHelper
 
 						try {
 							$transaction = PagSeguroNotificationService::checkTransaction($credentials, $code);
-							$returndata['transaction_id']=$transaction->getCode(); 
-							$returndata['payment_status']=$transaction->getStatus()->getTypeFromValue();
-							$returndata['payment_statuscode']=$transaction->getStatus()->getValue();
-							$returndata['order_id']=$transaction->getReference();
-							$returndata['buyer_email']=$transaction->getSender()->getEmail();
-							$returndata['payment_method']=$transaction->getpaymentMethod()->gettype()->getTypeFromValue();
-							$returndata['total_paid_amt']=$transaction->getgrossAmount();
-							$returndata['raw_data']=$returndata;	
+							$returndata['transaction_id'] = $transaction->getCode(); 
+							$returndata['payment_status'] = $transaction->getStatus()->getTypeFromValue();
+							$returndata['payment_statuscode'] = $transaction->getStatus()->getValue();
+							$returndata['order_id'] = $transaction->getReference();
+							$returndata['buyer_email'] = $transaction->getSender()->getEmail();
+							$returndata['payment_method'] = $transaction->getpaymentMethod()->gettype()->getTypeFromValue();
+							$returndata['total_paid_amt'] = $transaction->getgrossAmount();
+							$returndata['raw_data'] = $returndata;	
 
 							return $returndata;
 						} catch (PagSeguroServiceException $e) {
-							$error=array();
-							$error['code']	=''; //@TODO change these $data indexes afterwards
-							$error['desc']	=$e->getMessage();
+							$error = array();
+							$error['code']	= ''; //@TODO change these $data indexes afterwards
+							$error['desc']	= $e->getMessage();
 							return $error;
 						}
 					break;
 				
 				default:
-				$error=array();
-				$error['code']	=''; //@TODO change these $data indexes afterwards
-				$error['desc']	="Unknown notification type [".$notificationType->getValue()."]";
+				$error = array();
+				$error['code']	= ''; //@TODO change these $data indexes afterwards
+				$error['desc']	= "Unknown notification type [".$notificationType->getValue()."]";
 				
 				return $error;
 				break;
@@ -143,9 +143,9 @@ class plgPaymentPagseguro_jgiveHelper
 
 			
 		} else {
-		$error=array();
-		$error['code']	=''; //@TODO change these $data indexes afterwards
-		$error['desc']	='Unknown notification type';
+		$error = array();
+		$error['code']	= ''; //@TODO change these $data indexes afterwards
+		$error['desc']	= 'Unknown notification type';
 						return $error;
 			
 			}
@@ -159,10 +159,7 @@ function Storelog($name,$logdata)
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		if(JVERSION >='1.6.0')
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
-		else
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';	  
+		$path = dirname(__FILE__);
 		$my = JFactory::getUser();     
 	
 		JLog::addLogger(
@@ -176,8 +173,8 @@ function Storelog($name,$logdata)
 		);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user= $my->name.'('.$my->id.')';
-		$logEntry->desc=json_encode($logdata['raw_data']);
+		$logEntry->user = $my->name.'('.$my->id.')';
+		$logEntry->desc = json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
 //		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);

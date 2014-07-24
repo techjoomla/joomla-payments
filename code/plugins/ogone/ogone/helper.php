@@ -15,11 +15,7 @@ class plgPaymentOgoneHelper
 	function Storelog($name,$logdata)
 	{
 		jimport('joomla.error.log');
-		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		if(JVERSION >='1.6.0')
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
-		else
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';	  
+		$path = dirname(__FILE__);
 		$my = JFactory::getUser();     
 	
 		JLog::addLogger(
@@ -33,8 +29,8 @@ class plgPaymentOgoneHelper
 		);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user= $my->name.'('.$my->id.')';
-		$logEntry->desc=json_encode($logdata['raw_data']);
+		$logEntry->user = $my->name.'('.$my->id.')';
+		$logEntry->desc = json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
 //		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
@@ -44,12 +40,9 @@ class plgPaymentOgoneHelper
 	function validateIPN($data)
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'ogone');
-		$params=json_decode($plugin->params);
+		$params = json_decode($plugin->params);
 		
-			if(JVERSION >='1.6.0')
-			require_once(JPATH_SITE.'/plugins/payment/ogone/ogone/lib/Response.php');
-			else
-			require_once(JPATH_SITE.'/plugins/payment/ogone/lib/Response.php');
+			require_once(dirname(__FILE__) . '/lib/Response.php');
 			$options = array('sha1OutPassPhrase' =>$params->secretkey,
 			
 			);  

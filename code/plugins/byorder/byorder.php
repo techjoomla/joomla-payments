@@ -4,14 +4,12 @@
  *  @license    GNU General Public License version 2, or later
  */
 /** ensure this file is being included by a parent file */
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_byorder', JPATH_ADMINISTRATOR);
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/byorder/byorder/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/byorder/helper.php');
+require_once(dirname(__FILE__) . '/byorder/helper.php');
 class plgpaymentbyorder extends JPlugin 
 {
 	var $_payment_gateway = 'byorder';
@@ -26,7 +24,7 @@ class plgpaymentbyorder extends JPlugin
 		
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
-		$this->responseStatus= array(
+		$this->responseStatus = array(
 			'Success' =>'C',
 			'Failure' =>'X',
 			'Pending' =>'P',
@@ -37,10 +35,10 @@ class plgpaymentbyorder extends JPlugin
 
 	function buildLayoutPath($layout) {
 		if(empty($layout))
-		$layout="default";
+		$layout = "default";
 		$app=JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.$layout.'.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
+		$override	= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -66,8 +64,8 @@ class plgpaymentbyorder extends JPlugin
 
 	function onTP_GetHTML($vars)
 	{
-		$vars->custom_name= $this->params->get( 'plugin_name' );
-		$vars->custom_email=$this->params->get( 'plugin_mail' );
+		$vars->custom_name = $this->params->get( 'plugin_name' );
+		$vars->custom_email = $this->params->get( 'plugin_mail' );
 		$html = $this->buildLayout($vars);
 		return $html;
 	}
@@ -78,7 +76,7 @@ class plgpaymentbyorder extends JPlugin
 		if(!in_array($this->_name,$config))
 		return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -88,13 +86,13 @@ class plgpaymentbyorder extends JPlugin
 	{
 		JLoader::import('joomla.utilities.date');;
 		$isValid = true;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
 		
-		$trxnstatus="Pending";
+		$trxnstatus = "Pending";
 		//3.compare response order id and send order id in notify URL 
-		$res_orderid='';
+		$res_orderid = '';
 		$res_orderid = $data['order_id'];
 		if($isValid ) {
 			if(!empty($vars) && $res_orderid != $vars->order_id )
@@ -110,8 +108,8 @@ class plgpaymentbyorder extends JPlugin
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$data['total'];
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float)$data['total'];
 				$epsilon = 0.01;
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
@@ -123,9 +121,9 @@ class plgpaymentbyorder extends JPlugin
 		}
 		// END OF AMOUNT CHECK
 		
-		$payment_status=$this->translateResponse($trxnstatus);
+		$payment_status = $this->translateResponse($trxnstatus);
 		
-			$data['payment_status']=$payment_status;
+			$data['payment_status'] = $payment_status;
 			$result = array('transaction_id'=>'',
     				'order_id'=>$data['order_id'],
 						'status'=>$payment_status,
@@ -140,7 +138,7 @@ class plgpaymentbyorder extends JPlugin
 			
     	foreach($this->responseStatus as $key=>$value)
 				{
-					if($key==$invoice_status)
+					if($key == $invoice_status)
 					return $value;		
 				}
 	}

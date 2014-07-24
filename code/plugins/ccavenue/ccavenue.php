@@ -3,17 +3,14 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
+ 
 //error_reporting(E_ALL);
 //ini_set('display_errors','On');
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 jimport( 'joomla.plugin.plugin' );
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/ccavenue/ccavenue/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/ccavenue/helper.php');
+require_once(dirname(__FILE__) . '/ccavenue/helper.php');
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_ccavenue', JPATH_ADMINISTRATOR);
 class  plgPaymentCcavenue extends JPlugin
@@ -33,10 +30,10 @@ class  plgPaymentCcavenue extends JPlugin
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
 	if(empty($layout))
-		$layout="default";
+		$layout = "default";
 
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.$layout.'.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -66,7 +63,7 @@ class  plgPaymentCcavenue extends JPlugin
 		return;
 
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -74,7 +71,7 @@ class  plgPaymentCcavenue extends JPlugin
 	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Payu
 	function onTP_GetHTML($vars)
 	{
-		$plgPaymentCcavenueHelper=new plgPaymentCcavenueHelper();
+		$plgPaymentCcavenueHelper = new plgPaymentCcavenueHelper();
 		$vars->action_url = $plgPaymentCcavenueHelper->buildCcavenueUrl();
 		//Take this receiver email address from plugin if component not provided it
 //		if(empty($vars->business))
@@ -92,7 +89,7 @@ class  plgPaymentCcavenue extends JPlugin
 	}
 
 	function getchecksum($MerchantId,$Amount,$OrderId,$URL,$WorkingKey) {
-		$str ="$MerchantId|$OrderId|$Amount|$URL|$WorkingKey";
+		$str = "$MerchantId|$OrderId|$Amount|$URL|$WorkingKey";
 
 		$adler = 1;
 		$adler = $this->adler32($adler,$str);
@@ -159,9 +156,9 @@ class  plgPaymentCcavenue extends JPlugin
 	function onTP_Processpayment($data,$vars=array()) 
 	{
 		$isValid = true;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
 		
 		$working_key = $this->params->get('working_key');
 		$verify = $this->verifychecksum($data['Merchant_Id'], $data['Order_Id'], $data['Amount'], $data['AuthDesc'], $data['Checksum'], $working_key);
@@ -170,15 +167,15 @@ class  plgPaymentCcavenue extends JPlugin
 		//Error Handling
 		$error=array();
 		if (!$verify) {
-			$error['code']	.='501'; //@TODO change these $data indexes afterwards
-			$error['desc']	.='Checksum failed';
+			$error['code']	.= '501'; //@TODO change these $data indexes afterwards
+			$error['desc']	.= 'Checksum failed';
 		}
 //commented by Dipti @7/9/12
 //		if (!$verify) { return false; }	
 
 		//CHECK :compare response order id and send order id in notify URL 
-		$trxnstatus='';
-		$res_orderid='';
+		$trxnstatus = '';
+		$res_orderid = '';
 		$res_orderid = $data['Order_Id'];
 		if($isValid ) {
 			if(!empty($vars) && $res_orderid != $vars->order_id )
@@ -193,8 +190,8 @@ class  plgPaymentCcavenue extends JPlugin
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$data['Amount'];
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float)$data['Amount'];
 				$epsilon = 0.01;
 				
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -230,7 +227,7 @@ class  plgPaymentCcavenue extends JPlugin
 	function translateResponse($payment_status){
 		foreach($this->responseStatus as $key=>$value)
 		{
-			if($key==$payment_status)
+			if($key == $payment_status)
 			return $value;		
 		}
 	}

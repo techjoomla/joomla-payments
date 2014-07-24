@@ -3,15 +3,11 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
+ 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 jimport( 'joomla.plugin.plugin' );
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/payu/payu/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/payu/helper.php');
-
+require_once(dirname(__FILE__) . '/payu/helper.php');
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_payu', JPATH_ADMINISTRATOR);
 class  plgPaymentPayu extends JPlugin
@@ -25,7 +21,7 @@ class  plgPaymentPayu extends JPlugin
 
 
 		//Define Payment Status codes in payu  And Respective Alias in Framework
-		$this->responseStatus= array(
+		$this->responseStatus = array(
  	 'success'  => 'C','pending'  => 'P',
  	 'failure'=>'E'
 
@@ -35,8 +31,8 @@ class  plgPaymentPayu extends JPlugin
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -66,7 +62,7 @@ class  plgPaymentPayu extends JPlugin
 	if(!in_array($this->_name,$config))
 	return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -74,7 +70,7 @@ class  plgPaymentPayu extends JPlugin
 	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Payu
 	function onTP_GetHTML($vars)
 	{
-		$plgPaymentPayuHelper= new plgPaymentPayuHelper();
+		$plgPaymentPayuHelper = new plgPaymentPayuHelper();
 		$vars->action_url = $plgPaymentPayuHelper->buildPayuUrl();
 		//Take this receiver email address from plugin if component not provided it
 //		if(empty($vars->business))
@@ -89,17 +85,17 @@ class  plgPaymentPayu extends JPlugin
 
 
 
-	function onTP_Processpayment($data,$vars=array())
+	function onTP_Processpayment($data,$vars = array())
 	{
 		//$verify = plgPaymentPayuHelper::validateIPN($data);
 		//if (!$verify) { return false; }
 		$isValid = true;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
 
 		//.compare response order id and send order id in notify URL
-		$res_orderid='';
+		$res_orderid = '';
 		if($isValid ) {
 		$res_orderid = $data['udf1'];
 			if(!empty($vars) && $res_orderid != $vars->order_id )
@@ -114,8 +110,8 @@ class  plgPaymentPayu extends JPlugin
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$data['amount'];
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float)$data['amount'];
 				$epsilon = 0.01;
 
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -130,8 +126,8 @@ class  plgPaymentPayu extends JPlugin
 
 		//Error Handling
 		$error=array();
-		$error['code']	=$data['unmappedstatus']; //@TODO change these $data indexes afterwards
-		$error['desc']	=(isset($data['field9'])?$data['field9']:'');
+		$error['code']	= $data['unmappedstatus']; //@TODO change these $data indexes afterwards
+		$error['desc']	= (isset($data['field9'])?$data['field9']:'');
 
 		$result = array(
 						'order_id'=>$data['udf1'],
@@ -149,7 +145,7 @@ class  plgPaymentPayu extends JPlugin
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
-				if($key==$payment_status)
+				if($key == $payment_status)
 				return $value;
 			}
 	}
@@ -169,9 +165,9 @@ class  plgPaymentPayu extends JPlugin
 		{
 			if(!is_array($value))
 			{
-				$vars->$key=trim($value);
-				if( $key=='amount')
-					$vars->$key=round($value);
+				$vars->$key = trim($value);
+				if( $key == 'amount')
+					$vars->$key = round($value);
 			}
 		}
 	}

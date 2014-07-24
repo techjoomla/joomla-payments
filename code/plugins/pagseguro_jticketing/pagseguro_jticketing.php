@@ -2,14 +2,8 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 jimport( 'joomla.plugin.plugin' );
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/pagseguro_jticketing/pagseguro_jticketing/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/pagseguro_jticketing/helper.php');
-
-
+require_once(dirname(__FILE__) . '/pagseguro_jticketing/helper.php');
 class  plgPaymentPagseguro_jticketing extends JPlugin
 {
 
@@ -29,7 +23,7 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 		7	Canceled : the transaction was canceled without having been finalized.
 		*/
 		//Define Payment Status codes in Pagseguro  And Respective Alias in Framework
-		$this->responseStatus= array(
+		$this->responseStatus = array(
  	'1'=>'P',
  	'2'=>'UR',
  	'3'=>'C',
@@ -44,8 +38,8 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -75,7 +69,7 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 	if(!in_array($this->_name,$config))
 	return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -85,12 +79,12 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 	{
 			if( !isset($vars->client) || !strstr($vars->client,'jticketing'))
 		return; 
-		require_once JPATH_SITE.'/plugins/payment/pagseguro_jticketing/lib/PagSeguroLibrary.php';
+		require_once (dirname(__FILE__) . '/lib/PagSeguroLibrary.php');
 
 		$vars->sellar_email = $this->params->get('sellar_email');
 		$vars->token = $this->params->get('token');
 		//$vars->order_id=$vars->client.'__'.$vars->order_id;
-		$plgPaymentPagseguro_jticketingHelper= new plgPaymentPagseguro_jticketingHelper;
+		$plgPaymentPagseguro_jticketingHelper = new plgPaymentPagseguro_jticketingHelper;
 		$vars->action_url = $plgPaymentPagseguro_jticketingHelper->buildPagseguroUrl($vars,1);
 
 
@@ -104,30 +98,30 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 
 
 
-	function onTP_Processpayment($data,$vars=array()) 
+	function onTP_Processpayment($data,$vars = array()) 
 	{
 		$isValid = true;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
 		$trxnstatus='';
 
-		require_once JPATH_SITE.'/plugins/payment/pagseguro_jticketing/lib/PagSeguroLibrary.php';
+		require_once (dirname(__FILE__) . '/lib/PagSeguroLibrary.php');
 
 		$vars->sellar_email = $this->params->get('sellar_email');
 		$vars->token = $this->params->get('token');
-		$plgPaymentPagseguro_jticketingHelper= new plgPaymentPagseguro_jticketingHelper;
+		$plgPaymentPagseguro_jticketingHelper = new plgPaymentPagseguro_jticketingHelper;
 		$verified_Data = $plgPaymentPagseguro_jticketingHelper->validateIPN($data,$vars);
 
 		//$order_idstr=explode('__',$verified_Data['order_id']);
 		//$verified_Data['order_id']=$order_idstr['1'];
 
 
-		$pstatus=$verified_Data['payment_statuscode'];
+		$pstatus = $verified_Data['payment_statuscode'];
 		
 		
 		//3.compare response order id and send order id in notify URL 
-		$res_orderid='';
+		$res_orderid = '';
 		if($isValid ) {
 		 $res_orderid = $verified_Data['order_id'];
 			if(!empty($vars) && $res_orderid != $vars->order_id )
@@ -142,8 +136,8 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$verified_Data['total_paid_amt'];
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float)$verified_Data['total_paid_amt'];
 				$epsilon = 0.01;
 				
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -157,13 +151,13 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 		// END OF AMOUNT CHECK
 		
 		if($trxnstatus == 'ERROR'){
-			$status= $this->translateResponse($trxnstatus);
+			$status = $this->translateResponse($trxnstatus);
 		}else {
-			$status=$this->translateResponse($pstatus);		
+			$status = $this->translateResponse($pstatus);		
 		}
-		$status=$this->translateResponse($pstatus);
+		$status = $this->translateResponse($pstatus);
 		if(!$status)
-		$status='P';
+		$status = 'P';
 
 
 		$result = array(
@@ -183,7 +177,7 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
-				if($key==$payment_status)
+				if($key == $payment_status)
 				return $value;
 			}
 	}

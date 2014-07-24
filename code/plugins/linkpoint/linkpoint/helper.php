@@ -13,7 +13,7 @@ class plgPaymentLinkpointHelper
 	function buildLinkpointUrl()
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'payu');
-		$params=json_decode($plugin->params);
+		$params = json_decode($plugin->params);
 		$secure_post = $params->secure_post;
 		$url = $params->sandbox ? 'staging.linkpt.net' : 'secure.linkpt.net';
 		/*$secure_post = $this->params->get('secure_post');
@@ -29,10 +29,7 @@ class plgPaymentLinkpointHelper
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		if(JVERSION >='1.6.0')
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
-		else
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';	  
+		$path = dirname(__FILE__);
 		$my = JFactory::getUser();     
 	
 		JLog::addLogger(
@@ -46,8 +43,8 @@ class plgPaymentLinkpointHelper
 		);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user= $my->name.'('.$my->id.')';
-		$logEntry->desc=json_encode($logdata['raw_data']);
+		$logEntry->user = $my->name.'('.$my->id.')';
+		$logEntry->desc = json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
 //		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
@@ -76,7 +73,7 @@ class plgPaymentLinkpointHelper
       // Log the response from the Linkpoint server
       $text .= "\nIPN Response from Linkpoint Server:\n ".$this->ipn_response;
       // Write to log
-      $fp=fopen($this->ipn_log_file,'a');
+      $fp = fopen($this->ipn_log_file,'a');
       fwrite($fp, $text . "\n\n");
       fclose($fp);  // close file
    }

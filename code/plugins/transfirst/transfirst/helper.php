@@ -8,7 +8,7 @@ class plgPaymentTransfirstHelper
 	function buildTransfirstUrl()
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'transfirst');
-		$params=json_decode($plugin->params);
+		$params = json_decode($plugin->params);
 		$url = $params->sandbox ? 'https://ws.cert.processnow.com:443/portal/merchantframework/MerchantWebServices-v1?wsdl' : 'https://ws.processnow.com/portal/merchantframework/MerchantWebServices-v1?wsdl';
 		return $url;
 	}
@@ -17,10 +17,7 @@ class plgPaymentTransfirstHelper
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		if(JVERSION >='1.6.0')
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
-		else
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';	  
+		$path = dirname(__FILE__);
 		$my = JFactory::getUser();     
 	
 		JLog::addLogger(
@@ -34,8 +31,8 @@ class plgPaymentTransfirstHelper
 		);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user= $my->name.'('.$my->id.')';
-		$logEntry->desc=json_encode($logdata['raw_data']);
+		$logEntry->user = $my->name.'('.$my->id.')';
+		$logEntry->desc = json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
      

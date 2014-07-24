@@ -3,7 +3,7 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
-defined( '_JEXEC' ) or die( 'Restricted access' );
+ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.plugin.plugin' );
 //$lang = & JFactory::getLanguage();
@@ -16,7 +16,7 @@ class plgpaymentofflinecard extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		$config = JFactory::getConfig();
-		$this->responseStatus= array(
+		$this->responseStatus = array(
 			'closed' =>'C',
 			'Pending' =>'D',
 			'failed' =>'E',
@@ -26,13 +26,13 @@ class plgpaymentofflinecard extends JPlugin
 	}
 	
 	/* Internal use functions */
-	function buildLayoutPath($layout="default") 
+	function buildLayoutPath($layout = "default") 
 	{
 		if(empty($layout))
-		$layout="default";
+		$layout = "default";
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.$layout.'.php';
-		$override	= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
+		$override	= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override)) {
 			return $override;	}
 		else {	return  $core_file;	}
@@ -65,10 +65,10 @@ class plgpaymentofflinecard extends JPlugin
 		$session = JFactory::getSession();
 		$session->set('amount', $vars->amount);
 		$session->set('currency_code', $vars->currency_code);
-		if(!empty($vars->payment_type) and $vars->payment_type!='')
-			$payment_type=$vars->payment_type;
+		if(!empty($vars->payment_type) and $vars->payment_type != '')
+			$payment_type = $vars->payment_type;
 		else
-			$payment_type='';
+			$payment_type = '';
 		$html = $this->buildLayout($vars,$payment_type);
 		return $html;
 	}
@@ -76,7 +76,7 @@ class plgpaymentofflinecard extends JPlugin
 	function onTP_Processpayment($data) 
 	{
 		$db = JFactory::getDBO();
-		$post=JRequest::get('post');
+		$post = JRequest::get('post');
 		$cardnum = substr($post['cardnum'], 0, 8);
 		$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_DEV_URANDOM);
 		$cardno = base64_encode($iv . mcrypt_encrypt(MCRYPT_RIJNDAEL_256,hash('sha256', $this->encryption_key, true), $cardnum, MCRYPT_MODE_CBC, $iv)); 
@@ -94,13 +94,13 @@ class plgpaymentofflinecard extends JPlugin
 		$id = $db->loadResult();
 		$jconfig = JFactory::getConfig();
 		$jconfig->getValue('config.fromname'); 
-		$params=JComponentHelper::getParams('com_jgive');
+		$params = JComponentHelper::getParams('com_jgive');
 		$email = $params->get('email');
-		$subject= JText::_('CREDIT_CARD_DETAILS');	
+		$subject = JText::_('CREDIT_CARD_DETAILS');	
 		$lastcardno = substr($post['cardnum'], 8); 
 		$count =  strlen($lastcardno); 
 		$order_id = $data["order_id"];
-		$body=JText::sprintf('SEND_MSG_USER', $order_id, $count, $lastcardno);
+		$body = JText::sprintf('SEND_MSG_USER', $order_id, $count, $lastcardno);
 			
 		JUtility::sendMail($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.fromname'), $email, $subject, $body, $mode=1, $cc=null, $bcc=null, $attachment=null, $replyto=null, $replytoname=null);			
 		$user = JFactory::getUser();

@@ -4,8 +4,8 @@
  *  @license    GNU General Public License version 2, or later
  */
 defined( '_JEXEC' ) or die( ';)' );
-	jimport('joomla.html.html');
-	jimport( 'joomla.plugin.helper' );
+jimport('joomla.html.html');
+jimport( 'joomla.plugin.helper' );
 class plgPaymentBlankHelper
 { 		
 	//gets the action URL
@@ -29,10 +29,7 @@ class plgPaymentBlankHelper
 	{
 		jimport('joomla.error.log');
 		$options = array('format' => "{DATE}\t{TIME}\t{USER}\t{DESC}");
-		if(JVERSION >='1.6.0')
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
-		else
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';
+		$path = dirname(__FILE__);
 		$my = &JFactory::getUser();
 		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
 		$logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
@@ -43,16 +40,16 @@ class plgPaymentBlankHelper
 	function validateIPN( $data)
 	{
 	 // parse the blank URL
-     $url=plgPaymentBlankHelper::buildBlankUrl();	      
-     $this->blank_url= $url;
-      $url_parsed=parse_url($url);        
+     $url = plgPaymentBlankHelper::buildBlankUrl();	      
+     $this->blank_url = $url;
+      $url_parsed = parse_url($url);        
 
       // generate the post string from the _POST vars aswell as load the
       // _POST vars into an arry so we can play with them from the calling
       // script.
        // append ipn command
       // open the connection to blank
-      $fp = fsockopen($url_parsed[host],"80",$err_num,$err_str,30); 
+      $fp = fsockopen($url_parsed['host'],"80",$err_num,$err_str,30); 
      // $fp = fsockopen ($this->blank_url, 80, $errno, $errstr, 30);
 
       if(!$fp) {
@@ -125,7 +122,7 @@ class plgPaymentBlankHelper
       // Log the response from the payment server
       $text .= "\nIPN Response from payment Server:\n ".$this->ipn_response;
       // Write to log
-      $fp=fopen($this->ipn_log_file,'a');
+      $fp = fopen($this->ipn_log_file,'a');
       fwrite($fp, $text . "\n\n");
       fclose($fp);  // close file
    }

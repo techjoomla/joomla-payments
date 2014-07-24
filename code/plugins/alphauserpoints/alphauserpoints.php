@@ -4,14 +4,12 @@
  *  @license    GNU General Public License version 2, or later
  */
 /** ensure this file is being included by a parent file */
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_alphauserpoints', JPATH_ADMINISTRATOR);
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/alphauserpoints/alphauserpoints/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/alphauserpoints/helper.php');
+require_once(dirname(__FILE__) . '/alphauserpoints/helper.php');
 class plgpaymentalphauserpoints extends JPlugin 
 {
 	var $_payment_gateway = 'payment_alphauserpoints';
@@ -26,7 +24,7 @@ class plgpaymentalphauserpoints extends JPlugin
 		
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
-		$this->responseStatus= array(
+		$this->responseStatus = array(
 			'Success' =>'C',
 			'Failure' =>'X',
 			'ERROR'  => 'E',
@@ -36,8 +34,8 @@ class plgpaymentalphauserpoints extends JPlugin
 
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'form.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/form.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate()  . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -64,10 +62,10 @@ class plgpaymentalphauserpoints extends JPlugin
 	function onTP_GetHTML($vars)
 	{
 		$db = JFactory::getDBO();
-		$api_AUP = JPATH_SITE.DS.'components'.DS.'com_alphauserpoints';
+		$api_AUP = JPATH_SITE . '/components/com_alphauserpoints';
 		if ( file_exists($api_AUP))
 		{
-	 	$query="SELECT points FROM #__alpha_userpoints where userid=".$vars->user_id;
+	 	$query = "SELECT points FROM #__alpha_userpoints where userid=".$vars->user_id;
 		$db->setQuery($query);
 		$user_points = $db->loadResult();
 		$vars->user_points = $user_points;
@@ -84,7 +82,7 @@ class plgpaymentalphauserpoints extends JPlugin
 		if(!in_array($this->_name,$config))
 		return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -93,44 +91,44 @@ class plgpaymentalphauserpoints extends JPlugin
 	function onTP_Processpayment($data,$vars) 
 	{
 		$isValid = true;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
 		
 		$db = JFactory::getDBO();
-		$query="SELECT points FROM #__alpha_userpoints where userid=".$data['user_id'];
+		$query = "SELECT points FROM #__alpha_userpoints where userid=".$data['user_id'];
 		$db->setQuery($query);
 		$points_count = $db->loadResult();
 		$convert_val = $this->params->get('conversion');
-		$points_charge=$data['total']*$convert_val;
-		$payment_status='';
+		$points_charge = $data['total']*$convert_val;
+		$payment_status = '';
 		if($points_charge <= $points_count)
 		{
 			//$count = $points_count - $points_charge;
-			$api_AUP = JPATH_SITE.DS.'components'.DS.'com_alphauserpoints'.DS.'helper.php';
+			$api_AUP = JPATH_SITE . '/components/com_alphauserpoints/helper.php';
 			if ( file_exists($api_AUP))
 			{
 				require_once ($api_AUP);
 				if(AlphaUserPointsHelper::newpoints($data['client'].'_aup', '','',JText::_("PUB_AD"), -$points_charge,true,'', JText::_("SUCCSESS")))
 				{
-					$payment_status='Success';
+					$payment_status = 'Success';
 				}
 				else
-					$payment_status='Failure';
+					$payment_status = 'Failure';
 					$isValid = false;
 			}
 			else{
-				$payment_status='Failure';
+				$payment_status = 'Failure';
 				$isValid = false;
 			}
 		}
 		else
 		{
-			$payment_status='Failure';
+			$payment_status = 'Failure';
 		}
 		
 		//3.compare response order id and send order id in notify URL 
-		$res_orderid='';
+		$res_orderid = '';
 		$res_orderid = $data['order_id'];
 		if($isValid ) {
 			if(!empty($vars) && $res_orderid != $vars->order_id )
@@ -146,8 +144,8 @@ class plgpaymentalphauserpoints extends JPlugin
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$data['total'];
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float)$data['total'];
 				$epsilon = 0.01;
 				
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -177,7 +175,7 @@ class plgpaymentalphauserpoints extends JPlugin
 			
     	foreach($this->responseStatus as $key=>$value)
 				{
-					if($key==$invoice_status)
+					if($key == $invoice_status)
 					return $value;		
 				}
 	}

@@ -13,8 +13,8 @@ class plgPaymentPaypalHelper
 	function buildPaypalUrl($secure = true)
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'paypal');
-		$params=json_decode($plugin->params);
-		$url= $params->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';		
+		$params = json_decode($plugin->params);
+		$url = $params->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';		
 		$url = 'https://' . $url . '/cgi-bin/webscr';
 		return $url;
 	}
@@ -23,7 +23,7 @@ class plgPaymentPaypalHelper
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		$path= dirname(__FILE__);
+		$path = dirname(__FILE__);
 		$my = JFactory::getUser();     
 	
 		JLog::addLogger(
@@ -37,8 +37,8 @@ class plgPaymentPaypalHelper
 		);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user= $my->name.'('.$my->id.')';
-		$logEntry->desc=json_encode($logdata['raw_data']);
+		$logEntry->user = $my->name.'('.$my->id.')';
+		$logEntry->desc = json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
 //		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
@@ -49,9 +49,9 @@ class plgPaymentPaypalHelper
 	{
 
 	 // parse the paypal URL
-     $url=plgPaymentPaypalHelper::buildPaypalUrl();	      
-     $this->paypal_url= $url;
-      $url_parsed=parse_url($url);        
+     $url = plgPaymentPaypalHelper::buildPaypalUrl();	      
+     $this->paypal_url = $url;
+      $url_parsed = parse_url($url);        
 
       // generate the post string from the _POST vars aswell as load the
       // _POST vars into an arry so we can play with them from the calling
@@ -78,7 +78,7 @@ class plgPaymentPaypalHelper
          $this->ipn_data["$field"] = $value;
          $post_string .= $field.'='.urlencode(stripslashes($value)).'&'; 
       }
-      $post_string.="cmd=_notify-validate";
+      $post_string .= "cmd=_notify-validate";
       
          // Post the data back to paypal
          fputs($fp, "POST $url_parsed[path] HTTP/1.1\r\n"); 
@@ -133,7 +133,7 @@ class plgPaymentPaypalHelper
       // Log the response from the paypal server
       $text .= "\nIPN Response from Paypal Server:\n ".$this->ipn_response;
       // Write to log
-      $fp=fopen($this->ipn_log_file,'a');
+      $fp = fopen($this->ipn_log_file,'a');
       fwrite($fp, $text . "\n\n");
       fclose($fp);  // close file
    }
