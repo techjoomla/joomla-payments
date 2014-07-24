@@ -27,7 +27,7 @@ class plgPayment2CheckoutHelper
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		$path= dirname(__FILE__);
+		$path = dirname(__FILE__);
 		$my = JFactory::getUser();     
 	
 		JLog::addLogger(
@@ -41,8 +41,8 @@ class plgPayment2CheckoutHelper
 		);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user= $my->name.'('.$my->id.')';
-		$logEntry->desc=json_encode($logdata['raw_data']);
+		$logEntry->user = $my->name.'('.$my->id.')';
+		$logEntry->desc = json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
 

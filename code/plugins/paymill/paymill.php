@@ -55,7 +55,7 @@ class plgpaymentpaymill extends JPlugin
 		//PRIVATE_KEY IN API KEY
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//closed = Approved, Pending = Declined, failed = Error, open = Held for Review
-		$this->responseStatus= array(
+		$this->responseStatus = array(
 			'closed' =>'C',
 			'Pending' =>'D',
 			'failed' =>'E',
@@ -85,9 +85,9 @@ class plgpaymentpaymill extends JPlugin
 	}
 	
 	/* Internal use functions */
-	public function buildLayoutPath($layout="default") {
+	public function buildLayoutPath($layout = "default") {
 		if(empty($layout))
-			$layout="default";
+			$layout = "default";
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
 		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
@@ -147,10 +147,10 @@ class plgpaymentpaymill extends JPlugin
 		$session = JFactory::getSession();
 		$session->set('amount', $vars->amount);
 		$session->set('currency_code', $vars->currency_code);
-		if(!empty($vars->payment_type) and $vars->payment_type!='')
-			$payment_type=$vars->payment_type;
+		if(!empty($vars->payment_type) and $vars->payment_type != '')
+			$payment_type = $vars->payment_type;
 		else
-			$payment_type='';
+			$payment_type = '';
 		$html = $this->buildLayout($vars,$payment_type);
 		return $html;
 	}
@@ -158,10 +158,10 @@ class plgpaymentpaymill extends JPlugin
 	function onTP_Processpayment($data,$vars=array()) 
 	{
 		$isValid = true;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
-		$trxnstatus='';
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
+		$trxnstatus = '';
 		
 		//API HOST KEY
 		define('PAYMILL_API_HOST', 'https://api.paymill.com/v2/');
@@ -188,8 +188,8 @@ class plgpaymentpaymill extends JPlugin
 
 				if($transaction['error'])
 				{
-					$error['code']	='';
-					$error['desc']	=$transaction['error'];
+					$error['code']	= '';
+					$error['desc']	= $transaction['error'];
 					
 					$result = array('transaction_id'=>'',
 								'order_id'=>$data["order_id"],
@@ -207,13 +207,13 @@ class plgpaymentpaymill extends JPlugin
 					//$status varible
 					
 					// amount check // response amount in cent
-					$gross_amt=(float)(($transaction['origin_amount']) / (100));
+					$gross_amt = (float)(($transaction['origin_amount']) / (100));
 					if($isValid ) {
 						if(!empty($vars))
 						{
 							// Check that the amount is correct
-							$order_amount=(float) $vars->amount;
-							$retrunamount =  (float)$gross_amt;
+							$order_amount = (float) $vars->amount;
+							$retrunamount = (float)$gross_amt;
 							$epsilon = 0.01;
 							
 							if(($order_amount - $retrunamount) > $epsilon)
@@ -225,9 +225,9 @@ class plgpaymentpaymill extends JPlugin
 						}
 					}
 					if($trxnstatus ==  'failed'){
-						$status=$this->translateResponse($ttrxnstatus);
+						$status = $this->translateResponse($ttrxnstatus);
 					} else {
-						$status=$this->translateResponse($transaction['status']);
+						$status = $this->translateResponse($transaction['status']);
 					}
 					//array pass to translate function 
 					$result = array('transaction_id'=>$transaction['id'],
@@ -264,7 +264,7 @@ class plgpaymentpaymill extends JPlugin
 	{
 			foreach($this->responseStatus as $key=>$value)
 			{
-				if($key==$payment_status)
+				if($key == $payment_status)
 				return $value;		
 			}
 	}

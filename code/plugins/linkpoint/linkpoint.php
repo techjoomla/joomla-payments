@@ -42,7 +42,7 @@ class plgPaymentLinkpoint extends JPlugin
 	if(!in_array($this->_name,$config))
 	return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -50,7 +50,7 @@ class plgPaymentLinkpoint extends JPlugin
 	function buildLayoutPath($layout) 
 	{		
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . 'form.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/form.php';
 		$override	= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		
 		return (JFile::exists($override)) ? $override : $core_file;
@@ -80,21 +80,13 @@ class plgPaymentLinkpoint extends JPlugin
 	function onTP_Processpayment($data,$vars=array()) 
 	{
 		$isValid = true;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
-		if(JVERSION >='1.6.0')
-		include	JPATH_SITE.'/plugins/payment/linkpoint/linkpoint/lib/lphp.php';
-		else
-		include	JPATH_SITE.'/plugins/payment/linkpoint/lib/lphp.php';
-		
-		if(JVERSION >='1.6.0')
-			$pemfilepath=JPATH_SITE.'/plugins/payment/linkpoint/linkpoint/staging_cert.pem';
-		else
-			$pemfilepath=JPATH_SITE.'/plugins/payment/linkpoint/staging_cert.pem';
-		
-		$plgPaymentLinkpointHelper=new plgPaymentLinkpointHelper();	
-		$host=$plgPaymentLinkpointHelper->buildLinkpointUrl();		
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
+		include(dirname(__FILE__) . '/linkpoint/lib/lphp.php');
+		$pemfilepath = (dirname(__FILE__) . '/linkpoint/staging_cert.pem');
+		$plgPaymentLinkpointHelper = new plgPaymentLinkpointHelper();	
+		$host = $plgPaymentLinkpointHelper->buildLinkpointUrl();		
 		$orderid = $data['oid'];
 		
 		$mylphp = new lphp;
@@ -105,7 +97,7 @@ class plgPaymentLinkpoint extends JPlugin
 
 		$order["ordertype"]         = "SALE";
 		$testmode 		= $this->params->get( 'testmode', '1' );
-		if($testmode==1){
+		if($testmode == 1){
 			$order["result"]            = "GOOD";  		# For test transactions, set to GOOD, DECLINE, or DUPLICATE
 		}
 		else{
@@ -128,7 +120,7 @@ class plgPaymentLinkpoint extends JPlugin
 		$raw_data = $mylphp->curl_process($order);  # use curl methods
 		
 		//3.compare response order id and send order id in notify URL 
-		$res_orderid='';
+		$res_orderid = '';
 		$res_orderid = $data['oid'];
 		if($isValid ) {
 			if(!empty($vars) && $res_orderid != $vars->order_id )
@@ -142,8 +134,8 @@ class plgPaymentLinkpoint extends JPlugin
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$data["chargetotal"];
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float)$data["chargetotal"];
 				$epsilon = 0.01;
 				
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -155,12 +147,12 @@ class plgPaymentLinkpoint extends JPlugin
 			}
 		}
 		// translet response
-		$status=$this->translateResponse($raw_data['r_approved']);
+		$status = $this->translateResponse($raw_data['r_approved']);
 
 		//Error Handling
-		$error=array();
+		$error = array();
 		$error['code']	.= $raw_data['r_code'];
-		$error['desc']	.=$raw_data['r_message '];
+		$error['desc']	.= $raw_data['r_message '];
 	
 		$result = array('transaction_id'=>md5($data['oid']),
 					'order_id'=>$data['oid'],
@@ -176,7 +168,7 @@ class plgPaymentLinkpoint extends JPlugin
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
-				if($key==$payment_status)
+				if($key == $payment_status)
 				return $value;		
 			}
 	}

@@ -91,14 +91,14 @@ class  plgPaymentEway extends JPlugin
 
 		
 		//Define Payment Status codes in eway  And Respective Alias in Framework
-		$this->responseStatus= array(
+		$this->responseStatus = array(
  	 'True'  => 'C','ERROR'  => 'E');
 	}
 
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . 'default.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
 		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
@@ -141,11 +141,11 @@ class  plgPaymentEway extends JPlugin
 	 * */
 	function onTP_GetHTML($vars)
 	{
-			$plgPaymentEwayHelper= new plgPaymentEwayHelper();
+			$plgPaymentEwayHelper = new plgPaymentEwayHelper();
 			// Split the name in first and last name
-			$user= JFactory::getUser();
+			$user = JFactory::getUser();
 			
-			$nameParts =$user->name; // explode(' ', $user->name, 2);
+			$nameParts = $user->name; // explode(' ', $user->name, 2);
 			$firstName = $user->name;
 			$lastName = $user->name;
 			
@@ -158,21 +158,21 @@ class  plgPaymentEway extends JPlugin
 			
 			// Construct the transaction key request URL
 		JLoader::import('joomla.environment.uri');
-		$country='au'; 
+		$country = 'au'; 
 		switch($this->params->get('site', 0))
 		{
 			case '0':
 			default:
 				$apiURL = 'https://au.ewaygateway.com/Request';
-				$country='au'; 
+				$country = 'au'; 
 				break;
 			case '1':
 				$apiURL = 'https://payment.ewaygateway.com/Request';
-				$country='gb'; 
+				$country = 'gb'; 
 				break;
 			case '2':
 				$apiURL = 'https://nz.ewaygateway.com/Request';
-				$country='nz'; 
+				$country = 'nz'; 
 				break;
 		}
 		$eWayURL = new JURI($apiURL);
@@ -201,7 +201,7 @@ class  plgPaymentEway extends JPlugin
 		$eWayURL->setVar('CustomerCountry', $country);//urlencode($kuser->country));
 		$eWayURL->setVar('CustomerEmail', urlencode($vars->user_email));
 		
-		$title="Mr.";    //@TODO SET DEFAULT
+		$title = "Mr.";    //@TODO SET DEFAULT
 		//$eWayURL->setVar('InvoiceDescription', urlencode($level->title . ' - [ ' . $vars->order_id . ' ]'));
 		$eWayURL->setVar('InvoiceDescription', urlencode($title .' '.$firstName. ' - [ ' . $vars->order_id . ' ]'));
 		//$eWayURL->setVar('MerchantReference', urlencode($vars->order_id));
@@ -235,9 +235,9 @@ class  plgPaymentEway extends JPlugin
 		// $responseurl = eway server give redirect url 
 		// like https://au.ewaygateway.com/PaymentPage.aspx?value=FDutUBfBS3oVR7PTbg78zlS8tz8xrif4QGDIfvuICBi8L9TZHq
 	 	$responseurl = $this->fetch_data($response, '<uri>', '</uri>'); 
-		if($responsemode=="True") {
+		if($responsemode == "True") {
 			//JFactory::getApplication()->redirect($responseurl);
-			$vars->responseurl=$responseurl;
+			$vars->responseurl = $responseurl;
 			return	$html = $this->buildLayout($vars);
 		} else {
 			return JError::raiseError(500, '************* You have an error in your eWay setup: <br> '.$response);
@@ -248,10 +248,10 @@ class  plgPaymentEway extends JPlugin
 	function onTP_Processpayment($data,$vars=array()) 
 	{
 		$isValid = true;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
-		$trxnstatus='';
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
+		$trxnstatus = '';
 		JLoader::import('joomla.utilities.date');
 		// Check if we're supposed to handle this
 		JLoader::import('joomla.environment.uri');
@@ -275,7 +275,7 @@ class  plgPaymentEway extends JPlugin
 		$eWayURL->setVar('UserName', urlencode($this->params->get('username','')));
 		$eWayURL->setVar('AccessPaymentCode', urlencode($data['AccessPaymentCode']));
 		
-		$posturl=$eWayURL->toString();
+		$posturl = $eWayURL->toString();
 		$posturl = str_replace('Result?', 'Result/?', $posturl);
 		
 		$ch = curl_init();
@@ -326,9 +326,9 @@ class  plgPaymentEway extends JPlugin
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$return_resp['status'] ='0';
-				$retrunamount =  (float)$retrunamount;
+				$order_amount = (float) $vars->amount;
+				$return_resp['status'] = '0';
+				$retrunamount = (float)$retrunamount;
 				$epsilon = 0.01;
 				
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -339,21 +339,21 @@ class  plgPaymentEway extends JPlugin
 				}
 			}
 		}
-		$order_status='';
+		$order_status = '';
 		// Translaet Payment status
 		$order_status= $this->translateResponse($trxnstatus);
 		
 		// IF REQUIRE:: add the AfterPaymentCallback events
 	
-		$data['status']=$trxnstatus;
+		$data['status'] = $trxnstatus;
 
 		//Error Handling
-		$responseCodes=$this->responseCodes;
-		$error=array();
+		$responseCodes = $this->responseCodes;
+		$error = array();
 		if($responsecode!= '00')
 		{
-		$error['code']	=$responsecode;
-		$error['desc']	=(isset($responsecode)?$responseCodes[$responsecode]:'');
+		$error['code']	= $responsecode;
+		$error['desc']	= (isset($responsecode)?$responseCodes[$responsecode]:'');
 		}
 
 		$result = array(
@@ -373,7 +373,7 @@ class  plgPaymentEway extends JPlugin
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
-				if($key==$payment_status)
+				if($key == $payment_status)
 					return $value;
 			}
 			
@@ -392,8 +392,8 @@ class  plgPaymentEway extends JPlugin
 		foreach($vars as $key=>$value)
 		{
 			$vars->$key=trim($value);	
-			if($key=='amount')
-				$vars->$key=round($value);
+			if($key == 'amount')
+				$vars->$key = round($value);
 		}	
 		return $vars;
 	}

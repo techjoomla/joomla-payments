@@ -4,7 +4,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
-$lang=JFactory::getLanguage();
+$lang = JFactory::getLanguage();
 $lang->load('plg_payment_ogone', JPATH_ADMINISTRATOR);
 require_once(dirname(__FILE__) . '/ogone/helper.php');
 class  plgPaymentOgone extends JPlugin
@@ -36,7 +36,7 @@ refused
 
 */
 		//Define Payment Status codes in Ogone  And Respective Alias in Framework
-		$this->responseStatus= array(
+		$this->responseStatus = array(
 		'5'=>'PA',
  	 '9'  => 'C',
  	 '0'=>'E',
@@ -51,7 +51,7 @@ refused
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . 'default.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
 		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
@@ -82,7 +82,7 @@ refused
 		if(!in_array($this->_name,$config))
 		return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -100,10 +100,10 @@ refused
 		/*{"orderID":"JT_MB2FG_00000112","currency":"USD","amount":"0.01","PM":"CreditCard","ACCEPTANCE":"test123","STATUS":"9","CARDNO":"XXXXXXXXXXXX1111","ED":"0214","CN":"sagar_c@tekdi.net","TRXDATE":"01\/14\/13","PAYID":"18603030","NCERROR":"0","BRAND":"VISA","IP":"202.88.154.166","SHASIGN":"FA6E601B154B96CE1F5C09CA40DDB29D1B7B6602"}
 		 * */
 		$isValid = true;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
-		$trxnstatus='';
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
+		$trxnstatus = '';
 		
 		$plgPaymentOgoneHelper = new plgPaymentOgoneHelper;
 		$verify = $plgPaymentOgoneHelper->validateIPN($data);
@@ -112,9 +112,9 @@ refused
 			return false;
 			
 			//3.compare response order id and send order id in notify URL 
-		$res_orderid='';
+		$res_orderid = '';
 		if($isValid ) {
-		 $res_orderid=$data['orderID'];
+		 $res_orderid = $data['orderID'];
 		 
 		 //$vars->order_id = 'JT_MB2FG_00000112'; // @TODO REMOVE
 		 
@@ -132,8 +132,8 @@ refused
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$data['amount'];
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float)$data['amount'];
 				$epsilon = 0.01;
 				
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -146,9 +146,9 @@ refused
 		}
 		// END OF AMOUNT CHECK
 		if($trxnstatus == 'ERROR'){
-			$payment_status= $this->translateResponse($trxnstatus);
+			$payment_status = $this->translateResponse($trxnstatus);
 		}else {
-			$payment_status=$this->translateResponse($data['STATUS']);
+			$payment_status = $this->translateResponse($data['STATUS']);
 		}
 
 		$payment_status=$this->translateResponse($data['STATUS']);
@@ -172,7 +172,7 @@ refused
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
-				if($key==$payment_status)
+				if($key == $payment_status)
 				return $value;
 			}
 	}

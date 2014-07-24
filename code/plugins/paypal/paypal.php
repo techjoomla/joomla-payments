@@ -21,7 +21,7 @@ class  plgPaymentPaypal extends JPlugin
 
 
 		//Define Payment Status codes in Paypal  And Respective Alias in Framework
-		$this->responseStatus= array(
+		$this->responseStatus = array(
  	 'Completed'  => 'C','Pending'  => 'P',
  	 'Failed'=>'E','Denied'=>'D',
  	 'Refunded'=>'RF','Canceled_Reversal'=>'CRV',
@@ -33,10 +33,10 @@ class  plgPaymentPaypal extends JPlugin
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		if($layout=='recurring')
-			$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . 'recurring.php';
+		if($layout == 'recurring')
+			$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/recurring.php';
 		else
-			$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . 'default.php';
+			$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
 
 		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate(). '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . 'recurring.php';
 		if(JFile::exists($override))
@@ -68,7 +68,7 @@ class  plgPaymentPaypal extends JPlugin
 		if(!in_array($this->_name,$config))
 		return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -76,17 +76,17 @@ class  plgPaymentPaypal extends JPlugin
 	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Paypal
 	function onTP_GetHTML($vars)
 	{
-		$plgPaymentPaypalHelper=new plgPaymentPaypalHelper();
+		$plgPaymentPaypalHelper = new plgPaymentPaypalHelper();
 		$vars->action_url = $plgPaymentPaypalHelper->buildPaypalUrl();
 		//Take this receiver email address from plugin if component not provided it
 		if(empty($vars->business))
-			$vars->business=$this->params->get('business');
+			$vars->business = $this->params->get('business');
 
 		//if component does not provide cmd
 		if(empty($vars->cmd))
-			$vars->cmd='_xclick';
+			$vars->cmd = '_xclick';
 		//@ get recurring layout Amol
-		if(property_exists($vars, 'is_recurring') && $vars->is_recurring==1)
+		if(property_exists($vars, 'is_recurring') && $vars->is_recurring == 1)
 			$html = $this->buildLayout($vars,'recurring');
 		else
 			$html = $this->buildLayout($vars);
@@ -99,25 +99,25 @@ class  plgPaymentPaypal extends JPlugin
 		if(empty($vars->business))
 			$submitVaues['business'] = $this->params->get('business');
 		else
-			$submitVaues['business'] =$vars->business;
+			$submitVaues['business'] = $vars->business;
 
 		//if component does not provide cmd
 		if(empty($vars->cmd))
-			$submitVaues['cmd'] ='_xclick';
+			$submitVaues['cmd'] = '_xclick';
 		else
-			$submitVaues['cmd'] =$vars->cmd;
+			$submitVaues['cmd'] = $vars->cmd;
 
-		$submitVaues['custom'] =$vars->order_id;
-		$submitVaues['item_name'] =$vars->item_name;
-		$submitVaues['return'] =$vars->return;
-		$submitVaues['cancel_return'] =$vars->cancel_return;
-		$submitVaues['notify_url'] =$vars->notify_url;
-		$submitVaues['currency_code'] =$vars->currency_code;
-		$submitVaues['no_note'] ='1';
-		$submitVaues['rm'] ='2';
-		$submitVaues['amount'] =$vars->amount;
-		$submitVaues['lc'] =$vars->country_code;
-		$plgPaymentPaypalHelper=new plgPaymentPaypalHelper();
+		$submitVaues['custom'] = $vars->order_id;
+		$submitVaues['item_name'] = $vars->item_name;
+		$submitVaues['return'] = $vars->return;
+		$submitVaues['cancel_return'] = $vars->cancel_return;
+		$submitVaues['notify_url'] = $vars->notify_url;
+		$submitVaues['currency_code'] = $vars->currency_code;
+		$submitVaues['no_note'] = '1';
+		$submitVaues['rm'] = '2';
+		$submitVaues['amount'] = $vars->amount;
+		$submitVaues['lc'] = $vars->country_code;
+		$plgPaymentPaypalHelper = new plgPaymentPaypalHelper();
 		$postaction = $plgPaymentPaypalHelper->buildPaypalUrl();
 		/* for offsite plugin */
 		$postvalues = http_build_query($submitVaues);
@@ -131,24 +131,24 @@ class  plgPaymentPaypal extends JPlugin
 		if(empty($vars->business))
 			$submitVaues['business'] = $this->params->get('business');
 		else
-			$submitVaues['business'] =$vars->business;
+			$submitVaues['business'] = $vars->business;
 
 		//if component does not provide cmd
 		if(empty($vars->cmd))
-			$submitVaues['cmd'] ='_xclick-subscriptions';
+			$submitVaues['cmd'] = '_xclick-subscriptions';
 		else
-			$submitVaues['cmd'] =$vars->cmd;
+			$submitVaues['cmd'] = $vars->cmd;
 
 		$submitVaues['custom'] =	$vars->order_id;
-		$submitVaues['item_name'] =	$vars->item_name;
+		$submitVaues['item_name'] = $vars->item_name;
 		$submitVaues['return'] =	$vars->return;
-		$submitVaues['cancel_return']=$vars->cancel_return;
-		$submitVaues['notify_url'] =$vars->notify_url;
-		$submitVaues['currency_code'] =$vars->currency_code;
+		$submitVaues['cancel_return']= $vars->cancel_return;
+		$submitVaues['notify_url'] = $vars->notify_url;
+		$submitVaues['currency_code'] = $vars->currency_code;
 		$submitVaues['no_note'] =	'1';
 		$submitVaues['rm'] =		'2';
 		$submitVaues['a3'] =		$vars->amount;
-		if($vars->recurring_frequency=='QUARTERLY')
+		if($vars->recurring_frequency == 'QUARTERLY')
 		{
 			$submitVaues['p3']=		3;
 			$submitVaues['t3']=		'MONTH';
@@ -163,7 +163,7 @@ class  plgPaymentPaypal extends JPlugin
 		$submitVaues['sra']=		1;
 		//$submitVaues['TRIALBILLINGPERIOD']='DAY'; //Parameters to test Recurring payment
 		//$submitVaues['TRIALBILLINGFREQUENCY']=3; //Parameters to test Recurring payment
-		$plgPaymentPaypalHelper=new plgPaymentPaypalHelper();
+		$plgPaymentPaypalHelper = new plgPaymentPaypalHelper();
 		$postaction = $plgPaymentPaypalHelper->buildPaypalUrl();
 		/* for offsite plugin */
 		$postvalues = http_build_query($submitVaues);
@@ -177,7 +177,7 @@ class  plgPaymentPaypal extends JPlugin
 		$verify = plgPaymentPaypalHelper::validateIPN($data);
 		if (!$verify) { return false; }
 
-		$payment_status=$this->translateResponse($data['payment_status']);
+		$payment_status = $this->translateResponse($data['payment_status']);
 
 		$result = array(
 						'order_id'=>$data['custom'],
@@ -197,7 +197,7 @@ class  plgPaymentPaypal extends JPlugin
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
-				if($key==$payment_status)
+				if($key == $payment_status)
 				return $value;
 			}
 	}

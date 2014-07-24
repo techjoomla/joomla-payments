@@ -5,7 +5,7 @@ jimport( 'joomla.plugin.plugin' );
 require_once(dirname(__FILE__) . '/transfirst/helper.php');
 
 //load language
-$lang =JFactory::getLanguage();
+$lang = JFactory::getLanguage();
 $extension = 'plg_payment_transfirst';
 $base_dir = JPATH_ADMINISTRATOR;
 $language_tag = 'en-GB';
@@ -26,7 +26,7 @@ class plgpaymentTransfirst extends JPlugin
 
 		//Define Payment Status codes in Transfirst  And Respective Alias in Framework
 		//00 = Approved, 16 = Declined, 06 = Error, 10 = Held for Review
-		$this->responseStatus= array(
+		$this->responseStatus = array(
 			'00'=>'C',
 			'08'=>'D',
 			'11'=>'D',
@@ -60,12 +60,12 @@ class plgpaymentTransfirst extends JPlugin
 	}
 
 	/* Internal use functions */
-	function buildLayoutPath($layout="default") {
+	function buildLayoutPath($layout = "default") {
 		if(empty($layout))
-		$layout="default";
+		$layout = "default";
 		$app = JFactory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
-		$override= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
+		$override = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -76,7 +76,7 @@ class plgpaymentTransfirst extends JPlugin
 		}
 	}
 	//Builds the layout to be shown, along with hidden fields.
-	function buildLayout($vars, $layout='default')
+	function buildLayout($vars, $layout = 'default')
 	{
 		// Load the layout & push variables
 		ob_start();
@@ -88,7 +88,7 @@ class plgpaymentTransfirst extends JPlugin
 	}
 
 	//gets param values
-	function getParamResult($name,$default='')
+	function getParamResult($name,$default = '')
 	{
 		$sandbox_param = "sandbox_$name";
 		$sb_value = $this->params->get($sandbox_param);
@@ -108,7 +108,7 @@ class plgpaymentTransfirst extends JPlugin
 	if(!in_array($this->_name,$config))
 	return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -116,43 +116,43 @@ class plgpaymentTransfirst extends JPlugin
 	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Paypal
 	function onTP_GetHTML($vars)
 	{
-		if(!empty($vars->payment_type) and $vars->payment_type!='')
-		$payment_type=$vars->payment_type;
+		if(!empty($vars->payment_type) and $vars->payment_type != '')
+		$payment_type = $vars->payment_type;
 		else
-		$payment_type='';
+		$payment_type = '';
 		$html = $this->buildLayout($vars,$payment_type);
 		return $html;
 	}
 
 	function onTP_Processpayment($data,$vars) 
 	{
-		$resData=$data;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
-		$trxnstatus='';
+		$resData = $data;
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
+		$trxnstatus = '';
 		$isValid = true;
 		
 		//require transfirst.class file
 		require_once(dirname(__FILE__) . '/transfirst/Transfirst.class.php');
 		//YYMM Expiration Date: This is the expiration date of the card
 		$exp_year = substr($data['card_exp_year'],2); //Year YYYY to YY
-		$exp_month=$data['card_exp_month'];
+		$exp_month = $data['card_exp_month'];
 		//MM if less than 10
-		if($data['card_exp_month']<10)
+		if($data['card_exp_month'] < 10)
 		{
-			$exp_month="0".$data['card_exp_month'];
+			$exp_month = "0".$data['card_exp_month'];
 		}
 
 		//This is the type of card. Valid Values: 0 = VISA  1 = MasterCard 2 = AMEX 3 = Discover 4 = Diner’s Club 5 = JCB
 		switch($data['activated'])
 		{
 			case 'Visa':
-				$card_no=0;
+				$card_no = 0;
 			break;
 
 			case 'Mastercard':
-				$card_no=1;
+				$card_no = 1;
 			break;
 
 			case 'AmericanExpress':
@@ -160,26 +160,26 @@ class plgpaymentTransfirst extends JPlugin
 			break;
 
 			case 'Discover':
-				$card_no=3;
+				$card_no = 3;
 			break;
 
 			case 'DinersClub':
-				$card_no=4;
+				$card_no = 4;
 			break;
 
 			case 'JCB':
-				$card_no=5;
+				$card_no = 5;
 			break;
 		}
 
 		// convert the amount upto two decimal number format
-		$amount=$data['amount']*100;
-		$amount= round($amount);
+		$amount = $data['amount']*100;
+		$amount = round($amount);
 		// Add leading 0 to the amount
-		$amount="0".$amount;
+		$amount = "0".$amount;
 
 		//build the paramer_array to send data over gateway
-		$parameter_array=array(
+		$parameter_array = array(
 			'merc'=>array(
 				'id'		=>$this->merchant_id,
 				'regKey'	=>$this->reg_key,
@@ -202,25 +202,25 @@ class plgpaymentTransfirst extends JPlugin
 		//print_r($parameter_array);die;
 
 		//get the action url to send the data to the gateway
-		$plgPaymentTransfirstHelper=new plgPaymentTransfirstHelper();
-		$soapUrl=$plgPaymentTransfirstHelper->buildTransfirstUrl();
+		$plgPaymentTransfirstHelper = new plgPaymentTransfirstHelper();
+		$soapUrl = $plgPaymentTransfirstHelper->buildTransfirstUrl();
 
-		$Transfirst=new Transfirst($soapUrl,'');
-		$resp=$Transfirst->SendTran($parameter_array);
+		$Transfirst = new Transfirst($soapUrl,'');
+		$resp = $Transfirst->SendTran($parameter_array);
 
-		$tranData=array();
-		$tranData=$resp->tranData;
-		$transaction_id =$tranData->tranNr;
+		$tranData = array();
+		$tranData = $resp->tranData;
+		$transaction_id = $tranData->tranNr;
 		
 		// amount check
 		// response amount in cent
-		$gross_amt=(float)(($tranData->amt) / (100));
+		$gross_amt = (float)(($tranData->amt) / (100));
 		if($isValid ) {
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$gross_amt;
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float)$gross_amt;
 				$epsilon = 0.01;
 				
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -235,24 +235,24 @@ class plgpaymentTransfirst extends JPlugin
 		// END OF AMOUNT CHECK
 		
 		if($trxnstatus == 'ERROR'){
-			$payment_status=$this->translateResponse($trxnstatus);
+			$payment_status = $this->translateResponse($trxnstatus);
 		}else {
-			$payment_status=$this->translateResponse($resp->rspCode);
+			$payment_status = $this->translateResponse($resp->rspCode);
 		}
 		//Add the status in array status if not exists
 		if(!$payment_status)
 		{
-			$payment_status='P';
+			$payment_status = 'P';
 		}
 		
 		// if error code is present then add error detail in error array
 		if($resp->resCode != '00'){
 			$error['code'] .= $resp->rspCode;
 			if($resp->rspCode)
-				$error['desc'] .=JText::_('PLG_TRANSFIRST_RESP_CODE_'.$resp->rspCode);
+				$error['desc'] .= JText::_('PLG_TRANSFIRST_RESP_CODE_'.$resp->rspCode);
 		}
 		
-		$result=array('transaction_id'=>$transaction_id,
+		$result = array('transaction_id'=>$transaction_id,
 						'order_id'=>$data['order_id'],
 						'status'=>$payment_status,
 						'total_paid_amt'=>$gross_amt,
@@ -267,7 +267,7 @@ class plgpaymentTransfirst extends JPlugin
 	{
 		foreach($this->responseStatus as $key=>$value)
 		{
-			if($key==$payment_status)
+			if($key == $payment_status)
 			return $value;
 		}
 	}

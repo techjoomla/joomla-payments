@@ -26,7 +26,7 @@ class plgPaymentJomsocialpointsHelper
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		$path= dirname(__FILE__);
+		$path = dirname(__FILE__);
 		$my = JFactory::getUser();     
 	
 		JLog::addLogger(
@@ -40,8 +40,8 @@ class plgPaymentJomsocialpointsHelper
 		);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user= $my->name.'('.$my->id.')';
-		$logEntry->desc=json_encode($logdata['raw_data']);
+		$logEntry->user = $my->name.'('.$my->id.')';
+		$logEntry->desc = json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
 //		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
@@ -82,7 +82,7 @@ class plgPaymentJomsocialpointsHelper
       // Log the response from the paypal server
       $text .= "\nIPN Response from Paypal Server:\n ".$this->ipn_response;
       // Write to log
-      $fp=fopen($this->ipn_log_file,'a');
+      $fp = fopen($this->ipn_log_file,'a');
       fwrite($fp, $text . "\n\n");
       fclose($fp);  // close file
    }

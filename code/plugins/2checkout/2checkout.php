@@ -67,7 +67,7 @@ class  plgPayment2checkout extends JPlugin
 		if(!in_array($this->_name,$config))
 		return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -113,8 +113,8 @@ class  plgPayment2checkout extends JPlugin
 	{
 			$isValid = true;
 		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
+		$error['code']	= '';
+		$error['desc']	= '';
 		$trxnstatus='';
 		$secret = $this->params->get('secret','cc');	
 		/*$verify = plgPayment2checkoutHelper::validateIPN($data,$secret);
@@ -141,8 +141,8 @@ class  plgPayment2checkout extends JPlugin
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$data['total'];
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float)$data['total'];
 				$epsilon = 0.01;
 				
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -188,7 +188,7 @@ class  plgPayment2checkout extends JPlugin
 			
     	foreach($this->responseStatus as $key=>$value)
 				{
-					if($key==$invoice_status)
+					if($key == $invoice_status)
 					return $value;		
 				}
 	}

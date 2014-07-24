@@ -24,7 +24,7 @@ class plgpaymentbycheck extends JPlugin
 		
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
-		$this->responseStatus= array(
+		$this->responseStatus = array(
 			'Success' =>'C',
 			'Failure' =>'X',
 			'Pending' =>'P',
@@ -35,7 +35,7 @@ class plgpaymentbycheck extends JPlugin
 
 	function buildLayoutPath($layout) {
 		if(empty($layout))
-		$layout="default";
+		$layout = "default";
 		$app = JFactory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
 		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
@@ -79,7 +79,7 @@ class plgpaymentbycheck extends JPlugin
 		if(!in_array($this->_name,$config))
 		return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -88,12 +88,12 @@ class plgpaymentbycheck extends JPlugin
 	{
 		$isValid = true;
 		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
+		$error['code']	= '';
+		$error['desc']	= '';
 		
-		$trxnstatus="Pending";
+		$trxnstatus = "Pending";
 		//3.compare response order id and send order id in notify URL 
-		$res_orderid='';
+		$res_orderid = '';
 		$res_orderid = $data['order_id'];
 		if($isValid ) {
 			if(!empty($vars) && $res_orderid != $vars->order_id )
@@ -109,8 +109,8 @@ class plgpaymentbycheck extends JPlugin
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$data['total'];
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float)$data['total'];
 				$epsilon = 0.01;
 				
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -123,9 +123,9 @@ class plgpaymentbycheck extends JPlugin
 		}
 		// END OF AMOUNT CHECK
 		
-		$payment_status=$this->translateResponse($trxnstatus);
+		$payment_status = $this->translateResponse($trxnstatus);
 		
-			$data['payment_status']=$payment_status;
+			$data['payment_status'] = $payment_status;
 			$result = array('transaction_id'=>'',
     				'order_id'=>$data['order_id'],
 						'status'=>$payment_status,
@@ -140,7 +140,7 @@ class plgpaymentbycheck extends JPlugin
 			
     	foreach($this->responseStatus as $key=>$value)
 				{
-					if($key==$invoice_status)
+					if($key == $invoice_status)
 					return $value;		
 				}
 	}
