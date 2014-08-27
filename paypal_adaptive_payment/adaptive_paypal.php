@@ -1,8 +1,11 @@
 <?php
 /**
- *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
- *  @license    GNU General Public License version 2, or later
+ * @version    SVN: <svn_id>
+ * @author     Techjoomla <extensions@techjoomla.com>
+ * @copyright  Copyright (c) 2009-2015 TechJoomla. All rights reserved.
+ * @license    GNU General Public License version 2 or later.
  */
+
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
@@ -89,7 +92,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		if(!in_array($this->_name,$config))
 		return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -101,7 +104,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		$vars->action_url = $plgPaymentAdaptivePaypalHelper->buildPaypalUrl();
 		//Take this receiver email address from plugin if component not provided it
 		if(empty($vars->business))
-			$vars->business=$this->params->get('business');
+			$vars->business = $this->params->get('business');
 
 		//if component does not provide cmd
 		if(empty($vars->cmd))
@@ -141,7 +144,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		//@params packet response, component name, Item name
 		$this->_StorelogBeforePayment($response,$vars->client,$vars->item_name);
 
-		$paykey=$response['payKey'];
+		$paykey = $response['payKey'];
 		//Set payment detials
 		$detailsPacket=array(
 			"requestEnvelope"=>$this->envelope,
@@ -149,10 +152,10 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			"receiverOptions"=>$receiver
 		);
 
-		$response=$this->_paypalSend($detailsPacket,"SetPaymentOptions");
-		$detls=$this->getPaymentOptions($paykey);
+		$response = $this->_paypalSend($detailsPacket,"SetPaymentOptions");
+		$detls = $this->getPaymentOptions($paykey);
 
-		$file = 'testing2.txt';
+		$file = 'AdaptiveLog.txt';
 		// The new person to add to the file
 		$person = json_encode($_REQUEST);
 		//header to paypal
@@ -185,8 +188,25 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		/*$verify = plgPaymentAdaptivePaypalHelper::validateIPN($data);
 		if (!$verify) { return false; }
 		*/
-		$payment_status=$this->translateResponse($data['status']);
-		$paymentDetails=$this->getTransactionDetails($data);
+		$payment_status = $this->translateResponse($data['status']);
+		$paymentDetails = $this->getTransactionDetails($data);
+
+		$primaryReceiver = 0;
+
+		// Get primary receiver
+		if (!empty($paymentDetails['paymentInfoList']['paymentInfo']))
+		{
+			// For each receiver.
+			foreach ($paymentDetails['paymentInfoList']['paymentInfo'] as $recIndex => $rec)
+			{
+				if (isset($rec['receiver']['primary']) && $rec['receiver']['primary'])
+				{
+					$primaryReceiver = $recIndex;
+					break;
+				}
+
+			}
+		}
 
 		$result = array(
 						'order_id'=>$data['tracking_id'],
@@ -194,7 +214,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 						'action_type'=>$data['action_type'],
 						'status'=>$payment_status,
 						'txn_type'=>$data['transaction_type'],
-						'total_paid_amt'=>$paymentDetails['paymentInfoList']['paymentInfo'][1]['receiver']['amount'],
+						'total_paid_amt'=>$paymentDetails['paymentInfoList']['paymentInfo'][$primaryReceiver]['receiver']['amount'],
 						'raw_data'=>$paymentDetails,
 						'error'=>$paymentDetails,
 						);
@@ -204,7 +224,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
-				if($key==$payment_status)
+				if($key == $payment_status)
 				return $value;
 			}
 	}
@@ -244,7 +264,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			"requestEnvelope"=>$this->envelope
 		);
 
-		$res=$this->_paypalSend($detailsPacket,'PaymentDetails');
+		$res = $this->_paypalSend($detailsPacket,'PaymentDetails');
 		return $res;
 	}
 }
