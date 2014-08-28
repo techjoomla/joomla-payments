@@ -13,22 +13,14 @@
 		<filename plugin="easysocialpoints">easysocialpoints.php</filename>
 			<folder>easysocialpoints</folder>
 	</files>
-		<languages> 
+	<languages>
 			<language tag="en-GB">en-GB/en-GB.plg_payment_easysocialpoints.ini</language>
-			<language tag="it-IT">it-IT/it-IT.plg_payment_easysocialpoints.ini</language>
-			<language tag="de-DE">de-DE/de-DE.plg_payment_easysocialpoints.ini</language>
-			<language tag="es-ES">es-ES/es-ES.plg_payment_easysocialpoints.ini</language>
-			<language tag="sv-SE">sv-SE/sv-SE.plg_payment_easysocialpoints.ini</language>
-			<language tag="nl-NL">nl-NL/nl-NL.plg_payment_easysocialpoints.ini</language>
-			<language tag="da-DK">da-DK/da-DK.plg_payment_easysocialpoints.ini</language>
-			<language tag="th-TH">th-TH/th-TH.plg_payment_easysocialpoints.ini</language>
-			<language tag="pt-PT">pt-PT/pt-PT.plg_payment_easysocialpoints.ini</language>
   	</languages>
 	<!-- parameters for Joomla 1.5.x -->
 	<params>
 		<param name="conversion" type="text" size="10" default="10" label="PLG_EASYSOCIALPOINT_CON_AMT" description="PLG_EASYSOCIALPOINTCON_AMT_DESC"/>
-		<param name="points" type="hidden" default="point"/>	
-		<param name="plugin_name" type="text" default="easySocialPoints" label="PLG_EASYSOCIALPOINT_NAME" description="PLG_EASYSOCIALPOINT_NAME_DESC" />	
+		<param name="points" type="hidden" default="point"/>
+		<param name="plugin_name" type="text" default="easySocialPoints" label="PLG_EASYSOCIALPOINT_NAME" description="PLG_EASYSOCIALPOINT_NAME_DESC" />
 	</params>
 
 	<!-- Fields for Joomla 1.6.x and onwards -->
@@ -36,8 +28,8 @@
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="conversion" type="text" size="10" default="10" label="PLG_EASYSOCIALPOINT_CON_AMT" description="PLG_EASYSOCIALPOINTCON_AMT_DESC"/>
-				<field name="points" type="hidden" default="point"/>	
-				<field name="plugin_name" type="text" default="easySocialPoints" label="PLG_EASYSOCIALPOINT_NAME" description="PLG_EASYSOCIALPOINT_NAME_DESC" />	
+				<field name="points" type="hidden" default="point"/>
+				<field name="plugin_name" type="text" default="easySocialPoints" label="PLG_EASYSOCIALPOINT_NAME" description="PLG_EASYSOCIALPOINT_NAME_DESC" />
 			</fieldset>
 		</fields>
 	</config>
