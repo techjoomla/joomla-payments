@@ -8,9 +8,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 $document =JFactory::getDocument();
-JHTML::_('behavior.formvalidation');
-
-?>
+JHTML::_('behavior.formvalidation'); ?>
 <script type="text/javascript">
 function myValidate()
 {
@@ -33,13 +31,19 @@ function myValidate()
   { alert('Invalid Masterard No.');   return false; } 
   var jcbregex = /^(?:(?:2131|1800|35\d{3})\d{11})$/;  
   if(!cardno.match(jcbregex) && cardtype == 'JCB') 
-  { alert('Invalid JCB Card No.');   return false; } 
+  { alert('Invalid JCB Card No.');  return false; } 
   var cardexp = document.getElementById('cardexp').value;
   var valid = cardexp.indexOf("/");
   if(valid > -1) {  var data = cardexp.split('/'); } else {  var data = cardexp.split('-'); } 
-  if(data[0] > 12 || data[0] < 1) { alert('Invalid Expiry Date1'); return false; }
   var d = new Date();
+  var m = d.getMonth();
+  if (m < 10) { m = '0'+m; }
+  if(data[0] > 12 || data[0] < 1) { alert('Invalid Expiry Date'); return false; }
   var n = d.getFullYear();
+  if(data[1] == n) {  
+  	  var m1 = d.getMonth();
+	  if(data[0] < m || data[0] < m1) { alert('Invalid Expiry Date'); return false; } else { return true;  }
+  }
   if(data[1] < n) { alert('Invalid Expiry Date'); return false; } else { return true;  }
 }	
 </script> 
