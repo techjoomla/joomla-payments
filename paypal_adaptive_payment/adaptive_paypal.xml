@@ -8,7 +8,7 @@
 	<authorEmail></authorEmail>
 	<authorUrl></authorUrl>
 	<version>2.1</version>
-	<description>Paypal Adaptive payment plugin for jGive</description>
+	<description>Paypal Adaptive payment plugin</description>
 	<files>
 		<filename plugin="adaptive_paypal">adaptive_paypal.php</filename>
 		<folder>adaptive_paypal</folder>

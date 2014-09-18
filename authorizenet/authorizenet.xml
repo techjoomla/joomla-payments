@@ -8,7 +8,7 @@
 	<authorEmail></authorEmail>
 	<authorUrl></authorUrl>
 	<version>2.0.1</version>
-	<description>authorizenet payment plugin for jticketing</description>
+	<description>authorizenet payment plugin</description>
 	<files>
 		<filename plugin="authorizenet">authorizenet.php</filename>
 		<folder>authorizenet</folder>
