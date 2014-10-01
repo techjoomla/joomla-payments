@@ -199,7 +199,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			// For each receiver.
 			foreach ($paymentDetails['paymentInfoList']['paymentInfo'] as $recIndex => $rec)
 			{
-				if (isset($rec['receiver']['primary']) && $rec['receiver']['primary'])
+				if (isset($rec['receiver']['primary']) && $rec['receiver']['primary'] === true)
 				{
 					$primaryReceiver = $recIndex;
 					break;
