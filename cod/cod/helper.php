@@ -12,7 +12,7 @@ defined('_JEXEC') or die(';)');
 jimport('joomla.html.html');
 jimport('joomla.plugin.helper');
 
-class plgPaymentBycheckHelper
+class plgPaymentCodHelper
 {
 	// gets the paypal URL
 

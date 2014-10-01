@@ -9,10 +9,10 @@
 
 // Ensure this file is being included by a parent file.
 defined('_JEXEC') or die('Restricted access');
+jimport('joomla.plugin.plugin');
 
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_cod', JPATH_ADMINISTRATOR);
-
 // Load helper.
 if (JVERSION >= '1.6.0')
 {
@@ -23,7 +23,8 @@ else
 	require_once (JPATH_SITE . '/plugins/payment/cod/helper.php');
 }
 
-class plgpaymentCod extends JPlugin
+
+class plgpaymentcod extends JPlugin
 {
 	var $_payment_gateway = 'payment_cod';
 	var $_log = null;
@@ -39,7 +40,16 @@ class plgpaymentCod extends JPlugin
 			'Failure' => 'X',
 			'Pending' => 'P',
 			'ERROR' => 'E',
+			'COD' => 'COD',
 		);
+
+/*
+$extension = 'plg_payment_cod';
+$base_dir = JPATH_ADMINISTRATOR;
+$language_tag = 'en-GB';
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
+*/
 	}
 
 
@@ -68,9 +78,6 @@ class plgpaymentCod extends JPlugin
 
 	function buildLayout($vars, $layout = 'default')
 	{
-		$layout = $this->buildLayoutPath($layout);
-		include ($layout);
-
 		if (JVERSION >= '1.6.0')
 		{
 			require_once (JPATH_SITE . '/plugins/payment/cod/cod/helper.php');
@@ -82,6 +89,8 @@ class plgpaymentCod extends JPlugin
 
 		// Load the layout & push variables
 		ob_start();
+			$layout = $this->buildLayoutPath($layout);
+			include ($layout);
 			$html = ob_get_contents();
 		ob_end_clean();
 		return $html;
@@ -130,7 +139,7 @@ class plgpaymentCod extends JPlugin
 		$error = array();
 		$error['code'] = '';
 		$error['desc'] = '';
-		$trxnstatus = "Pending";
+		$trxnstatus = "COD";
 
 		// Compare response order id and send order id in notify URL
 		$res_orderid = '';
@@ -210,7 +219,7 @@ class plgpaymentCod extends JPlugin
 	 */
 	function onTP_Storelog($data)
 	{
-		$plgPaymentBycheckHelper = new plgPaymentBycheckHelper;
-		$log = $plgPaymentBycheckHelper->Storelog($this->_name, $data);
+		$plgPaymentCodHelper = new plgPaymentCodHelper;
+		$log = $plgPaymentCodHelper->Storelog($this->_name, $data);
 	}
 }
