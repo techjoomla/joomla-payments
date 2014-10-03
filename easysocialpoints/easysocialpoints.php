@@ -59,6 +59,7 @@ class Plgpaymenteasysocialpoints extends JPlugin
 	 */
 	Protected function buildLayoutPath($layout)
 	{
+		jimport('joomla.filesystem.file');
 		$app = JFactory::getApplication();
 		$core_file = dirname(__FILE__) . DS . $this->_name . DS . 'tmpl' . DS . 'form.php';
 		$override = JPATH_BASE . DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . 'plugins' . DS .
@@ -89,6 +90,7 @@ class Plgpaymenteasysocialpoints extends JPlugin
 
 	Public function onTP_GetHTML($vars)
 	{
+		jimport('joomla.filesystem.folder');
 		$db = JFactory::getDBO();
 		$jspath = JPATH_ROOT . DS . 'components' . DS . 'com_easysocial';
 
