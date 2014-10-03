@@ -62,24 +62,26 @@ class plgpaymentjomsocialpoints extends JPlugin
 
 	function onTP_GetHTML($vars)
 	{
+		jimport('joomla.filesystem.folder');
 		$db = JFactory::getDBO();
-	  $jspath = JPATH_ROOT.DS.'components'.DS.'com_community';
-     if( JFolder::exists($jspath) )
-     {
-		$query="SELECT points FROM #__community_users where userid=$vars->user_id";
-		$db->setQuery($query);
-		$user_points = $db->loadResult();
-		$vars->user_points = $user_points;
-
-		if ($user_points=='')
+	 	 $jspath = JPATH_ROOT.DS.'components'.DS.'com_community';
+		
+		if( JFolder::exists($jspath) )
 		{
-			$vars->user_points = 0;
-		}
+			$query="SELECT points FROM #__community_users where userid=$vars->user_id";
+			$db->setQuery($query);
+			$user_points = $db->loadResult();
+			$vars->user_points = $user_points;
 
-		$vars->convert_val = $this->params->get('conversion');
+			if ($user_points == '')
+			{
+				$vars->user_points = 0;
+			}
 
-		$html = $this->buildLayout($vars);
-		return $html;
+			$vars->convert_val = $this->params->get('conversion');
+
+			$html = $this->buildLayout($vars);
+			return $html;
 		}
 	}
 
