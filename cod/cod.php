@@ -67,6 +67,14 @@ class plgpaymentcod extends JPlugin
 	}
 
 	// Builds the layout to be shown, along with hidden fields.
+	/**
+	 * Return basic payment gateway name.
+	 *
+	 * @param   mixed   $var  object sent by component.
+	 *
+	 * @since   1.0.0
+	 * @return  object payment gatways basic info.
+	 */
 
 	function buildLayout($vars, $layout = 'default')
 	{
@@ -88,6 +96,14 @@ class plgpaymentcod extends JPlugin
 		return $html;
 	}
 
+	/**
+	 * Return basic payment gateway name.
+	 *
+	 * @param   mixed   $var  object sent by component.
+	 *
+	 * @since   1.0.0
+	 * @return  object payment gatways basic info.
+	 */
 	function onTP_GetHTML($vars)
 	{
 		$vars->custom_name = $this->params->get('plugin_name');
