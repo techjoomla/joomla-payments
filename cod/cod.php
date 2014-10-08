@@ -42,14 +42,6 @@ class plgpaymentcod extends JPlugin
 			'ERROR' => 'E',
 			'COD' => 'COD',
 		);
-
-/*
-$extension = 'plg_payment_cod';
-$base_dir = JPATH_ADMINISTRATOR;
-$language_tag = 'en-GB';
-$reload = true;
-$lang->load($extension, $base_dir, $language_tag, $reload);
-*/
 	}
 
 
