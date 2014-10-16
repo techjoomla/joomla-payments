@@ -25,11 +25,18 @@ class JFormFieldLogfile extends JFormField
 	protected function getInput()
 	{
 
-		$jgiveLogFilePath = JRoute::_(JUri::root().'plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_com_jgive.log');
-		$return	=	'<div style="clear:both"><a href="'.$jgiveLogFilePath.'">jGive log file</a> <br></div>';
+		if (JVERSION < '3.0')
+		{
+			$element = (array) $this->element;
+			$hint = $element['@attributes']['hint'];
+		}
+		else
+		{
+			$hint = $this->hint;
+		}
 
-	return $return;
-	} //function
-
+		$jgiveLogFilePath = JRoute::_(JUri::root(true) . 'plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_' . $hint . '.log');
+		$return	= '<div style="clear:both"><a href="' . $jgiveLogFilePath.'">' . $hint . 'log file</a> <br></div>';
+		return $return;
+	}
 }
-?>
