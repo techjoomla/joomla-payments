@@ -35,8 +35,8 @@ class JFormFieldLogfile extends JFormField
 			$hint = $this->hint;
 		}
 
-		$jgiveLogFilePath = JRoute::_(JUri::root(true) . 'plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_' . $hint . '.log');
-		$return	= '<div style="clear:both"><a href="' . $jgiveLogFilePath.'">' . $hint . 'log file</a> <br></div>';
+		$logFilePath = JRoute::_(JUri::root(true) . 'plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_' . $hint . '.log');
+		$return	= '<div style="clear:both"><a href="' . $logFilePath.'">' . $hint . 'log file</a> <br></div>';
 		return $return;
 	}
 }

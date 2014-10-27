@@ -30,8 +30,8 @@
 				<field name="plugin_name" type="text" default="Paypal Adaptive Payment" label="PLG_ADAPTIVE_PLG_NAME" description="" />
 				<field name="plugin_hidname" type="hidden" default="Paypal Adaptive Payment" />
 				<field name="jgive_adaptive_error_log" hint="jgive" type="logfile" default="YOUR_SITE_DOMAIN/plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_com_jgive.log" readonly="1" label="PLG_FILE_JGIVE_ERROR_LOG" description="PLG_FILE_JGIVE_ERROR_LOG_DESC"  />
-				<field name="jticketing_adaptive_error_log"  hint="jticketing" type="logfile" default="YOUR_SITE_DOMAIN/plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_com_jticketing.log" readonly="1" label="PLG_FILE_JGIVE_ERROR_LOG" description="PLG_FILE_JTICKETING_ERROR_LOG_DESC"  />
-				<field name="quick2cart_adaptive_error_log"  hint="quick2cart" type="logfile" default="YOUR_SITE_DOMAIN/plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_com_quick2cart.log" readonly="1" label="PLG_FILE_JGIVE_ERROR_LOG" description="PLG_FILE_QUICK2CART_ERROR_LOG_DESC"  />
+				<field name="jticketing_adaptive_error_log"  hint="jticketing" type="logfile" default="YOUR_SITE_DOMAIN/plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_com_jticketing.log" readonly="1" label="PLG_FILE_JTICKETING_ERROR_LABLE" description="PLG_FILE_JTICKETING_ERROR_LOG_DESC"  />
+				<field name="quick2cart_adaptive_error_log"  hint="quick2cart" type="logfile" default="YOUR_SITE_DOMAIN/plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_com_quick2cart.log" readonly="1" label="PLG_FILE_QUICK2CART_ERROR_LABLE" description="PLG_FILE_QUICK2CART_ERROR_LOG_DESC"  />
 
 			</fieldset>
 			<fieldset name="apifields"   label="API Credential">
