@@ -116,6 +116,7 @@ function myValidate(f)
 			<input type="hidden" name="chargetotal" value="<?php echo $vars->amount;?>" />
 			<input type="hidden" name="return" size="10" value="<?php echo $vars->return;?>" />
 			<input type="hidden" name="plugin_payment_method" value="onsite" />
+			<input type="hidden" name="currency_code" value="<?php echo $vars->currency_code;?>" />
 		</div>
 		</div>		
 	</form>

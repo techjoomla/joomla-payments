@@ -138,6 +138,7 @@ class plgpaymentpaypalpro extends JPlugin
 									"USER"						=>	$this->params->get('pro_api_username'),
 								 	"PWD"						=>	$this->params->get('pro_api_password'),
 									"SIGNATURE"					=>	$this->params->get('pro_api_signature'),
+									"CURRENCYCODE"				=>	$data['currency_code'],
 									);
 								}else{
 									$pro_values				= array(
@@ -161,6 +162,7 @@ class plgpaymentpaypalpro extends JPlugin
 									"ZIP"						=> $data['cardzip'],
 									"COUNTRYCODE"				=>$data['cardcountry'],
 									"INVNUM"					=>$data['order_id'],
+									"CURRENCYCODE"				=>	$data['currency_code'],
 									);
 									
 									}
