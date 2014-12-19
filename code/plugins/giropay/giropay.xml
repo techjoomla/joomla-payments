@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5.6" type="plugin" group="payment" method="upgrade">
+	<name>Payment - Giropay</name>
+	<author>Compojoom</author>
+	<creationDate>11th Dec 2014</creationDate>
+	<copyright>(C) 2012 - 2014 Comopojoom - Yves Hoppe</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>yves@compojoom.com</authorEmail>
+	<authorUrl>http://compojoom.com</authorUrl>
+	<version>1.0</version>
+	<description>Giropay (giropay.de) payment plugin</description>
+	<files>
+		<filename plugin="giropay">giropay.php</filename>
+		<folder>giropay</folder>
+		<folder>GiroCheckout_SDK</folder>
+	</files>
+	<languages> 
+		<language tag="en-GB">en-GB/en-GB.plg_payment_giropay.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_payment_giropay.ini</language>
+	</languages>
+	<config name="params">
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="merchant_id" type="text" default="" label="MERCHANT_ID" description="MERCHANT_ID_DESC" />
+				<field name="project_id" type="text" default="" label="PROJECT_ID" description="PROJECT_ID_DESC" />
+				<field name="project_password" type="text" default="" label="PROJECT_PASSWORD" description="PROJECT_PASSWORD_DESC" />
+				<field name="field1_label" type="text" default="" label="FIELD1_LABEL" description="FIELD1_LABEL" />
+				<field name="field1_text" type="text" default="" label="FIELD1_TEXT" description="FIELD1_TEXT" />
+				<field name="plugin_name" type="text" default="Giropay" label="PLG_NAME" description="PLG_NAME_DESC" />
+				<field name="plugin_hidname" type="hidden" default="giropay" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
