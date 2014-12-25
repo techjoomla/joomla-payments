@@ -11,6 +11,7 @@
 	<description>Paypal Adaptive payment plugin</description>
 	<files>
 		<filename plugin="adaptive_paypal">adaptive_paypal.php</filename>
+		<file>index.html</file>
 		<folder>adaptive_paypal</folder>
 		<folder>elements</folder>
 	</files>
