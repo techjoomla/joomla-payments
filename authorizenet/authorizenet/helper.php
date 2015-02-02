@@ -32,10 +32,9 @@ class plgPaymentAuthorizenetHelper
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		if(JVERSION >='1.6.0')
-			$path=JPATH_SITE.'/logs/';
-		else
-			$path=JPATH_SITE.'/logs/';
+
+		$path=JPATH_SITE.'/logs/';
+
 		$my = JFactory::getUser();
 
 		JLog::addLogger(
