@@ -33,15 +33,12 @@ class plgPaymentAuthorizenetHelper
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 
-		$path=JPATH_SITE.'/logs/';
-
 		$my = JFactory::getUser();
 
 		JLog::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'].'_'.$name.'.log',
-				'text_entry_format' => $options ,
-				'text_file_path' => $path
+				'text_entry_format' => $options
 			),
 			JLog::INFO,
 			$logdata['JT_CLIENT']
