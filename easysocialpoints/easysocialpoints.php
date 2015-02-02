@@ -226,6 +226,11 @@ class Plgpaymenteasysocialpoints extends JPlugin
 
 	Public function onTP_Storelog($data)
 	{
+		$log_write = $this->params->get('log_write', '0');
+
+		if($log_write == 1)
+		{
 			$log = plgPaymenteasysocialpointsHelper::Storelog($this->_name, $data);
+		}
 	}
 }
