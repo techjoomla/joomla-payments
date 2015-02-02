@@ -33,21 +33,11 @@ class plgPaymentCodHelper
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 
-		if (JVERSION >= '1.6.0')
-		{
-			 $path = JPATH_SITE . '/plugins/payment/' . $name . '/' . $name . '/';
-		}
-		else
-		{
-			$path = JPATH_SITE . '/plugins/payment/' . $name . '/';
-		}
-
 		$my = JFactory::getUser();
 
 		JLog::addLogger(array(
 			'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.log',
-			'text_entry_format' => $options,
-			'text_file_path' => $path
+			'text_entry_format' => $options
 		) , JLog::INFO, $logdata['JT_CLIENT']);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
