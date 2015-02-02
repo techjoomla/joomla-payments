@@ -27,15 +27,15 @@ class plgPaymentAuthorizenetHelper
 		return $url;
 
 	}
-	
+
 	function Storelog($name,$logdata)
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 		if(JVERSION >='1.6.0')
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
+			$path=JPATH_SITE.'/logs/payment/'.$name.'/';
 		else
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';
+			$path=JPATH_SITE.'/logs/payment/'.$name.'/';
 		$my = JFactory::getUser();
 
 		JLog::addLogger(

@@ -439,10 +439,16 @@ function 	onTP_Processpayment_recurring($data)
 				return $value;
 			}
 	}
-		function onTP_Storelog($data)
+
+	function onTP_Storelog($data)
 	{
-		$plgPaymentAuthorizenetHelper = new plgPaymentAuthorizenetHelper;
-		$log = $plgPaymentAuthorizenetHelper->Storelog($this->_name,$data);
+		$log_write = $this->params->get('log_write', '0');
+
+		if($log_write == 1)
+		{
+			$plgPaymentAuthorizenetHelper = new plgPaymentAuthorizenetHelper;
+			$log = $plgPaymentAuthorizenetHelper->Storelog($this->_name,$data);
+		}
 
 	}
 
