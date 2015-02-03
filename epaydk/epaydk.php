@@ -3,16 +3,12 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
+
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
-if(version_compare(JVERSION, '1.6.0', 'ge')) 
-	require_once(JPATH_SITE.'/plugins/payment/epaydk/epaydk/helper.php');
-else
-
-	require_once(JPATH_SITE.'/plugins/payment/epaydk/helper.php');
-
+require_once(dirname(__FILE__) . '/epaydk/helper.php');
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_epaydk', JPATH_ADMINISTRATOR);
 class  plgPaymentEpaydk extends JPlugin
@@ -25,7 +21,7 @@ class  plgPaymentEpaydk extends JPlugin
 			'ppKey'			=> 'PLG_PAYMENT_EPAYDK_TITLE',
 			'ppImage'		=> '',
 		));
-		
+
 		//Define Payment Status codes in eway  And Respective Alias in Framework
 		$this->responseStatus= array(
  	 'C'  => 'C','ERROR'  => 'E');
@@ -34,8 +30,8 @@ class  plgPaymentEpaydk extends JPlugin
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))		{
 			return $override;
 		}
@@ -43,7 +39,7 @@ class  plgPaymentEpaydk extends JPlugin
 	  	return  $core_file;
 		}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($data, $layout = 'default' )
 	{
@@ -51,7 +47,7 @@ class  plgPaymentEpaydk extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
@@ -77,18 +73,18 @@ class  plgPaymentEpaydk extends JPlugin
 		$vars=$this->preFormatingData($vars);
 		$plgPaymentEpaydkHelper= new plgPaymentEpaydkHelper();
 			// Split the name in first and last name
-			$user= JFactory::getUser();			
+			$user= JFactory::getUser();
 			$nameParts =$user->name; // explode(' ', $user->name, 2);
 			$firstName = $user->name;
 			$lastName = $user->name;
-			
+
 			// Get the base URL without the path
 			$rootURL = rtrim(JURI::base(),'/');
 			$subpathURL = JURI::base(true);
 			if(!empty($subpathURL) && ($subpathURL != '/')) {
 				$rootURL = substr($rootURL, 0, -1 * strlen($subpathURL));
 			}
-		
+
 		// Separate URL variable as it cannot be a part of the md5 checksum
 		$url = $this->getPaymentURL();
 		$data = array(
@@ -108,7 +104,7 @@ class  plgPaymentEpaydk extends JPlugin
 			'ownreceipt'		=> '0',
 			'md5'				=> $this->params->get('secret','')										// Will be overriden with md5sum checksum
 		);
-		
+
 		if ($this->params->get('md5', 1)) {
 			// Security hash - must be compiled from ALL inputs sent
 			$data['md5'] = md5(implode('', $data));
@@ -116,16 +112,16 @@ class  plgPaymentEpaydk extends JPlugin
 		else {
 			$data['md5'] = '';
 		}
-		
+
 		$data['actionURL']=$url;  // dont make md5
 		$data['submiturl']=$vars->submiturl;
 		// Set array as object for compatability
 		$data = (object) $data;
 		$html=$this->buildLayout($data);
-		
+
 		return $html;
 	}
-	function onTP_Processpayment($data,$vars) 
+	function onTP_Processpayment($data,$vars)
 	{
 		$resData=$data;
 		JLoader::import('joomla.utilities.date');
@@ -133,13 +129,13 @@ class  plgPaymentEpaydk extends JPlugin
 		$error['code']	='';
 		$error['desc']	='';
 		$trxnstatus='';
-		
+
 		// Check return values for md5 security hash for validity (i.e. protect against fraud attempt)
 		$isValid = $this->isValidRequest($data);
 		if (!$isValid) {
 			$error['desc'] = 'Epay reports transaction as invalid';
 		}
-		
+
 		// check for order id
 		$response_orderid='';
 		if ($isValid) {
@@ -151,12 +147,12 @@ class  plgPaymentEpaydk extends JPlugin
 			else {
 				$isValid = false;
 			}
-			
+
 			if (!$isValid) {
 				$error['desc'] = 'The referenced subscription ID ("orderid" field) is invalid';
 			}
 		}
-		
+
 		// Check that amount is correct
 		$mc_gross='';
 		if ($isValid ) {
@@ -168,7 +164,7 @@ class  plgPaymentEpaydk extends JPlugin
 		$mc_currency = '';
 		if ($isValid ) {
 			$epay_currency_codes = array('4'=>'AFA','8'=>'ALL','12'=>'DZD','20'=>'ADP','31'=>'AZM','32'=>'ARS','36'=>'AUD','44'=>'BSD','48'=>'BHD','50'=>'BDT','51'=>'AMD','52'=>'BBD','60'=>'BMD','64'=>'BTN','68'=>'BOB','72'=>'BWP','84'=>'BZD','90'=>'SBD','96'=>'BND','100'=>'BGL','104'=>'MMK','108'=>'BIF','116'=>'KHR','124'=>'CAD','132'=>'CVE','136'=>'KYD','144'=>'LKR','152'=>'CLP','156'=>'CNY','170'=>'COP','174'=>'KMF','188'=>'CRC','191'=>'HRK','192'=>'CUP','196'=>'CYP','203'=>'CZK','208'=>'DKK','214'=>'DOP','218'=>'ECS','222'=>'SVC','230'=>'ETB','232'=>'ERN','233'=>'EEK','238'=>'FKP','242'=>'FJD','262'=>'DJF','270'=>'GMD','288'=>'GHC','292'=>'GIP','320'=>'GTQ','324'=>'GNF','328'=>'GYD','332'=>'HTG','340'=>'HNL','344'=>'HKD','348'=>'HUF','352'=>'ISK','356'=>'INR','360'=>'IDR','364'=>'IRR','368'=>'IQD','376'=>'ILS','388'=>'JMD','392'=>'JPY','398'=>'KZT','400'=>'JOD','404'=>'KES','408'=>'KPW','410'=>'KRW','414'=>'KWD','417'=>'KGS','418'=>'LAK','422'=>'LBP','426'=>'LSL','428'=>'LVL','430'=>'LRD','434'=>'LYD','440'=>'LTL','446'=>'MOP','450'=>'MGF','454'=>'MWK','458'=>'MYR','462'=>'MVR','470'=>'MTL','478'=>'MRO','480'=>'MUR','484'=>'MXN','496'=>'MNT','498'=>'MDL','504'=>'MAD','508'=>'MZM','512'=>'OMR','516'=>'NAD','524'=>'NPR','532'=>'ANG','533'=>'AWG','548'=>'VUV','554'=>'NZD','558'=>'NIO','566'=>'NGN','578'=>'NOK','586'=>'PKR','590'=>'PAB','598'=>'PGK','600'=>'PYG','604'=>'PEN','608'=>'PHP','624'=>'GWP','626'=>'TPE','634'=>'QAR','642'=>'ROL','643'=>'RUB','646'=>'RWF','654'=>'SHP','678'=>'STD','682'=>'SAR','690'=>'SCR','694'=>'SLL','702'=>'SGD','703'=>'SKK','704'=>'VND','705'=>'SIT','706'=>'SOS','710'=>'ZAR','716'=>'ZWD','736'=>'SDD','740'=>'SRG','748'=>'SZL','752'=>'SEK','756'=>'CHF','760'=>'SYP','764'=>'THB','776'=>'TOP','780'=>'TTD','784'=>'AED','788'=>'TND','792'=>'TRL','795'=>'TMM','800'=>'UGX','807'=>'MKD','810'=>'RUR','818'=>'EGP','826'=>'GBP','834'=>'TZS','840'=>'USD','858'=>'UYU','860'=>'UZS','862'=>'VEB','886'=>'YER','891'=>'YUM','894'=>'ZMK','901'=>'TWD','949'=>'TRY','950'=>'XAF','951'=>'XCD','952'=>'XOF','953'=>'XPF','972'=>'TJS','973'=>'AOA','974'=>'BYR','975'=>'BGN','976'=>'CDF','977'=>'BAM','978'=>'EUR','979'=>'MXV','980'=>'UAH','981'=>'GEL','983'=>'ECV','984'=>'BOV','985'=>'PLN','986'=>'BRL','990'=>'CLF');
-			
+
 			$mc_currency =(int)$data['currency']; // remove 0 eg if return currency=036
 			//$currency = strtoupper(AkeebasubsHelperCparams::getParam('currency','EUR'));
 			$mc_currencyINT =(int)$data['currency']; // remove 0 eg if return currency=036
@@ -180,8 +176,8 @@ class  plgPaymentEpaydk extends JPlugin
 				$error['desc']  = "Invalid currency;";
 			}
 		}
-		
-		//3.compare response order id and send order id in notify URL 
+
+		//3.compare response order id and send order id in notify URL
 		if($isValid ) {
 		 $res_orderid=$response_orderid;
 			if(!empty($vars) && $res_orderid != $vars->order_id )
@@ -199,10 +195,10 @@ class  plgPaymentEpaydk extends JPlugin
 				$order_amount=(float) $vars->amount;
 				$retrunamount =  (float)$mc_gross;
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
-					$trxnstatus = 'ERROR';  
+					$trxnstatus = 'ERROR';
 					$isValid = false;
 					$error['desc'] = "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
 				}
@@ -216,7 +212,7 @@ class  plgPaymentEpaydk extends JPlugin
 			}else{
 				$order_status= $this->translateResponse($order_status);
 			}
-		
+
 		$txn_id= !empty($data['txnid'])?$data['txnid'] :'';
 		$email= !empty($data['email'])?$data['email'] :'';
 		$data['status']=$order_status;
@@ -232,32 +228,36 @@ class  plgPaymentEpaydk extends JPlugin
 						'responseCurrency'=>$mc_currency
 						);
 		return $result;
-	}	
-	
+	}
+
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
 				if($key==$payment_status)
-				return $value;		
+				return $value;
 			}
 	}
 	function onTP_Storelog($data)
 	{
+		$log_write = $this->params->get('log_write', '0');
+
+		if($log_write == 1)
+		{
 			$log = plgPaymentEpaydkHelper::Storelog($this->_name,$data);
-	
-	}	
+		}
+	}
 	/*
 		@params $vars :: object
-		@return $vars :: formatted object 
+		@return $vars :: formatted object
 	*/
 	function preFormatingData($vars)
-	{		
+	{
 		foreach($vars as $key=>$value)
 		{
-			$vars->$key=trim($value);	
+			$vars->$key=trim($value);
 			if($key=='amount')
 				$vars->$key=round($value);
-		}	
+		}
 		return $vars;
 	}
 	/**
@@ -272,8 +272,8 @@ class  plgPaymentEpaydk extends JPlugin
 		}
 		return 'https://ssl.ditonlinebetalingssystem.dk/integration/ewindow/Default.aspx';
 	}
-		
-	
+
+
 	/**
 	 * Gets the Epay Merchant ID (usually digits only)
 	 */
@@ -283,14 +283,14 @@ class  plgPaymentEpaydk extends JPlugin
 		if ($sandbox) {
 			return $this->params->get('sandbox_merchant', '');
 		}
-		
+
 		return $this->params->get('merchant', '');
 	}
-	
+
 	function getOnlyResponseData($data)
 	{
 		$remvoveData = array('option',"controller","model","view","layout","Itemid","task","processor","hash");
-		
+
 		foreach($remvoveData as $removekey)
 		{
 				if(!empty($data[$removekey]))
@@ -307,19 +307,19 @@ class  plgPaymentEpaydk extends JPlugin
 	private function isValidRequest($data)
 	{
 		$alldata=$data;
-	
-		if ($this->params->get('md5', 0)) 
+
+		if ($this->params->get('md5', 0))
 		{
-			
+
 			// Temp. replace hash with secret
 			$hash = $data['hash'];
-			
+
 			//$data = $this->getOnlyResponseData($data);
 			$data['hash'] = $this->params->get('secret', '');
-			
+
 			// Calculate checksum
 			$checksum = md5(implode('', $data));  //md5(implode("", array_values($params)) . "SecretMD5Key");
-			
+
 			// Replace hash with original
 			$data['hash'] = $hash;
 			if ($checksum != $hash) {
@@ -328,7 +328,7 @@ class  plgPaymentEpaydk extends JPlugin
 		}
 		return true;
 	}
-	
+
 	private function _toPPDuration($days)
 	{
 		$ret = (object)array(
@@ -390,5 +390,5 @@ class  plgPaymentEpaydk extends JPlugin
 
 		return $ret;
 	}
-	
+
 }

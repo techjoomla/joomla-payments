@@ -32,7 +32,7 @@
  * Methods return this if they succeed
  */
 
-defined ( '_JEXEC' ) or die ( 'Restricted access' ); 
+defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 jimport( 'joomla.filesystem.file' );
 
@@ -45,17 +45,17 @@ require_once(JPATH_SITE.'/plugins/payment/paymill/helper.php');
 //Set the language in the class
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_paymill', JPATH_ADMINISTRATOR);
-class plgpaymentpaymill extends JPlugin 
+class plgpaymentpaymill extends JPlugin
 {
 	private $_payment_gateway = 'payment_paymill';
 	private $_log = null;
-	
+
 	function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
-		
+
 		$config = JFactory::getConfig();
-		//PUBLIC_KEY IN JS 
+		//PUBLIC_KEY IN JS
 		//PRIVATE_KEY IN API KEY
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//closed = Approved, Pending = Declined, failed = Error, open = Held for Review
@@ -68,7 +68,7 @@ class plgpaymentpaymill extends JPlugin
 		$this->code_arr = array (
 		'internal_server_error'       => JText::_('INTERNAL_SERVER_ERROR'),
 		'invalid_public_key'    	  => JText::_('INVALID_PUBLIC_KEY'),
-		'unknown_error'               => JText::_('UNKNOWN_ERROR'),	
+		'unknown_error'               => JText::_('UNKNOWN_ERROR'),
 		'3ds_cancelled'               => JText::_('3DS_CANCELLED'),
 		'field_invalid_card_number'   => JText::_('FIELD_INVALID_CARD_NUMBER'),
 		'field_invalid_card_exp_year' => JText::_('FIELD_INVALID_CARD_EXP_YEAR'),
@@ -85,9 +85,9 @@ class plgpaymentpaymill extends JPlugin
 		);
 		$this->public_key = $this->params->get('public_key');
 		$this->private_key = $this->params->get( 'private_key');
-		$this->testmode = $this->params->get( 'payment_mode', '1' );	
+		$this->testmode = $this->params->get( 'payment_mode', '1' );
 	}
-	
+
 	/* Internal use functions */
 	public function buildLayoutPath($layout="default") {
 		if(empty($layout))
@@ -104,7 +104,7 @@ class plgpaymentpaymill extends JPlugin
 			return  $core_file;
 		}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	public function buildLayout($vars, $layout = 'default' )
 	{
@@ -112,24 +112,24 @@ class plgpaymentpaymill extends JPlugin
 		ob_start();
 		$layout = $this->buildLayoutPath($layout);
 		include($layout);
-		$html = ob_get_contents(); 
+		$html = ob_get_contents();
 		ob_end_clean();
 		return $html;
 	}
 	//gets param values
-    public function getParamResult($name, $default = '') 
+    public function getParamResult($name, $default = '')
     {
-		
+
     	$sandbox_param = "sandbox_$name";
     	$sb_value = $this->params->get($sandbox_param);
-    	
+
         if ($this->params->get('sandbox') && !empty($sb_value)) {
             $param = $this->params->get($sandbox_param, $default);
         }
         else {
         	$param = $this->params->get($name, $default);
         }
-        
+
         return $param;
     }
 
@@ -143,8 +143,8 @@ class plgpaymentpaymill extends JPlugin
 		$obj->id	= $this->_name;
 		return $obj;
 	}
-	
-	
+
+
 	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Paypal
 	public function onTP_GetHTML($vars)
 	{
@@ -158,24 +158,24 @@ class plgpaymentpaymill extends JPlugin
 		$html = $this->buildLayout($vars,$payment_type);
 		return $html;
 	}
-	
-	function onTP_Processpayment($data,$vars=array()) 
+
+	function onTP_Processpayment($data,$vars=array())
 	{
 		$isValid = true;
 		$error=array();
 		$error['code']	='';
 		$error['desc']	='';
 		$trxnstatus='';
-		
+
 		//API HOST KEY
 		define('PAYMILL_API_HOST', 'https://api.paymill.com/v2/');
-		//FROM PAYMILL PLUGIN BACKEND 
+		//FROM PAYMILL PLUGIN BACKEND
 		define('PAYMILL_API_KEY', $this->private_key);
 		set_include_path(implode(PATH_SEPARATOR, array(realpath(realpath(dirname(__FILE__)) . '/lib'),get_include_path(),)));
-		//CREATED TOKEN 
+		//CREATED TOKEN
 		$token = $data["token"];
 		$session = JFactory::getSession();
-		if ($token) 
+		if ($token)
 		{
 				// access lib folder
 				require "paymill/lib/Services/Paymill/Transactions.php";
@@ -194,7 +194,7 @@ class plgpaymentpaymill extends JPlugin
 				{
 					$error['code']	='';
 					$error['desc']	=$transaction['error'];
-					
+
 					$result = array('transaction_id'=>'',
 								'order_id'=>$data["order_id"],
 								'status'=>'E',
@@ -207,9 +207,9 @@ class plgpaymentpaymill extends JPlugin
 				}
 				else
 				{
-					//if error not find 
+					//if error not find
 					//$status varible
-					
+
 					// amount check // response amount in cent
 					$gross_amt=(float)(($transaction['origin_amount']) / (100));
 					if($isValid ) {
@@ -219,7 +219,7 @@ class plgpaymentpaymill extends JPlugin
 							$order_amount=(float) $vars->amount;
 							$retrunamount =  (float)$gross_amt;
 							$epsilon = 0.01;
-							
+
 							if(($order_amount - $retrunamount) > $epsilon)
 							{
 								$trxnstatus = 'failed';  // change response status to ERROR FOR AMOUNT ONLY
@@ -233,7 +233,7 @@ class plgpaymentpaymill extends JPlugin
 					} else {
 						$status=$this->translateResponse($transaction['status']);
 					}
-					//array pass to translate function 
+					//array pass to translate function
 					$result = array('transaction_id'=>$transaction['id'],
 									'order_id'=>$data["order_id"],
 									'status'=>$status,
@@ -242,11 +242,11 @@ class plgpaymentpaymill extends JPlugin
 									'error'=>$error,
 									'return'=>$data['return']
 									);
-									
+
 									return $result;
 				}
-			
-		
+
+
 		}
 		else
 		{
@@ -259,26 +259,37 @@ class plgpaymentpaymill extends JPlugin
 								'return'=>$data['return']
 								);
 			return $result;
-			
+
 		}//end if token
 	}
-	
+
 	//translate response in required format
 	private function translateResponse($payment_status)
 	{
 			foreach($this->responseStatus as $key=>$value)
 			{
 				if($key==$payment_status)
-				return $value;		
+				return $value;
 			}
 	}
-	
-	//store order log in log files
-	private function onTP_Storelog($data)
+
+	/**
+	 * Store log
+	 *
+	 * @param   array  $data  data.
+	 *
+	 * @since   2.2
+	 * @return  list.
+	 */
+	function onTP_Storelog($data)
 	{
+		$log_write = $this->params->get('log_write', '0');
+
+		if ($log_write == 1)
+		{
 			$log = plgPaymentpaymillHelper::Storelog($this->_name,$data);
-	
+		}
 	}
-	
+
 }
 

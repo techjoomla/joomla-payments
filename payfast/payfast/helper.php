@@ -9,8 +9,8 @@ defined('_JEXEC') or die('Restricted access');
 	jimport( 'joomla.plugin.helper' );
 	jimport('joomla.html.parameter');
 class plgPaymentPayfastHelper
-{ 	
-	
+{
+
 	//gets the Payfast URL
 	function buildPayfastUrl($secure = true)
 	{
@@ -28,24 +28,19 @@ class plgPaymentPayfastHelper
 		}
 		return $url;
 	}
-	
-	
+
+
 	function Storelog($name,$logdata)
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		//if(JVERSION >='1.6.0')
-		if(version_compare(JVERSION, '1.6', 'ge'))
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/'.$name.'/';
-		else
-			$path=JPATH_SITE.'/plugins/payment/'.$name.'/';	  
-		$my = JFactory::getUser();     
-	
+
+		$my = JFactory::getUser();
+
 		JLog::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'].'_'.$name.'.log',
-				'text_entry_format' => $options ,
-				'text_file_path' => $path
+				'text_entry_format' => $options
 			),
 			JLog::INFO,
 			$logdata['JT_CLIENT']
@@ -61,6 +56,6 @@ class plgPaymentPayfastHelper
 //		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
 //    $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
 
-	}	
+	}
 
 }

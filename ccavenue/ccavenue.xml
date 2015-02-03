@@ -13,29 +13,33 @@
 		<filename plugin="ccavenue">ccavenue.php</filename>
 		<folder>ccavenue</folder>
 	</files>
-	<languages> 
+	<languages>
 		<language tag="en-GB">en-GB/en-GB.plg_payment_ccavenue.ini</language>
 	</languages>
-		
+
 
 		<params>
 		<param name="plugin_name" type="text" default="CCAvenue" label="Plugin Label" description="Plugin name appears at frontend"/>
   		<param name="merchant_id" type="text" default="" label="Merchant ID" description="Your Merchant ID"/>
-  		<param name="working_key" type="text" default="" label="Working Key" description="Your Working Key"/>  		
+  		<param name="working_key" type="text" default="" label="Working Key" description="Your Working Key"/>
 		<param name="plugin_hidname" type="hidden" default="ccavenue" />
-  		<param type="spacer" />		
-  		
+  		<param type="spacer" />
+
 	</params>
-	
+
 	<!-- Fields for Joomla 1.6.x and onwards -->
  	<config>
 		<fields name="params">
 			<fieldset name="basic">
 					<field name="merchant_id" type="text" default="" label="Merchant ID" description="Your Merchant ID"/>
-			  		<field name="working_key" type="text" default="" label="Working Key" description="Your Working Key"/>  		
-					<field name="plugin_name" type="text" default="CCAvenue" label="Plugin Label" description="Plugin name appears at frontend"/>						
+			  		<field name="working_key" type="text" default="" label="Working Key" description="Your Working Key"/>
+					<field name="plugin_name" type="text" default="CCAvenue" label="Plugin Label" description="Plugin name appears at frontend"/>
+					<field name="log_write" type="radio" default="0" label="PLG_AUTHONET_WRITE_LOG"	description="PLG_AUTHONET_WRITE_LOG_DESC">
+							<option value="0">P_NO</option>
+							<option value="1">P_YES</option>
+					</field>
 					<field name="plugin_hidname" type="hidden" default="ccavenue" />
-				</fieldset>			
+				</fieldset>
 		</fields>
 	</config>
 </extension>

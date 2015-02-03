@@ -33,6 +33,10 @@
 				<field name="jgive_adaptive_error_log" hint="jgive" type="logfile" default="YOUR_SITE_DOMAIN/plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_com_jgive.log" readonly="1" label="PLG_FILE_JGIVE_ERROR_LOG" description="PLG_FILE_JGIVE_ERROR_LOG_DESC"  />
 				<field name="jticketing_adaptive_error_log"  hint="jticketing" type="logfile" default="YOUR_SITE_DOMAIN/plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_com_jticketing.log" readonly="1" label="PLG_FILE_JTICKETING_ERROR_LABLE" description="PLG_FILE_JTICKETING_ERROR_LOG_DESC"  />
 				<field name="quick2cart_adaptive_error_log"  hint="quick2cart" type="logfile" default="YOUR_SITE_DOMAIN/plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_com_quick2cart.log" readonly="1" label="PLG_FILE_QUICK2CART_ERROR_LABLE" description="PLG_FILE_QUICK2CART_ERROR_LOG_DESC"  />
+				<field name="log_write" type="radio" default="0" label="PLG_PAYPAL_ADAPTIVE_WRITE_LOG"	description="PLG_PAYPAL_ADAPTIVE_WRITE_LOG_DESC">
+					<option value="0">PLG_PAYPAL_ADAPTIVE_NO</option>
+					<option value="1">PLG_PAYPAL_ADAPTIVE_YES</option>
+				</field>
 
 			</fieldset>
 			<fieldset name="apifields"   label="API Credential">

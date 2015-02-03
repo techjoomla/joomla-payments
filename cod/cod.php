@@ -227,7 +227,12 @@ class plgpaymentcod extends JPlugin
 	 */
 	function onTP_Storelog($data)
 	{
-		$plgPaymentCodHelper = new plgPaymentCodHelper;
-		$log = $plgPaymentCodHelper->Storelog($this->_name, $data);
+		$log_write = $this->params->get('log_write', '0');
+
+		if($log_write == 1)
+		{
+			$plgPaymentCodHelper = new plgPaymentCodHelper;
+			$log = $plgPaymentCodHelper->Storelog($this->_name, $data);
+		}
 	}
 }

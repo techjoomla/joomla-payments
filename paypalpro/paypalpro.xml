@@ -43,16 +43,20 @@
  	<config>
 		<fields name="params">
 			<fieldset name="basic">
-			<field name="pro_api_username" type="text" default="" label="PAYPALPRO_USERNAME" description="PAYPALPRO_USERNAME_DESC"/>
-			<field name="pro_api_signature" type="text" default="" label="PAYPALPRO_SIGN" description="PAYPALPRO_SIGN_DESC"/>
-			<field name="pro_api_password" type="text" default="" label="PAYPALPRO_PWD" description="PAYPALPRO_PWD_DESC"/>
-						<field name="sandbox" type="radio" default="0" label="PAYPALPRO_SANDBOX" description="PAYPALPRO_SANDBOX_DESC">
-						<option value="0">NO</option>
-						<option value="1">YES</option>
-						</field>
-						<field name="plugin_name" type="text" default="Paypalpro" label="PLG_NAME" description="" />
-						<field name="plugin_hidname" type="hidden" default="paypalpro" />
-				</fieldset>
+				<field name="pro_api_username" type="text" default="" label="PAYPALPRO_USERNAME" description="PAYPALPRO_USERNAME_DESC"/>
+				<field name="pro_api_signature" type="text" default="" label="PAYPALPRO_SIGN" description="PAYPALPRO_SIGN_DESC"/>
+				<field name="pro_api_password" type="text" default="" label="PAYPALPRO_PWD" description="PAYPALPRO_PWD_DESC"/>
+				<field name="sandbox" type="radio" default="0" label="PAYPALPRO_SANDBOX" description="PAYPALPRO_SANDBOX_DESC">
+				<option value="0">NO</option>
+				<option value="1">YES</option>
+				</field>
+				<field name="plugin_name" type="text" default="Paypalpro" label="PLG_NAME" description="" />
+				<field name="plugin_hidname" type="hidden" default="paypalpro" />
+				<field name="log_write" type="radio" default="0" label="PLG_PAYPALPRO_WRITE_LOG"	description="PLG_PAYPALPRO_WRITE_LOG_DESC">
+					<option value="0">PLG_PAYPALPRO_NO</option>
+					<option value="1">PLG_PAYPALPRO_YES</option>
+				</field>
+			</fieldset>
 
 		</fields>
 	</config>

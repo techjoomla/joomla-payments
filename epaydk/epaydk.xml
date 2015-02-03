@@ -13,12 +13,12 @@
 		<filename plugin="epaydk">epaydk.php</filename>
 		<folder>epaydk</folder>
 	</files>
-	<languages> 
+	<languages>
 		<language tag="en-GB">en-GB/en-GB.plg_payment_epaydk.ini</language>
 		<language tag="en-GB">en-GB/en-GB.plg_payment_epaydk.sys.ini</language>
-		
+
 	</languages>
-	
+
 	<!-- Fields for Joomla 1.6.x and onwards -->
 
 	<config>
@@ -33,8 +33,12 @@
 				  <option value="0">JNo</option>
 				  <option value="1">JYes</option>
 				</field>
+				<field name="log_write" type="radio" default="0" label="PLG_AUTHONET_WRITE_LOG"	description="PLG_AUTHONET_WRITE_LOG_DESC">
+					<option value="0">P_NO</option>
+					<option value="1">P_YES</option>
+				</field>
 				<field name="sandbox_merchant" type="text" size="50" default="" label="PLG_PAYMENTEPAYDK_SANDBOX_MERCHANT_LABEL" description="PLG_PAYMENTEPAYDK_SANDBOX_MERCHANT_LABEL"/>
-				
+
 				<field type="spacer" />
 	<!--			<field name="md5" type="radio" default="1" label="PLG_PAYMENTEPAYDK_MD5_LABEL" description="PLG_PAYMENTEPAYDK_MD5_DESC">
 				  <option value="0">JNo</option>
@@ -80,5 +84,5 @@
 			</fieldset>
 		</fields>
 	</config>
-	
+
 </extension>

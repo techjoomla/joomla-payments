@@ -57,7 +57,7 @@ class plgpaymentTransfirst extends JPlugin
 			'02'=>'p',
 			'10'=>'P',
 			'32'=>'P',
-			
+
 		);
  		$this->merchant_id = $this->params->get('merchant_id', '1' );
 		$this->reg_key = $this->params->get('reg_key', '1' );
@@ -129,7 +129,7 @@ class plgpaymentTransfirst extends JPlugin
 		return $html;
 	}
 
-	function onTP_Processpayment($data,$vars) 
+	function onTP_Processpayment($data,$vars)
 	{
 		$resData=$data;
 		$error=array();
@@ -137,7 +137,7 @@ class plgpaymentTransfirst extends JPlugin
 		$error['desc']	='';
 		$trxnstatus='';
 		$isValid = true;
-		
+
 		//require transfirst.class file
 		require_once(JPATH_SITE.DS.'plugins'.DS.'payment'.DS.'transfirst'.DS.'transfirst'.DS.'Transfirst.class.php');
 		//YYMM Expiration Date: This is the expiration date of the card
@@ -216,7 +216,7 @@ class plgpaymentTransfirst extends JPlugin
 		$tranData=array();
 		$tranData=$resp->tranData;
 		$transaction_id =$tranData->tranNr;
-		
+
 		// amount check
 		// response amount in cent
 		$gross_amt=(float)(($tranData->amt) / (100));
@@ -227,7 +227,7 @@ class plgpaymentTransfirst extends JPlugin
 				$order_amount=(float) $vars->amount;
 				$retrunamount =  (float)$gross_amt;
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
 					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
@@ -238,7 +238,7 @@ class plgpaymentTransfirst extends JPlugin
 			}
 		}
 		// END OF AMOUNT CHECK
-		
+
 		if($trxnstatus == 'ERROR'){
 			$payment_status=$this->translateResponse($trxnstatus);
 		}else {
@@ -249,14 +249,14 @@ class plgpaymentTransfirst extends JPlugin
 		{
 			$payment_status='P';
 		}
-		
+
 		// if error code is present then add error detail in error array
 		if($resp->resCode != '00'){
 			$error['code'] .= $resp->rspCode;
 			if($resp->rspCode)
 				$error['desc'] .=JText::_('PLG_TRANSFIRST_RESP_CODE_'.$resp->rspCode);
 		}
-		
+
 		$result=array('transaction_id'=>$transaction_id,
 						'order_id'=>$data['order_id'],
 						'status'=>$payment_status,
@@ -277,10 +277,23 @@ class plgpaymentTransfirst extends JPlugin
 		}
 	}
 
+	/**
+	 * Store log
+	 *
+	 * @param   array  $data  data.
+	 *
+	 * @since   2.2
+	 * @return  list.
+	 */
 	function onTP_Storelog($data)
 	{
+		$log_write = $this->params->get('log_write', '0');
+
+		if ($log_write == 1)
+		{
 			$plgPaymentTransfirstHelper = new plgPaymentTransfirstHelper();
 			$log = $plgPaymentTransfirstHelper->Storelog($this->_name,$data);
+		}
 	}
 }
 

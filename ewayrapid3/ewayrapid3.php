@@ -3,21 +3,18 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
+
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
-if(version_compare(JVERSION, '1.6.0', 'ge')) 
-	require_once(JPATH_SITE.'/plugins/payment/ewayrapid3/ewayrapid3/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/ewayrapid3/helper.php');
-
+ require_once(dirname(__FILE__) . '/ewayrapid3/helper.php');
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_ewayrapid3', JPATH_ADMINISTRATOR);
 class  plgPaymentEwayrapid3 extends JPlugin
 {
 	private $ewayService = null;
-	
+
 	function __construct(& $subject, $config)
 	{
 		$config = array_merge($config, array(
@@ -28,9 +25,9 @@ class  plgPaymentEwayrapid3 extends JPlugin
 		//Define Payment Status codes in eway  And Respective Alias in Framework
 		$this->responseStatus= array(
  	 'True'  => 'C','ERROR'  => 'E');
-		
+
 		parent::__construct($subject, $config);
-		
+
 		// Load libraray and initialize settings
 		require_once dirname(__FILE__).'/ewayrapid3/library/Rapid3.0.php';
 		$service = new RapidAPI();
@@ -51,20 +48,20 @@ class  plgPaymentEwayrapid3 extends JPlugin
 		$this->ewayService = $service;
 		//Set the language in the class
 		$config = JFactory::getConfig();
-		
+
 		//Define Payment Status codes in ewayrapid3  And Respective Alias in Framework
 		$this->responseStatus= array(
  	 'success'  => 'C','pending'  => 'P',
  	 'failure'=>'E'
-  
+
 		);
 	}
 
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -74,7 +71,7 @@ class  plgPaymentEwayrapid3 extends JPlugin
 	  	return  $core_file;
 		}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -82,7 +79,7 @@ class  plgPaymentEwayrapid3 extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
@@ -90,11 +87,11 @@ class  plgPaymentEwayrapid3 extends JPlugin
 	// Used to Build List of Payment Gateway in the respective Components
 	function onTP_GetInfo($config)
 	{
-		
+
 		if(!in_array($this->_name,$config))
 				return;
 		$obj 		= new stdClass;
-		$plgname=$this->params->get( 'plugin_name' );
+		$plgname = $this->params->get( 'plugin_name' );
 		$obj->name 	=!empty($plgname)?$plgname:$this->_name;
 		$obj->id	= $this->_name;
 		return $obj;
@@ -106,22 +103,22 @@ class  plgPaymentEwayrapid3 extends JPlugin
 	 * */
 	function onTP_GetHTML($vars)
 	{
-			$vars=$this->preFormatingData($vars);	 // fomating on data
-			$plgPaymentEwayrapid3Helper= new plgPaymentEwayrapid3Helper();
+			$vars = $this->preFormatingData($vars);	 // fomating on data
+			$plgPaymentEwayrapid3Helper = new plgPaymentEwayrapid3Helper();
 			// Split the name in first and last name
-			$user= JFactory::getUser();
-			
-			$nameParts =$user->name; // explode(' ', $user->name, 2);
+			$user = JFactory::getUser();
+
+			$nameParts = $user->name; // explode(' ', $user->name, 2);
 			$firstName = $user->name;
 			$lastName = $user->name;
-			
+
 			// Get the base URL without the path
 			$rootURL = rtrim(JURI::base(),'/');
 			$subpathURL = JURI::base(true);
 			if(!empty($subpathURL) && ($subpathURL != '/')) {
 				$rootURL = substr($rootURL, 0, -1 * strlen($subpathURL));
 			}
-			
+
 			// Customer
 		$request = new CreateAccessCodeRequest();
 		$request->Customer->Reference = $vars->order_id;
@@ -132,11 +129,11 @@ class  plgPaymentEwayrapid3 extends JPlugin
 		$country = !empty($vars->country) ? strtolower(trim($vars->country)) :'au';
 		$request->Customer->Country = $country;
 		$request->Customer->Email = trim($vars->user_email);
-		
+
 		// shipping details
 		$request->ShippingAddress->Country=!empty($vars->country) ? strtolower(trim($vars->country)) :'au';
 		// Item/product
-		$item = new LineItem();   
+		$item = new LineItem();
 		$item->SKU = $vars->order_id;
 		$item->Description = !empty($vars->item_name) ? strtolower(trim($vars->item_name)) :'';
 		$request->Items->LineItem[0] = $item;
@@ -148,17 +145,17 @@ class  plgPaymentEwayrapid3 extends JPlugin
 		$request->Payment->InvoiceReference = $vars->order_id;
 		$request->Payment->CurrencyCode = strtoupper($vars->currency_code);
 		// Url to the page for getting the result with an AccessCode
-		$vars->return=trim($vars->return);
+		$vars->return = trim($vars->return);
 		$request->RedirectUrl = (string)$vars->notify_url;
-		
+
 		//Populate values for Options
     $opt1 = new Option();
-    $opt1->Value = $vars->user_email;    
-    $request->Options->Option[0]= $opt1;
-		
+    $opt1->Value = $vars->user_email;
+    $request->Options->Option[0] = $opt1;
+
 		// Method for this request. e.g. ProcessPayment, Create TokenCustomer, Update TokenCustomer & TokenPayment
 		$request->Method = 'ProcessPayment';
-		
+
 		try {
 			// Call RapidAPI
 			$result = $this->ewayService->CreateAccessCode($request);
@@ -176,8 +173,8 @@ class  plgPaymentEwayrapid3 extends JPlugin
 			return false;
 		}
 
-		$vars->AccessCode=$result->AccessCode;
-		$vars->FormActionURL=$result->FormActionURL;
+		$vars->AccessCode = $result->AccessCode;
+		$vars->FormActionURL = $result->FormActionURL;
 		$html = $this->buildLayout($vars);
 	/*	@ob_start();
 		include dirname(__FILE__).'/ewayrapid3/form.php';
@@ -185,27 +182,27 @@ class  plgPaymentEwayrapid3 extends JPlugin
 		return $html;
 
 	}
-	function onTP_Processpayment($data,$vars=array()) 
+	function onTP_Processpayment($data,$vars=array())
 	{
 		JLoader::import('joomla.utilities.date');;
 		$isValid = true;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
 		$trxnstatus='';
-		
+
 		if($isValid) {
 			// Build request for getting the result with the access code
 			$request = new GetAccessCodeResultRequest();
 			$request->AccessCode = $data['AccessCode'];
 			// Call RapidAPI to get the result
 			$result = $this->ewayService->GetAccessCodeResult($request);
-			
+
 			// CHECK FOR ERROR
 			if(isset($result->Errors)) {
 				$errorMsg = '';
-				$ERROR=explode(',', $result->Errors);
-				$error['code']=json_encode($ERROR); 
+				$ERROR = explode(',', $result->Errors);
+				$error['code'] = json_encode($ERROR);
 				foreach($ERROR as $e) {
 					$errorMsg .= $this->ewayService->APIConfig[$e] . ', ';
 				}
@@ -217,7 +214,7 @@ class  plgPaymentEwayrapid3 extends JPlugin
 			// CHECK RESPONSE MASSAGE
 		if($isValid) {
 			$errorMsg = '';
-			$RESMSG=explode(',', $result->ResponseMessage);
+			$RESMSG = explode(',', $result->ResponseMessage);
 			foreach($RESMSG as $m) {
 				if($m != 'A2000'){
 					// NOT APPROVED
@@ -232,11 +229,11 @@ class  plgPaymentEwayrapid3 extends JPlugin
 				$error['desc']	= $errorMsg;
 			}
 		}
-		//3.compare response order id and send order id in notify URL 
-		$res_orderid='';
+		//3.compare response order id and send order id in notify URL
+		$res_orderid = '';
 		$res_orderid = $result->InvoiceReference;
 		if($isValid ) {
-		 $res_orderid=$result->InvoiceReference;
+		 $res_orderid = $result->InvoiceReference;
 		if(!empty($vars) && $res_orderid != $vars->order_id )
 			{
 				$trxnstatus = 'ERROR';
@@ -244,18 +241,18 @@ class  plgPaymentEwayrapid3 extends JPlugin
 				$error['desc'] = "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
 			}
 		}
-		
+
 		// amount check
 		// response amount in cent
-		$gross_amt=(float)(($result->TotalAmount) / (100));
+		$gross_amt = (float)(($result->TotalAmount) / (100));
 		if($isValid ) {
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
+				$order_amount = (float) $vars->amount;
 				$retrunamount =  (float)$gross_amt;
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
 					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
@@ -265,22 +262,22 @@ class  plgPaymentEwayrapid3 extends JPlugin
 			}
 		}
 		// END OF AMOUNT CHECK
-		$newStatus='';
+		$newStatus = '';
 		// Translaet Payment status
 		if($trxnstatus == 'ERROR'){
-			$newStatus= $this->translateResponse($trxnstatus);
+			$newStatus = $this->translateResponse($trxnstatus);
 		}else {
-			$newStatus= $this->translateResponse($result->TransactionStatus);
+			$newStatus = $this->translateResponse($result->TransactionStatus);
 		}
-		
-		$txn_id= !empty($result->ResponseMessage)?$result->ResponseMessage :'';
+
+		$txn_id = !empty($result->ResponseMessage)?$result->ResponseMessage :'';
 		//	print"<pre>"; print_r($result	); die;
-		$OPTIONS=(array)$result->Options->Option;
-		$buyer_email=$OPTIONS['Value'];
-		
-		
+		$OPTIONS = (array)$result->Options->Option;
+		$buyer_email = $OPTIONS['Value'];
+
+
 		// RETURN URL OR CANCEL URL IS NOT USED PREVIOUSLY
-		
+
 		$ret_result = array(
 					'order_id'=>$res_orderid,
 					'transaction_id'=>$txn_id,
@@ -292,46 +289,50 @@ class  plgPaymentEwayrapid3 extends JPlugin
 					'error'=>$error ,
 					);
 		return $ret_result;
-			
+
 	}	// END OF FUN
-	
+
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
-				if($key==$payment_status)
-					return $value;		
+				if($key == $payment_status)
+					return $value;
 			}
 	}
 	function onTP_Storelog($data)
 	{
+		$log_write = $this->params->get('log_write', '0');
+
+		if($log_write == 1)
+		{
 			$log = plgPaymentEwayrapid3Helper::Storelog($this->_name,$data);
-	
-	}	
+		}
+	}
 	/*
 		@params $vars :: object
-		@return $vars :: formatted object 
+		@return $vars :: formatted object
 	*/
 	function preFormatingData($vars)
 	{
 		foreach($vars as $key=>$value)
 		{
-			$vars->$key=trim($value);	
-			if($key=='amount')
-				$vars->$key=round($value);
-		}	
+			$vars->$key = trim($value);
+			if($key == 'amount')
+				$vars->$key = round($value);
+		}
 		return $vars;
 	}
 	private function fetch_data($string, $start_tag, $end_tag)
 	{
-		$position = stripos($string, $start_tag);  
-		$str = substr($string, $position);  		
-		$str_second = substr($str, strlen($start_tag)); 
+		$position = stripos($string, $start_tag);
+		$str = substr($string, $position);
+		$str_second = substr($str, strlen($start_tag));
 		$second_positon = stripos($str_second, $end_tag);
-		$str_third = substr($str_second, 0, $second_positon); 
-		$fetch_data = trim($str_third);		
-		return $fetch_data; 
+		$str_third = substr($str_second, 0, $second_positon);
+		$fetch_data = trim($str_third);
+		return $fetch_data;
 	}
-	
+
 	public function selectMonth()
 	{
 		$options = array();
@@ -340,25 +341,25 @@ class  plgPaymentEwayrapid3 extends JPlugin
 			$m = sprintf('%02u', $i);
 			$options[] = JHTML::_('select.option',$m,$m);
 		}
-		
+
 		return JHTML::_('select.genericlist', $options, 'EWAY_CARDEXPIRYMONTH', 'class="input-small"', 'value', 'text', '', 'EWAY_CARDEXPIRYMONTH');
 	}
-	
+
 	public function selectYear()
 	{
 		$year = gmdate('Y');
-		
+
 		$options = array();
 		$options[] = JHTML::_('select.option',0,'--');
 		for($i = 0; $i <= 10; $i++) {
 			$y = sprintf('%04u', $i+$year);
 			$options[] = JHTML::_('select.option',$y,$y);
 		}
-		
+
 		return JHTML::_('select.genericlist', $options, 'EWAY_CARDEXPIRYYEAR', 'class="input-small"', 'value', 'text', '', 'EWAY_CARDEXPIRYYEAR');
 	}
-	//function 
-	
-	
-	
+	//function
+
+
+
 }
