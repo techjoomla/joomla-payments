@@ -7,7 +7,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
-if(version_compare(JVERSION, '1.6.0', 'ge')) 
+if(version_compare(JVERSION, '1.6.0', 'ge'))
 	require_once(JPATH_SITE.'/plugins/payment/payfast/payfast/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/payfast/helper.php');
@@ -28,11 +28,11 @@ class  plgPaymentPayfast extends JPlugin
 		//Set the language in the class
 		$config = JFactory::getConfig();
 
-		
+
 		//Define Payment Status codes in payfast  And Respective Alias in Framework
 		$this->responseStatus= array(
  	 'COMPLETE'  => 'C',
- 	 'ERROR' => 'E'  
+ 	 'ERROR' => 'E'
 		);
 	}
 
@@ -50,7 +50,7 @@ class  plgPaymentPayfast extends JPlugin
 	  	return  $core_file;
 		}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -58,7 +58,7 @@ class  plgPaymentPayfast extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
@@ -86,33 +86,33 @@ class  plgPaymentPayfast extends JPlugin
 		//Take this receiver email address from plugin if component not provided it
 
 			$vars->merchant_id = $this->params->get('merchant_id','');
-			$vars->merchant_key = $this->params->get('merchant_key','');	
+			$vars->merchant_key = $this->params->get('merchant_key','');
 			//$this->preFormatingData($vars);	 // fomating on data
 			$html = $this->buildLayout($vars);
 
 		return $html;
 	}
-	
+
 	/* This function falls under STEP 3 of the Common Payment Gateway flow
  * If Process on the post data from the payment and pass a fixed format data to component for further process
  *
  * @param $data	array	Post data from gateway to notify url
  * @return associative	array	gateway specific fixed format data required by the component to process payment
  * */
-	function onTP_Processpayment($data,$vars=array()) 
+	function onTP_Processpayment($data,$vars=array())
 	{
 		$isValid = true;
 		$error=array();
 		$error['code']	='';
 		$error['desc']	='';
 		$trxnstatus='';
-		
+
 	// 1.Check IPN data for validity (i.e. protect against fraud attempt)
 		$isValid = $this->isValidIPN($data);
 		if(!$isValid){
 			$data['error'] = 'Invalid response received.';
 		}
-		
+
 		//2. Check that merchant_id is correct
 		if($isValid ) {
 			if($this->getMerchantID() != $data['merchant_id']) {
@@ -120,7 +120,7 @@ class  plgPaymentPayfast extends JPlugin
 				$data['error'] = "The received merchant_id does not match the one that was sent.";
 			}
 		}
-				//3.compare response order id and send order id in notify URL 
+				//3.compare response order id and send order id in notify URL
 		if($isValid ) {
 			if(!empty($vars) && $data['custom_str1'] != $vars->order_id )
 			{
@@ -130,7 +130,7 @@ class  plgPaymentPayfast extends JPlugin
 			}
 		}
 		// Check that the amount is correct
-		
+
 		if($isValid ) {
 			if(!empty($vars))
 			{
@@ -139,7 +139,7 @@ class  plgPaymentPayfast extends JPlugin
 				$return_resp['status'] ='0';
 				$data['total_paid_amt'] =  (float)$data['amount_gross'];
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $data['total_paid_amt']) > $epsilon)
 				{
 					$trxnstatus = 'ERROR';
@@ -148,7 +148,7 @@ class  plgPaymentPayfast extends JPlugin
 				}
 			}
 		}
-		
+
 		// Translaet Payment status
 		if($trxnstatus == 'ERROR'){
 			$newStatus= $this->translateResponse($trxnstatus);
@@ -157,13 +157,13 @@ class  plgPaymentPayfast extends JPlugin
 		{
 			$newStatus= $this->translateResponse($data['payment_status']);
 		}
-			
-		
+
+
 		// Fraud attempt? Do nothing more!
 		//if(!$isValid) return false;
-		
-		
-		
+
+
+
 		$data['status']=$newStatus;
 
 		//Error Handling
@@ -182,7 +182,7 @@ class  plgPaymentPayfast extends JPlugin
 						'error'=>$error ,
 						);
 		return $result;
-	}	
+	}
 		/**
 	 * Validates the incoming data.
 	 */
@@ -191,10 +191,10 @@ class  plgPaymentPayfast extends JPlugin
 		// 1. Check valid host
 		$validIps = array();
 		foreach($this->validHosts as $validHost){
-			//Returns a list of IPv4 addresses to which the Internet host specified by hostname resolves. 
+			//Returns a list of IPv4 addresses to which the Internet host specified by hostname resolves.
 			$ips = gethostbynamel($validHost);
 			if($ips !== false) {
-				$validIps = array_merge($validIps, $ips);	
+				$validIps = array_merge($validIps, $ips);
 			}
 		}
 
@@ -213,26 +213,26 @@ class  plgPaymentPayfast extends JPlugin
 		}
 
 		$returnString = substr($returnString, 0, -1);
-						
+
 		if(md5($returnString) != $data['signature']) {
 			return false;
 		}
-		
+
 		// 3. Call PayFast server for validity check
 		$header = "POST /eng/query/validate HTTP/1.0\r\n";
 		$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
 		$header .= "Content-Length: " . strlen($returnString) . "\r\n\r\n";
-		
+
 		// Connect to server
 		$fp = fsockopen($this->getCallbackURL(), 443, $errno, $errstr, 10);
-		
+
 		if (!$fp) {
 			// HTTP ERROR
 			return false;
 		} else {
 			 // Send command to server
 			fputs($fp, $header . $returnString);
-			
+
 			// Read the response from the server
 			while(! feof($fp)) {
 				$res = fgets($fp, 1024);
@@ -242,37 +242,41 @@ class  plgPaymentPayfast extends JPlugin
 				}
 			}
 		}
-		
+
 		fclose($fp);
 		return false;
 	} // end of isValidIPN
-	
+
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
 				if($key==$payment_status){
-					return $value;		
+					return $value;
 				}
 			}
-		
+
 	}
 	function onTP_Storelog($data)
 	{
-			$log = plgPaymentPayfastHelper::Storelog($this->_name,$data);
-	
-	}	
+		$log_write = $this->params->get('log_write', '0');
+
+		if ($log_write == 1)
+		{
+			$log = plgPaymentPayfastHelper::Storelog($this->_name, $data);
+		}
+	}
 	/*
 		@params $vars :: object
-		@return $vars :: formatted object 
+		@return $vars :: formatted object
 	*/
 	function preFormatingData($vars)
-	{		
+	{
 		foreach($vars as $key=>$value)
 		{
-			$vars->$key=trim($value);	
+			$vars->$key=trim($value);
 			if($key=='amount')
 				$vars->$key=round($value);
-		}	
+		}
 	}
 		/**
 	 * Gets the PayFast Merchant ID
@@ -281,7 +285,7 @@ class  plgPaymentPayfast extends JPlugin
 	{
 		//$sandbox = $this->params->get('sandbox',0);
 		return trim($this->params->get('merchant_id',''));
-		
+
 	}
 	/**
 	 * Gets the IPN callback URL
@@ -296,6 +300,6 @@ class  plgPaymentPayfast extends JPlugin
 		}
 	}
 
-	
-	
+
+
 }
