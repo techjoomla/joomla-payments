@@ -3,15 +3,13 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
+
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_jomsocialpoints', JPATH_ADMINISTRATOR);
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/jomsocialpoints/jomsocialpoints/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/jomsocialpoints/helper.php');
+require_once(dirname(__FILE__) . '/jomsocialpoints/helper.php');
 class plgpaymentjomsocialpoints extends JPlugin
 {
 	var $_payment_gateway = 'payment_jomsocialpoints';
@@ -26,7 +24,7 @@ class plgpaymentjomsocialpoints extends JPlugin
 
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
-		$this->responseStatus= array(
+		$this->responseStatus = array(
 			'Success' =>'C',
 			'Failure' =>'X',
 		);
@@ -35,8 +33,8 @@ class plgpaymentjomsocialpoints extends JPlugin
 
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'form.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name. '/tmpl/form.php';
+		$override		= JPATH_BASE. '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -64,24 +62,23 @@ class plgpaymentjomsocialpoints extends JPlugin
 	{
 		jimport('joomla.filesystem.folder');
 		$db = JFactory::getDBO();
-	 	 $jspath = JPATH_ROOT.DS.'components'.DS.'com_community';
-		
-		if( JFolder::exists($jspath) )
+	  $jspath = JPATH_ROOT . '/components/com_community';
+     if( JFolder::exists($jspath) )
+     {
+		$query = "SELECT points FROM #__community_users where userid=$vars->user_id";
+		$db->setQuery($query);
+		$user_points = $db->loadResult();
+		$vars->user_points = $user_points;
+
+		if ($user_points == '')
 		{
-			$query="SELECT points FROM #__community_users where userid=$vars->user_id";
-			$db->setQuery($query);
-			$user_points = $db->loadResult();
-			$vars->user_points = $user_points;
+			$vars->user_points = 0;
+		}
 
-			if ($user_points == '')
-			{
-				$vars->user_points = 0;
-			}
+		$vars->convert_val = $this->params->get('conversion');
 
-			$vars->convert_val = $this->params->get('conversion');
-
-			$html = $this->buildLayout($vars);
-			return $html;
+		$html = $this->buildLayout($vars);
+		return $html;
 		}
 	}
 
@@ -174,9 +171,15 @@ class plgpaymentjomsocialpoints extends JPlugin
 					return $value;
 				}
 	}
+
 	function onTP_Storelog($data)
 	{
+		$log_write = $this->params->get('log_write', '0');
+
+		if($log_write == 1)
+		{
 			$log = plgPaymentJomsocialpointsHelper::Storelog($this->_name,$data);
+		}
 
 	}
 }

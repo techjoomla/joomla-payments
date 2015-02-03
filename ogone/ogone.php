@@ -176,9 +176,12 @@ class  plgPaymentOgone extends JPlugin
 	}
 	function onTP_Storelog($data)
 	{
-			$plgPaymentOgoneHelper = new plgPaymentOgoneHelper;
-			$log = $plgPaymentOgoneHelper->Storelog($this->_name,$data);
+		$log_write = $this->params->get('log_write', '0');
 
+		if ($log_write == 1)
+		{
+			$log = plgPaymentOgoneHelper::Storelog($this->_name,$data);
+		}
 	}
 }
-?>
+
