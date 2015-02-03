@@ -28,6 +28,10 @@
 				</field>
 				<field name="plugin_name" type="text" default="transfirst" label="PLG_TRANSFIRST_PLG_NAME" description="PLG_TRANSFIRST_PLG_DESC" />
 				<field name="plugin_hidname" type="hidden" default="transfirst" />
+				<field name="log_write" type="radio" default="0" label="PLG_TRANSFIRST_WRITE_LOG"	description="PLG_TRANSFIRST_WRITE_LOG_DESC">
+					<option value="0">PLG_TRANSFIRST_NO</option>
+					<option value="1">PLG_TRANSFIRST_YES</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

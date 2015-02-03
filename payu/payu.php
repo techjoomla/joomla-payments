@@ -151,12 +151,26 @@ class  plgPaymentPayu extends JPlugin
 				return $value;
 			}
 	}
+
+	/**
+	 * Store log
+	 *
+	 * @param   array  $data  data.
+	 *
+	 * @since   2.2
+	 * @return  list.
+	 */
 	function onTP_Storelog($data)
 	{
+		$log_write = $this->params->get('log_write', '0');
+
+		if ($log_write == 1)
+		{
 			$plgPaymentPayuHelper = new plgPaymentPayuHelper;
 			$log = $plgPaymentPayuHelper->Storelog($this->_name,$data);
-
+		}
 	}
+
 	/*
 		@params $vars :: object
 		@return $vars :: formatted object

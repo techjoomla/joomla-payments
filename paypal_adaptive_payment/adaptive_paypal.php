@@ -228,9 +228,23 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 				return $value;
 			}
 	}
+
+	/**
+	 * Store log
+	 *
+	 * @param   array  $data  data.
+	 *
+	 * @since   2.2
+	 * @return  list.
+	 */
 	function onTP_Storelog($data)
 	{
-		$log = plgPaymentAdaptivePaypalHelper::Storelog($this->_name,$data);
+		$log_write = $this->params->get('log_write', '0');
+
+		if ($log_write == 1)
+		{
+			$log = plgPaymentAdaptivePaypalHelper::Storelog($this->_name,$data);
+		}
 	}
 
 	function _StorelogBeforePayment($data, $client, $item_name)
