@@ -3,12 +3,9 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.plugin.plugin' );
-$lang=JFactory::getLanguage();
+$lang = JFactory::getLanguage();
 $lang->load('plg_payment_amazon', JPATH_ADMINISTRATOR);
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/amazon/amazon/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/amazon/helper.php');
+require_once(dirname(__FILE__) . '/amazon/helper.php');
 class  plgPaymentAmazon extends JPlugin
 {
 
@@ -59,8 +56,8 @@ SubscriptionSuccessful The subscription was created successfully.
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -90,7 +87,7 @@ SubscriptionSuccessful The subscription was created successfully.
 		if(!in_array($this->_name,$config))
 		return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -103,26 +100,26 @@ SubscriptionSuccessful The subscription was created successfully.
 	}
 
 
-	function onTP_Processpayment($data,$vars=array()) 
+	function onTP_Processpayment($data,$vars=array())
 	{
 		$isValid = true;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
 		$trxnstatus='';
 		//$file="jtt4.log";
 
-		$urlEndPoint=JURI::getInstance()->toString();
+		$urlEndPoint = JURI::getInstance()->toString();
 		//$data=json_decode('{"paymentReason":"1234578jticketing jomsocail","signatureMethod":"RSA-SHA1","transactionAmount":"USD 3.000000","transactionId":"17G2TGQO126924NNZ1RFBIMMBVUGSO88VLA","status":"PS","buyerEmail":"sagar_c@mailinator.com","referenceId":"JT_00016","recipientEmail":"sagar_c@tekdi.net","transactionDate":"1357307734","buyerName":"sagar","operation":"pay","recipientName":"sagar chinchavade","signatureVersion":"2","certificateUrl":"https:\/\/fps.sandbox.amazonaws.com\/certs\/090911\/PKICert.pem?requestId=5v3w76vo20x0th5zoyr220qvodpaiganjsd695svculh0","paymentMethod":"CC","signature":"oMSb1OZFJaH\/w9MBKp9qtyInUZY5S50hfk5bVHR72C9kE0ng+e7EWW8TmCwdxGbIizrhISiKN\/cy\n0x8+0lrXo6KJdFYhg9L35+RtvQHRA8P3pzB\/ypvUrKLkcTykxo+s2NFtC8G9WSc+UOx+LpAFmNDk\nIZQvTcJklMbTkvyIxIA="}',true);
-		$plgPaymentAmazonHelper= new plgPaymentAmazonHelper;
+		$plgPaymentAmazonHelper = new plgPaymentAmazonHelper;
 		$verify = $plgPaymentAmazonHelper->validateIPN($data,$urlEndPoint);
 
 	/*	if(!strtoupper($verify)=='SUCCESS')
 		return false;*/
 
 
-	//3.compare response order id and send order id in notify URL 
-		$res_orderid='';
+	//3.compare response order id and send order id in notify URL
+		$res_orderid = '';
 		if($isValid ) {
 		 $res_orderid = $data['referenceId'];
 			if(!empty($vars) && $res_orderid != $vars->order_id )
@@ -132,20 +129,20 @@ SubscriptionSuccessful The subscription was created successfully.
 				$error['desc'] = "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
 			}
 		}
-				// amount check 
+				// amount check
 		if(!empty($data['transactionAmount']))  // as it contains transactionAmount="USD 5.000"
 		{
 				$data['transactionAmount'] = trim($data['transactionAmount'],$vars->currency_code);
-				$data['transactionAmount']= trim($data['transactionAmount']);
+				$data['transactionAmount'] = trim($data['transactionAmount']);
 		}
 		if($isValid ) {
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$data['transactionAmount'];
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float)$data['transactionAmount'];
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
 					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
@@ -155,11 +152,11 @@ SubscriptionSuccessful The subscription was created successfully.
 			}
 		}
 		// END OF AMOUNT CHECK
-		
+
 		if($trxnstatus == 'ERROR'){
-			$payment_status= $this->translateResponse($trxnstatus);
+			$payment_status = $this->translateResponse($trxnstatus);
 		}else {
-			$payment_status=$this->translateResponse($data['status']);
+			$payment_status = $this->translateResponse($data['status']);
 		}
 		//print $payment_status; die;
 		file_put_contents("TST3.txt", "status - order amount= ".$payment_status . ' response order amount = ', FILE_APPEND | LOCK_EX);
@@ -181,15 +178,19 @@ SubscriptionSuccessful The subscription was created successfully.
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
-				if($key==$payment_status)
+				if($key == $payment_status)
 				return $value;
 			}
 	}
 	function onTP_Storelog($data)
 	{
-		$plgPaymentAmazonHelper= new plgPaymentAmazonHelper;
-		$log = $plgPaymentAmazonHelper->Storelog($this->_name,$data);
+		$log_write = $this->params->get('log_write', '0');
 
+		if($log_write == 1)
+		{
+			$plgPaymentAmazonHelper = new plgPaymentAmazonHelper;
+			$log = $plgPaymentAmazonHelper->Storelog($this->_name,$data);
+		}
 	}
 }
 ?>

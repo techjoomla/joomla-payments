@@ -26,6 +26,10 @@
           <option value="0">NO</option>
           <option value="1">YES</option>
         </field>
+		<field name="log_write" type="radio" default="0" label="PLG_AMAZON_WRITE_LOG"	description="PLG_AMAZON_WRITE_LOG_DESC">
+			<option value="0">P_NO</option>
+			<option value="1">P_YES</option>
+		</field>
         <field name="plugin_name" type="text" default="Amazon" label="PLG_NAME" description="" />
         <field name="plugin_hidname" type="hidden" default="amazon" />
       </fieldset>

@@ -3,15 +3,13 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
+
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 //require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_bycheck', JPATH_ADMINISTRATOR);
-if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/bycheck/bycheck/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/bycheck/helper.php');
+require_once(dirname(__FILE__) . '/bycheck/helper.php');
 class plgpaymentbycheck extends JPlugin
 {
 	var $_payment_gateway = 'payment_bycheck';
@@ -26,7 +24,7 @@ class plgpaymentbycheck extends JPlugin
 
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
-		$this->responseStatus= array(
+		$this->responseStatus = array(
 			'Success' =>'C',
 			'Failure' =>'X',
 			'Pending' =>'P',
@@ -37,10 +35,10 @@ class plgpaymentbycheck extends JPlugin
 
 	function buildLayoutPath($layout) {
 		if(empty($layout))
-		$layout="default";
+		$layout = "default";
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.$layout.'.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -58,10 +56,9 @@ class plgpaymentbycheck extends JPlugin
 				//Load the layout & push variables
 				ob_start();
         $layout = $this->buildLayoutPath($layout);
-        include($layout);if(JVERSION >='1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/bycheck/bycheck/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/bycheck/helper.php');
+        include($layout);
+	require_once(dirname(__FILE__) . '/bycheck/helper.php');
+
         $html = ob_get_contents();
         ob_end_clean();
 				return $html;
@@ -82,7 +79,7 @@ else
 		if(!in_array($this->_name,$config))
 		return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -91,12 +88,12 @@ else
 	{
 		$isValid = true;
 		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
+		$error['code']	= '';
+		$error['desc']	= '';
 
-		$trxnstatus="Pending";
+		$trxnstatus = "Pending";
 		//3.compare response order id and send order id in notify URL
-		$res_orderid='';
+		$res_orderid = '';
 		$res_orderid = $data['order_id'];
 		if($isValid ) {
 			if(!empty($vars) && $res_orderid != $vars->order_id )
@@ -112,8 +109,8 @@ else
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$retrunamount =  (float)$data['total'];
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float)$data['total'];
 				$epsilon = 0.01;
 
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -126,14 +123,14 @@ else
 		}
 		// END OF AMOUNT CHECK
 
-		$payment_status=$this->translateResponse($trxnstatus);
+		$payment_status = $this->translateResponse($trxnstatus);
 
-			$data['payment_status']=$payment_status;
+			$data['payment_status'] = $payment_status;
 			$result = array('transaction_id'=>'',
     				'order_id'=>$data['order_id'],
 						'status'=>$payment_status,
 						'total_paid_amt'=>$data['total'],
-						'raw_data'=>$data,
+						'raw_data'=>json_encode($data),
 						'error'=>'',
 						'return'=>$data['return'],
 						);
@@ -143,15 +140,19 @@ else
 
     	foreach($this->responseStatus as $key=>$value)
 				{
-					if($key==$invoice_status)
+					if($key == $invoice_status)
 					return $value;
 				}
 	}
 	function onTP_Storelog($data)
 	{
+		$log_write = $this->params->get('log_write', '0');
+
+		if($log_write == 1)
+		{
 			$plgPaymentBycheckHelper = new plgPaymentBycheckHelper;
 			$log = $plgPaymentBycheckHelper->Storelog($this->_name,$data);
-
+		}
 	}
 }
 
