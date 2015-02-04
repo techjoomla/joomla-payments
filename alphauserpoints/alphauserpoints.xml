@@ -40,6 +40,10 @@
 				<field name="aupfilesjticketing" type="aupfilesjticketing" label="AUP_FILE_JT" description="DESC_AUP_FILE" />
 				<!--<field name="aupfilesocialads" type="aupfilesocialads" label="AUP_FILE_SA" description="DESC_AUP_FILE" />
 				-->
+				<field name="log_write" type="radio" default="0" label="PLG_APOINT_WRITE_LOG"	description="PLG_APOINT_WRITE_LOG_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 				<field name="plugin_name" type="text" default="Alphauser Points" label="PLG_NAME" description="" />
 				<field name="plugin_hidname" type="hidden" default="alphauserpoints" />
 			</fieldset>

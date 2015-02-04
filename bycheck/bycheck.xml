@@ -13,7 +13,7 @@
 		<filename plugin="bycheck">bycheck.php</filename>
 				<folder>bycheck</folder>
 	</files>
-	<languages> 
+	<languages>
 		<language tag="en-GB">en-GB/en-GB.plg_payment_bycheck.ini</language>
 		<language tag="it-IT">it-IT/it-IT.plg_payment_bycheck.ini</language>
 		<language tag="de-DE">de-DE/de-DE.plg_payment_bycheck.ini</language>
@@ -22,12 +22,12 @@
 		<language tag="nl-NL">nl-NL/nl-NL.plg_payment_bycheck.ini</language>
 		<language tag="da-DK">da-DK/da-DK.plg_payment_bycheck.ini</language>
 		<language tag="th-TH">th-TH/th-TH.plg_payment_bycheck.ini</language>
-		<language tag="pt-PT">pt-PT/pt-PT.plg_payment_bycheck.ini</language>		
-	</languages> 
+		<language tag="pt-PT">pt-PT/pt-PT.plg_payment_bycheck.ini</language>
+	</languages>
 	<!-- parameters for Joomla 1.5.x -->
 	<params>
 		<param name="plugin_name" type="text" default="PayBy Check" label="PLG_NAME" description="" />
-		<param name="plugin_mail" type="textarea" default="" label="PLG_MAIL" description="PLG_MAIL_DES" rows="5" cols="20"  />	
+		<param name="plugin_mail" type="textarea" default="" label="PLG_MAIL" description="PLG_MAIL_DES" rows="5" cols="20"  />
 	</params>
 	<!-- Fields for Joomla 1.6.x and onwards -->
 	<config name="params">
@@ -35,6 +35,10 @@
 			<fieldset name="basic">
 					<field name="plugin_name" type="text" default="PayBy Check" label="PLG_NAME" description="" />
 					<field name="plugin_mail" type="textarea" default="" label="PLG_MAIL" description="PLG_MAIL_DES" rows="5" cols="20"  />
+					<field name="log_write" type="radio" default="0" label="PLG_CHEQUE_WRITE_LOG"	description="PLG_CHEQUE_WRITE_LOG_DESC">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
 			</fieldset>
 		</fields>
 	</config>
