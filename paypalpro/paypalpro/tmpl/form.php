@@ -5,9 +5,7 @@
  */
 defined('_JEXEC') or die('Restricted access'); 
 $document = JFactory::getDocument();
-JHTML::_('behavior.formvalidation');		
-
-
+JHTML::_('behavior.formvalidation');
  ?>
 <script type="text/javascript">
 function myValidate(f)
@@ -24,8 +22,8 @@ function myValidate(f)
 }		
 </script>
 <div class="akeeba-bootstrap">
-	<form action="<?php echo $vars->url;?>" class="form-validate form-horizontal" onSubmit="return myValidate(this);" method="post" >			
-		<div>						
+	<form action="<?php echo $vars->url;?>" class="form-validate form-horizontal" onSubmit="return myValidate(this);" method="post" >
+		<div>
 		<div class="control-group">
 			<label for="cardtype" class="control-label"><?php echo JText::_( 'CREDIT_CARD_TYPE' ) ?></label>
 			<div class="controls"><?php $types = array();
@@ -106,6 +104,11 @@ function myValidate(f)
 			<hr/>		
 		</div>
 		<div class="form-actions">				
+		
+			<input type="hidden" name="is_recurring" value="<?php echo $vars->is_recurring;?>" />
+			<input type="hidden" name="recurring_count" value="<?php echo $vars->recurring_count;?>" />
+			<input type="hidden" name="recurring_frequency" value="<?php echo $vars->recurring_frequency;?>" />
+			<input type="hidden" name="recurring_amount" value="<?php echo $vars->amount;?>" />
 			<input type="submit" name="submit" class="btn btn-success btn-large"  value="<?php echo JText::_('SUBMIT'); ?>" />
 			<input type="hidden" name="order_id" value="<?php echo $vars->order_id;?>" />
 			<input type="hidden" name="check" value="" />
@@ -117,4 +120,3 @@ function myValidate(f)
 		</div>		
 	</form>
 </div>
-

@@ -13,8 +13,8 @@ class plgPaymentAdaptivePaypalHelper
 	function buildPaypalUrl($secure = true)
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'adaptive_paypal');
-		$params=json_decode($plugin->params);
-		$url= $params->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
+		$params = json_decode($plugin->params);
+		$url = $params->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
 		return $url = 'https://' . $url . '/cgi-bin/webscr';
 	}
 
@@ -43,8 +43,8 @@ class plgPaymentAdaptivePaypalHelper
 		);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user= $my->name . '(' . $my->id . ')';
-		$logEntry->desc=json_encode($logdata['raw_data']);
+		$logEntry->user = $my->name . '(' . $my->id . ')';
+		$logEntry->desc = json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
 
@@ -97,16 +97,16 @@ class plgPaymentAdaptivePaypalHelper
 	{
 
 	 // parse the paypal URL
-     $url=plgPaymentAdaptivePaypalHelper::buildPaypalUrl();
+     $url = plgPaymentAdaptivePaypalHelper::buildPaypalUrl();
      $this->paypal_url= $url;
-      $url_parsed=parse_url($url);
+      $url_parsed = parse_url($url);
 
       // generate the post string from the _POST vars aswell as load the
       // _POST vars into an arry so we can play with them from the calling
       // script.
        // append ipn command
       // open the connection to paypal
-      $fp = fsockopen($url_parsed[host],"80",$err_num,$err_str,30);
+      $fp = fsockopen($url_parsed['host'],"80",$err_num,$err_str,30); 
      // $fp = fsockopen ($this->paypal_url, 80, $errno, $errstr, 30);
 
       if(!$fp) {
@@ -126,7 +126,7 @@ class plgPaymentAdaptivePaypalHelper
          $this->ipn_data["$field"] = $value;
          $post_string .= $field.'='.urlencode(stripslashes($value)).'&';
       }
-      $post_string.="cmd=_notify-validate";
+      $post_string .= "cmd=_notify-validate";
 
          // Post the data back to paypal
          fputs($fp, "POST $url_parsed[path] HTTP/1.1\r\n");

@@ -15,7 +15,7 @@ class plgPaymentPayuHelper
 	function buildPayuUrl($secure = true)
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'payu');
-		$params=json_decode($plugin->params);
+		$params = json_decode($plugin->params);
 		$url = $params->sandbox? 'test.payu.in/_payment' : 'secure.payu.in/_payment';
 		if ($secure) {
 			$url = 'https://' . $url;
@@ -48,8 +48,8 @@ class plgPaymentPayuHelper
 		);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user= $my->name . '(' . $my->id . ')';
-		$logEntry->desc=json_encode($logdata['raw_data']);
+		$logEntry->user = $my->name . '(' . $my->id . ')';
+		$logEntry->desc = json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
 

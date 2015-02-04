@@ -13,7 +13,7 @@ class plgPaymentPaypalproHelper
 	function buildpaypalproUrl($secure = true)
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'paypalpro');
-		$params=json_decode($plugin->params);
+		$params = json_decode($plugin->params);
 		$url = $params->sandbox ? 'https://api-3t.sandbox.paypal.com/nvp' : 'https://api-3t.paypal.com/nvp';
 //		$url = $this->params->get('sandbox') ? 'https://api-3t.sandbox.paypal.com/nvp' : 'https://api-3t.paypal.com/nvp';
 		return $url;

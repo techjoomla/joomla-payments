@@ -8,7 +8,7 @@ class plgPaymentTransfirstHelper
 	function buildTransfirstUrl()
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'transfirst');
-		$params=json_decode($plugin->params);
+		$params = json_decode($plugin->params);
 		$url = $params->sandbox ? 'https://ws.cert.processnow.com:443/portal/merchantframework/MerchantWebServices-v1?wsdl' : 'https://ws.processnow.com/portal/merchantframework/MerchantWebServices-v1?wsdl';
 		return $url;
 	}

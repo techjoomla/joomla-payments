@@ -28,7 +28,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		$config = JFactory::getConfig();
 
 		//Define Payment Status codes in Paypal  And Respective Alias in Framework
-		$this->responseStatus= array(
+		$this->responseStatus = array(
 		 'COMPLETED'  => 'C',
 		 'INCOMPLETE'  => 'P','PROCESSING'=>'P','PENDING'=>'P','CREATED'=>'P',
 		 'ERROR'=>'E','DENIED'=>'D','FAILED'=>'E',
@@ -36,7 +36,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 		 'REVERSED'=>'RV'
 		);
 
-		$this->headers=array(
+		$this->headers = array(
 			"X-PAYPAL-SECURITY-USERID:".$this->params->get('apiuser'),
 			"X-PAYPAL-SECURITY-PASSWORD:".$this->params->get('apipass'),
 			"X-PAYPAL-SECURITY-SIGNATURE:".$this->params->get('apisign'),
@@ -45,25 +45,25 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			"X-PAYPAL-APPLICATION-ID:".$this->params->get('apiid')
 		);
 
-		$this->envelope=array(
+		$this->envelope = array(
 			"errorLanguage"=>"en_US",
 			"detailLevel"=>"ReturnAll"
 		);
 		$plugin = JPluginHelper::getPlugin('payment', 'adaptive_paypal');
-		$params=json_decode($plugin->params);
-		$this->apiurl= $params->sandbox ? 'https://svcs.sandbox.paypal.com/AdaptivePayments/' : 'https://svcs.paypal.com/AdaptivePayments/';
-		$this->paypalurl= $params->sandbox ? 'https://www.sandbox.paypal.com/websrc?cmd=_ap-payment&paykey=' : 'https://www.paypal.com/websrc?cmd=_ap-payment&paykey=';
+		$params = json_decode($plugin->params);
+		$this->apiurl = $params->sandbox ? 'https://svcs.sandbox.paypal.com/AdaptivePayments/' : 'https://svcs.paypal.com/AdaptivePayments/';
+		$this->paypalurl = $params->sandbox ? 'https://www.sandbox.paypal.com/websrc?cmd=_ap-payment&paykey=' : 'https://www.paypal.com/websrc?cmd=_ap-payment&paykey=';
 	}
 
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		if($layout=='recurring')
-			$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'recurring.php';
+		if($layout == 'recurring')
+			$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/recurring.php';
 		else
-			$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
+			$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
 
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.'recurring.php';
+			$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . 'recurring.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -100,7 +100,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Paypal
 	function onTP_GetHTML($vars)
 	{
-		$plgPaymentAdaptivePaypalHelper=new plgPaymentAdaptivePaypalHelper();
+		$plgPaymentAdaptivePaypalHelper = new plgPaymentAdaptivePaypalHelper();
 		$vars->action_url = $plgPaymentAdaptivePaypalHelper->buildPaypalUrl();
 		//Take this receiver email address from plugin if component not provided it
 		if(empty($vars->business))
@@ -108,7 +108,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 
 		//if component does not provide cmd
 		if(empty($vars->cmd))
-			$vars->cmd='_xclick';
+			$vars->cmd = '_xclick';
 			$html = $this->buildLayout($vars);
 		return $html;
 	}
@@ -117,13 +117,13 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 	{
 		$adaptiveReceiverList = $vars->adaptiveReceiverList;
 		//Take this receiver email address from plugin if component not provided it
-		$plgPaymentAdaptivePaypalHelper=new plgPaymentAdaptivePaypalHelper();
+		$plgPaymentAdaptivePaypalHelper = new plgPaymentAdaptivePaypalHelper();
 		$receiver = array();
 		$data = $this->getFormattedReceiver($vars->adaptiveReceiverList);
 		$receiver = $data['receiver'];
 		$receiverOptions = $data['receiverOptions'];
 		//create the pay request
-		$createPacket=array(
+		$createPacket = array(
 			"actionType"=>"PAY",
 			"currencyCode"=>$vars->currency_code,
 			"receiverList"=>array(
@@ -137,7 +137,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 			"feesPayer"=>"PRIMARYRECEIVER"
 		);
 
-		//send packet
+		// Send packet
 		$response = $this->_paypalSend($createPacket,"Pay");
 
 		//store packet log
@@ -146,7 +146,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 
 		$paykey = $response['payKey'];
 		//Set payment detials
-		$detailsPacket=array(
+		$detailsPacket = array(
 			"requestEnvelope"=>$this->envelope,
 			"payKey"=>$response['payKey'],
 			"receiverOptions"=>$receiver
@@ -253,7 +253,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 	}
 
 	function _paypalSend($data,$call){
-		$ch=curl_init();
+		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,$this->apiurl.$call);
 		curl_setopt($ch,CURLOPT_RETURNTRANSFER,TRUE);
 		curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
@@ -264,7 +264,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 	}
 	//Wrapper for getting payment details
 	function getPaymentOptions($paykey){
-		$packet=array(
+		$packet = array(
 			"requestEnvelope"=>$this->envelope,
 			"payKey"=>$paykey
 			);
@@ -273,7 +273,7 @@ class  plgPaymentAdaptive_Paypal extends JPlugin
 	//get the complete transaction details
 	function getTransactionDetails($data)
 	{
-		$detailsPacket=array(
+		$detailsPacket = array(
 			"payKey"=>$data['pay_key'],
 			"requestEnvelope"=>$this->envelope
 		);

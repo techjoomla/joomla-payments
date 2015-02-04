@@ -5,12 +5,15 @@
  */
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 jimport( 'joomla.plugin.plugin' );
 if(version_compare(JVERSION, '1.6.0', 'ge'))
+{
 	require_once(JPATH_SITE.'/plugins/payment/payfast/payfast/helper.php');
+}
 else
+{
 	require_once(JPATH_SITE.'/plugins/payment/payfast/helper.php');
+}
 
 $lang =  JFactory::getLanguage();
 $lang->load('plg_payment_payfast', JPATH_ADMINISTRATOR);
@@ -30,7 +33,7 @@ class  plgPaymentPayfast extends JPlugin
 
 
 		//Define Payment Status codes in payfast  And Respective Alias in Framework
-		$this->responseStatus= array(
+		$this->responseStatus = array(
  	 'COMPLETE'  => 'C',
  	 'ERROR' => 'E'
 		);
@@ -39,8 +42,8 @@ class  plgPaymentPayfast extends JPlugin
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
+		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -70,7 +73,7 @@ class  plgPaymentPayfast extends JPlugin
 	if(!in_array($this->_name,$config))
 			return;
 		$obj 		= new stdClass;
-		$obj->name 	=$this->params->get( 'plugin_name' );
+		$obj->name 	= $this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -81,7 +84,7 @@ class  plgPaymentPayfast extends JPlugin
 	 * */
 	function onTP_GetHTML($vars)
 	{
-		$plgPaymentPayfastHelper= new plgPaymentPayfastHelper();
+		$plgPaymentPayfastHelper = new plgPaymentPayfastHelper();
 		$vars->action_url = $plgPaymentPayfastHelper->buildPayfastUrl();
 		//Take this receiver email address from plugin if component not provided it
 
@@ -99,13 +102,13 @@ class  plgPaymentPayfast extends JPlugin
  * @param $data	array	Post data from gateway to notify url
  * @return associative	array	gateway specific fixed format data required by the component to process payment
  * */
-	function onTP_Processpayment($data,$vars=array())
+	function onTP_Processpayment($data,$vars = array())
 	{
 		$isValid = true;
-		$error=array();
-		$error['code']	='';
-		$error['desc']	='';
-		$trxnstatus='';
+		$error = array();
+		$error['code']	= '';
+		$error['desc']	= '';
+		$trxnstatus = '';
 
 	// 1.Check IPN data for validity (i.e. protect against fraud attempt)
 		$isValid = $this->isValidIPN($data);
@@ -135,8 +138,8 @@ class  plgPaymentPayfast extends JPlugin
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount;
-				$return_resp['status'] ='0';
+				$order_amount = (float) $vars->amount;
+				$return_resp['status'] = '0';
 				$data['total_paid_amt'] =  (float)$data['amount_gross'];
 				$epsilon = 0.01;
 
@@ -151,11 +154,11 @@ class  plgPaymentPayfast extends JPlugin
 
 		// Translaet Payment status
 		if($trxnstatus == 'ERROR'){
-			$newStatus= $this->translateResponse($trxnstatus);
+			$newStatus = $this->translateResponse($trxnstatus);
 		}
 		else
 		{
-			$newStatus= $this->translateResponse($data['payment_status']);
+			$newStatus = $this->translateResponse($data['payment_status']);
 		}
 
 
@@ -168,8 +171,8 @@ class  plgPaymentPayfast extends JPlugin
 
 		//Error Handling
 		$error=array();
-		$error['code']	='ERROR';
-		$error['desc']	=(isset($data['error'])?$data['error']:'');
+		$error['code']	= 'ERROR';
+		$error['desc']	= (isset($data['error'])?$data['error']:'');
 
 		$result = array(
 						'order_id'=>$data['custom_str1'],
@@ -250,7 +253,7 @@ class  plgPaymentPayfast extends JPlugin
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
-				if($key==$payment_status){
+				if($key == $payment_status){
 					return $value;
 				}
 			}
@@ -274,8 +277,8 @@ class  plgPaymentPayfast extends JPlugin
 		foreach($vars as $key=>$value)
 		{
 			$vars->$key=trim($value);
-			if($key=='amount')
-				$vars->$key=round($value);
+			if($key == 'amount')
+				$vars->$key = round($value);
 		}
 	}
 		/**
