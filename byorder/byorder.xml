@@ -36,8 +36,8 @@
 				<field name="plugin_name" type="text" default="PayBy Purchase Order" label="PLG_NAME" description="" />
 				<field name="plugin_mail" type="textarea" default="" label="PLG_MAIL" description="PLG_MAIL_DES" rows="5" cols="20"  />
 				<field name="log_write" type="radio" default="0" label="PLG_ORDER_WRITE_LOG"	description="PLG_ORDER_WRITE_LOG_DESC">
-					<option value="0">P_NO</option>
-					<option value="1">P_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 			</fieldset>
 		</fields>

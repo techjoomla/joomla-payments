@@ -71,8 +71,8 @@
 				  <option value="1">JYES</option>
 				</field>
 				<field name="log_write" type="radio" default="0" label="PLG_CHECKOUT_WRITE_LOG"	description="PLG_CHECKOUT_WRITE_LOG_DESC">
-					<option value="0">P_NO</option>
-					<option value="1">P_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field type="spacer" />
 				<field name="lang" type="radio" default="en"
