@@ -35,8 +35,8 @@
 			  		<field name="working_key" type="text" default="" label="Working Key" description="Your Working Key"/>
 					<field name="plugin_name" type="text" default="CCAvenue" label="Plugin Label" description="Plugin name appears at frontend"/>
 					<field name="log_write" type="radio" default="0" label="PLG_AUTHONET_WRITE_LOG"	description="PLG_AUTHONET_WRITE_LOG_DESC">
-							<option value="0">P_NO</option>
-							<option value="1">P_YES</option>
+							<option value="0">JNO</option>
+							<option value="1">JYES</option>
 					</field>
 					<field name="plugin_hidname" type="hidden" default="ccavenue" />
 				</fieldset>
