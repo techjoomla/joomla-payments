@@ -84,7 +84,7 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 	function onTP_GetHTML($vars)
 	{
 			if( !isset($vars->client) || !strstr($vars->client,'jticketing'))
-		return; 
+		return;
 		require_once JPATH_SITE.'/plugins/payment/pagseguro_jticketing/lib/PagSeguroLibrary.php';
 
 		$vars->sellar_email = $this->params->get('sellar_email');
@@ -104,7 +104,7 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 
 
 
-	function onTP_Processpayment($data,$vars=array()) 
+	function onTP_Processpayment($data,$vars=array())
 	{
 		$isValid = true;
 		$error=array();
@@ -124,9 +124,9 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 
 
 		$pstatus=$verified_Data['payment_statuscode'];
-		
-		
-		//3.compare response order id and send order id in notify URL 
+
+
+		//3.compare response order id and send order id in notify URL
 		$res_orderid='';
 		if($isValid ) {
 		 $res_orderid = $verified_Data['order_id'];
@@ -145,7 +145,7 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 				$order_amount=(float) $vars->amount;
 				$retrunamount =  (float)$verified_Data['total_paid_amt'];
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
 					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
@@ -155,11 +155,11 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 			}
 		}
 		// END OF AMOUNT CHECK
-		
+
 		if($trxnstatus == 'ERROR'){
 			$status= $this->translateResponse($trxnstatus);
 		}else {
-			$status=$this->translateResponse($pstatus);		
+			$status=$this->translateResponse($pstatus);
 		}
 		$status=$this->translateResponse($pstatus);
 		if(!$status)
@@ -189,8 +189,12 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 	}
 	function onTP_Storelog($data)
 	{
-		//$plgPaymentPagseguro_jticketingHelper= new plgPaymentPagseguro_jticketingHelper;
-			//$log = $plgPaymentPagseguro_jticketingHelper->Storelog($this->_name,$data);
+		$log_write = $this->params->get('log_write', '0');
+
+		if($log_write == 1)
+		{
+			$log = plgPaymentPagseguro_jticketingHelper::Storelog($this->_name,$data);
+		}
 
 	}
 }
