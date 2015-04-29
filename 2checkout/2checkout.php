@@ -23,29 +23,30 @@ class  plgPayment2checkout extends JPlugin
 		$this->responseStatus= array(
  	 		 'deposited'  => 'C',
 			 'pending'  => 'P',
-			 'approved'=>'p',
+			 'approved'=>'C',
 			 'declined'=>'X',
  	     'Refunded'=>'RF','ERROR'  => 'E');
 	}
 
 	/* Internal use functions */
-	function buildLayoutPath($layout) {
-	$layout=trim($layout);
-	if(empty($layout))
-	$layout='default';
+	function buildLayoutPath($layout)
+	{
+		$layout=trim($layout);
+		if(empty($layout))
+		$layout='default';
 
-		$app = JFactory::getApplication();
+			$app = JFactory::getApplication();
 
-		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
-		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
-		if(JFile::exists($override))
-		{
-			return $override;
+			$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
+			$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
+			if(JFile::exists($override))
+			{
+				return $override;
+			}
+			else
+			{
+			return  $core_file;
 		}
-		else
-		{
-	  	return  $core_file;
-	}
 	}
 
 	//Builds the layout to be shown, along with hidden fields.
@@ -75,9 +76,10 @@ class  plgPayment2checkout extends JPlugin
 	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Paypal
 	function onTP_GetHTML($vars)
 	{
-     $vars->action_url = 'https://www.2checkout.com/checkout/purchase';
-		 $vars->sid = $this->params->get('sid','');
-		 $vars->demo = $this->params->get('demo',0) ? 'Y' : 'N';
+     $vars->action_url = $this->params->get('demo', 0) ? 'https://sandbox.2checkout.com/checkout/purchase' : 'https://www.2checkout.com/checkout/purchase';
+
+		$vars->sid = $this->params->get('sid','');
+		// $vars->demo = $this->params->get('demo',0) ? 'Y' : 'N';
 		 $vars->lang = $this->params->get('lang','en');
 		 $vars->pay_method = $this->params->get('pay_method','cc');
 
@@ -91,7 +93,7 @@ class  plgPayment2checkout extends JPlugin
 		$submitVaues['sid'] =$this->params->get('sid','');
 		$submitVaues['cart_order_id'] =$vars->order_id;
 		$submitVaues['total'] = sprintf('%02.2f',$vars->amount);
-		$submitVaues['demo'] =$this->params->get('demo',0) ? 'Y' : 'N';
+		//$submitVaues['demo'] =$this->params->get('demo',0) ? 'Y' : 'N';
 		$submitVaues['merchant_order_id'] =$vars->order_id;
 		$submitVaues['fixed'] ='Y';
 		$submitVaues['lang'] =$this->params->get('lang','en');
@@ -111,23 +113,22 @@ class  plgPayment2checkout extends JPlugin
 
 	function onTP_Processpayment($data,$vars=array())
 	{
-			$isValid = true;
+		$isValid = true;
 		$error=array();
 		$error['code']	= '';
 		$error['desc']	= '';
 		$trxnstatus='';
 		$secret = $this->params->get('secret','cc');
-		/*$verify = plgPayment2checkoutHelper::validateIPN($data,$secret);
-		if (!$verify) { return false;
-		}	*/
 
-		$id = array_key_exists('vendor_order_id', $data) ? (int)$data['vendor_order_id'] : -1;
+		$id = array_key_exists('vendor_order_id', $data) ? $data['vendor_order_id'] : -1;
 
 		//3.compare response order id and send order id in notify URL
 		$res_orderid='';
 
-		if($isValid ) {
-		$res_orderid = $id;
+		if($isValid )
+		{
+			$res_orderid = $id;
+
 			if(!empty($vars) && $res_orderid != $vars->order_id )
 			{
 				$trxnstatus = 'ERROR';
@@ -136,13 +137,13 @@ class  plgPayment2checkout extends JPlugin
 			}
 		}
 
-				// amount check
-		if($isValid ) {
+		if($isValid )
+		{
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
 				$order_amount = (float) $vars->amount;
-				$retrunamount = (float)$data['total'];
+				$retrunamount = (float)$data['invoice_cust_amount'];
 				$epsilon = 0.01;
 
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -153,45 +154,54 @@ class  plgPayment2checkout extends JPlugin
 				}
 			}
 		}
-		// END OF AMOUNT CHECK
 
-		$message_type=$data['message_type'];
-		if($trxnstatus == 'ERROR'){
-			$payment_status=$this->translateResponse($trxnstatus);
-		}else{
-			$payment_status=$this->translateResponse($data['invoice_status']);
+		$message_type = $data['message_type'];
+
+		if($trxnstatus == 'ERROR')
+		{
+			$payment_status = $this->translateResponse($trxnstatus);
+		}
+		else
+		{
+			$payment_status = $this->translateResponse($data['invoice_status']);
 		}
 
-		if($message_type == 'REFUND_ISSUED'){
+		if($message_type == 'REFUND_ISSUED')
+		{
 			$payment_status='RF';
 		}
 
 		$result = array();
+
 		if($id)
 		{
 			$result = array(
 						'order_id'=>$id,
-						'transaction_id'=>$data['order_number'],
-						'buyer_email'=>$data['email'],
+						'transaction_id'=>$data['sale_id'],
+						'buyer_email'=>$data['customer_email'],
 						'status'=>$payment_status,
 						'subscribe_id'=>$data['subscr_id'],
 						'txn_type'=>$data['pay_method'],
-						'total_paid_amt'=>$data['total'],
+						'total_paid_amt'=>$data['invoice_cust_amount'],
 						'raw_data'=>$data,
 						'error'=>$error,
 						);
 		}
+
 		return $result;
 	}
 
-	function translateResponse($invoice_status){
-
+	function translateResponse($invoice_status)
+	{
     	foreach($this->responseStatus as $key=>$value)
-				{
-					if($key == $invoice_status)
-					return $value;
-				}
+		{
+			if($key == $invoice_status)
+			{
+				return $value;
+			}
+		}
 	}
+
 	function onTP_Storelog($data)
 	{
 		$log_write = $this->params->get('log_write', '0');
