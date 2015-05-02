@@ -79,7 +79,7 @@ class  plgPayment2checkout extends JPlugin
      $vars->action_url = $this->params->get('demo', 0) ? 'https://sandbox.2checkout.com/checkout/purchase' : 'https://www.2checkout.com/checkout/purchase';
 
 		$vars->sid = $this->params->get('sid','');
-		// $vars->demo = $this->params->get('demo',0) ? 'Y' : 'N';
+		//$vars->demo = $this->params->get('demo',0) ? 'Y' : 'N';
 		 $vars->lang = $this->params->get('lang','en');
 		 $vars->pay_method = $this->params->get('pay_method','cc');
 
@@ -97,9 +97,8 @@ class  plgPayment2checkout extends JPlugin
 		$submitVaues['merchant_order_id'] =$vars->order_id;
 		$submitVaues['fixed'] ='Y';
 		$submitVaues['lang'] =$this->params->get('lang','en');
-		$submitVaues['return_url'] =$vars->return;
 
-		$submitVaues['x_receipt_link_url'] =$vars->notify_url;
+		$submitVaues['x_receipt_link_url'] =$vars->return;
 		//$submitVaues['currency_code'] =$vars->currency_code;
 		$submitVaues['pay_method'] =strtoupper($this->params->get('pay_method','cc'));
 		$submitVaues['id_type'] ='1';
@@ -143,7 +142,7 @@ class  plgPayment2checkout extends JPlugin
 			{
 				// Check that the amount is correct
 				$order_amount = (float) $vars->amount;
-				$retrunamount = (float)$data['invoice_cust_amount'];
+				$retrunamount = (float)$data['invoice_list_amount'];
 				$epsilon = 0.01;
 
 				if(($order_amount - $retrunamount) > $epsilon)
@@ -182,7 +181,7 @@ class  plgPayment2checkout extends JPlugin
 						'status'=>$payment_status,
 						'subscribe_id'=>$data['subscr_id'],
 						'txn_type'=>$data['pay_method'],
-						'total_paid_amt'=>$data['invoice_cust_amount'],
+						'total_paid_amt'=>$data['invoice_list_amount'],
 						'raw_data'=>$data,
 						'error'=>$error,
 						);

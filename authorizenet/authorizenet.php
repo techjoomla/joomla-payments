@@ -3,7 +3,7 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
- 
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.plugin.plugin' );
@@ -225,7 +225,7 @@ class plgpaymentAuthorizenet extends JPlugin
 
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
-					$allresp[0] = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
+					//$allresp[0] = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
 					$isValid = false;
 					$error['desc'] .= "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
 				}
@@ -254,7 +254,7 @@ function 	onTP_Processpayment_recurring($data)
 		$order_id = $data['order_id'];
 
 		require_once(dirname(__FILE__) . '/authorizenet/lib/AuthorizeNet.php');
-		
+
 		$auth_net_login_id = $this->params->get( 'login_id', '1' );
 		$auth_net_tran_key = $this->params->get( 'tran_key', '1' );
 
