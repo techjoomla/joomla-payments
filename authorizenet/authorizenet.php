@@ -226,6 +226,9 @@ class plgpaymentAuthorizenet extends JPlugin
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
 					//$allresp[0] = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
+					$app = JFactory::getApplication()->input;
+					$app->enqueuemessage($allresp->error_message, 'error');
+
 					$isValid = false;
 					$error['desc'] .= "ORDER_AMOUNT_MISTMATCH - order amount= ".$order_amount . ' response order amount = '.$retrunamount;
 				}
