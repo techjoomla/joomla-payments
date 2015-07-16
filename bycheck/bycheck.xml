@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" type="plugin" group="payment" method="upgrade">
-	<name>Pay By check</name>
+	<name>Pay By Cheque</name>
 	<author>TechJoomla</author>
 	<creationDate>31st Aug 2013</creationDate>
 	<copyright>Techjoomla. All Rights Reserved.</copyright>
@@ -8,7 +8,7 @@
 	<authorUrl>http://www.techjoomla.com</authorUrl>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>2.0.1</version>
-	<description>PayBy check plugin from Techjoomla. </description>
+	<description>PayBy cheque plugin from Techjoomla. </description>
 	<files>
 		<filename plugin="bycheck">bycheck.php</filename>
 				<folder>bycheck</folder>
