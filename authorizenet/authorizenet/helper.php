@@ -1,17 +1,32 @@
 <?php
 /**
- *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
- *  @license    GNU General Public License version 2, or later
+ * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ * @license    GNU General Public License version 2, or later
  */
- defined('_JEXEC') or die('Restricted access');
+	defined('_JEXEC') or die('Restricted access');
 
 	jimport('joomla.html.html');
-	jimport( 'joomla.plugin.helper' );
-class plgPaymentAuthorizenetHelper
-{
+	jimport('joomla.plugin.helper');
 
-	//gets the paypal URL
-	function buildAuthorizenetUrl($secure = true)
+/**
+ * PlgPaymentAuthorizenetHelper
+ *
+ * @package     CPG
+ * @subpackage  site
+ * @since       2.2
+ */
+class PlgPaymentAuthorizenetHelper
+{
+	/**
+	 * buildAuthorizenetUrl.
+	 *
+	 * @param   object  $secure  secure
+	 *
+	 * @since   2.2
+	 *
+	 * @return   string url
+	 */
+	public function buildAuthorizenetUrl($secure = true)
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'authorizenet');
 		$params = json_decode($plugin->params);
@@ -20,15 +35,29 @@ class plgPaymentAuthorizenetHelper
 	/*	$secure_post = $this->params->get('secure_post');
 		$url = $this->params->get('sandbox') ? 'test.authorize.net' : 'secure.authorize.net';*/
 		if ($secure_post)
-			$url = 'https://'.$url.'/gateway/transact.dll' ;
+		{
+			$url = 'https://' . $url . '/gateway/transact.dll';
+		}
 		else
-			$url = 'http://'.$url.'/gateway/transact.dll' ;
+		{
+			$url = 'http://' . $url . '/gateway/transact.dll';
+		}
 
 		return $url;
-
 	}
 
-	function Storelog($name,$logdata)
+	/**
+	 * Storelog.
+	 *
+	 * @param   object  $name     name
+	 *
+	 * @param   string  $logdata  logdata
+	 *
+	 * @since   2.2
+	 *
+	 * @return   string  Layout Path
+	 */
+	public function Storelog($name,$logdata)
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
@@ -37,7 +66,7 @@ class plgPaymentAuthorizenetHelper
 
 		JLog::addLogger(
 			array(
-				'text_file' => $logdata['JT_CLIENT'].'_'.$name.'.log',
+				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.log',
 				'text_entry_format' => $options
 			),
 			JLog::INFO,
@@ -45,22 +74,28 @@ class plgPaymentAuthorizenetHelper
 		);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user = $my->name.'('.$my->id.')';
+		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
 
-//		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
-//    $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
+	// $logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
+	// $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
 	}
 
-
-	function isSandboxEnabled()
+	/**
+	 * isSandboxEnabled.
+	 *
+	 * @since   2.2
+	 *
+	 * @return   boolean
+	 */
+	public function isSandboxEnabled()
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'authorizenet');
 		$params = json_decode($plugin->params);
 
-		if($params->sandbox)
+		if ($params->sandbox)
 		{
 			return true;
 		}
@@ -69,6 +104,4 @@ class plgPaymentAuthorizenetHelper
 			return false;
 		}
 	}
-
-
 }
