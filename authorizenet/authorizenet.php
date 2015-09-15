@@ -19,9 +19,9 @@ $lang->load('plg_payment_authorizenet', JPATH_ADMINISTRATOR);
  */
 class PlgpaymentAuthorizenet extends JPlugin
 {
-	private var $_payment_gateway = 'payment_authorizenet';
+	private $_payment_gateway = 'payment_authorizenet';
 
-	private var $_log = null;
+	private $_log = null;
 
 	/**
 	 * Constructor
