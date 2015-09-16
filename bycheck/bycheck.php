@@ -23,9 +23,9 @@ require_once dirname(__FILE__) . '/bycheck/helper.php';
  */
 class Plgpaymentbycheck extends JPlugin
 {
-	private var $_payment_gateway = 'payment_bycheck';
+	private  $payment_gateway = 'payment_bycheck';
 
-	private var $_log = null;
+	private  $log = null;
 
 	/**
 	 * Constructor
