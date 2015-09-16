@@ -21,9 +21,9 @@ require_once dirname(__FILE__) . '/byorder/helper.php';
  */
 class Plgpaymentbyorder extends JPlugin
 {
-	protected  $_payment_gateway = 'byorder';
+	protected  $payment_gateway = 'byorder';
 
-	protected  $_log = null;
+	protected  $log = null;
 
 	/**
 	 * Constructor
