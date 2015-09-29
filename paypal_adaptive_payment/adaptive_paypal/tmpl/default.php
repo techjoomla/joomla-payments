@@ -1,14 +1,13 @@
-<?php 
+<?php
 /**
- *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
- *  @license    GNU General Public License version 2, or later
+ * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ * @license    GNU General Public License version 2, or later
  */
-defined('_JEXEC') or die('Restricted access'); 
-
+defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div class="akeeba-bootstrap">
-	<form action="<?php echo $vars->submiturl; //$vars->action_url ?>" class="form-horizontal" method="post">
+	<form action="<?php echo $vars->submiturl; ?>" class="form-horizontal" method="post">
 		<input type="hidden" name="business" value="<?php echo $vars->business; ?>" />
 		<!-- <input type="hidden" name="campaign_promoter" value="<?php //echo $vars->campaign_promoter; ?>" /> -->
 		<input type="hidden" name="custom" value="<?php echo $vars->order_id; ?>" />
