@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ * @copyright  Copyright (c) 2009-2015 TechJoomla. All rights reserved
  * @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die('Restricted access');
@@ -43,6 +43,7 @@ function plg_auth_showHide()
 {
 	// Get the DOM reference
 	var billEle = document.getElementById("tj_payGway_billInfo");
+
 	// Toggle
 	var eleStatus = billEle.style.display == "block" ? 'block':'none';// billEle.style.display = "none" :billEle.style.display = "block";
 	if(eleStatus == "block")
@@ -70,20 +71,19 @@ function plg_auth_showHide()
 <div class="akeeba-bootstrap">
 <form action="<?php echo $vars->url ?>" name="adminForm" id="adminForm" method="post"	class="form-validate  form-horizontal" onSubmit="return myValidate(this);">
 	<div>
-
 		<div class="control-group">
 			<label for="cardfname" class="control-label"><?php echo JText::_('Credit Card Type'); ?></label>
 			<div class="controls">	<?php
-						$types = array();
-						$types[] = JHTML::_('select.option', 'Visa', JText::_( "VISA" ) );
-						$types[] = JHTML::_('select.option', 'Mastercard', JText::_( "MASTERCARD" ) );
-						$types[] = JHTML::_('select.option', 'AmericanExpress', JText::_( "AMERICAN_EXPRESS" ) );
-						$types[] = JHTML::_('select.option', 'Discover', JText::_( "DISCOVER" ) );
-						$types[] = JHTML::_('select.option', 'DinersClub', JText::_( "DINERS_CLUB" ) );
-						$types[] = JHTML::_('select.option', 'JCB', JText::_( "JCB" ) );
+				$types = array();
+				$types[] = JHTML::_('select.option', 'Visa', JText::_( "VISA" ) );
+				$types[] = JHTML::_('select.option', 'Mastercard', JText::_( "MASTERCARD" ) );
+				$types[] = JHTML::_('select.option', 'AmericanExpress', JText::_( "AMERICAN_EXPRESS" ) );
+				$types[] = JHTML::_('select.option', 'Discover', JText::_( "DISCOVER" ) );
+				$types[] = JHTML::_('select.option', 'DinersClub', JText::_( "DINERS_CLUB" ) );
+				$types[] = JHTML::_('select.option', 'JCB', JText::_( "JCB" ) );
 
-						$return = JHTML::_('select.genericlist', $types,'activated',null, 'value','text', 0);
-						echo $return;
+				$return = JHTML::_('select.genericlist', $types,'activated',null, 'value','text', 0);
+				echo $return;
 				?></div>
 		</div>
 
@@ -108,27 +108,26 @@ function plg_auth_showHide()
 		<div class="control-group">
 			<label for="expire_month" class="control-label"><?php echo JText::_('Expiration Date');?></label>
 			<div class="controls"><?php
-					$all=array();
-					$all[0]=new stdClass;
+				$all=array();
+				$all[0]=new stdClass;
 
-					$all[0]->value = '0';
-					$all[0]->text = 'Months';
-					for($i=1; $i<13; $i++) {
-						$timestamp = mktime(0,0,0,$i+1, 0, date("Y"));
-						$months[$i]=new stdClass;
-						$months[$i]->value = $i;
-						$months[$i]->text = date("M", $timestamp);
-					}
-					$months = array_merge($all, $months);
-					echo JHTML::_('select.genericlist',$months, 'expire_month', 'class="inputbox required" ', 'value', 'text', date('m'));
-					echo JHTML::_('select.integerlist',date('Y'), 2030, 1, 'expire_year', 'size="1" class="inputbox required" ');
-				?>
+				$all[0]->value = '0';
+				$all[0]->text = 'Months';
+				for($i=1; $i<13; $i++) {
+					$timestamp = mktime(0,0,0,$i+1, 0, date("Y"));
+					$months[$i]=new stdClass;
+					$months[$i]->value = $i;
+					$months[$i]->text = date("M", $timestamp);
+				}
+				$months = array_merge($all, $months);
+				echo JHTML::_('select.genericlist',$months, 'expire_month', 'class="inputbox required" ', 'value', 'text', date('m'));
+				echo JHTML::_('select.integerlist',date('Y'), 2030, 1, 'expire_year', 'size="1" class="inputbox required" ');
+			?>
 			</div>
 		</div>
 		<hr>
 
 		<div class="control-group">
-
 			<div class="alert alert-success " id="">
 				 <span  onClick="plg_auth_showHide()"><strong>
 					<a id='tj_payGway_billMsg'><?php echo $plg_billStyleMsg ; ?></a></strong>
@@ -136,7 +135,6 @@ function plg_auth_showHide()
 			</div>
 
 		</div>
-
 
 		<div id="tj_payGway_billInfo" style="display:<?php echo $plg_billStyle; ?>">
 			<div class="control-group">
@@ -162,16 +160,16 @@ function plg_auth_showHide()
 				</div>
 			</div>
 		</div>
-<div class="form-actions">
-	<!--<button type="button" name="submit" class="inputbox" onclick="submitbutton('ConfirmPayment');"><?php echo JText::_('Make Payment') ?></button>	-->
-	<input type="submit" name="submit"  value="<?php echo JText::_('SUBMIT');?>" class="btn btn-success btn-large"/>
-	<input type="hidden" name="oid" value="<?php echo $vars->order_id;?>" />
-	<input type="hidden" name="check" value="" />
-	<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
-	<input type="hidden" name="return" size="10" value="<?php echo $vars->return;?>" />
-	<input type="hidden" name="chargetotal" value="<?php echo $vars->amount;?>" />
-	<input type="hidden" name="plugin_payment_method" value="onsite" />
-</div>
-</div>
+		<div class="form-actions">
+			<!--<button type="button" name="submit" class="inputbox" onclick="submitbutton('ConfirmPayment');"><?php echo JText::_('Make Payment') ?></button>	-->
+			<input type="submit" name="submit"  value="<?php echo JText::_('SUBMIT');?>" class="btn btn-success btn-large"/>
+			<input type="hidden" name="oid" value="<?php echo $vars->order_id;?>" />
+			<input type="hidden" name="check" value="" />
+			<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
+			<input type="hidden" name="return" size="10" value="<?php echo $vars->return;?>" />
+			<input type="hidden" name="chargetotal" value="<?php echo $vars->amount;?>" />
+			<input type="hidden" name="plugin_payment_method" value="onsite" />
+		</div>
+	</div>
 </form>
 </div>

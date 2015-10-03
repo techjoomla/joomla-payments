@@ -1,20 +1,20 @@
-<?php 
+<?php
 /**
- *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ * @copyright  Copyright (c) 2009-2015 TechJoomla. All rights reserved
  *  @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die('Restricted access');
 
  ?>
 
-
+<!--@TODO - Remove this layout from the plugin not used any where refer Task #56754-->
 <div class="akeeba-bootstrap">
 <form action="<?php echo $vars->action_url ?>" class="form-horizontal" method="post" id="paymentForm">
 
 	<input type="hidden" name="sid" value="<?php echo $vars->sid?>" />
 	<input type="hidden" name="cart_order_id" value="<?php echo $vars->order_id ?>" />
 	<input type="hidden" name="total" value="<?php echo sprintf('%02.2f',$vars->amount) ?>" />
-	
+
 	<input type="hidden" name="demo" value="<?php echo  $vars->demo; ?>" />
   <input type="hidden" name="merchant_order_id" value="<?php echo $vars->order_id ?>" />
 	<input type="hidden" name="fixed" value="Y" />

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ * @copyright  Copyright (c) 2009-2015 TechJoomla. All rights reserved
  * @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die('Restricted access');
@@ -27,7 +27,8 @@ if (!empty($vars->userInfo))
 <script type="text/javascript">
 function myValidate(f)
 {
-	if (document.formvalidator.isValid(f)) {
+	if (document.formvalidator.isValid(f))
+	{
 		f.check.value='<?php echo JSession::getFormToken(); ?>';
 		return true;
 	}
@@ -43,8 +44,10 @@ function plg_auth_showHide()
 {
 	// Get the DOM reference
 	var billEle = document.getElementById("tj_payGway_billInfo");
+
 	// Toggle
 	var eleStatus = billEle.style.display == "block" ? 'block':'none';// billEle.style.display = "none" :billEle.style.display = "block";
+
 	if(eleStatus == "block")
 	{
 		billEle.style.display = "none";
@@ -55,7 +58,7 @@ function plg_auth_showHide()
 	}
 	else
 	{
-		// if not visible then show
+		// If not visible then show
 		billEle.style.display = "block";
 
 		var hideBillMsg = "<?php echo JText::_('PLG_AUTHONET_HIDE_BILL_INFO');?>";
@@ -65,13 +68,10 @@ function plg_auth_showHide()
 }
 
 </script>
-
-
 <div class="akeeba-bootstrap">
 <form action="<?php echo $vars->url ?>" name="adminForm" id="adminForm" method="post" class="form-validate  form-horizontal"
 onSubmit="return myValidate(this);">
 	<div>
-
 		<div class="control-group">
 			<label for="cardfname" class="col-lg-2 col-md-2 col-sm-3 col-xs-12 control-label"><?php echo JText::_('Credit Card Type'); ?></label>
 			<div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">	<?php
@@ -151,7 +151,6 @@ onSubmit="return myValidate(this);">
 
 		</div>
 
-
 		<div id="tj_payGway_billInfo" style="display:<?php echo $plg_billStyle; ?>">
 			<div class="form-group">
 				<label for="address" class="col-lg-2 col-md-2 col-sm-3 col-xs-12 control-label">
@@ -179,6 +178,7 @@ onSubmit="return myValidate(this);">
 					<?php echo !empty($userInfo['state_code']) ?$userInfo['state_code']:'';?>" />
 				</div>
 			</div>
+
 			<div class="form-group">
 				<label for="state" class="col-lg-2 col-md-2 col-sm-3 col-xs-12 control-label">
 					<?php echo JText::_('Zip');?>
@@ -189,18 +189,18 @@ onSubmit="return myValidate(this);">
 				</div>
 			</div>
 		</div>
-<div class="form-actions">
-	<!--<button type="button" name="submit" class="inputbox" onclick="submitbutton('ConfirmPayment');">
+		<div class="form-actions">
+			<!--<button type="button" name="submit" class="inputbox" onclick="submitbutton('ConfirmPayment');">
 			<?php echo JText::_('Make Payment') ?>
-		</button>	-->
-	<input type="submit" name="submit"  value="<?php echo JText::_('SUBMIT');?>" class="btn btn-success"/>
-	<input type="hidden" name="oid" value="<?php echo $vars->order_id;?>" />
-	<input type="hidden" name="check" value="" />
-	<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
-	<input type="hidden" name="return" size="10" value="<?php echo $vars->return;?>" />
-	<input type="hidden" name="chargetotal" value="<?php echo $vars->amount;?>" />
-	<input type="hidden" name="plugin_payment_method" value="onsite" />
-</div>
-</div>
+				</button>	-->
+			<input type="submit" name="submit"  value="<?php echo JText::_('SUBMIT');?>" class="btn btn-success"/>
+			<input type="hidden" name="oid" value="<?php echo $vars->order_id;?>" />
+			<input type="hidden" name="check" value="" />
+			<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
+			<input type="hidden" name="return" size="10" value="<?php echo $vars->return;?>" />
+			<input type="hidden" name="chargetotal" value="<?php echo $vars->amount;?>" />
+			<input type="hidden" name="plugin_payment_method" value="onsite" />
+		</div>
+	</div>
 </form>
 </div>
