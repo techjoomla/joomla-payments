@@ -1,23 +1,23 @@
 <?php
 /**
- * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ * @copyright  Copyright (c) 2009-2015 TechJoomla. All rights reserved
  * @license    GNU General Public License version 2, or later
  */
 
 // No direct access
 
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.formvalidation');
+JHtml::_('behavior.formvalidation');
 $document = JFactory::getDocument();
 
-	if ($vars->custom_email == "")
-	{
-		$email = JText::_('NO_ADDRS');
-	}
-	else
-	{
-		$email = $vars->custom_email;
-	}
+if ($vars->custom_email == "")
+{
+	$email = JText::_('NO_ADDRS');
+}
+else
+{
+	$email = $vars->custom_email;
+}
 ?>
 <script type="text/javascript">
 function myValidate(f)
@@ -29,8 +29,7 @@ function myValidate(f)
 	}
 	else
 	{
-		var msg = 'Some values are not acceptable.  Please retry.';
-		alert(msg);
+		alert("<?php echo JText::_('PLG_PAYMENT_BYCHECK_ALERT_MSG'); ?>");
 	}
 
 	return false;
@@ -68,8 +67,7 @@ class="form-validate form-horizontal"  method="post">
 					<input type='hidden' name='return' value="<?php echo $vars->return;?>" >
 					<input type="hidden" name="plugin_payment_method" value="onsite" />
 					<input type='submit' name='btn_check' id='btn_check' class="btn btn-success"  value="<?php echo JText::_('SUBMIT'); ?>">
-				</div>
-
+			</div>
 	</div>
 </form>
 </div>

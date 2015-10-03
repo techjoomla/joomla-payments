@@ -26,13 +26,14 @@ if(!empty($vars->userInfo))
 <script type="text/javascript">
 function myValidate(f)
 {
-	if (document.formvalidator.isValid(f)) {
+	if (document.formvalidator.isValid(f))
+	{
 		f.check.value='<?php echo JSession::getFormToken(); ?>';
 		return true;
 	}
-	else {
-		var msg = 'Some values are not acceptable.  Please retry.';
-		alert(msg);
+	else
+	{
+		alert("<?php echo JText::_('PLG_PAYMENT_2CHECKOUT_ALERT_MSG'); ?>");
 	}
 	return false;
 }
