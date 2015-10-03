@@ -33,7 +33,7 @@ function myValidate(f)
 	}
 	else
 	{
-		alert("<?php echo JText::_('PLG_PAYMENT_2CHECKOUT_ALERT_MSG'); ?>");
+		alert("<?php echo JText::_('PLG_PAYMENT_LINKPOINT_ALERT_MSG'); ?>");
 	}
 	return false;
 }

@@ -31,9 +31,9 @@ function myValidate(f)
 		f.check.value='<?php echo JSession::getFormToken(); ?>';
 		return true;
 	}
-	else {
-		var msg = 'Some values are not acceptable.  Please retry.';
-		alert(msg);
+	else
+	{
+		alert("<?php echo JText::_('PLG_PAYMENT_LINKPOINT_ALERT_MSG'); ?>");
 	}
 	return false;
 }
