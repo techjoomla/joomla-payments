@@ -296,7 +296,7 @@ class PlgpaymentAuthorizenet extends JPlugin
 		}
 		else
 		{
-			$error['desc'] = $allresp->error_message;
+			$error['desc'] = $allresp->response_reason_text;
 		}
 
 		// Print_r($allresp);die;
