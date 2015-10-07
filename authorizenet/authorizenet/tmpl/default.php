@@ -127,6 +127,14 @@ function plg_auth_showHide()
 			<div class="controls"><?php
 			$types = array();
 			$credit_cards=$this->params->get( 'credit_cards', '' );
+
+			// Make string to array
+			if (!is_array($credit_cards))
+			{
+				$array[] = $credit_cards;
+				$credit_cards = $array;
+			}
+
 			$creditcardarray=array(JText::_( "VISA" )=>'Visa', JText::_( "MASTERCARD" )=>'Mastercard',JText::_( "AMERICAN_EXPRESS" )=>'AmericanExpress',
 									JText::_( "DISCOVER" )=>'Discover',JText::_( "DINERS_CLUB" )=>'DinersClub',JText::_( "AUT_JCB" )=>'JCB');
 			if(!empty($credit_cards))
