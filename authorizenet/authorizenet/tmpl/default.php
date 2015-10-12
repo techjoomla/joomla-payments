@@ -12,7 +12,8 @@ JHTML::_('behavior.formvalidation');
 $userInfo = array();
 $plg_billStyle = "block";
 $plg_billStyleMsg = JText::_('PLG_AUTHONET_HIDE_BILL_INFO');
-if(!empty($vars->userInfo))
+
+if (!empty($vars->userInfo))
 {
 	$plg_billStyle="none";
 	$userInfo = $vars->userInfo;
@@ -123,48 +124,47 @@ function plg_auth_showHide()
 			<hr/>
 
 		<div class="control-group">
-			<label for="" class="control-label"><?php echo JText::_( 'CREDIT_CARD_TYPE' ) ?></label>
-			<div class="controls"><?php
-			$types = array();
-			$credit_cards=$this->params->get( 'credit_cards', '' );
+			<label for="" class="control-label">
+				<?php echo JText::_( 'CREDIT_CARD_TYPE' ); ?>
+			</label>
+			<div class="controls">
+				<?php
+					$types = array();
+					$credit_cards=$this->params->get( 'credit_cards', '' );
 
-			// Make string to array
-			if (!is_array($credit_cards))
-			{
-				$array[] = $credit_cards;
-				$credit_cards = $array;
-			}
+					// Make string to array
+					//After installing the plugin it return  credit_cards parmas value as string
+					if (!is_array($credit_cards))
+					{
+						$array[] = $credit_cards;
+						$credit_cards = $array;
+					}
 
-			$creditcardarray=array(JText::_( "VISA" )=>'Visa', JText::_( "MASTERCARD" )=>'Mastercard',JText::_( "AMERICAN_EXPRESS" )=>'AmericanExpress',
-									JText::_( "DISCOVER" )=>'Discover',JText::_( "DINERS_CLUB" )=>'DinersClub',JText::_( "AUT_JCB" )=>'JCB');
-			if(!empty($credit_cards))
-			{
-				foreach($credit_cards as $credit_card)
-				{
-					if(in_array($credit_card,$creditcardarray))
+					$creditcardarray=array(JText::_( "VISA" )=>'Visa', JText::_( "MASTERCARD" )=>'Mastercard',JText::_( "AMERICAN_EXPRESS" )=>'AmericanExpress',
+											JText::_( "DISCOVER" )=>'Discover',JText::_( "DINERS_CLUB" )=>'DinersClub',JText::_( "AUT_JCB" )=>'JCB');
+					if(!empty($credit_cards))
+					{
+						foreach($credit_cards as $credit_card)
+						{
+							if(in_array($credit_card,$creditcardarray))
+							{
+								foreach($creditcardarray as $creditkey=>$credit_cardall)
+								{
+									if($credit_card==$credit_cardall)
+										$types[] = JHTML::_('select.option', $credit_cardall, $creditkey );
+								}
+							}
+						}
+					}
+					else
 					{
 						foreach($creditcardarray as $creditkey=>$credit_cardall)
 						{
-							if($credit_card==$credit_cardall)
 								$types[] = JHTML::_('select.option', $credit_cardall, $creditkey );
 						}
-
-
 					}
-
-				}
-
-
-			}
-			else
-			{
-				foreach($creditcardarray as $creditkey=>$credit_cardall)
-				{
-						$types[] = JHTML::_('select.option', $credit_cardall, $creditkey );
-				}
-			}
-		$return = JHTML::_('select.genericlist', $types,'activated',null, 'value','text', 0);
-		echo $return; ?>
+					$return = JHTML::_('select.genericlist', $types,'activated',null, 'value','text', 0);
+					echo $return; ?>
 			</div>
 		</div>
 		<div class="control-group">
