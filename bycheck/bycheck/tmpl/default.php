@@ -35,15 +35,17 @@ else
 		return false;
 	}
 </script>
-<div class="akeeba-bootstrap">
-	<form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);"
-		class="form-validate form-horizontal"  method="post">
-		<div>
-			<div class="control-group">
-				<label for="cardfname" class="control-label"><?php  echo JText::_('PLG_CHEQUE_ORDER_INFO');?></label>
-				<div class="controls">
-					<?php  echo JText::sprintf('ORDER_INFO', $vars->custom_name);?>
-				</div>
+<div class="tjcpg-wrapper">
+<form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);" class="form-validate form-horizontal"  method="post">
+	<div>
+		<div class="control-group">
+			<label for="cardfname" class="control-label"><?php  echo JText::_( 'PLG_CHEQUE_ORDER_INFO' );?></label>
+			<div class="controls">	<?php  echo JText::sprintf( 'ORDER_INFO', $vars->custom_name);?></div>
+		</div>
+		<div class="control-group">
+			<label for="cardlname" class="control-label"><?php echo JText::_( 'COMMENT' ); ?></label>
+			<div class="controls">
+				<textarea id='comment' name='comment' class="inputbox" rows='3' maxlength='135' size='28'><?php if(isset($vars->comment)){ echo $vars->comment; } ?></textarea>
 			</div>
 			<div class="control-group">
 				<label for="cardlname" class="control-label"><?php echo JText::_('COMMENT'); ?></label>

@@ -9,7 +9,7 @@ $vars->item_name=JText::sprintf('PAYU_PINFO',$vars->order_id);
 $txnid=$vars->order_id;
 //$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
 ?>
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 <form action="<?php echo $vars->action_url ?>" class="form-horizontal" method="post">			
 	<input type="hidden" name="key" value="<?php echo trim($vars->key) ?>" />
 	<input type="hidden" name="txnid" value="<?php echo $txnid ?>" />

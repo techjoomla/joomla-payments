@@ -4,9 +4,9 @@
  *  @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die('Restricted access');
+?>
 
- ?>
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 <form action="<?php echo $vars->action_url ?>"  method="post" id="paymentForm">
 	<div>
 	<input type="hidden" name="sid" value="<?php echo $vars->sid?>" />

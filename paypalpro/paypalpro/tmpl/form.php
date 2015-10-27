@@ -27,7 +27,7 @@ JHtml::_('behavior.formvalidation');
 		return false;
 	}
 </script>
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 	<form action="<?php echo $vars->url;?>" class="form-validate form-horizontal" onSubmit="return myValidate(this);" method="post" >
 		<div>
 			<div class="control-group">

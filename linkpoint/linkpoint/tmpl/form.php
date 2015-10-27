@@ -65,25 +65,29 @@ if (!empty($vars->userInfo))
 	}
 
 </script>
-<div class="akeeba-bootstrap">
-	<form action="<?php echo $vars->url ?>" name="adminForm" id="adminForm" method="post"
-		class="form-validate  form-horizontal" onSubmit="return myValidate(this);">
-		<div>
-			<div class="control-group">
-				<label for="cardfname" class="control-label"><?php echo JText::_('Credit Card Type'); ?></label>
-				<div class="controls">	<?php
-					$types = array();
-					$types[] = JHTML::_('select.option', 'Visa', JText::_("VISA"));
-					$types[] = JHTML::_('select.option', 'Mastercard', JText::_("MASTERCARD"));
-					$types[] = JHTML::_('select.option', 'AmericanExpress', JText::_("AMERICAN_EXPRESS"));
-					$types[] = JHTML::_('select.option', 'Discover', JText::_("DISCOVER"));
-					$types[] = JHTML::_('select.option', 'DinersClub', JText::_("DINERS_CLUB"));
-					$types[] = JHTML::_('select.option', 'JCB', JText::_("JCB"));
+<div class="tjcpg-wrapper">
+<form action="<?php echo $vars->url ?>" name="adminForm" id="adminForm" method="post"	class="form-validate  form-horizontal" onSubmit="return myValidate(this);">
+	<div>
 
-					$return = JHTML::_('select.genericlist', $types, 'activated', null, 'value', 'text', 0);
-					echo $return;
-					?>
-				</div>
+		<div class="control-group">
+			<label for="cardfname" class="control-label"><?php echo JText::_('Credit Card Type'); ?></label>
+			<div class="controls">	<?php
+						$types = array();
+						$types[] = JHTML::_('select.option', 'Visa', JText::_( "VISA" ) );
+						$types[] = JHTML::_('select.option', 'Mastercard', JText::_( "MASTERCARD" ) );
+						$types[] = JHTML::_('select.option', 'AmericanExpress', JText::_( "AMERICAN_EXPRESS" ) );
+						$types[] = JHTML::_('select.option', 'Discover', JText::_( "DISCOVER" ) );
+						$types[] = JHTML::_('select.option', 'DinersClub', JText::_( "DINERS_CLUB" ) );
+						$types[] = JHTML::_('select.option', 'JCB', JText::_( "JCB" ) );
+
+						$return = JHTML::_('select.genericlist', $types,'activated',null, 'value','text', 0);
+						echo $return;
+				?></div>
+		</div>
+
+		<div class="control-group">
+			<label for="creditcard_name" class="control-label"><?php echo JText::_('Name On Card'); ?></label>
+			<div class="controls">	<input type="text" name="creditcard_name" id="creditcard_name" size="25" class="inputbox required" value="" />
 			</div>
 			<div class="control-group">
 				<label for="creditcard_name" class="control-label"><?php echo JText::_('Name On Card'); ?></label>

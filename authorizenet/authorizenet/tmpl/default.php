@@ -63,7 +63,7 @@ if (!empty($vars->userInfo))
 	}
 </script>
 
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 	<form action="<?php echo $vars->url; /* $vars->submiturl; // rollded back */  ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);"  class="form-validate form-horizontal"  method="post">
 		<div>
 			<?php

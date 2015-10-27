@@ -36,7 +36,7 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 }
 
 </script>
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 	<form action="<?php echo $vars->url ?>" class="form-validate form-horizontal"  method="post" id="paymentForm" name="paymentForm">
 		<div>
 			<div class="controls">

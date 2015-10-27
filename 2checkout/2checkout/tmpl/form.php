@@ -6,9 +6,7 @@
 defined('_JEXEC') or die('Restricted access');
 
  ?>
-
-<!--@TODO - Remove this layout from the plugin not used any where refer Task #56754-->
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 <form action="<?php echo $vars->action_url ?>" class="form-horizontal" method="post" id="paymentForm">
 
 	<input type="hidden" name="sid" value="<?php echo $vars->sid?>" />

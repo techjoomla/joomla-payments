@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 	<form name="tj_Plug_PaypalForm"action="<?php echo $vars->action_url; //$vars->submiturl; //$vars->action_url ?>" class="form-horizontal" method="post">
 		<input type="hidden" name="business" value="<?php echo $vars->business; ?>" />
 		<input type="hidden" name="custom" value="<?php echo $vars->order_id; ?>" />

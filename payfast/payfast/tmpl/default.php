@@ -16,7 +16,7 @@ $cancel_url=$vars->cancel_return;
 $notify_url= $vars->notify_url;
 
 ?>
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 <p align="center">
 <form action="<?php echo htmlentities($vars->action_url) ?>"  method="post" id="paymentForm">
 
