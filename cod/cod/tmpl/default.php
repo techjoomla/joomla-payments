@@ -29,7 +29,7 @@ if (document.formvalidator.isValid(f)) {
 }
 
 </script>
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 <form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);" class="form-validate form-horizontal"  method="post">
 	<div>
 		<!--

@@ -67,7 +67,7 @@ function showcardtype(id)
 }
 </script>
 
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 <form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);"  enctype="multipart/form-data" class="form-validate form-horizontal"  method="post">
 	<div>
 		<div class="control-group">
