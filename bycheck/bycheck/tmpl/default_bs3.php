@@ -33,20 +33,20 @@ if (document.formvalidator.isValid(f)) {
 <form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);" class="form-validate form-horizontal"  method="post">
 	<div>
 		<div class="form-group">
-			<label for="cardfname" class="col-lg-2 col-md-2 col-sm-3 col-xs-12 control-label"><?php  echo JText::_( 'PLG_CHEQUE_ORDER_INFO' );?></label>
-			<div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">	<?php  echo JText::sprintf( 'ORDER_INFO', $vars->custom_name);?></div>
+			<label for="cardfname" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php  echo JText::_( 'PLG_CHEQUE_ORDER_INFO' );?></label>
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">	<?php  echo JText::sprintf( 'ORDER_INFO', $vars->custom_name);?></div>
 		</div>
 		<div class="form-group">
-			<label for="cardlname" class="col-lg-2 col-md-2 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'COMMENT' ); ?></label>
-			<div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+			<label for="cardlname" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'COMMENT' ); ?></label>
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 
 				<textarea id='comment' name='comment' class="inputbox" rows='3' maxlength='135' size='28'><?php if(isset($vars->comment)){ echo $vars->comment; } ?></textarea>
 
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="cardaddress1" class="col-lg-2 col-md-2 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'CON_PAY_PRO' ) ?></label>
-			<div class="col-lg-10 col-md-10 col-sm-9 col-xs-12"><?php  echo $email;?>
+			<label for="cardaddress1" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'CON_PAY_PRO' ) ?></label>
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><?php  echo $email;?>
 					<input type='hidden' name='mail_addr' value="<?php echo $email;?>" />
 			</div>
 		</div>
