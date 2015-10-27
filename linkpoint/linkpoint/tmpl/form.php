@@ -66,7 +66,7 @@ function plg_auth_showHide()
 </script>
 
 
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 <form action="<?php echo $vars->url ?>" name="adminForm" id="adminForm" method="post"	class="form-validate  form-horizontal" onSubmit="return myValidate(this);">
 	<div>
 
