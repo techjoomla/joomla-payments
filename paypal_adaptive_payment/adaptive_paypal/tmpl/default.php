@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="tjcpg-wrapper">
 	<form action="<?php echo $vars->submiturl; //$vars->action_url ?>" class="form-horizontal" method="post">
 		<input type="hidden" name="business" value="<?php echo $vars->business; ?>" />
-		<!-- <input type="hidden" name="campaign_promoter" value="<?php echo $vars->campaign_promoter; ?>" /> -->
+		<!-- <input type="hidden" name="campaign_promoter" value="<?php //echo $vars->campaign_promoter; ?>" /> -->
 		<input type="hidden" name="custom" value="<?php echo $vars->order_id; ?>" />
 
 		<input type="hidden" name="item_name" value="<?php echo $vars->item_name; ?>" />

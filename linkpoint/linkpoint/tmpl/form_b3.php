@@ -4,23 +4,23 @@
  * @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die('Restricted access');
-$session 	= JFactory::getSession();
+$session  = JFactory::getSession();
 $document = JFactory::getDocument();
-JHTML::_('behavior.formvalidation');
+JHtml::_('behavior.formvalidation');
 
 // For billing info
-$userInfo = array();
-$plg_billStyle = "block";
+$userInfo         = array();
+$plg_billStyle    = "block";
 $plg_billStyleMsg = JText::_('PLG_AUTHONET_HIDE_BILL_INFO');
-$wholeAddress = '';
+$wholeAddress     = '';
 
 if (!empty($vars->userInfo))
 {
-	$plg_billStyle = "none";
-	$userInfo = $vars->userInfo;
+	$plg_billStyle    = "none";
+	$userInfo         = $vars->userInfo;
 	$plg_billStyleMsg = JText::_('PLG_AUTHONET_SHOW_BILL_INFO');
-	$wholeAddress = $userInfo['add_line1'] . ' ' . $userInfo['add_line2'];
-	$wholeAddress = trim($wholeAddress);
+	$wholeAddress     = $userInfo['add_line1'] . ' ' . $userInfo['add_line2'];
+	$wholeAddress     = trim($wholeAddress);
 }
 
 ?>
@@ -64,7 +64,7 @@ if (!empty($vars->userInfo))
 		}
 	}
 </script>
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 	<form action="<?php echo $vars->url ?>" name="adminForm" id="adminForm" method="post" class="form-validate  form-horizontal"
 		onSubmit="return myValidate(this);">
 		<div>
@@ -75,14 +75,14 @@ if (!empty($vars->userInfo))
 				<div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
 					<?php
 						$types = array();
-						$types[] = JHTML::_('select.option', 'Visa', JText::_("VISA"));
-						$types[] = JHTML::_('select.option', 'Mastercard', JText::_("MASTERCARD"));
-						$types[] = JHTML::_('select.option', 'AmericanExpress', JText::_("AMERICAN_EXPRESS"));
-						$types[] = JHTML::_('select.option', 'Discover', JText::_("DISCOVER"));
-						$types[] = JHTML::_('select.option', 'DinersClub', JText::_("DINERS_CLUB"));
-						$types[] = JHTML::_('select.option', 'JCB', JText::_("JCB"));
+						$types[] = JHtml::_('select.option', 'Visa', JText::_("VISA"));
+						$types[] = JHtml::_('select.option', 'Mastercard', JText::_("MASTERCARD"));
+						$types[] = JHtml::_('select.option', 'AmericanExpress', JText::_("AMERICAN_EXPRESS"));
+						$types[] = JHtml::_('select.option', 'Discover', JText::_("DISCOVER"));
+						$types[] = JHtml::_('select.option', 'DinersClub', JText::_("DINERS_CLUB"));
+						$types[] = JHtml::_('select.option', 'JCB', JText::_("JCB"));
 
-						$return = JHTML::_('select.genericlist', $types, 'activated', null, 'value', 'text', 0);
+						$return = JHtml::_('select.genericlist', $types, 'activated', null, 'value', 'text', 0);
 						echo $return;
 					?>
 				</div>
@@ -133,8 +133,8 @@ if (!empty($vars->userInfo))
 					}
 
 					$months = array_merge($all, $months);
-					echo JHTML::_('select.genericlist', $months, 'expire_month', 'class="inputbox required" ', 'value', 'text', date('m'));
-					echo JHTML::_('select.integerlist', date('Y'), 2030, 1, 'expire_year', 'size="1" class="inputbox required" ');
+					echo JHtml::_('select.genericlist', $months, 'expire_month', 'class="inputbox required" ', 'value', 'text', date('m'));
+					echo JHtml::_('select.integerlist', date('Y'), 2030, 1, 'expire_year', 'size="1" class="inputbox required" ');
 					?>
 				</div>
 			</div>
