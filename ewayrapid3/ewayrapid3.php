@@ -1,6 +1,6 @@
 <?php
 /**
- *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @copyright  Copyright (c) 2009-2015 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
 
@@ -336,13 +336,13 @@ class  plgPaymentEwayrapid3 extends JPlugin
 	public function selectMonth()
 	{
 		$options = array();
-		$options[] = JHTML::_('select.option',0,'--');
+		$options[] = JHtml::_('select.option',0,'--');
 		for($i = 1; $i <= 12; $i++) {
 			$m = sprintf('%02u', $i);
-			$options[] = JHTML::_('select.option',$m,$m);
+			$options[] = JHtml::_('select.option',$m,$m);
 		}
 
-		return JHTML::_('select.genericlist', $options, 'EWAY_CARDEXPIRYMONTH', 'class="input-small"', 'value', 'text', '', 'EWAY_CARDEXPIRYMONTH');
+		return JHtml::_('select.genericlist', $options, 'EWAY_CARDEXPIRYMONTH', 'class="input-small"', 'value', 'text', '', 'EWAY_CARDEXPIRYMONTH');
 	}
 
 	public function selectYear()
@@ -350,13 +350,13 @@ class  plgPaymentEwayrapid3 extends JPlugin
 		$year = gmdate('Y');
 
 		$options = array();
-		$options[] = JHTML::_('select.option',0,'--');
+		$options[] = JHtml::_('select.option',0,'--');
 		for($i = 0; $i <= 10; $i++) {
 			$y = sprintf('%04u', $i+$year);
-			$options[] = JHTML::_('select.option',$y,$y);
+			$options[] = JHtml::_('select.option',$y,$y);
 		}
 
-		return JHTML::_('select.genericlist', $options, 'EWAY_CARDEXPIRYYEAR', 'class="input-small"', 'value', 'text', '', 'EWAY_CARDEXPIRYYEAR');
+		return JHtml::_('select.genericlist', $options, 'EWAY_CARDEXPIRYYEAR', 'class="input-small"', 'value', 'text', '', 'EWAY_CARDEXPIRYYEAR');
 	}
 	//function
 

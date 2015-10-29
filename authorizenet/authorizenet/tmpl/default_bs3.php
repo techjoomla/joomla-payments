@@ -1,6 +1,6 @@
 <?php
    /**
-	*  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+	*  @copyright  Copyright (c) 2009-2015 TechJoomla. All rights reserved.
 	*  @license    GNU General Public License version 2, or later
 	*/
 
@@ -8,7 +8,7 @@
 	defined('_JEXEC') or die('Restricted access');
 
    $document =JFactory::getDocument();
-   JHTML::_('behavior.formvalidation');
+   JHtml::_('behavior.formvalidation');
    $userInfo = array();
    $plg_billStyle = "block";
    $plg_billStyleMsg = JText::_('PLG_AUTHONET_HIDE_BILL_INFO');
@@ -132,7 +132,7 @@
 						foreach($creditcardarray as $creditkey=>$credit_cardall)
 						{
 							if($credit_card==$credit_cardall)
-								$types[] = JHTML::_('select.option', $credit_cardall, $creditkey );
+								$types[] = JHtml::_('select.option', $credit_cardall, $creditkey );
 						}
 
 
@@ -146,10 +146,10 @@
 			   {
 				foreach($creditcardarray as $creditkey=>$credit_cardall)
 				{
-						$types[] = JHTML::_('select.option', $credit_cardall, $creditkey );
+						$types[] = JHtml::_('select.option', $credit_cardall, $creditkey );
 				}
 			   }
-			   $return = JHTML::_('select.genericlist', $types,'activated',null, 'value','text', 0);
+			   $return = JHtml::_('select.genericlist', $types,'activated',null, 'value','text', 0);
 			   echo $return; ?>
 			</div>
 		 </div>

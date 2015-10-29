@@ -6,7 +6,7 @@
 defined('_JEXEC') or die('Restricted access');
 $session 	= JFactory::getSession();
 $document = JFactory::getDocument();
-JHTML::_('behavior.formvalidation');
+JHtml::_('behavior.formvalidation');
 
 // For billing info
 $userInfo = array();
@@ -73,14 +73,14 @@ if (!empty($vars->userInfo))
 			<label for="cardfname" class="control-label"><?php echo JText::_('Credit Card Type'); ?></label>
 			<div class="controls">	<?php
 						$types = array();
-						$types[] = JHTML::_('select.option', 'Visa', JText::_( "VISA" ) );
-						$types[] = JHTML::_('select.option', 'Mastercard', JText::_( "MASTERCARD" ) );
-						$types[] = JHTML::_('select.option', 'AmericanExpress', JText::_( "AMERICAN_EXPRESS" ) );
-						$types[] = JHTML::_('select.option', 'Discover', JText::_( "DISCOVER" ) );
-						$types[] = JHTML::_('select.option', 'DinersClub', JText::_( "DINERS_CLUB" ) );
-						$types[] = JHTML::_('select.option', 'JCB', JText::_( "JCB" ) );
+						$types[] = JHtml::_('select.option', 'Visa', JText::_( "VISA" ) );
+						$types[] = JHtml::_('select.option', 'Mastercard', JText::_( "MASTERCARD" ) );
+						$types[] = JHtml::_('select.option', 'AmericanExpress', JText::_( "AMERICAN_EXPRESS" ) );
+						$types[] = JHtml::_('select.option', 'Discover', JText::_( "DISCOVER" ) );
+						$types[] = JHtml::_('select.option', 'DinersClub', JText::_( "DINERS_CLUB" ) );
+						$types[] = JHtml::_('select.option', 'JCB', JText::_( "JCB" ) );
 
-						$return = JHTML::_('select.genericlist', $types,'activated',null, 'value','text', 0);
+						$return = JHtml::_('select.genericlist', $types,'activated',null, 'value','text', 0);
 						echo $return;
 				?></div>
 		</div>
@@ -123,8 +123,8 @@ if (!empty($vars->userInfo))
 					}
 
 					$months = array_merge($all, $months);
-					echo JHTML::_('select.genericlist', $months, 'expire_month', 'class="inputbox required" ', 'value', 'text', date('m'));
-					echo JHTML::_('select.integerlist', date('Y'), 2030, 1, 'expire_year', 'size="1" class="inputbox required" '); ?>
+					echo JHtml::_('select.genericlist', $months, 'expire_month', 'class="inputbox required" ', 'value', 'text', date('m'));
+					echo JHtml::_('select.integerlist', date('Y'), 2030, 1, 'expire_year', 'size="1" class="inputbox required" '); ?>
 				</div>
 			</div>
 			<hr>
