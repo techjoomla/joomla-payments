@@ -1,12 +1,12 @@
-<?php 
+<?php
 /**
- *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @copyright  Copyright (c) 2009-2015 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
-	
+
 // no direct access
-	defined('_JEXEC') or die('Restricted access'); 
-JHTML::_('behavior.formvalidation');
+	defined('_JEXEC') or die('Restricted access');
+JHtml::_('behavior.formvalidation');
 $document =JFactory::getDocument();
 	if($vars->custom_email=="")
 		$email = JText::_('NO_ADDRS');
@@ -18,21 +18,21 @@ $document =JFactory::getDocument();
 function myValidate(f)
 {
 if (document.formvalidator.isValid(f)) {
-		f.check.value='<?php echo JSession::getFormToken(); ?>'; 
-		return true; 
+		f.check.value='<?php echo JSession::getFormToken(); ?>';
+		return true;
 	}
 	else {
 		var msg = 'Some values are not acceptable.  Please retry.';
 		alert(msg);
 	}
 	return false;
-}	
+}
 
 
-	
-</script> 	
+
+</script>
 <div class="tjcpg-wrapper">
-<form action="<?php echo $vars->action_url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);" class="form-validate form-horizontal"  method="post">			
+<form action="<?php echo $vars->action_url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);" class="form-validate form-horizontal"  method="post">
 	<div>
 		<div class="control-group">
 			<label for="cardfname" class="control-label"><?php  echo JText::_( 'Order Information' );?></label>
@@ -41,9 +41,9 @@ if (document.formvalidator.isValid(f)) {
 		<div class="control-group">
 			<label for="cardlname" class="control-label"><?php echo JText::_( 'COMMENT' ); ?></label>
 			<div class="controls">
-				
+
 				<textarea id='comment' name='comment' class="inputbox" rows='3' maxlength='135' size='28'><?php if(isset($vars->comment)){ echo $vars->comment; } ?></textarea>
-			
+
 			</div>
 		</div>
 		<div class="control-group">
