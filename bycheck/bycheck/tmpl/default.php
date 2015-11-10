@@ -47,18 +47,7 @@ else
 			<div class="controls">
 				<textarea id='comment' name='comment' class="inputbox" rows='3' maxlength='135' size='28'><?php if(isset($vars->comment)){ echo $vars->comment; } ?></textarea>
 			</div>
-			<div class="control-group">
-				<label for="cardlname" class="control-label"><?php echo JText::_('COMMENT'); ?></label>
-				<div class="controls">
-					<textarea id='comment' name='comment' class="inputbox" rows='3' maxlength='135' size='28'>
-						<?php
-						if (isset($vars->comment))
-						{
-							echo $vars->comment;
-						} ?>
-					</textarea>
-				</div>
-			</div>
+
 			<div class="control-group">
 				<label for="cardaddress1" class="control-label"><?php echo JText::_('CON_PAY_PRO') ?></label>
 				<div class="controls">
