@@ -19,7 +19,7 @@ jimport('joomla.plugin.helper');
 class PlgPaymentTransfirstHelper
 {
 	/**
-	 * Build URL.
+	 * Build submit URL according to plugin configuration.
 	 *
 	 * @since   2.2
 	 *
@@ -36,7 +36,7 @@ class PlgPaymentTransfirstHelper
 	}
 
 	/**
-	 * Storelog.
+	 * Log the payment response.
 	 *
 	 * @param   object  $name     name
 	 *

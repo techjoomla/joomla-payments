@@ -81,7 +81,7 @@ class PlgpaymentTransfirst extends JPlugin
 	}
 
 	/**
-	 * buildLayoutPath
+	 * Build layout path. Also checks the layout overrides.
 	 *
 	 * @param   string  $layout  layout
 	 *
@@ -111,7 +111,7 @@ class PlgpaymentTransfirst extends JPlugin
 	}
 
 	/**
-	 * buildLayout
+	 * Load the layout path according to bootstrap version
 	 *
 	 * @param   string  $vars    vars
 	 *
@@ -151,7 +151,7 @@ class PlgpaymentTransfirst extends JPlugin
 	}
 
 	/**
-	 * getParamResult
+	 * Get plugin parameter
 	 *
 	 * @param   string  $name     name
 	 *
@@ -179,7 +179,7 @@ class PlgpaymentTransfirst extends JPlugin
 	}
 
 	/**
-	 * onTP_GetInfo
+	 * Get Plugin Info
 	 *
 	 * @param   string  $config  config
 	 *
@@ -228,7 +228,7 @@ class PlgpaymentTransfirst extends JPlugin
 	}
 
 	/**
-	 * onTP_Processpayment
+	 * Process the payment reponse which received from payment gatway
 	 *
 	 * @param   object  $data  Data
 	 * @param   string  $vars  array
@@ -395,7 +395,7 @@ class PlgpaymentTransfirst extends JPlugin
 	}
 
 	/**
-	 * translateResponse
+	 * Transalate the payment reponse(which received from payment gatway) in intarnal format.
 	 *
 	 * @param   object  $payment_status  payment_status
 	 *
@@ -415,7 +415,7 @@ class PlgpaymentTransfirst extends JPlugin
 	}
 
 	/**
-	 * Store log
+	 * Log the payment response
 	 *
 	 * @param   array  $data  data.
 	 *
