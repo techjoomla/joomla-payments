@@ -69,16 +69,16 @@ function showcardtype(id)
 <div class="tjcpg-wrapper">
 <form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);"  enctype="multipart/form-data" class="form-validate form-horizontal"  method="post">
 	<div>
-		<div class="control-group">
-			<label for="card_num" class="control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CARD_NUMBER' ) ?></label>
-			<div class="controls">
+		<div class="form-group">
+			<label for="card_num" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CARD_NUMBER' ) ?></label>
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 				<input type="text" class="required validate-numeric invalid" id="card_num"   value=""  name="card_num" size="35" required="required" />
 			</div>
 		</div>
 
-		<div class="control-group">
-			<label for="card_type" class="control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CARD_TYPE' ) ?></label>
-			<div class="controls">
+		<div class="form-group">
+			<label for="card_type" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CARD_TYPE' ) ?></label>
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 				<input type="radio" class="" id="creadit_card" value="1" name="card_type" checked onchange="showcardtype(id)" />
 				<?php echo JText::_('PLG_TRANSFIRST_CREDIT_CARD');?>&nbsp;&nbsp;
 				<input type="radio" class="" id="debit_card" value="0" name="card_type" onchange="showcardtype(id)"/>
@@ -86,9 +86,9 @@ function showcardtype(id)
 			</div>
 		</div>
 
-		<div class="control-group">
-			<label for="" class="control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CREDIT_CARD_TYPE' ) ?></label>
-			<div class="controls"><?php
+		<div class="form-group">
+			<label for="" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CREDIT_CARD_TYPE' ) ?></label>
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><?php
 			$types = array();
 			$credit_cards=$this->params->get( 'credit_cards', '' );
 			$creditcardarray=array(JText::_( "PLG_TRANSFIRST_VISA" )=>'Visa', JText::_( "PLG_TRANSFIRST_MASTERCARD" )=>'Mastercard',JText::_( "PLG_TRANSFIRST_AMERICAN_EXPRESS" )=>'AmericanExpress',JText::_( "PLG_TRANSFIRST_DISCOVER" )=>'Discover',JText::_( "PLG_TRANSFIRST_DINERS_CLUB" )=>'DinersClub',JText::_( "PLG_TRANSFIRST_AUT_JCB" )=>'JCB');
@@ -117,9 +117,9 @@ function showcardtype(id)
 		echo $return; ?>
 			</div>
 		</div>
-		<div class="control-group">
-			<label for="cardlname" class="control-label"><?php echo JText::_( 'PLG_TRANSFIRST_EXPIRATION_DATE_IN_FORMAT_MMYY' ) ?></label>
-			<div class="controls">
+		<div class="form-group">
+			<label for="cardlname" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_EXPIRATION_DATE_IN_FORMAT_MMYY' ) ?></label>
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 						<?php
 							$all[0]=new stdClass;
 							$all[0]->value = '';
@@ -136,9 +136,9 @@ function showcardtype(id)
 						?>
 					</div>
 		</div>
-		<div class="control-group">
-			<label for="cardfname" class="control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CVV_CODE' ) ?></label>
-			<div class="controls"><input class="inputbox required" id="card_code" type="text" name="card_code" size="35" value="" required="required" /></div>
+		<div class="form-group">
+			<label for="cardfname" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CVV_CODE' ) ?></label>
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="card_code" type="text" name="card_code" size="35" value="" required="required" /></div>
 		</div>
 		<div class="form-actions">
 			<input type="hidden" name="amount" size="10" value="<?php echo $vars->amount;?>" />
