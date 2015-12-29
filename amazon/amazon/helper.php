@@ -49,9 +49,10 @@ class PlgPaymentAmazonHelper
 		$text_file = $logdata['JT_CLIENT'] . '_' . $name . '.log';
 		$my = JFactory::getUser();
 		JLog::addLogger(
-			array('text_file' => $text_file ,
-				'text_entry_format' => $options
-			), JLog::INFO, $logdata['JT_CLIENT']);
+							array('text_file' => $text_file ,
+								'text_entry_format' => $options
+							), JLog::INFO, $logdata['JT_CLIENT']
+						);
 		$logEntry       = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
