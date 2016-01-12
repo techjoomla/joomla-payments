@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" type="plugin" group="payment" method="upgrade">
-	<name>Payment - paypalpro</name>
+	<name>PLG_TJLMPAYPALPRO_NAME</name>
 	<author>Techjoomla</author>
 	<creationDate>28th Aug 2013</creationDate>
 	<copyright></copyright>
@@ -8,7 +8,7 @@
 	<authorEmail></authorEmail>
 	<authorUrl></authorUrl>
 	<version>2.0</version>
-	<description>paypalpro payment plugin</description>
+	<description>PLG_TJLMPAYPALPRO_FIELD_DESC</description>
 	<files>
 		<filename plugin="paypalpro">paypalpro.php</filename>
 		<folder>paypalpro</folder>
