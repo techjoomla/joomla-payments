@@ -123,9 +123,11 @@ class Plgpaymentbycheck extends JPlugin
 	 */
 	public function onTP_GetHTML($vars)
 	{
-		$vars->custom_name  = $this->params->get('plugin_name');
-		$vars->custom_email = $this->params->get('plugin_mail');
-		$html               = $this->buildLayout($vars);
+		$vars->custom_name  	= $this->params->get('plugin_name');
+		$vars->acc_holder_name 	= $this->params->get('acc_holder_name');
+		$vars->acc_details 		= $this->params->get('acc_details');
+		$vars->custom_email 	= $this->params->get('plugin_mail');
+		$html               	= $this->buildLayout($vars);
 
 		return $html;
 	}
