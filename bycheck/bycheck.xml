@@ -34,6 +34,8 @@
 		<fields name="params">
 			<fieldset name="basic">
 					<field name="plugin_name" type="text" default="PayBy Check" label="PLG_NAME" description="" />
+					<field name="acc_holder_name" type="text" default="" label="PLG_ACC_HOLDER_NAME" description="PLG_CHEQUE_WRITE_LOG_NAME" />
+					<field name="acc_details" type="textarea" default="" label="PLG_ACC_DETAILS" description="PLG_CHEQUE_WRITE_LOG_DETAILS" rows="5" cols="20"  />
 					<field name="plugin_mail" type="textarea" default="" label="PLG_MAIL" description="PLG_MAIL_DES" rows="5" cols="20"  />
 					<field name="log_write" type="radio" default="0" label="PLG_CHEQUE_WRITE_LOG"	description="PLG_CHEQUE_WRITE_LOG_DESC">
 						<option value="0">JNO</option>
