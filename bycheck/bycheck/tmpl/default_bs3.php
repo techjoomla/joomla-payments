@@ -41,16 +41,24 @@ else
 			<label for="cardfname" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php  echo JText::_( 'PLG_CHEQUE_ORDER_INFO' );?></label>
 			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">	<?php  echo JText::sprintf( 'ORDER_INFO', $vars->custom_name);?></div>
 		</div>
+		<?php $acc_nm =  $vars->acc_holder_name;
+		  if(!empty($acc_nm)) 
+		  { ?>
 		<div class="form-group">
-			<label for="cardfname" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php  echo JText::_( 'PLG_CHEQUE_ACC_HOLDER_NAME' );?></label>
-			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"> <?php  echo $vars->acc_holder_name;?></div>
+			<label for="cardfname" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_CHEQUE_ACC_HOLDER_NAME' ); ?></label>
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"> <?php echo $acc_nm; ?></div>
 		</div>
+		<?php }?>
+		<?php $acc_dtl =  $vars->acc_details;
+		  if(!empty($acc_dtl)) 
+		  { ?>
 		<div class="form-group">
 			<label for="cardlname" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_ACC_DETAILS' ); ?></label>
 			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-				<?php echo $vars->acc_details;?>
+				<?php echo $acc_dtl;?>
 			</div>
 		</div>
+		<?php } ?>
 		<div class="form-group">
 			<label for="cardlname" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'COMMENT' ); ?></label>
 			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
@@ -61,7 +69,7 @@ else
 		</div>
 		<div class="form-group">
 			<label for="cardaddress1" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'CON_PAY_PRO' ) ?></label>
-			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><?php  echo $email;?>
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><?php echo $email;?>
 					<input type='hidden' name='mail_addr' value="<?php echo $email;?>" />
 				</div>
 			</div>

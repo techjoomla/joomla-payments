@@ -42,16 +42,24 @@ else
 			<label for="cardfname" class="control-label"><?php  echo JText::_( 'PLG_CHEQUE_ORDER_INFO' );?></label>
 			<div class="controls">	<?php  echo JText::sprintf( 'ORDER_INFO', $vars->custom_name);?></div>
 		</div>
+		<?php $acc_nm =  $vars->acc_holder_name;
+		  if(!empty($acc_nm)) 
+		  { ?>
 		<div class="control-group">
 			<label for="cardfname" class="control-label"><?php  echo JText::_( 'PLG_CHEQUE_ACC_HOLDER_NAME');?></label>
-			<div class="controls">	<?php  echo $vars->acc_holder_name;?></div>
+			<div class="controls">	<?php  echo $acc_nm;?></div>
 		</div>
+		<?php } ?>
+		<?php $acc_dtl =  $vars->acc_details;
+		  if(!empty($acc_dtl)) 
+		  { ?>
 		<div class="control-group">
 			<label for="cardlname" class="control-label"><?php echo JText::_( 'PLG_ACC_DETAILS' ); ?></label>
 			<div class="controls">
-				<?php echo $vars->acc_details;?>
+				<?php echo $acc_dtl;?>
 			</div>
 		</div>
+		<?php } ?>
 		<div class="control-group">
 			<label for="cardlname" class="control-label"><?php echo JText::_( 'COMMENT' ); ?></label>
 			<div class="controls">
