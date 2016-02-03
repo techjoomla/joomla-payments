@@ -70,14 +70,14 @@ function showcardtype(id)
 <form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);"  enctype="multipart/form-data" class="form-validate form-horizontal"  method="post">
 	<div>
 		<div class="form-group">
-			<label for="card_num" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CARD_NUMBER' ) ?></label>
+			<label for="card_num" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CARD_NUMBER' ) ?></label>
 			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 				<input type="text" class="required validate-numeric invalid" id="card_num"   value=""  name="card_num" size="35" required="required" />
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label for="card_type" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CARD_TYPE' ) ?></label>
+			<label for="card_type" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CARD_TYPE' ) ?></label>
 			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 				<input type="radio" class="" id="creadit_card" value="1" name="card_type" checked onchange="showcardtype(id)" />
 				<?php echo JText::_('PLG_TRANSFIRST_CREDIT_CARD');?>&nbsp;&nbsp;
@@ -87,7 +87,7 @@ function showcardtype(id)
 		</div>
 
 		<div class="form-group">
-			<label for="" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CREDIT_CARD_TYPE' ) ?></label>
+			<label for="" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CREDIT_CARD_TYPE' ) ?></label>
 			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><?php
 			$types = array();
 			$credit_cards=$this->params->get( 'credit_cards', '' );
@@ -118,7 +118,7 @@ function showcardtype(id)
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="cardlname" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_EXPIRATION_DATE_IN_FORMAT_MMYY' ) ?></label>
+			<label for="cardlname" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_EXPIRATION_DATE_IN_FORMAT_MMYY' ) ?></label>
 			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 						<?php
 							$all[0]=new stdClass;
@@ -137,7 +137,7 @@ function showcardtype(id)
 					</div>
 		</div>
 		<div class="form-group">
-			<label for="cardfname" class="col-lg-3 col-md-3 col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CVV_CODE' ) ?></label>
+			<label for="cardfname" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CVV_CODE' ) ?></label>
 			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="card_code" type="text" name="card_code" size="35" value="" required="required" /></div>
 		</div>
 		<div class="form-actions">
