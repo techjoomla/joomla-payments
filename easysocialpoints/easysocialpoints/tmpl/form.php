@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
@@ -25,10 +25,10 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 	{
 		document.getElementById('js_buy').setAttribute('type', 'submit');
 		 return true;
-  }	
+  }
 	else
 	{
-		document.getElementById('js_buy').disabled='disabled';		
+		document.getElementById('js_buy').disabled='disabled';
 		return false;
   }
 }
@@ -45,22 +45,22 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 				<?php echo JText::sprintf( 'PLG_EASYSOCIALPOINT_CONVERSION_RATE_MESSAGE', $vars->convert_val, $vars->currency_code);?>
 				</div>
 		</div>
-		
+
 		<div >
-			<div class="controls">			
+			<div class="controls">
 				<?php
 				$charge_points = $vars->convert_val * $vars->amount;
 			 echo JText::sprintf( 'PLG_EASYSOCIALPOINT_TOTAL_POINTS_NEEDED_MESSAGE', $charge_points);?>
 			</div>
 		</div>
-		
+
 		<div >
-			<div class="controls">			
+			<div class="controls">
 				<?php
 						 echo JText::sprintf( 'PLG_EASYSOCIALPOINT_CURRENT_POINTS_SITUATION', $vars->user_points);?>
 			</div>
 		</div>
-	
+
 
 		<?php $not_enough_pts_message="'".JText::_('PLG_EASYSOCIALPOINT_NOT_ENOUGH_POINTS_MESSAGE')."'";
 			/*if(!empty($vars->success_message))
@@ -68,16 +68,16 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 			else*/
 			$success_message="'".JText::sprintf( 'PLG_EASYSOCIALPOINT_TOTAL_POINTS_DEDUCTED_MESSAGE',$charge_points)."'";
 		?>
-		
+
 		<div class="form-actions">
-			<input name="submit" class="btn btn-success btn-large" id="js_buy" type="button" value="<?php echo JText::_('PLG_EASYSOCIALPOINT_SUBMIT');?>" onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $vars->amount;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?>);">
+			<input name="submit" class="btn btn-success btn-large pull-right" id="js_buy" type="button" value="<?php echo JText::_('PLG_EASYSOCIALPOINT_SUBMIT');?>" onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $vars->amount;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?>);">
 			<input type="hidden" name="order_id" value="<?php echo $vars->order_id ?>" />
 			<input type="hidden" name="total" value="<?php echo sprintf('%02.2f',$vars->amount) ?>" />
 			<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
 			<input type='hidden' name='return' value="<?php echo $vars->return;?>" >
 			<input type="hidden" name="plugin_payment_method" value="onsite" />
-		</div>			
-	
+		</div>
+
 	</div>
 </form>
 </div>

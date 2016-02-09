@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
@@ -57,7 +57,7 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 				$success_message="'".JText::sprintf( 'TOTAL_POINTS_DEDUCTED_MESSAGE',$charge_points)."'";
 			?>
 			<div class="form-actions">
-				<input class="btn btn-success btn-large" id="js_buy" type="button" value="<?php echo JText::_('PLG_PAYMENT_ALPHAUSERPOINTS_SUBMIT');?>" onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $vars->amount;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?> );">
+				<input class="btn btn-success btn-large pull-right" id="js_buy" type="button" value="<?php echo JText::_('PLG_PAYMENT_ALPHAUSERPOINTS_SUBMIT');?>" onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $vars->amount;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?> );">
 				<input type="hidden" name="order_id" value="<?php echo $vars->order_id; ?>" />
 				<input type="hidden" name="client" value="<?php echo $vars->client; ?>" />
 				<input type="hidden" name="total" value="<?php echo sprintf('%02.2f',$vars->amount) ?>" />
