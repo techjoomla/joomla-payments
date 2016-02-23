@@ -86,9 +86,9 @@ if (!empty($vars->userInfo))
 		</div>
 
 		<div class="control-group">
-			<label for="creditcard_name" class="control-label"><?php echo JText::_('Name On Card'); ?></label>
+			<!--<label for="creditcard_name" class="control-label"><?php //echo JText::_('Name On Card'); ?></label>
 			<div class="controls">	<input type="text" name="creditcard_name" id="creditcard_name" size="25" class="inputbox required" value="" />
-			</div>
+			</div>-->
 			<div class="control-group">
 				<label for="creditcard_name" class="control-label"><?php echo JText::_('Name On Card'); ?></label>
 				<div class="controls">	<input type="text" name="creditcard_name" id="creditcard_name" size="25" class="inputbox required" value="" />
