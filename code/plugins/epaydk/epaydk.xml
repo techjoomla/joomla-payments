@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment - Epay.dk</name>
+	<author>Techjoomla</author>
+	<creationDate>28th Aug 2013</creationDate>
+	<copyright></copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail></authorEmail>
+	<authorUrl></authorUrl>
+	<version>0.1</version>
+	<description>Epay.dk payment plugin</description>
+	<files>
+		<filename plugin="epaydk">epaydk.php</filename>
+		<folder>epaydk</folder>
+	</files>
+	<languages> 
+		<language tag="en-GB">en-GB/en-GB.plg_payment_epaydk.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_payment_epaydk.sys.ini</language>
+		
+	</languages>
+	
+	<!-- Fields for Joomla 1.6.x and onwards -->
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="plugin_name"  type="text" size="50" default="" label="PLG_PAYMENTEPAYDK_TITLE_LABEL" description="PLG_PAYMENTEPAYDK_TITLE_DESC"/>
+				<field name="ppimage" type="text" size="50" default="" label="PLG_PAYMENTEPAYDK_PPIMAGE_LABEL" description="PLG_PAYMENTEPAYDK_PPIMAGE_DESC" />
+				<field type="spacer" />
+				<field name="merchant" type="text" size="50" default="" label="PLG_PAYMENTEPAYDK_MERCHANT_LABEL" description="PLG_PAYMENTEPAYDK_MERCHANT_DESC"/>
+				<field type="spacer" />
+				<field name="sandbox" type="radio" default="0" label="PLG_PAYMENTEPAYDK_SANDBOX_LABEL" description="PLG_PAYMENTEPAYDK_SANDBOX_DESC">
+				  <option value="0">JNo</option>
+				  <option value="1">JYes</option>
+				</field>
+				<field name="sandbox_merchant" type="text" size="50" default="" label="PLG_PAYMENTEPAYDK_SANDBOX_MERCHANT_LABEL" description="PLG_PAYMENTEPAYDK_SANDBOX_MERCHANT_LABEL"/>
+				
+				<field type="spacer" />
+	<!--			<field name="md5" type="radio" default="1" label="PLG_PAYMENTEPAYDK_MD5_LABEL" description="PLG_PAYMENTEPAYDK_MD5_DESC">
+				  <option value="0">JNo</option>
+				  <option value="1">JYes</option>
+				</field>
+				<field name="secret" type="text" size="100" default="" label="PLG_PAYMENTEPAYDK_SECRET_LABEL" description="PLG_PAYMENTEPAYDK_SECRET_DESC"/>
+				-->
+				<field type="spacer" />
+				<field name="cardtypes" multiple="multiple" type="list" size="14" default="1" label="PLG_PAYMENTEPAYDK_CARDTYPES_LABEL" description="PLG_PAYMENTEPAYDK_CARDTYPES_DESC">
+				  <option value="1">PLG_PAYMENTEPAYDK_CARD_DANKORT</option>
+				  <option value="2">PLG_PAYMENTEPAYDK_CARD_EDANKORT</option>
+				  <option value="3">PLG_PAYMENTEPAYDK_CARD_VISA</option>
+				  <option value="4">PLG_PAYMENTEPAYDK_CARD_MASTERCARD</option>
+				  <option value="6">PLG_PAYMENTEPAYDK_CARD_JCB</option>
+				  <option value="7">PLG_PAYMENTEPAYDK_CARD_MAESTRO</option>
+				  <option value="8">PLG_PAYMENTEPAYDK_CARD_DINERS</option>
+				  <option value="9">PLG_PAYMENTEPAYDK_CARD_AMEX</option>
+				  <option value="11">PLG_PAYMENTEPAYDK_CARD_FORBRUNGSFORENINGEN</option>
+				  <option value="12">PLG_PAYMENTEPAYDK_CARD_NORDEA</option>
+				  <option value="13">PLG_PAYMENTEPAYDK_CARD_DANSKENETBETALINGER</option>
+				  <option value="14">PLG_PAYMENTEPAYDK_CARD_PAYPAL</option>
+				  <option value="15">PLG_PAYMENTEPAYDK_CARD_MOBILPENGE</option>
+				</field>
+				<field name="language" type="list" default="0" label="PLG_PAYMENTEPAYDK_LANGUAGE_LABEL" description="PLG_PAYMENTEPAYDK_LANGUAGE_DESC">
+				  <option value="0">PLG_PAYMENTEPAYDK_LANGUAGE_AUTO</option>
+				  <option value="1">PLG_PAYMENTEPAYDK_LANGUAGE_DK</option>
+				  <option value="2">PLG_PAYMENTEPAYDK_LANGUAGE_EN</option>
+				  <option value="3">PLG_PAYMENTEPAYDK_LANGUAGE_SE</option>
+				  <option value="4">PLG_PAYMENTEPAYDK_LANGUAGE_NO</option>
+				  <option value="5">PLG_PAYMENTEPAYDK_LANGUAGE_GL</option>
+				  <option value="6">PLG_PAYMENTEPAYDK_LANGUAGE_IS</option>
+				  <option value="7">PLG_PAYMENTEPAYDK_LANGUAGE_DE</option>
+				  <option value="8">PLG_PAYMENTEPAYDK_LANGUAGE_FI</option>
+				  <option value="9">PLG_PAYMENTEPAYDK_LANGUAGE_ES</option>
+				  <option value="10">PLG_PAYMENTEPAYDK_LANGUAGE_FR</option>
+				  <option value="11">PLG_PAYMENTEPAYDK_LANGUAGE_PO</option>
+				</field>
+				<field type="spacer" />
+				<field name="cbt" type="text" size="50" default="" label="PLG_PAYMENTEPAYDK_CBT_LABEL" description="PLG_PAYMENTEPAYDK_CBT_DESC" />
+				<field name="cpp_header_image" type="text" size="50" default="" label="PLG_PAYMENTEPAYDK_HEADER_LABEL" description="PLG_PAYMENTEPAYDK_HEADER_DESC" />
+				<field name="cpp_headerback_color" type="text" size="50" default="" label="PLG_PAYMENTEPAYDK_HEADERBACK_LABEL" description="PLG_PAYMENTEPAYDK_HEADERBACK_DESC" />
+				<field name="cpp_headerborder_color" type="text" size="50" default="" label="PLG_PAYMENTEPAYDK_HEADERBORDER_LABEL" description="PLG_PAYMENTEPAYDK_HEADERBORDER_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+	
+</extension>

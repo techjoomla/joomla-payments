@@ -1,0 +1,11 @@
+COM_TJCPG="Common Payment Gateways"
+COM_TJCPG_XML_DESCRIPTION="Using Techjoomla's Common Payment Gateway"
+COM_TJCPG_TEST_LABEL="Test label"
+
+COM_TJCPG_TITLE_TJCPGPAYMENT="Payment Settings"
+COM_TJCPG_TITLE_ITEM_VIEW_PAYMENTS="Make Payments"
+
+COM_TJCPG_TITLE_ITEM_VIEW_PAYMENTS_DESC="Allow to create payments"
+SELECT_GATEWAY="Select Payment Gateway"
+SELECT_GATEWAY_DES="Select from the available payment gateways that should be used with Quick2Cart for transactions. You will need to configure the payment plugins for selected gateways as required in the Plugin configuration."
+

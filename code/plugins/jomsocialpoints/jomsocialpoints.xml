@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment-JomSocialPoints</name>
+	<author>TechJoomla</author>
+	<creationDate>28th Aug 2013</creationDate>
+	<copyright>Techjoomla. All Rights Reserved.</copyright>
+	<authorEmail>extensions@techjoomla.com</authorEmail>
+	<authorUrl>http://www.techjoomla.com</authorUrl>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>2.0</version>
+	<description>JomSocialPoints payment plugin for jticketing</description>
+	<files>
+		<filename plugin="jomsocialpoints">jomsocialpoints.php</filename>
+			<folder>jomsocialpoints</folder>
+	</files>
+		<languages> 
+			<language tag="en-GB">en-GB/en-GB.plg_payment_jomsocialpoints.ini</language>
+			<language tag="it-IT">it-IT/it-IT.plg_payment_jomsocialpoints.ini</language>
+			<language tag="de-DE">de-DE/de-DE.plg_payment_jomsocialpoints.ini</language>
+			<language tag="es-ES">es-ES/es-ES.plg_payment_jomsocialpoints.ini</language>
+			<language tag="sv-SE">sv-SE/sv-SE.plg_payment_jomsocialpoints.ini</language>
+			<language tag="nl-NL">nl-NL/nl-NL.plg_payment_jomsocialpoints.ini</language>
+			<language tag="da-DK">da-DK/da-DK.plg_payment_jomsocialpoints.ini</language>
+			<language tag="th-TH">th-TH/th-TH.plg_payment_jomsocialpoints.ini</language>
+			<language tag="pt-PT">pt-PT/pt-PT.plg_payment_jomsocialpoints.ini</language>
+  	</languages>
+	<!-- parameters for Joomla 1.5.x -->
+	<params>
+		<param name="conversion" type="text" size="10" default="10" label="CON_AMT" description="CON_AMT_DESC"/>
+		<param name="points" type="hidden" default="point"/>	
+		<param name="plugin_name" type="text" default="JomSocialPoints" label="PLG_NAME" description="" />	
+	</params>
+
+	<!-- Fields for Joomla 1.6.x and onwards -->
+	<config name="params">
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="conversion" type="text" size="10" default="10" label="CON_AMT" description="CON_AMT_DESC"/>
+				<field name="points" type="hidden" default="point"/>	
+				<field name="plugin_name" type="text" default="JomSocialPoints" label="PLG_NAME" description="" />	
+			</fieldset>
+		</fields>
+	</config>
+
+</extension>

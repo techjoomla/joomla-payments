@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment - GTpay</name>
+	<author>Techjoomla</author>
+	<creationDate>2014-09-19</creationDate>
+	<copyright></copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorUrl>http://www.techjoomla.com</authorUrl>
+	<version>2.1</version>
+	<description>GTPay payment plugin for jGive</description>
+	<files>
+		<filename plugin="gtpay">gtpay.php</filename>
+		<folder>gtpay</folder>
+	</files>
+	<languages folder="administrator/language">
+		<language tag="en-GB">languages/en-GB/en-GB.plg_payment_gtpay.ini</language>
+		<language tag="en-GB">languages/en-GB/en-GB.plg_payment_gtpay.sys.ini</language>
+	</languages>	
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="gtpay_mert_id" type="text" default="2301" label="Merchant Id" description="MERCHANT_ID_DESC"/>
+				<field name="gtpay_tranx_hash" type="text" default="44912E5658D4919785B7EC24D48CF007884EA8DD47AA153DA4A052A87824FF2A7E6709FA2899D00A11603417B513EA7AAF8DD008F91F730AF6B587ACF3578433" label="Hash Key" description="HASH_KEY_DESC"/>
+				<field name="gtpay_tranx_noti_url" type="text" default="" label="Notification URL" description="NOTIFICATION_DESC"/>
+				<field name="plugin_name" type="text" default="GTPay" label="PLG_NAME" description="" />
+				<field name="plugin_hidname" type="hidden" default="gtpay" />
+			</fieldset>			
+		</fields>
+	</config>
+</extension>

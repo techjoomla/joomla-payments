@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment-eWallet</name>
+	<author>TechJoomla</author>
+	<creationDate>28th Sept 2013</creationDate>
+	<copyright>Techjoomla. All Rights Reserved.</copyright>
+	<authorEmail>extensions@techjoomla.com</authorEmail>
+	<authorUrl>http://www.techjoomla.com</authorUrl>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.0</version>
+	<description>eWallet payment plugin</description>
+	<files>
+		<filename plugin="ewallet">ewallet.php</filename>
+		<folder>ewallet</folder>
+	</files>
+		<languages> 
+			<language tag="en-GB">en-GB/en-GB.plg_payment_ewallet.ini</language>
+  	</languages>
+
+	<!-- Fields for Joomla 1.6.x and onwards -->
+	<config name="params">
+		<fields name="params">
+			<fieldset name="basic" label="Plugin Parameters" addfieldpath="">
+			<field name="conversion" type="text" size="10" default="10" label="CON_AMT" description="CON_AMT_DESC"/>
+			<field name="plugin_name" type="text" default="ewallet" label="PLG_NAME" description="" />
+			</fieldset>
+		</fields>
+	</config>
+
+</extension>

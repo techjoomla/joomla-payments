@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment - Offline Card</name>
+	<author>Techjoomla</author>
+	<creationDate>July 2013</creationDate>
+	<copyright></copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>support@techjoomla.com</authorEmail>
+	<authorUrl>http://techjoomla.com/</authorUrl>
+	<version>1.1</version>
+	<description>CPG details plugin</description>
+	<files>
+		<filename plugin="offlinecard">offlinecard.php</filename>
+		<folder>offlinecard</folder>
+	</files>
+    <languages>
+	<language tag="en-GB">languages/en-GB/en-GB.plg_offlinecard.ini</language>
+	<language tag="en-GB">languages/en-GB/en-GB.plg_offlinecard.sys.ini</language>
+	</languages>	
+ 	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="public_key" type="text" default="89605609849e508bfa6522883ade2d06" label="Encryption Key" description="PUBLIC_KEY_DES" />
+					<field name="plugin_name" type="text" default="offlinecard" label="Plugin Name" description="PLG_DESC" />
+					<field name="plugin_hidname" type="hidden" default="offlinecard" />
+			</fieldset>			
+		</fields>
+	</config>
+</extension>

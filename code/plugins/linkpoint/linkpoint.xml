@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment - Linkpoint</name>
+	<author>Techjoomla</author>
+	<creationDate>14th Mar 2014</creationDate>
+	<copyright></copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>techjoomla@tekdi.net</authorEmail>
+	<authorUrl></authorUrl>
+	<version>2.0.1</version>
+	<description>Linkpoint payment plugin</description>
+	<files>
+		<filename plugin="linkpoint">linkpoint.php</filename>
+		<folder>linkpoint</folder>
+	</files>
+	<languages> 
+		<language tag="en-GB">en-GB/en-GB.plg_payment_linkpoint.ini</language>
+		<language tag="fr-FR">fr-FR/fr-FR.plg_payment_linkpoint.ini</language>
+		<language tag="it-IT">it-IT/it-IT.plg_payment_linkpoint.ini</language>
+		<language tag="de-DE">de-DE/de-DE.plg_payment_linkpoint.ini</language>
+		<language tag="es-ES">es-ES/es-ES.plg_payment_linkpoint.ini</language>	
+		<language tag="da-DK">da-DK/da-DK.plg_payment_linkpoint.ini</language>
+		<language tag="nl-NL">nl-NL/nl-NL.plg_payment_linkpoint.ini</language>
+		<language tag="th-TH">th-TH/th-TH.plg_payment_linkpoint.ini</language>
+		<language tag="sv-SE">sv-SE/sv-SE.plg_payment_linkpoint.ini</language>
+		<language tag="pt-PT">pt-PT/pt-PT.plg_payment_linkpoint.ini</language>	
+	</languages>
+
+	<!-- parameters for Joomla 1.5.x -->
+	<params>
+		
+		<param name="store_id" type="text" size="25" default="" label="LINKPOINT_STORE_ID" description="LINKPOINT_STORE_ID_DESC"/>	
+		<param name="port" type="hidden" size="25" default="1129" label="Port" description="LINKPOINT_PORT_NUMBER"/>    	
+		<param name="sandbox" type="radio" default="1" label="LINKPOINT_SANDBOX" description="LINKPOINT_SANDBOX_MODE_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>
+		<param name="secure_post" type="radio" default="1"  label="secure post(use	https)?" description="Use https for secure post">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>
+		<param name="plugin_name" type="text" default="Linkpoint" label="PLG_NAME" description="PLG_DESC" />
+		<param name="plugin_hidname" type="hidden" default="linkpoint" />
+	</params>
+	
+	<!-- Fields for Joomla 1.6.x and onwards -->
+ 	<config>
+		<fields name="params">
+			<fieldset name="basic">					
+						<field name="store_id" type="text" size="25" default="" label="LINKPOINT_STORE_ID" description="LINKPOINT_STORE_ID"/>	
+						<field name="port" type="hidden" size="25" default="1129" label="Port" description="linkpoint port number"/>    	
+						<field name="sandbox" type="radio" default="1" label="LINKPOINT_SANDBOX" description="LINKPOINT_SANDBOX_MODE_DESC">
+							<option value="0">NO</option>
+							<option value="1">YES</option>
+						</field>
+						<field name="secure_post" type="radio" default="1"  label="secure post(use	https)?" description="Use https for secure post">
+							<option value="0">NO</option>
+							<option value="1">YES</option>
+						</field>
+						<field name="plugin_name" type="text" default="Linkpoint" label="PLG_NAME" description="PLG_DESC" />
+						<field name="plugin_hidname" type="hidden" default="linkpoint" />
+				</fieldset>			
+		
+		</fields>
+	</config>
+</extension>

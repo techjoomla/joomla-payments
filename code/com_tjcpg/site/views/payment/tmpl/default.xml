@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_TJCPG_TITLE_ITEM_VIEW_PAYMENTS" option="View">
+        <message>
+                        <![CDATA[COM_TJCPG_TITLE_ITEM_VIEW_PAYMENTS_DESC]]>
+        </message>
+    </layout>
+</metadata>
