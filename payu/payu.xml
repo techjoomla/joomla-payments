@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" type="plugin" group="payment" method="upgrade">
-	<name>Payment - PayU</name>
+	<name>Payment - PayU.</name>
 	<author>Techjoomla</author>
 	<creationDate>28th Aug 2013</creationDate>
 	<copyright></copyright>
