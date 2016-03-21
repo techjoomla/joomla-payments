@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+  <name>Payment - Ogone</name>
+  <author>Techjoomla</author>
+  <creationDate>20th Nov 2014</creationDate>
+  <copyright />
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <authorEmail />
+  <authorUrl />
+  <version>1.1</version>
+  <description>Ogone payment plugin</description>
+  <files>
+    <filename plugin="ogone">ogone.php</filename>
+    <folder>ogone</folder>
+  </files>
+  <languages>
+    <language tag="en-GB">en-GB/en-GB.plg_payment_ogone.ini</language>
+  </languages>
+  <!-- Fields for Joomla 1.6.x and onwards -->
+  <config>
+    <fields name="params">
+      <fieldset name="basic">
+        <field name="accesskey" type="text" default="" label="OGONE_ACCESSKEY" description="OGONE_ACCESSKEY_DESC" />
+        <field name="secretkey" type="text" default="" label="OGONE_SECRETKEY" description="OGONE_SECRETKEY_DESC" />
+        <field name="sandbox" type="radio" default="0" label="OGONE_SANDBOX" description="OGONE_SANDBOX_DESC">
+          <option value="0">NO</option>
+          <option value="1">YES</option>
+        </field>
+        <field name="plugin_name" type="text" default="Ogone" label="PLG_NAME" description="" />
+        <field name="plugin_hidname" type="hidden" default="ogone" />
+        <field name="log_write" type="radio" default="0" label="PLG_WRITE_LOG" description="PLG_WRITE_LOG_DESC">
+          <option value="0">P_NO</option>
+          <option value="1">P_YES</option>
+        </field>
+      </fieldset>
+    </fields>
+  </config>
+</extension>

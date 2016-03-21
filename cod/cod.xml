@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Cash On Delivery</name>
+	<author>TechJoomla</author>
+	<creationDate>1st Oct 2014</creationDate>
+	<copyright>Techjoomla. All Rights Reserved.</copyright>
+	<authorEmail>extensions@techjoomla.com</authorEmail>
+	<authorUrl>http://www.techjoomla.com</authorUrl>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.0.0</version>
+	<description>Cash On Delivery plugin from Techjoomla. </description>
+	<files>
+		<filename plugin="cod">cod.php</filename>
+		<folder>cod</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB/en-GB.plg_payment_cod.ini</language>
+	</languages>
+	<!-- Fields for Joomla 1.6.x and onwards -->
+	<config name="params">
+		<fields name="params">
+			<fieldset name="basic">
+					<field name="plugin_name" type="text" default="Cash On Delivery" label="PLG_PAYMENT_COD_NAME" description="PLG_PAYMENT_COD_DESC" />
+					<field name="log_write" type="radio" default="0" label="PLG_AUTHONET_WRITE_LOG"	description="PLG_AUTHONET_WRITE_LOG_DESC">
+						<option value="0">P_NO</option>
+						<option value="1">P_YES</option>
+					</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
