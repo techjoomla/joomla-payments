@@ -1,7 +1,10 @@
 <?php
 /**
- *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
- *  @license    GNU General Public License version 2, or later
+ * @version    SVN: <svn_id>
+ * @package    Payu
+ * @author     Techjoomla <extensions@techjoomla.com>
+ * @copyright  Copyright (c) 2009-2016 TechJoomla. All rights reserved.
+ * @license    GNU General Public License version 2 or later.
  */
 defined('_JEXEC') or die('Restricted access');
 
@@ -27,7 +30,7 @@ $txnid=$vars->order_id;
 ?>
 	<input type="hidden" name="Hash" value="<?php echo strtolower(hash('sha512',$text)); ?>" />
 	<div class="form-actions">
-		<input type="submit" class="btn btn-success btn-large" border="0"  value="<?php echo JText::_('PLG_PAYMENT_PAYU_SUBMIT'); ?>" alt="PayU India" />
+		<input type="submit" class="btn btn-success btn-large" border="0"  value="<?php echo JText::_('PLG_PAYMENT_PAYU_SUBMIT'); ?>" alt="<?php echo JText::_('PLG_PAYMENT_PAYU_SUBMIT_ALT'); ?>" />
 	</div>
 </form>
 </div>
