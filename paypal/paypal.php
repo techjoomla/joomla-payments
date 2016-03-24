@@ -3,23 +3,29 @@
  * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  * @license    GNU General Public License version 2, or later
  */
-
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
-require_once dirname(__FILE__) . '/payu/helper.php';
+if (JVERSION >= '1.6.0')
+{
+	require_once JPATH_SITE . '/plugins/payment/paypal/paypal/helper.php';
+}
+else
+{
+	require_once JPATH_SITE . '/plugins/payment/paypal/helper.php';
 $lang = JFactory::getLanguage();
-$lang->load('plg_payment_payu', JPATH_ADMINISTRATOR);
+$lang->load('plg_payment_paypal', JPATH_ADMINISTRATOR);
+}
 
 /**
- * PayU
+ * PlgPaymentPaypal
  *
  * @package     CPG
  * @subpackage  site
  * @since       2.2
  */
-class PlgPaymentPayu extends JPlugin
+class PlgPaymentPaypal extends JPlugin
 {
 	/**
 	 * Constructor
@@ -31,13 +37,19 @@ class PlgPaymentPayu extends JPlugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
+
+		// Set the language in the class
 		$config = JFactory::getConfig();
 
-		// Define Payment Status codes in payu  And Respective Alias in Framework
+		// Define Payment Status codes in Paypal  And Respective Alias in Framework
 		$this->responseStatus = array(
-			'success' => 'C',
-			'pending' => 'P',
-			'failure' => 'E'
+			'Completed' => 'C',
+			'Pending' => 'P',
+			'Failed' => 'E',
+			'Denied' => 'D',
+			'Refunded' => 'RF',
+			'Canceled_Reversal' => 'CRV',
+			'Reversed' => 'RV'
 		);
 	}
 
@@ -50,11 +62,20 @@ class PlgPaymentPayu extends JPlugin
 	 *
 	 * @return   string  Layout Path
 	 */
-	private function buildLayoutPath($layout)
+	public function buildLayoutPath($layout)
 	{
-		$app       = JFactory::getApplication();
-		$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
-		$override  = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
+		$app = JFactory::getApplication();
+
+		if ($layout == 'recurring')
+		{
+			$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/recurring.php';
+		}
+		else
+		{
+			$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
+		$override = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' .
+		$this->_type . '/' . $this->_name . '/' . 'recurring.php';
+		}
 
 		if (JFile::exists($override))
 		{
@@ -76,7 +97,7 @@ class PlgPaymentPayu extends JPlugin
 	 *
 	 * @return   string  Layout Path
 	 */
-	private function buildLayout($vars, $layout = 'default')
+	public function buildLayout($vars, $layout = 'default')
 	{
 		// Load the layout & push variables
 		ob_start();
@@ -87,6 +108,8 @@ class PlgPaymentPayu extends JPlugin
 
 		return $html;
 	}
+
+	// Used to Build List of Payment Gateway in the respective Components
 
 	/**
 	 * Builds the layout to be shown, along with hidden fields.
@@ -111,6 +134,8 @@ class PlgPaymentPayu extends JPlugin
 		return $obj;
 	}
 
+	// Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Paypal
+
 	/**
 	 * Builds the layout to be shown, along with hidden fields.
 	 *
@@ -122,12 +147,29 @@ class PlgPaymentPayu extends JPlugin
 	 */
 	public function onTP_GetHTML($vars)
 	{
-		$plgPaymentPayuHelper = new plgPaymentPayuHelper;
-		$vars->action_url     = $plgPaymentPayuHelper->buildPayuUrl();
-		$vars->key  = $this->params->get('key');
-		$vars->salt = $this->params->get('salt');
-		$this->preFormatingData($vars);
-		$html = $this->buildLayout($vars);
+		$plgPaymentPaypalHelper = new plgPaymentPaypalHelper;
+		$vars->action_url       = $plgPaymentPaypalHelper->buildPaypalUrl();
+
+		// Take this receiver email address from plugin if component not provided it
+		if (empty($vars->business))
+		{
+			$vars->business = $this->params->get('business');
+		}
+
+		// If component does not provide cmd
+		if (empty($vars->cmd))
+		{
+			$vars->cmd = '_xclick';
+		}
+		// @ get recurring layout Amol
+		if (property_exists($vars, 'is_recurring') && $vars->is_recurring == 1)
+		{
+			$html = $this->buildLayout($vars, 'recurring');
+		}
+		else
+		{
+			$html = $this->buildLayout($vars);
+		}
 
 		return $html;
 	}
@@ -142,67 +184,147 @@ class PlgPaymentPayu extends JPlugin
 	 *
 	 * @return   object  processeddata
 	 */
-	public function onTP_Processpayment($data, $vars = array())
+	public function onTP_ProcessSubmit($data, $vars)
 	{
-		$isValid       = true;
-		$error         = array();
-		$error['code'] = '';
-		$error['desc'] = '';
-
-		// Compare response order id and send order id in notify URL
-		$res_orderid = '';
-
-		if ($isValid)
+		// Take this receiver email address from plugin if component not provided it
+		if (empty($vars->business))
 		{
-			$res_orderid = $data['udf1'];
-
-			if (!empty($vars) && $res_orderid != $vars->order_id)
-			{
-				$isValid       = false;
-				$error['desc'] = "ORDER_MISMATCH" . "Invalid ORDERID; notify order_is " . $vars->order_id . ", and response " . $res_orderid;
-			}
+			$submitVaues['business'] = $this->params->get('business');
+		}
+		else
+		{
+			$submitVaues['business'] = $vars->business;
 		}
 
-		// Amount check
-		if ($isValid)
+		// If component does not provide cmd
+		if (empty($vars->cmd))
 		{
-			if (!empty($vars))
-			{
-				// Check that the amount is correct
-				$order_amount = (float) $vars->amount;
-				$retrunamount = (float) $data['amount'];
-				$epsilon      = 0.01;
-
-				if (($order_amount - $retrunamount) > $epsilon)
-				{
-					// Change response status to ERROR FOR AMOUNT ONLY
-					$data['status'] = 'failure';
-					$isValid        = false;
-					$error['desc']  = "ORDER_AMOUNT_MISTMATCH - order amount= " . $order_amount . ' response order amount = ' . $retrunamount;
-				}
-			}
+			$submitVaues['cmd'] = '_xclick';
+		}
+		else
+		{
+			$submitVaues['cmd'] = $vars->cmd;
 		}
 
-		$data['status'] = $this->translateResponse($data['status']);
+		$submitVaues['custom']        = $vars->order_id;
+		$submitVaues['item_name']     = $vars->item_name;
+		$submitVaues['return']        = $vars->return;
+		$submitVaues['cancel_return'] = $vars->cancel_return;
+		$submitVaues['notify_url']    = $vars->notify_url;
+		$submitVaues['currency_code'] = $vars->currency_code;
+		$submitVaues['no_note']       = '1';
+		$submitVaues['rm']            = '2';
+		$submitVaues['amount']        = $vars->amount;
+		$submitVaues['lc']            = $vars->country_code;
+		$plgPaymentPaypalHelper       = new plgPaymentPaypalHelper;
+		$postaction                   = $plgPaymentPaypalHelper->buildPaypalUrl();
+		/* for offsite plugin */
+		$postvalues                   = http_build_query($submitVaues);
+		header('Location: ' . $postaction . '?' . $postvalues);
+	}
 
-		// Error Handling
-		$error         = array();
+	// ***************************Recurring Payment ***************************
 
-		// @TODO change these $data indexes afterwards
-		$error['code'] = $data['unmappedstatus'];
-		$error['desc'] = (isset($data['field9']) ? $data['field9'] : '');
+	/**
+	 * Adds a row for the first time in the db, calls the layout view
+	 *
+	 * @param   object  $data  Data from component
+	 * @param   object  $vars  Component data
+	 *
+	 * @since   2.2
+	 *
+	 * @return   object  processeddata
+	 */
+	public function onTP_ProcessSubmitRecurring($data, $vars)
+	{
+		// Take this receiver email address from plugin if component not provided it
+		if (empty($vars->business))
+		{
+			$submitVaues['business'] = $this->params->get('business');
+		}
+		else
+		{
+			$submitVaues['business'] = $vars->business;
+		}
+
+		// If component does not provide cmd
+		if (empty($vars->cmd))
+		{
+			$submitVaues['cmd'] = '_xclick-subscriptions';
+		}
+		else
+		{
+			$submitVaues['cmd'] = $vars->cmd;
+		}
+
+		$submitVaues['custom']        = $vars->order_id;
+		$submitVaues['item_name']     = $vars->item_name;
+		$submitVaues['return']        = $vars->return;
+		$submitVaues['cancel_return'] = $vars->cancel_return;
+		$submitVaues['notify_url']    = $vars->notify_url;
+		$submitVaues['currency_code'] = $vars->currency_code;
+		$submitVaues['no_note']       = '1';
+		$submitVaues['rm']            = '2';
+		$submitVaues['a3']            = $vars->amount;
+
+		if ($vars->recurring_frequency == 'QUARTERLY')
+		{
+			$submitVaues['p3'] = 3;
+			$submitVaues['t3'] = 'MONTH';
+		}
+		else
+		{
+			$submitVaues['p3'] = 1;
+			$submitVaues['t3'] = $vars->recurring_frequency;
+		}
+
+		$submitVaues['srt']     = $vars->recurring_count;
+		$submitVaues['src']     = 1;
+		$submitVaues['sra']     = 1;
+
+		// $submitVaues['TRIALBILLINGPERIOD']='DAY'; //Parameters to test Recurring payment
+		// $submitVaues['TRIALBILLINGFREQUENCY']=3; //Parameters to test Recurring payment
+		$plgPaymentPaypalHelper = new plgPaymentPaypalHelper;
+		$postaction             = $plgPaymentPaypalHelper->buildPaypalUrl();
+		/* for offsite plugin */
+		$postvalues             = http_build_query($submitVaues);
+		header('Location: ' . $postaction . '?' . $postvalues);
+	}
+
+	/**
+	 * Adds a row for the first time in the db, calls the layout view
+	 *
+	 * @param   object  $data  Data from component
+	 *
+	 * @since   2.2
+	 *
+	 * @return   object  processeddata
+	 */
+	public function onTP_Processpayment($data)
+	{
+		// Print_r($data);die;
+		$verify = plgPaymentPaypalHelper::validateIPN($data);
+
+		if (!$verify)
+		{
+			return false;
+		}
+
+		$payment_status = $this->translateResponse($data['payment_status']);
 
 		$result = array(
-			'order_id' => $data['udf1'],
-			'transaction_id' => $data['mihpayid'],
-			'buyer_email' => $data['email'],
-			'status' => $data['status'],
-			'txn_type' => $data['mode'],
-			'total_paid_amt' => $data['amount'],
+			'order_id' => $data['custom'],
+			'transaction_id' => $data['txn_id'],
+			'subscriber_id' => $data['subscr_id'],
+			'buyer_email' => $data['payer_email'],
+			'status' => $payment_status,
+			'txn_type' => $data['txn_type'],
+			'total_paid_amt' => $data['mc_gross'],
 			'raw_data' => $data,
 			'error' => $error
 		);
 
+		// Print_r($result);die;
 		return $result;
 	}
 
@@ -215,7 +337,7 @@ class PlgPaymentPayu extends JPlugin
 	 *
 	 * @return   string  value
 	 */
-	private function translateResponse($payment_status)
+	public function translateResponse($payment_status)
 	{
 		foreach ($this->responseStatus as $key => $value)
 		{
@@ -240,32 +362,7 @@ class PlgPaymentPayu extends JPlugin
 
 		if ($log_write == 1)
 		{
-			$plgPaymentPayuHelper = new plgPaymentPayuHelper;
-			$log                  = $plgPaymentPayuHelper->Storelog($this->_name, $data);
-		}
-	}
-
-	/**
-	 * Get formated data
-	 *
-	 * @param   object  $vars  vars.
-	 *
-	 * @since   2.2
-	 * @return  formatted object.
-	 */
-	private	function preFormatingData($vars)
-	{
-		foreach ($vars as $key => $value)
-		{
-			if (!is_array($value))
-			{
-				$vars->$key = trim($value);
-
-				if ($key == 'amount')
-				{
-					$vars->$key = ceil($value);
-				}
-			}
+			$log = plgPaymentPaypalHelper::Storelog($this->_name, $data);
 		}
 	}
 }
