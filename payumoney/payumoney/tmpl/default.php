@@ -76,6 +76,7 @@ $hash = strtolower(hash('sha512', $hash_string));
 	<input type="hidden" name="udf8" value="<?php echo $posted['udf8']; ?>" />
 	<input type="hidden" name="udf9" value="<?php echo $posted['udf9']; ?>" />
 	<input type="hidden" name="udf10" value="<?php echo $posted['udf10']; ?>" />
+	<input type="hidden" name="service_provider" value="payu_paisa" size="64" />
 
 	<input type="hidden" name="hash" value="<?php echo $hash; ?>" />
 	<div class="form-actions">
