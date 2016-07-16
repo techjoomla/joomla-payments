@@ -9,22 +9,23 @@ jimport('joomla.html.html');
 jimport('joomla.plugin.helper');
 
 /**
- * Joomla Payment Plugin 2Checkout
+ * PlgPayment2CheckoutHelper
  *
- * @package     TechJoomla.Plugin
- * @subpackage  Payment.joomla
- * @since       3.0
+ * @package     CPG
+ * @subpackage  site
+ * @since       2.2
  */
 class PlgPayment2CheckoutHelper
 {
+	// Gets the paypal URL
 	/**
-	 * Function buildPaypalUrl
+	 * buildPaypalUrl.
 	 *
-	 * @param   boolean  $secure  Array holding options (remember, autoregister, group)
+	 * @param   string  $secure  Layout name
 	 *
-	 * @return  string
+	 * @since   2.2
 	 *
-	 * @since   3.0
+	 * @return   string  secure
 	 */
 	public function buildPaypalUrl($secure = true)
 	{
@@ -44,14 +45,14 @@ class PlgPayment2CheckoutHelper
 	}
 
 	/**
-	 * Function Storelog
+	 * Store log
 	 *
-	 * @param   string  $name     Name String
-	 * @param   Array   $logdata  Array
+	 * @param   string  $name     name.
 	 *
-	 * @return  string
+	 * @param   array   $logdata  data.
 	 *
-	 * @since   3.0
+	 * @since   1.0
+	 * @return  list.
 	 */
 	public function Storelog($name,$logdata)
 	{
@@ -80,14 +81,14 @@ class PlgPayment2CheckoutHelper
 	}
 
 	/**
-	 * Function validateIPN
+	 * validateIPN.
 	 *
-	 * @param   Array  $data    Name String
-	 * @param   Array  $secret  Array
+	 * @param   string  $data    data
+	 * @param   string  $secret  data
 	 *
-	 * @return  string
+	 * @since   2.2
 	 *
-	 * @since   3.0
+	 * @return   string  data
 	 */
 	public function validateIPN($data, $secret)
 	{
@@ -104,13 +105,13 @@ class PlgPayment2CheckoutHelper
 	}
 
 	/**
-	 * Function log_ipn_results
+	 * log_ipn_results.
 	 *
-	 * @param   Boolean  $success  success
+	 * @param   string  $success  success
 	 *
-	 * @return  void
+	 * @since   2.2
 	 *
-	 * @since   3.0
+	 * @return   string  success
 	 */
 	public function log_ipn_results($success)
 	{
