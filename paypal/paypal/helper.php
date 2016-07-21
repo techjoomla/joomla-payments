@@ -31,8 +31,8 @@ class PlgPaymentPaypalHelper
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'paypal');
 		$params = json_decode($plugin->params);
-		$url    = $params->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
-		$url    = 'https://' . $url . '/cgi-bin/webscr';
+		$url    = $params->sandbox ? 'www.sandbox.paypal.com/cgi-bin/webscr' : 'www.paypal.com/cgi-bin/webscr';
+		$url    = 'https://' . $url;
 
 		return $url;
 	}
@@ -53,6 +53,11 @@ class PlgPaymentPaypalHelper
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 		$my      = JFactory::getUser();
 
+		if (empty($logdata['JT_CLIENT']))
+		{
+			$logdata['JT_CLIENT'] = "cpg_";
+		}
+
 		JLog::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.log',
@@ -61,101 +66,118 @@ class PlgPaymentPaypalHelper
 			JLog::INFO,
 			$logdata['JT_CLIENT']
 		);
+
 		$logEntry       = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
-
 		JLog::add($logEntry);
-
-		//    $logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
-		//  $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
 	}
 
 	/**
 	 * validateIPN.
 	 *
-	 * @param   string  $data  data
+	 * @param   string  $data           data
+	 * @param   string  $componentName  Component Name
 	 *
 	 * @since   2.2
 	 *
 	 * @return   string  data
 	 */
-	public function validateIPN($data)
+	public function validateIPN($data, $componentName)
 	{
-		// Parse the paypal URL
 		$url              = self::buildPaypalUrl();
-		$this->paypal_url = $url;
-		$url_parsed       = parse_url($url);
+		$newData = array(
+			'cmd'	=> '_notify-validate'
+		);
+		$newData = array_merge($newData, $data);
 
-		// Generate the post string from the _POST vars aswell as load the
+		$options = array(
+			CURLOPT_SSL_VERIFYPEER => true,
+			CURLOPT_SSL_VERIFYHOST => 2,
+			CURLOPT_VERBOSE        => false,
+			CURLOPT_HEADER         => false,
+			CURLINFO_HEADER_OUT    => false,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_CAINFO         => dirname(__FILE__) . '/cacert.pem',
+			CURLOPT_HTTPHEADER     => array('Connection: Close'),
+			CURLOPT_POST           => true,
+			CURLOPT_POSTFIELDS     => $newData,
+			CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
 
-		// _POST vars into an arry so we can play with them from the calling
+		);
 
-		// Script.
+		/*
+		 TLS 1.2 is only supported in OpenSSL 1.0.1c and later AND cURL 7.34.0 and later running on PHP 5.5.19+ or
+		 PHP 5.6.3+. If these conditions are met we can use PayPal's minimum requirement of TLS 1.2 which is mandatory
+		 since June 2016.
+		*/
+		$curlVersionInfo   = curl_version();
+		$curlVersion       = $curlVersionInfo['version'];
+		$openSSLVersionRaw = $curlVersionInfo['ssl_version'];
 
-		// Append ipn command
+		// OpenSSL version typically reported as "OpenSSL/1.0.1e", I need to convert it to 1.0.1.5
+		$parts             = explode('/', $openSSLVersionRaw, 2);
+		$openSSLVersionRaw = (count($parts) > 1) ? $parts[1] : $openSSLVersionRaw;
+		$openSSLVersion    = substr($openSSLVersionRaw, 0, -1) . '.' . (ord(substr($openSSLVersionRaw, -1)) - 96);
 
-		// Open the connection to paypal
-		$fp = fsockopen($url_parsed['host'], "80", $err_num, $err_str, 30);
+		// PHP version required for TLS 1.2 is 5.5.19+ or 5.6.3+
+		$minPHPVersion = version_compare(PHP_VERSION, '5.6.0', 'ge') ? '5.6.3' : '5.5.19';
 
-		// $fp = fsockopen ($this->paypal_url, 80, $errno, $errstr, 30);
+		$curlVerStatus = version_compare($curlVersion, '7.34.0', 'ge');
 
-		if (!$fp)
+		if (!$curlVerStatus ||  ! version_compare($openSSLVersion, '1.0.1.3', 'ge') || 	! version_compare(PHP_VERSION, $minPHPVersion, 'ge'))
 		{
-			// Could not open the connection.  If loggin is on, the error message
-
-			// Will be in the log.
-			$this->last_error = "fsockopen error no. $errnum: $errstr";
-			self::log_ipn_results(false);
-
-			return false;
-		}
-		else
-		{
-			$post_string = '';
-
-			foreach ($data as $field => $value)
-			{
-				$this->ipn_data["$field"] = $value;
-				$post_string .= $field . '=' . urlencode(stripslashes($value)) . '&';
-			}
-
-			$post_string .= "cmd=_notify-validate";
-
-			// Post the data back to paypal
-			fputs($fp, "POST $url_parsed[path] HTTP/1.1\r\n");
-			fputs($fp, "Host: $url_parsed[host]\r\n");
-			fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
-			fputs($fp, "Content-length: " . strlen($post_string) . "\r\n");
-			fputs($fp, "Connection: close\r\n\r\n");
-			fputs($fp, $post_string . "\r\n\r\n");
-
-			// Loop through the response from the server and append to variable
-			while (!feof($fp))
-			{
-				$this->ipn_response .= fgets($fp, 1024);
-			}
-
-			fclose($fp);
-
-			// Close connection
+			$phpVersion = PHP_VERSION;
+			$data['ipncheck_envoirnmen_warning'] = "WARNING! PayPal demands that connections be made with TLS 1.2.
+				This requires PHP $minPHPVersion+
+				(you have $phpVersion), libcurl 7.34.0+ (you have $curlVersion) and OpenSSL 1.0.1c+ (you have
+				$openSSLVersionRaw) on your server's PHP. Please upgrade these requirements to meet the stated
+				minimum or the PayPal integration will cease working.";
 		}
 
-		if (preg_match("/verified/i", $post_string))
-		{
-			// Valid IPN transaction.
-			self::log_ipn_results(true);
+		$ch = curl_init($url);
+		curl_setopt_array($ch, $options);
+		@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 
-			return true;
-		}
-		else
-		{
-			// Invalid IPN transaction.  Check the log for details.
-			$this->last_error = 'IPN Validation Failed.';
-			self::log_ipn_results(false);
+		$response = curl_exec($ch);
+		$errNo = curl_errno($ch);
+		$error = curl_error($ch);
+		$lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-			return false;
+		curl_close($ch);
+		$status = false;
+
+		if (($errNo > 0) && !empty($error))
+		{
+			$data['ipncheck_failure_got_error'] = "Could not open SSL connection to $hostname:443, cURL error $errNo: $error";
+
+			$status = false;
 		}
+
+		if ($lastHttpCode >= 400)
+		{
+			$data['ipncheck_failure'] = "Invalid HTTP status $lastHttpCode verifying PayPal's IPN";
+
+			$status = false;
+		}
+
+		if (stristr($response, "VERIFIED"))
+		{
+			$status = true;
+		}
+		elseif (stristr($response, "INVALID"))
+		{
+			$data['akeebasubs_ipncheck_failure'] = 'PayPal claims the IPN data is INVALID – Possible fraud!';
+
+			$status = false;
+		}
+
+		$logData = array();
+		$logData["JT_CLIENT"] = $componentNamel;
+		$logData["raw_data"] = $data;
+		self::Storelog("paypal", $logData);
+
+		return $status;
 	}
 
 	/**
@@ -202,7 +224,5 @@ class PlgPaymentPaypalHelper
 		$fp = fopen($this->ipn_log_file, 'a');
 		fwrite($fp, $text . "\n\n");
 		fclose($fp);
-
-		// Close file
 	}
 }
