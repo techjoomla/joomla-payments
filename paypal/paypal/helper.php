@@ -74,7 +74,8 @@ class PlgPaymentPaypalHelper
 	}
 
 	/**
-	 * validateIPN.
+	 * ValidateIPN - Validate the payment detail. (We are thankful to Akeeba Subscriptions Team,
+	 * while modifing the plugin according to paypal security update. https://github.com/paypal/TLS-update#php
 	 *
 	 * @param   string  $data           data
 	 * @param   string  $componentName  Component Name
