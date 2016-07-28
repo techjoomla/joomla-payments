@@ -302,8 +302,10 @@ class PlgPaymentPaypal extends JPlugin
 	 */
 	public function onTP_Processpayment($data)
 	{
-		// Print_r($data);die;
-		$verify = plgPaymentPaypalHelper::validateIPN($data);
+		$jinput    = JFactory::getApplication()->input;
+		$componentName = $jinput->get("option", "cpg_");
+
+		$verify = plgPaymentPaypalHelper::validateIPN($data, $componentName);
 
 		if (!$verify)
 		{
@@ -362,6 +364,7 @@ class PlgPaymentPaypal extends JPlugin
 
 		if ($log_write == 1)
 		{
+			$logData["raw_data"] = $data;
 			$log = plgPaymentPaypalHelper::Storelog($this->_name, $data);
 		}
 	}
