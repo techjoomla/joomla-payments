@@ -61,7 +61,7 @@ class  PlgPaymentCcavenue extends JPlugin
 		}
 
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout . '.php';
-		$override = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' .
+		$override = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' .
 		$this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
 		if (JFile::exists($override))
