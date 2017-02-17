@@ -2,15 +2,13 @@
 /**
 * @copyright	CcAvenue team.
 * @license		GNU/GPL, see LICENSE.php
-* @package		PayPlans
 * @subpackage	CcAvenue
-* @contact 		support+payplans@readybytes.in
 */
 
 if(defined('_JEXEC')===false) die();
 
-	/*  Api file provided by CcAvenue  */	
-	
+	/*  Api file provided by CcAvenue  */
+
 	error_reporting(0);
 
 	function encrypt($plainText,$key)
@@ -20,12 +18,12 @@ if(defined('_JEXEC')===false) die();
 	  	$openMode = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '','cbc', '');
 	  	$blockSize = mcrypt_get_block_size(MCRYPT_RIJNDAEL_128, 'cbc');
 		$plainPad = pkcs5_pad($plainText, $blockSize);
-	  	if (mcrypt_generic_init($openMode, $secretKey, $initVector) != -1) 
+	  	if (mcrypt_generic_init($openMode, $secretKey, $initVector) != -1)
 		{
 		      $encryptedText = mcrypt_generic($openMode, $plainPad);
 	      	      mcrypt_generic_deinit($openMode);
-		      			
-		} 
+
+		}
 		return bin2hex($encryptedText);
 	}
 
@@ -40,7 +38,7 @@ if(defined('_JEXEC')===false) die();
 		$decryptedText = rtrim($decryptedText, "\0");
 	 	mcrypt_generic_deinit($openMode);
 		return $decryptedText;
-		
+
 	}
 	//*********** Padding Function *********************
 
@@ -52,28 +50,28 @@ if(defined('_JEXEC')===false) die();
 
 	//********** Hexadecimal to Binary function for php 4.0 version ********
 
-	function hextobin($hexString) 
-   	 { 
-        	$length = strlen($hexString); 
-        	$binString="";   
-        	$count=0; 
-        	while($count<$length) 
-        	{       
-        	    $subString =substr($hexString,$count,2);           
-        	    $packedString = pack("H*",$subString); 
+	function hextobin($hexString)
+   	 {
+        	$length = strlen($hexString);
+        	$binString="";
+        	$count=0;
+        	while($count<$length)
+        	{
+        	    $subString =substr($hexString,$count,2);
+        	    $packedString = pack("H*",$subString);
         	    if ($count==0)
 	    		{
 					$binString=$packedString;
-		    	} 
-        	    
-				else 
+		    	}
+
+				else
 				{
 					$binString.=$packedString;
-				} 
-        	    
-		    	$count+=2; 
-        	} 
-  	        return $binString; 
-    	  } 
+				}
+
+		    	$count+=2;
+        	}
+  	        return $binString;
+    	  }
 ?>
 

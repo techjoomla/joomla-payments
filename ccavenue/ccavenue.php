@@ -61,7 +61,7 @@ class  PlgPaymentCcavenue extends JPlugin
 		}
 
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout . '.php';
-		$override = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' .
+		$override = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' .
 		$this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
 		if (JFile::exists($override))
@@ -143,8 +143,8 @@ class  PlgPaymentCcavenue extends JPlugin
 		*/
 
 		$vars->merchant_id = trim($this->params->get('merchant_id'));
-		$working_key = trim($this->params->get('working_key'));
-		$access_code = trim($this->params->get('access_code'));
+		$working_key = $this->params->get('sandbox') ? trim($this->params->get('sandbox_working_key')) : trim($this->params->get('working_key'));
+		$access_code = $this->params->get('sandbox') ? trim($this->params->get('sandbox_access_code')) : trim($this->params->get('access_code'));
 		$vars->amount = (float) $vars->amount;
 
 		/* $vars->notify_url = JURI::base().'ccavenue.'.JRequest::getCmd('option').'.php'; */
@@ -270,8 +270,6 @@ class  PlgPaymentCcavenue extends JPlugin
 		if (!$verify) { return false; }
 		*/
 
-		$working_key = $this->params->get('working_key');
-
 		// Decrypt server data
 		$decrypted_data = $this->validateData($data);
 
@@ -296,7 +294,7 @@ class  PlgPaymentCcavenue extends JPlugin
 		}
 
 		// Amount check
-		if ($isValid )
+		if ($isValid)
 		{
 			if (!empty($vars))
 			{
@@ -390,13 +388,13 @@ class  PlgPaymentCcavenue extends JPlugin
 	public function validateData($data)
 	{
 		// Working Key should be provided here.
-		$workingKey			= trim($this->params->get('working_key'));
+		$working_key = $this->params->get('sandbox') ? trim($this->params->get('sandbox_working_key')) : trim($this->params->get('working_key'));
 
 		// This is the response sent by the CCAvenue Server
 		$encResponse		= $data["encResp"];
 
 		// Crypto Decryption used as per the specified working key.
-		$rcvdString			= decrypt($encResponse, $workingKey);
+		$rcvdString			= decrypt($encResponse, $working_key);
 		$order_status		= "";
 		$decryptValues		= explode('&', $rcvdString);
 		$dataSize			= sizeof($decryptValues);

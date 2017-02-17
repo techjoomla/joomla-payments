@@ -30,10 +30,13 @@ class PlgPaymentCcavenueHelper
 	 */
 	public function buildCcavenueUrl($secure = true)
 	{
-		// $url = $this->params->get('sandbox') ? 'test.payu.in/_payment' : 'secure.payu.in/_payment';
+		$plugin = JPluginHelper::getPlugin('payment', 'ccavenue');
+		$params = json_decode($plugin->params);
+		$url = $params->sandbox ? 'test.ccavenue.com' : 'secure.ccavenue.com';
+
 		if ($secure)
 		{
-			$url = 'https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction&encRequest=';
+			$url = 'https://' . $url . '/transaction/transaction.do?command=initiateTransaction&encRequest=';
 		}
 
 		return $url;

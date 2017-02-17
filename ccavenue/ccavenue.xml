@@ -23,6 +23,8 @@
   		<param name="merchant_id" type="text" default="" label="PLG_CCAVENUE_MERCHANT_ID" description="PLG_CCAVENUE_MERCHANT_ID_DESC"/>
   		<param name="working_key" type="text" default="" label="PLG_CCAVENUE_WORKING_KEY" description="PLG_CCAVENUE_WORKING_KEY_DESC"/>
   		<param name="access_code" type="text" default="" label="PLG_CCAVENUE_ACCESS_KEY" description="PLG_CCAVENUE_ACCESS_KEY_DESC"/>
+  		<param name="sandbox_working_key" type="text" default="" label="PLG_CCAVENUE_SANDBOX_WORKING_KEY" description="PLG_CCAVENUE_SANDBOX_WORKING_KEY_DESC"/>
+  		<param name="sandbox_access_code" type="text" default="" label="PLG_CCAVENUE_SANDBOX_ACCESS_KEY" description="PLG_CCAVENUE_SANDBOX_ACCESS_KEY_DESC"/>
 		<param name="plugin_hidname" type="hidden" default="ccavenue" />
   		<param type="spacer" />
 
@@ -40,6 +42,12 @@
 							<option value="0">JNO</option>
 							<option value="1">JYES</option>
 					</field>
+					<field name="sandbox" type="radio" default="0" label="PLG_CCAVENUE_SANDBOX" description="PLG_CCAVENUE_SANDBOX_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+					</field>
+			  		<field name="sandbox_working_key" type="text" default="" label="PLG_CCAVENUE_SANDBOX_WORKING_KEY" description="PLG_CCAVENUE_SANDBOX_WORKING_KEY_DESC"/>
+			  		<field name="sandbox_access_code" type="text" default="" label="PLG_CCAVENUE_SANDBOX_ACCESS_KEY" description="PLG_CCAVENUE_SANDBOX_ACCESS_KEY_DESC"/>
 					<field name="plugin_hidname" type="hidden" default="ccavenue" />
 				</fieldset>
 		</fields>
