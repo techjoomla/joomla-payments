@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="payment_gateway" label="PLG_ADAPTIVE_PAYPAL_PAYMENET_GATEWAY_PARAMETERS">
+		<field id="payment_email_id" name="payment_email_id" type="text" default="" label="PLG_ADAPTIVE_PAYPAL_PAYMENET_GATEWAY_EMAIL_ID" description="PLG_ADAPTIVE_PAYPAL_PAYMENET_GATEWAY_EMAIL_ID_DESCRIPTION" filter="" />
+	</fieldset>
+</form>
