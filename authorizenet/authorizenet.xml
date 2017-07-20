@@ -2,12 +2,12 @@
 <extension version="3.0" type="plugin" group="payment" method="upgrade">
 	<name>Payment - authorizenet</name>
 	<author>Techjoomla</author>
-	<creationDate>02 Feb 2015</creationDate>
+	<creationDate>20 July 2017</creationDate>
 	<copyright></copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl></authorUrl>
-	<version>2.0.2</version>
+	<version>2.0.3</version>
 	<description>authorizenet payment plugin</description>
 	<files>
 		<filename plugin="authorizenet">authorizenet.php</filename>
