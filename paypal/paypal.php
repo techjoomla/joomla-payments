@@ -309,7 +309,7 @@ class PlgPaymentPaypal extends JPlugin
 
 		if (!$verify)
 		{
-			throw new Exception(JText::_('PLG_PAYPAL_PAYMENET_UNABLE_VALIDATE_IPN'));
+			throw new Exception(JText::_('PLG_PAYPAL_PAYMENT_ERR_INVALID_IPN'));
 		}
 
 		$payment_status = $this->translateResponse($data['payment_status']);
