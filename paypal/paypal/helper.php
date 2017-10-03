@@ -88,7 +88,9 @@ class PlgPaymentPaypalHelper
 	 */
 	public function validateIPN($data, $componentName)
 	{
-		$url              = self::buildPaypalUrl();
+		$sandBoxMode = $this->params->get('sandbox', '0', 'INT');
+		$url = ($sandBoxMode)?'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr':'https://ipnpb.paypal.com/cgi-bin/webscr';
+
 		$newData = array(
 			'cmd'	=> '_notify-validate'
 		);
