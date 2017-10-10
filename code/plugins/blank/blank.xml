@@ -1,32 +1,32 @@
-<?xml version="1.1" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" type="plugin" group="payment" method="upgrade">
 	<name>Blank Payment Gateway</name>
-	<author>TechJoomla</author>
-	<creationDate>25th Sep 2013</creationDate>
-	<copyright>Techjoomla. All Rights Reserved.</copyright>
-	<authorEmail>extensions@techjoomla.com</authorEmail>
-	<authorUrl>http://www.techjoomla.com</authorUrl>
+	<author>Tekdi</author>
+	<creationDate>2th Feb 2015</creationDate>
+	<copyright>Tekdi. All Rights Reserved.</copyright>
+	<authorEmail>sanjivani_p@tekdi.net</authorEmail>
+	<authorUrl>http://www.tekdi.net</authorUrl>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<version>1.1</version>
-	<description>PayBy check plugin from Techjoomla. </description>
+	<version>1.0</version>
+	<description>Blank plugin from Tekdi. </description>
 	<files>
 		<filename plugin="blank">blank.php</filename>
-				<folder>blank</folder>
+		<folder>blank</folder>
 	</files>
-	<languages> 
+	<languages>
 		<language tag="en-GB">en-GB/en-GB.plg_payment_blank.ini</language>
-	</languages> 
+	</languages>
 	<!-- parameters for Joomla 1.5.x -->
 	<params>
-		<param name="plugin_name" type="text" default="PayBy Check" label="PLG_NAME" description="" />
-		<param name="plugin_mail" type="textarea" default="" label="PLG_MAIL" description="PLG_MAIL_DES" rows="5" cols="20"  />	
+		<param name="plugin_name" type="text" default="blankpay Payment" label="PLG_BLANK_PLG_NAME" description="PLG_BLANK_PLG_NAME_DESC" />
+		<param name="plugin_mail" type="textarea" default="" label="PLG_BLANK_MAIL" description="PLG_BLANK_MAIL_DES" rows="5" cols="20"  />
 	</params>
 	<!-- Fields for Joomla 1.6.x and onwards -->
 	<config name="params">
 		<fields name="params">
 			<fieldset name="basic">
-					<field name="plugin_name" type="text" default="PayBy Blank" label="PLG_NAME" description="" />
-					<field name="plugin_mail" type="textarea" default="" label="PLG_MAIL" description="PLG_MAIL_DES" rows="5" cols="20"  />
+					<field name="plugin_name" type="text" default="Blank Payment" label="PLG_BLANK_PLG_NAME" description="PLG_BLANK_PLG_NAME_DESC" />
+					<field name="plugin_mail" type="textarea" default="" label="PLG_BLANK_MAIL_DES" description="PLG_BLANK_MAIL_DES" rows="5" cols="20" />
 			</fieldset>
 		</fields>
 	</config>
