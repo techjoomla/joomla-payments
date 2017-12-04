@@ -46,7 +46,7 @@ class PlgPaymentAmazonHelper
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		$text_file = $logdata['JT_CLIENT'] . '_' . $name . '.log';
+		$text_file = $logdata['JT_CLIENT'] . '_' . $name . '.php';
 		$my = JFactory::getUser();
 		JLog::addLogger(
 							array('text_file' => $text_file ,
