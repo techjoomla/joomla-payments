@@ -56,6 +56,8 @@ class PlgPaymentAmazonHelper
 		$logEntry       = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
+
+		JLog::add($logEntry);
 	}
 
 	/**
