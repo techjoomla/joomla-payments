@@ -52,7 +52,6 @@ class PlgPaymentCcavenueHelper
 	 *
 	 * @since   1.0
 	 */
-
 	public function Storelog($name,$logdata)
 	{
 		jimport('joomla.error.log');
@@ -62,7 +61,7 @@ class PlgPaymentCcavenueHelper
 
 		JLog::addLogger(
 			array(
-				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.log',
+				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
 				'text_entry_format' => $options
 			),
 			JLog::INFO,

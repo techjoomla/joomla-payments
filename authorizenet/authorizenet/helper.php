@@ -66,7 +66,7 @@ class PlgPaymentAuthorizenetHelper
 
 		JLog::addLogger(
 			array(
-				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.log',
+				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
 				'text_entry_format' => $options
 			),
 			JLog::INFO,
