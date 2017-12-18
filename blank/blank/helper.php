@@ -60,8 +60,8 @@ class PlgPaymentBlankHelper
 		jimport('joomla.error.log');
 		$options = array('format' => "{DATE}\t{TIME}\t{USER}\t{DESC}");
 
-		$my =& JFactory::getUser();
-		$logs =& JLog::getInstance($logdata['JT_CLIENT'] . '_' . $name . '.php', $options);
+		$my = JFactory::getUser();
+		$logs = JLog::getInstance($logdata['JT_CLIENT'] . '_' . $name . '.php', $options);
 		$logs->addEntry(
 			array(
 			'user' => $my->name . '(' . $my->id . ')',
