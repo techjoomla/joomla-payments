@@ -16,7 +16,6 @@ jimport('joomla.plugin.helper');
  */
 class PlgPaymentPaypalHelper
 {
-	// Gets the paypal URL
 	/**
 	 * buildPaypalUrl.
 	 *
@@ -26,7 +25,6 @@ class PlgPaymentPaypalHelper
 	 *
 	 * @return   string  secure
 	 */
-
 	public function buildPaypalUrl($secure = true)
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'paypal');
@@ -60,7 +58,7 @@ class PlgPaymentPaypalHelper
 
 		JLog::addLogger(
 			array(
-				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.log',
+				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
 				'text_entry_format' => $options
 			),
 			JLog::INFO,

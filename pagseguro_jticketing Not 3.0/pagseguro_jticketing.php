@@ -44,8 +44,8 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__).'/'.$this->_name.'/tmpl/default.php';
+		$override	= JPATH_BASE.'/templates/'.$app->getTemplate().'/html/plugins/'.$this->_type.'/'.$this->_name.'/'.$layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
