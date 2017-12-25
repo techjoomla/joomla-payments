@@ -14,18 +14,18 @@ else
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_paypalpro', JPATH_ADMINISTRATOR);
 
-class plgpaymentpaypalpro extends JPlugin 
+class plgpaymentpaypalpro extends JPlugin
 {
 	var $_payment_gateway = 'payment_paypalpro';
 	var $_log = null;
-	
+
 	function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
 		$config = JFactory::getConfig();
 
-		
+
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
 		$this->responseStatus= array(
@@ -38,12 +38,12 @@ class plgpaymentpaypalpro extends JPlugin
  		$this->login_id = $this->params->get( 'login_id', '1' );
 		 $this->tran_key = $this->params->get( 'tran_key', '1' );
 	}
-	
+
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'form.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.$layout.'.php';
+		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/form.php';
+		$override = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' .$layout.'.php';
 		if(JFile::exists($override))
 		{
 			return $override;
@@ -53,7 +53,7 @@ class plgpaymentpaypalpro extends JPlugin
 	  	return  $core_file;
 	}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -61,23 +61,23 @@ class plgpaymentpaypalpro extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
 	//gets param values
-    function getParamResult($name, $default = '') 
+    function getParamResult($name, $default = '')
     {
     	$sandbox_param = "sandbox_$name";
     	$sb_value = $this->params->get($sandbox_param);
-    	
+
         if ($this->params->get('sandbox') && !empty($sb_value)) {
             $param = $this->params->get($sandbox_param, $default);
         }
         else {
         	$param = $this->params->get($name, $default);
         }
-        
+
         return $param;
     }
 
@@ -99,15 +99,15 @@ class plgpaymentpaypalpro extends JPlugin
 		$html = $this->buildLayout($vars);
 		return $html;
 	}
-	
-	function onTP_Processpayment($data,$vars) 
+
+	function onTP_Processpayment($data,$vars)
 	{
 		$isValid = true;
 		$error=array();
 		$error['code']	='';
 		$error['desc']	='';
 		$plgPaymentpaypalproHelper= new plgPaymentpaypalproHelper;
-		$action_url = $plgPaymentpaypalproHelper->buildpaypalproUrl();	
+		$action_url = $plgPaymentpaypalproHelper->buildpaypalproUrl();
 		if($data['recurring_frequency']=='QUARTERLY')
 		{
 			$BILLINGFREQUENCY		=	3;
@@ -117,12 +117,12 @@ class plgpaymentpaypalpro extends JPlugin
 			$BILLINGFREQUENCY		=	$data['recurring_count'];
 			$BILLINGPERIOD			=	ucfirst(strtolower($data['recurring_frequency']));
 		}
-		
+
 		$exp_month					=	str_pad($data['expire_month'],2, "0", STR_PAD_LEFT);
 		$data['cardexp']			=	$exp_month.$data['expire_year'];
 		if($data['is_recurring']){
 		$pro_values				= array(
-									"METHOD"					=>	'CreateRecurringPaymentsProfile', 
+									"METHOD"					=>	'CreateRecurringPaymentsProfile',
 									"AMT"						=>	$data['chargetotal'],
 									"CREDITCARDTYPE"			=>	$data['credit_card_type'],
 									"ACCT"						=>	$data['cardnum'],
@@ -141,7 +141,7 @@ class plgpaymentpaypalpro extends JPlugin
 									);
 								}else{
 									$pro_values				= array(
-									"METHOD"					=>'DoDirectPayment', 
+									"METHOD"					=>'DoDirectPayment',
 									"VERSION"					=> "65.0",
 									"USER"						=> $this->params->get('pro_api_username'),
 								 	"PWD"						=> $this->params->get('pro_api_password'),
@@ -162,21 +162,21 @@ class plgpaymentpaypalpro extends JPlugin
 									"COUNTRYCODE"				=>$data['cardcountry'],
 									"INVNUM"					=>$data['order_id'],
 									);
-									
+
 									}
 		$fields = "";
-		foreach($pro_values as $key => $value) 
+		foreach($pro_values as $key => $value)
 			$fields .= "$key=".urlencode($value). "&";
-			
-		//call to curl	
-		$ch = curl_init($action_url); 
-		curl_setopt($ch, CURLOPT_HEADER, 0); 
+
+		//call to curl
+		$ch = curl_init($action_url);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " ));
 		$resp = curl_exec($ch); //execute post and get results
 		curl_close ($ch);
-		//call to curl	    
-	
+		//call to curl
+
 		$allresp = explode('&',$resp);
 		foreach($allresp as $r)
 		{
@@ -191,10 +191,10 @@ class plgpaymentpaypalpro extends JPlugin
 		{
 			JFactory::getApplication()->enqueueMessage('Unable to create Recurring Payments Profile');
 		}
-		
+
 		$error['code'] .=$final_res['L_ERRORCODE0'];
 		$error['desc'] .=$final_res['L_LONGMESSAGE0'];
-		//3.compare response order id and send order id in notify URL 
+		//3.compare response order id and send order id in notify URL
 		$res_orderid='';
 		$res_orderid = $data['order_id'];
 		if($isValid ) {
@@ -205,7 +205,7 @@ class plgpaymentpaypalpro extends JPlugin
 				$error['desc'] .= "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
 			}
 		}
-		
+
 		// amount check
 		if($isValid ) {
 			if(!empty($vars))
@@ -214,7 +214,7 @@ class plgpaymentpaypalpro extends JPlugin
 				$order_amount=(float) $vars->amount;
 				$retrunamount =  (float)$final_res['AMT'];
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
 					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
@@ -223,14 +223,14 @@ class plgpaymentpaypalpro extends JPlugin
 				}
 			}
 		}
-		
+
 		// translate response
 		if(!empty($trxnstatus)){
 			$payment_status=$this->translateResponse($trxnstatus);
 		}else{
 			$payment_status=$this->translateResponse($final_res['ACK']);
 		}
-		$transaction_id = $final_res['TRANSACTIONID'];     
+		$transaction_id = $final_res['TRANSACTIONID'];
 
     $result = array('transaction_id'=>$transaction_id,
     				'order_id'=>$data['order_id'],
@@ -240,23 +240,23 @@ class plgpaymentpaypalpro extends JPlugin
 						'error'=>$error,
 						'return'=>$data['return'],
 						);
-	
+
     return $result;
-    
+
 	}
-	
+
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
 				if($key==$payment_status)
-				return $value;		
+				return $value;
 			}
 	}
 		function onTP_Storelog($data)
 	{
 			$log = plgPaymentPaypalproHelper::Storelog($this->_name,$data);
-	
+
 	}
-	
+
 }
 
