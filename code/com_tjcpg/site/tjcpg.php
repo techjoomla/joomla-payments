@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 $user=JFactory::getUser();
-$path = JPATH_COMPONENT.DS.'helpers'.DS."tjcpg.php";
+$path = JPATH_COMPONENT . '/helpers/tjcpg.php';
 if(!class_exists('tjcpgHelper'))
 {
   //require_once $path;
@@ -20,10 +20,10 @@ if(!class_exists('tjcpgHelper'))
 // Include dependancies
 jimport('joomla.application.component.controller');
 $controller="";
-require_once (JPATH_COMPONENT.DS.'controller.php');
+require_once JPATH_COMPONENT . '/controller.php';
 $input=JFactory::getApplication()->input;
 if($controller = $input->get('controller')) {
-	$path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
+	$path = JPATH_COMPONENT . '/controllers/' . $controller.'.php';
 	if (file_exists($path)) {
 		require_once $path;
 	} else {

@@ -3,14 +3,13 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
- 
+
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-//require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_blank', JPATH_ADMINISTRATOR);
 require_once(dirname(__FILE__) . '/blank/helper.php');
-class plgpaymentblank extends JPlugin 
+class plgpaymentblank extends JPlugin
 {
 	var $_payment_gateway = 'payment_blank';
 	var $_log = null;
@@ -27,10 +26,10 @@ class plgpaymentblank extends JPlugin
 		 'Refunded'=>'RF',
 		 'Canceled_Reversal'=>'CRV',
 		 'Reversed'=>'RV','ERROR'  => 'E');
-		
+
 	}
 
-	
+
 	/* This function falls under STEP 1 of the Common Payment Gateway flow
 	 * It is Used to Build List of Payment Gateway in the respective Components
 	 *
@@ -79,8 +78,8 @@ class plgpaymentblank extends JPlugin
 		$trxnstatus='';
 		$verify = plgPaymentBlankHelper::validateIPN($data);	/*verification of IPN*/
 		if (!$verify) { return false; }
-		
-		//3.compare response order id and send order id in notify URL 
+
+		//3.compare response order id and send order id in notify URL
 		$res_orderid = '';
 		/* // SAMPLE CODE
 		 $res_orderid = $result->InvoiceReference; // THIS SHOULD BE RESPONSE ORDERID
@@ -92,16 +91,16 @@ class plgpaymentblank extends JPlugin
 				$error['desc'] = "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
 			}
 		}*/
-		
+
 	// SAMPLE CODE TO CHECK RESPONSE AMOUNT AND ORIGINAL AMOUNT
 		/*if($isValid ) {
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount=(float) $vars->amount; 
+				$order_amount=(float) $vars->amount;
 				$retrunamount =  (float)$gross_amt; //RESPONSE AMOUNT
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
 					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
@@ -116,9 +115,9 @@ class plgpaymentblank extends JPlugin
 		if($trxnstatus == 'ERROR'){
 			$payment_status = $this->translateResponse($trxnstatus);
 		}else {
-			$payment_status = $this->translateResponse($data['payment_status']);	
+			$payment_status = $this->translateResponse($data['payment_status']);
 		}
-		
+
 
 		$result = array(
 						'order_id'=>$data['custom'],
@@ -134,7 +133,7 @@ class plgpaymentblank extends JPlugin
 		return $result;
 	}
 
-/* This function falls under STEP 3 of the Common Payment Gateway flow 
+/* This function falls under STEP 3 of the Common Payment Gateway flow
  * It Logs the payment process data */
 	function onTP_Storelog($data)
 	{
@@ -179,6 +178,6 @@ translate the status response depending upon you payment gateway*/
 			return  $core_file;
 		}
 	}
-}	
+}
 
 
