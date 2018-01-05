@@ -140,7 +140,22 @@ class Plgpaymenteasysocialpoints extends JPlugin
 		$db->setQuery($query);
 		$points_count = $db->loadResult();
 		$convert_val = $this->params->get('conversion');
+		$allowCredit = $this->params->get('seller_credit');
 		$points_charge = $data['total'] * $convert_val;
+
+
+		require_once JPATH_SITE . '/components/com_quick2cart/helper.php';
+		$comquick2cartHelper = new comquick2cartHelper;
+		$orderId = explode('-',$data['order_id']);
+		$orderInfo = $comquick2cartHelper->getorderinfo($orderId[2]);
+		$orderItems = $orderInfo['items'];
+
+		foreach($orderItems as $orderItem)
+		{
+			$productNames[] = $orderItem->order_item_name;
+		}
+
+		$product_names = implode(',', $productNames);
 
 		if ($points_charge <= $points_count)
 		{
@@ -150,6 +165,7 @@ class Plgpaymenteasysocialpoints extends JPlugin
 			$espoint->state = 1;
 			$espoint->points = "-". $points_charge;
 			$espoint->user_id = $data['user_id'];
+			$espoint->message = JText::sprintf('PLG_POINTS_DEDUCTION',$product_names);
 			$espoint->created = date("Y-m-d H:i:s"); // 2014-08-12 11:14:54
 			if (!$db->insertObject( '#__social_points_history', $espoint, 'id' ))
 			{
@@ -162,6 +178,34 @@ class Plgpaymenteasysocialpoints extends JPlugin
 		{
 			$payment_status = 'Failure';
 			$isValid = false;
+		}
+
+		// Insert points in seller's account.
+
+		if ($allowCredit == 1)
+		{
+			foreach ($orderItems as $orderItem)
+			{
+				$storeOwner = $comquick2cartHelper->getSoreInfo($orderItem->store_id);
+
+				$credit_points = $orderItem->product_item_price * $convert_val;
+
+				//insert new entry in history table to credit points
+				$espoint=new stdClass();
+				$espoint->id = '';
+				$espoint->state = 1;
+				$espoint->points = round($credit_points);
+				$espoint->user_id = $storeOwner['owner'];
+				$espoint->message = JText::sprintf('POINTS_CREDIT', $orderItem->order_item_name);
+				$espoint->created = date("Y-m-d H:i:s");
+
+				if (!$db->insertObject('#__social_points_history', $espoint, 'id'))
+				{
+					echo $db->stderr();
+
+					return false;
+				}
+			}
 		}
 
 		// 3.compare response order id and send order id in notify URL
@@ -179,7 +223,7 @@ class Plgpaymenteasysocialpoints extends JPlugin
 		}
 
 		// Amount check
-		if ($isValid )
+		if ($isValid)
 		{
 			if (!empty($vars))
 			{
@@ -213,22 +257,40 @@ class Plgpaymenteasysocialpoints extends JPlugin
 		return $result;
 	}
 
+	/**
+	 * Method to translate response according to status.
+	 *
+	 * @param   String  $invoice_status  Payment Status
+	 *
+	 * @return  array
+	 *
+	 * @since   1.8.1
+	 */
 	Public function translateResponse($invoice_status)
 	{
 		foreach ($this->responseStatus as $key => $value)
-				{
-					if ($key == $invoice_status)
-					{
-						return $value;
-					}
+		{
+			if ($key == $invoice_status)
+			{
+				return $value;
+			}
 		}
 	}
 
+	/**
+	 * Method onTP_Storelog.
+	 *
+	 * @param   String  $data  Data
+	 *
+	 * @return  void
+	 *
+	 * @since   1.8.1
+	 */
 	Public function onTP_Storelog($data)
 	{
 		$log_write = $this->params->get('log_write', '0');
 
-		if($log_write == 1)
+		if ($log_write == 1)
 		{
 			$log = plgPaymenteasysocialpointsHelper::Storelog($this->_name, $data);
 		}
