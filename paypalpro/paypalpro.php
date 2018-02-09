@@ -124,6 +124,7 @@ class plgpaymentpaypalpro extends JPlugin
 		$pro_values				= array(
 									"METHOD"					=>	'CreateRecurringPaymentsProfile',
 									"AMT"						=>	$data['chargetotal'],
+									"CURRENCYCODE"              =>  $data['currency_code'],
 									"CREDITCARDTYPE"			=>	$data['credit_card_type'],
 									"ACCT"						=>	$data['cardnum'],
 									"CVV2"						=>	$data['cardcsc'],
@@ -149,6 +150,7 @@ class plgpaymentpaypalpro extends JPlugin
 									"PAYMENTACTION"				=> "Sale",
 									"IPADDRESS"					=> $_SERVER['REMOTE_ADDR'],
 									"AMT"						=> $data['chargetotal'],
+									"CURRENCYCODE"              => $data['currency_code'],
 									"CREDITCARDTYPE"			=> $data['credit_card_type'],
 									"ACCT"						=> $data['cardnum'],
 									"EXPDATE"					=> $data['cardexp'],
@@ -201,8 +203,9 @@ class plgpaymentpaypalpro extends JPlugin
 			if(!empty($vars) && $res_orderid != $vars->order_id )
 			{
 				$trxnstatus = 'ERROR';
-				$isValid = false;
-				$error['desc'] .= "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
+				/* As we are not sending notify URL to PayPal Pro*/
+				/*$isValid = false;
+				$error['desc'] .= "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid; */
 			}
 		}
 
