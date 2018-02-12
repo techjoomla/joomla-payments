@@ -186,6 +186,7 @@ class plgpaymentpaypalpro extends JPlugin
 				$final_res[$res[0]]=urldecode($res[1]);
 		}
 		JFactory::getApplication()->enqueueMessage('ACK Response : '.$final_res['ACK']);
+
 		if($final_res['ACK']=='Success')
 		{
 			JFactory::getApplication()->enqueueMessage('Recurring payments profile created Successfully.');
@@ -199,15 +200,17 @@ class plgpaymentpaypalpro extends JPlugin
 		//3.compare response order id and send order id in notify URL
 		$res_orderid='';
 		$res_orderid = $data['order_id'];
+		
+		/* As we are not sending notify URL to PayPal Pro*/
+		/*
 		if($isValid ) {
 			if(!empty($vars) && $res_orderid != $vars->order_id )
 			{
 				$trxnstatus = 'ERROR';
-				/* As we are not sending notify URL to PayPal Pro*/
-				/*$isValid = false;
-				$error['desc'] .= "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid; */
+				$isValid = false;
+				$error['desc'] .= "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is ". $vars->order_id .", and response ".$res_orderid;
 			}
-		}
+		}*/
 
 		// amount check
 		if($isValid ) {
