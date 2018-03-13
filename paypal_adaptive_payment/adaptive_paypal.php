@@ -7,14 +7,7 @@
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
-if (JVERSION >= '1.6.0')
-{
-	require_once JPATH_SITE . '/plugins/payment/adaptive_paypal/adaptive_paypal/helper.php';
-}
-else
-{
-	require_once JPATH_SITE . '/plugins/payment/adaptive_paypal/helper.php';
-}
+require_once JPATH_SITE . '/plugins/payment/adaptive_paypal/adaptive_paypal/helper.php';
 
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_adaptive_paypal', JPATH_ADMINISTRATOR);

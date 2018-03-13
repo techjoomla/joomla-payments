@@ -8,7 +8,6 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-// Require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_jomsocialpoints', JPATH_ADMINISTRATOR);
 require_once dirname(__FILE__) . "/jomsocialpoints/helper.php";

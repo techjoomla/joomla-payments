@@ -6,7 +6,6 @@
 
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-//require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_blank', JPATH_ADMINISTRATOR);
 require_once(dirname(__FILE__) . '/blank/helper.php');
