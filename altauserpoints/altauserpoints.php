@@ -22,6 +22,8 @@ require_once dirname(__FILE__) . '/altauserpoints/helper.php';
  */
 class Plgpaymentaltauserpoints extends JPlugin
 {
+	Protected $responseStatus;
+
 	/**
 	 * Constructor
 	 *
@@ -98,7 +100,7 @@ class Plgpaymentaltauserpoints extends JPlugin
 	 * onTP_GetHTML - Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the
 	 * Submit button in case of offsite ones like Paypal
 	 *
-	 * @param   string  $vars  array
+	 * @param   OBJECT  $vars  array
 	 *
 	 * @since   2.2
 	 *
@@ -130,7 +132,7 @@ class Plgpaymentaltauserpoints extends JPlugin
 	 *
 	 * @since   2.2
 	 *
-	 * @return   string  config
+	 * @return  OBJECT  config
 	 */
 	public function onTP_GetInfo($config)
 	{
@@ -150,7 +152,7 @@ class Plgpaymentaltauserpoints extends JPlugin
 	 * onTP_Processpayment
 	 *
 	 * @param   object  $data  Data
-	 * @param   string  $vars  array
+	 * @param   object  $vars  array
 	 *
 	 * @since   2.2
 	 *
