@@ -1,20 +1,22 @@
 <?php
 /**
- * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
- * @license    GNU General Public License version 2, or later
+ * @author     Techjoomla <extensions@techjoomla.com>
+ * @copyright  Copyright (c) 2009-2018 TechJoomla. All rights reserved.
+ * @license    GNU General Public License version 2 or later.
  */
+
 defined('_JEXEC') or die(';)');
 jimport('joomla.html.html');
 jimport('joomla.plugin.helper');
 
 /**
- * PlgPaymentAlphauserpointHelper
+ * PlgPaymentAltauserpointHelper
  *
  * @package     CPG
  * @subpackage  site
- * @since       2.2
+ * @since       1.0
  */
-class PlgPaymentAlphauserpointHelper
+class PlgPaymentAltauserpointHelper
 {
 	/**
 	 * Store log
@@ -24,7 +26,7 @@ class PlgPaymentAlphauserpointHelper
 	 * @param   array   $logdata  data.
 	 *
 	 * @since   1.0
-	 * @return  NULL
+	 * @return  list.
 	 */
 	public function Storelog($name, $logdata)
 	{
