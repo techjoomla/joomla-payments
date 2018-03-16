@@ -86,8 +86,10 @@ class PlgPaymentPaypalHelper
 	 */
 	public function validateIPN($data, $componentName)
 	{
-		$sandBoxMode = $this->params->get('sandbox', '0', 'INT');
-		$url = ($sandBoxMode) ? 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr' : 'https://ipnpb.paypal.com/cgi-bin/webscr';
+		$plugin = JPluginHelper::getPlugin('payment', 'paypal');
+		$params = new JRegistry($plugin->params);
+		$sandBoxMode = $params->get('sandbox', '0', 'INT');
+		$url = ($sandBoxMode)?'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr':'https://ipnpb.paypal.com/cgi-bin/webscr';
 
 		$newData = array(
 			'cmd'	=> '_notify-validate'
