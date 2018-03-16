@@ -35,9 +35,6 @@ class Plgpaymentaltauserpoints extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
-		// Set the language in the class
-		$config = JFactory::getConfig();
-
 		/*Define Payment Status codes in Authorise  And Respective Alias in Framework
 		1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review*/
 		$this->responseStatus = array(
@@ -76,7 +73,7 @@ class Plgpaymentaltauserpoints extends JPlugin
 	/**
 	 * Builds the layout to be shown, along with hidden fields.
 	 *
-	 * @param   string  $vars    vars
+	 * @param   OBJECT  $vars    vars
 	 *
 	 * @param   string  $layout  layout
 	 *
@@ -128,7 +125,7 @@ class Plgpaymentaltauserpoints extends JPlugin
 	/**
 	 * onTP_GetInfo - Used to Build List of Payment Gateway in the respective Components
 	 *
-	 * @param   string  $config  config
+	 * @param   ARRAY  $config  config
 	 *
 	 * @since   2.2
 	 *
@@ -156,7 +153,7 @@ class Plgpaymentaltauserpoints extends JPlugin
 	 *
 	 * @since   2.2
 	 *
-	 * @return  MIXED  data
+	 * @return  ARRAY  data
 	 */
 	public function onTP_Processpayment($data,$vars)
 	{
@@ -206,7 +203,6 @@ class Plgpaymentaltauserpoints extends JPlugin
 		}
 
 		// 3.compare response order id and send order id in notify URL
-		$res_orderid = '';
 		$res_orderid = $data['order_id'];
 
 		if ($isValid)
@@ -220,7 +216,7 @@ class Plgpaymentaltauserpoints extends JPlugin
 		}
 
 		// Amount check
-		if ($isValid )
+		if ($isValid)
 		{
 			if (!empty($vars))
 			{
@@ -232,7 +228,6 @@ class Plgpaymentaltauserpoints extends JPlugin
 				if (($order_amount - $retrunamount) > $epsilon)
 				{
 					$payment_status = 'ERROR';
-					$isValid = false;
 					$error['desc'] = "ORDER_AMOUNT_MISTMATCH - order amount = " . $order_amount . ' response order amount = ' . $retrunamount;
 				}
 			}
@@ -256,7 +251,7 @@ class Plgpaymentaltauserpoints extends JPlugin
 	/**
 	 * translateResponse
 	 *
-	 * @param   object  $invoice_status  invoice_status
+	 * @param   STRING  $invoice_status  invoice_status
 	 *
 	 * @since   2.2
 	 *
@@ -276,11 +271,11 @@ class Plgpaymentaltauserpoints extends JPlugin
 	/**
 	 * Builds the layout to be shown, along with hidden fields.
 	 *
-	 * @param   object  $data  Data
+	 * @param   ARRAY  $data  Data
 	 *
 	 * @since   2.2
 	 *
-	 * @return   string  data
+	 * @return  NULL
 	 */
 	public function onTP_Storelog($data)
 	{
@@ -288,7 +283,7 @@ class Plgpaymentaltauserpoints extends JPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymentAltauserpointHelper::Storelog($this->_name, $data);
+			plgPaymentAltauserpointHelper::Storelog($this->_name, $data);
 		}
 	}
 }
