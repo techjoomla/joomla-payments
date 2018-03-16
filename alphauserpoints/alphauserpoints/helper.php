@@ -24,7 +24,7 @@ class PlgPaymentAlphauserpointHelper
 	 * @param   array   $logdata  data.
 	 *
 	 * @since   1.0
-	 * @return  list.
+	 * @return  NULL
 	 */
 	public function Storelog($name, $logdata)
 	{
