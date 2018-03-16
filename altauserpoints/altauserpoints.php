@@ -156,7 +156,7 @@ class Plgpaymentaltauserpoints extends JPlugin
 	 *
 	 * @since   2.2
 	 *
-	 * @return   OBJECT  data
+	 * @return  MIXED  data
 	 */
 	public function onTP_Processpayment($data,$vars)
 	{
