@@ -13,7 +13,7 @@
 		<filename plugin="ewallet">ewallet.php</filename>
 		<folder>ewallet</folder>
 	</files>
-		<languages> 
+		<languages>
 			<language tag="en-GB">en-GB/en-GB.plg_payment_ewallet.ini</language>
   	</languages>
 
@@ -21,8 +21,12 @@
 	<config name="params">
 		<fields name="params">
 			<fieldset name="basic" label="Plugin Parameters" addfieldpath="">
-			<field name="conversion" type="text" size="10" default="10" label="CON_AMT" description="CON_AMT_DESC"/>
-			<field name="plugin_name" type="text" default="ewallet" label="PLG_NAME" description="" />
+				<field name="conversion" type="text" size="10" default="10" label="CON_AMT" description="CON_AMT_DESC"/>
+				<field name="plugin_name" type="text" default="ewallet" label="PLG_NAME" description="" />
+				<field name="log_write" type="radio" default="0" label="PLG_AUTHONET_WRITE_LOG"	description="PLG_AUTHONET_WRITE_LOG_DESC">
+					<option value="0">P_NO</option>
+					<option value="1">P_YES</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

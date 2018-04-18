@@ -2,6 +2,7 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
 jimport( 'joomla.plugin.plugin' );
 require_once(dirname(__FILE__) . '/pagseguro/helper.php');
 require_once (dirname(__FILE__) . '/lib/PagSeguroLibrary.php');
@@ -50,7 +51,7 @@ class  plgPaymentPagseguro extends JPlugin
 	  	return  $core_file;
 	}
 	}
-	
+
 	//Builds the layout to be shown, along with hidden fields.
 	function buildLayout($vars, $layout = 'default' )
 	{
@@ -58,7 +59,7 @@ class  plgPaymentPagseguro extends JPlugin
 		ob_start();
         $layout = $this->buildLayoutPath($layout);
         include($layout);
-        $html = ob_get_contents(); 
+        $html = ob_get_contents();
         ob_end_clean();
 		return $html;
 	}
@@ -70,7 +71,7 @@ class  plgPaymentPagseguro extends JPlugin
 	if(!in_array($this->_name,$config))
 	return;
 		$obj 		= new stdClass;
-		$obj->name 	= $this->params->get( 'plugin_name' );
+		$obj->name 	=$this->params->get( 'plugin_name' );
 		$obj->id	= $this->_name;
 		return $obj;
 	}
@@ -79,36 +80,36 @@ class  plgPaymentPagseguro extends JPlugin
 	function onTP_GetHTML($vars)
 	{
 		$vars->sellar_email = $this->params->get('sellar_email');
-		$vars->token = $this->params->get('token');		
+		$vars->token = $this->params->get('token');
 		$plgPaymentPagseguroHelper = new plgPaymentPagseguroHelper();
 		$vars->action_url = $plgPaymentPagseguroHelper->buildPagseguroUrl($vars,1);
 		//Take this receiver email address from plugin if component not provided it
 
-		
+
 		$html = $this->buildLayout($vars);
 
 		return $html;
 	}
 
-	
-	
-	function onTP_Processpayment($data,$vars=array()) 
+
+
+	function onTP_Processpayment($data,$vars=array())
 	{
 		$isValid = true;
-		$error = array();
-		$error['code']	= '';
-		$error['desc']	= '';
+		$error=array();
+		$error['code']	='';
+		$error['desc']	='';
 		$trxnstatus='';
-		
+
 		$vars->sellar_email = $this->params->get('sellar_email');
 		$vars->token = $this->params->get('token');
 		$plgPaymentPagseguroHelper = new plgPaymentPagseguroHelper();
 		$verified_Data = $plgPaymentPagseguroHelper->validateIPN($data,$vars);
-		//if (!$verify) { return false; }	
-		$pstatus = $verified_Data['payment_statuscode'];
-		
-		//3.compare response order id and send order id in notify URL 
-		$res_orderid = '';
+		//if (!$verify) { return false; }
+		$pstatus=$verified_Data['payment_statuscode'];
+
+		//3.compare response order id and send order id in notify URL
+		$res_orderid='';
 		if($isValid ) {
 		 $res_orderid = $verified_Data['order_id'];
 			if(!empty($vars) && $res_orderid != $vars->order_id )
@@ -123,10 +124,10 @@ class  plgPaymentPagseguro extends JPlugin
 			if(!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount = (float) $vars->amount;
-				$retrunamount = (float)$verified_Data['total_paid_amt'];
+				$order_amount=(float) $vars->amount;
+				$retrunamount =  (float)$verified_Data['total_paid_amt'];
 				$epsilon = 0.01;
-				
+
 				if(($order_amount - $retrunamount) > $epsilon)
 				{
 					$trxnstatus = 'ERROR';  // change response status to ERROR FOR AMOUNT ONLY
@@ -136,17 +137,17 @@ class  plgPaymentPagseguro extends JPlugin
 			}
 		}
 		// END OF AMOUNT CHECK
-		
+
 		if($trxnstatus == 'ERROR'){
-			$status = $this->translateResponse($trxnstatus);
+			$status= $this->translateResponse($trxnstatus);
 		}else {
-			$status = $this->translateResponse($pstatus);		
+			$status=$this->translateResponse($pstatus);
 		}
-		
+
 		if(!$status) {
-			$status = 'P';
+			$status='P';
 		}
-		
+
 
 		$result = array(
 						'order_id'=>$verified_Data['order_id'],
@@ -159,19 +160,23 @@ class  plgPaymentPagseguro extends JPlugin
 						'error'=>$error,
 						);
 		return $result;
-	}	
-	
+	}
+
 	function translateResponse($payment_status){
 			foreach($this->responseStatus as $key=>$value)
 			{
-				if($key == $payment_status)
-				return $value;		
+				if($key==$payment_status)
+				return $value;
 			}
 	}
+
 	function onTP_Storelog($data)
 	{
-		$plgPaymentPagseguroHelper = new plgPaymentPagseguroHelper;
-			$log = $plgPaymentPagseguroHelper->Storelog($this->_name,$data);
-	
-	}	
+		$log_write = $this->params->get('log_write', '0');
+
+		if($log_write == 1)
+		{
+			$log = plgPaymentPagseguroHelper::Storelog($this->_name,$data);
+		}
+	}
 }
