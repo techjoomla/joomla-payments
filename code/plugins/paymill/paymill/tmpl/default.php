@@ -142,7 +142,7 @@ var PAYMILL_TEST_MODE  = <?php echo $t;?>;
 	<div class="payment-errors"></div>
 	<!-- display from layout-->
 	<div id="loadder" style="display:none;text-align:center;"><img src="<?php echo $urlme; ?>"/></div>
-    <div class="akeeba-bootstrap">
+    <div class="tjcpg-wrapper">
 			
 			<form id="card-tds-form" name="second" action="<?php echo $vars->url; ?>" method="POST" class="form-validate form-horizontal">
 				<div id="field">

@@ -137,7 +137,12 @@ class plgpaymentblank extends JPlugin
  * It Logs the payment process data */
 	function onTP_Storelog($data)
 	{
-		$log = plgPaymentBlankHelper::Storelog($this->_name,$data);
+		$log_write = $this->params->get('log_write', '0');
+
+		if($log_write == 1)
+		{
+			$log = plgPaymentBlankHelper::Storelog($this->_name,$data);
+		}
 	}
 
 /* Internal use functions  @TODO move to common helper

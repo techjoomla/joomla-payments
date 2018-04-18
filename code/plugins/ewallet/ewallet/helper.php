@@ -1,36 +1,51 @@
 <?php
 /**
- *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
- *  @license    GNU General Public License version 2, or later
+ * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ * @license    GNU General Public License version 2, or later
  */
-defined( '_JEXEC' ) or die( ';)' );
-	jimport('joomla.html.html');
-	jimport( 'joomla.plugin.helper' );
-class plgPaymentEwalletHelper
+defined('_JEXEC') or die(';)');
+jimport('joomla.html.html');
+jimport('joomla.plugin.helper');
+
+/**
+ * PlgPaymentEwalletHelper
+ *
+ * @package     CPG
+ * @subpackage  site
+ * @since       2.2
+ */
+class PlgPaymentEwalletHelper
 {
-	function Storelog($name,$logdata)
+	/**
+	 * Storelog.
+	 *
+	 * @param   object  $name     name
+	 *
+	 * @param   string  $logdata  logdata
+	 *
+	 * @since   2.2
+	 *
+	 * @return   string  Layout Path
+	 */
+	public function Storelog($name,$logdata)
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		$path = dirname(__FILE__);
-		$my = JFactory::getUser();     
-	
+
+		$my = JFactory::getUser();
+
 		JLog::addLogger(
 			array(
-				'text_file' => $logdata['JT_CLIENT'].'_'.$name.'.log',
-				'text_entry_format' => $options ,
-				'text_file_path' => $path
+				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
+				'text_entry_format' => $options
 			),
 			JLog::INFO,
 			$logdata['JT_CLIENT']
 		);
 
 		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user = $my->name.'('.$my->id.')';
+		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
 		JLog::add($logEntry);
-
 	}
-		
-
 }
