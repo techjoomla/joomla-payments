@@ -1,6 +1,6 @@
 <?php
 /**
- *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @copyright  Copyright (c) 2009-2018 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die('Restricted access');
@@ -19,14 +19,14 @@ defined('_JEXEC') or die('Restricted access');
 
 		<input type="hidden" name="a3" value="<?php echo $vars->amount; ?>" />
 
-		<?php 
+		<?php
 		if($vars->recurring_frequency=='QUARTERLY') //For QUARTERLY recurring payment
 		{	?>
 			<input type="hidden" name="p3" value="3">
 			<input type="hidden" name="t3" value="MONTH">
 			<?php
 		}
-		else 
+		else
 		{
 			?>
 			<input type="hidden" name="p3" value="1">
