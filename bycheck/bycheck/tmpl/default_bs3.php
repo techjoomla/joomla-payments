@@ -55,13 +55,7 @@ else
 		<div class="form-group">
 			<label for="cardlname" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'PLG_ACC_DETAILS' ); ?></label>
 			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-				<?php $acc_dtls = explode(',', $acc_dtl);
-
-				foreach ($acc_dtls as $acc_info)
-				{
-					echo $acc_info . "<br>";
-				}
-				?>
+				<?php echo $acc_dtl;?>
 			</div>
 		</div>
 		<?php } ?>

@@ -56,13 +56,7 @@ else
 		<div class="control-group">
 			<label for="cardlname" class="control-label"><?php echo JText::_( 'PLG_ACC_DETAILS' ); ?></label>
 			<div class="controls">
-				<?php $acc_dtls = explode(',', $acc_dtl);
-
-				foreach ($acc_dtls as $acc_info)
-				{
-					echo $acc_info . "<br>";
-				}
-				?>
+				<?php echo $acc_dtl;?>
 			</div>
 		</div>
 		<?php } ?>
