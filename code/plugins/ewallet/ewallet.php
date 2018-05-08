@@ -150,9 +150,13 @@ class plgpaymentewallet extends JPlugin
 	}
 	function onTP_Storelog($data)
 	{
-		$plgPaymentEwalletHelper = new plgPaymentEwalletHelper();
-			$log = $plgPaymentEwalletHelper->Storelog($this->_name,$data);
+		$log_write = $this->params->get('log_write', '0');
 
+		if($log_write == 1)
+		{
+			$plgPaymentEwalletHelper = new plgPaymentEwalletHelper();
+			$log = $plgPaymentEwalletHelper->Storelog($this->_name,$data);
+		}
 	}
 
 	// Manoj - added refund function start.

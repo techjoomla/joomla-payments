@@ -1,12 +1,11 @@
-<?php 
+<?php
 /**
- * @copyright Copyright (C) 2012 -2013 Techjoomla, Tekdi Web Solutions . All rights reserved.
- * @license GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
- * @link     http://www.techjoomla.com
- */
-	
+ * @copyright  Copyright (c) 2009-2015 TechJoomla. All rights reserved
+ * @license    GNU General Public License version 2, or later
+ */
+
 // no direct access
-	defined('_JEXEC') or die('Restricted access'); 
+	defined('_JEXEC') or die('Restricted access');
 
 $document =JFactory::getDocument();
 JHtml::_('behavior.formvalidation');
@@ -30,16 +29,16 @@ function myValidate(f)
 		return false;
 	}
 	if(document.formvalidator.isValid(f)) {
-		f.check.value='<?php echo JSession::getFormToken(); ?>'; 
-		return true; 
+		f.check.value='<?php echo JSession::getFormToken(); ?>';
+		return true;
 	}
-	else 
+	else
 	{
 		var msg = 'Some values are not acceptable.  Please retry.';
 		alert(msg);
 		return false;
 	}
-	
+
 }
 function showcardtype(id)
 {
@@ -67,7 +66,7 @@ function showcardtype(id)
 }
 </script>
 
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 <form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);"  enctype="multipart/form-data" class="form-validate form-horizontal"  method="post">
 	<div>
 		<div class="control-group">
@@ -86,10 +85,10 @@ function showcardtype(id)
 				<?php echo JText::_('PLG_TRANSFIRST_DEBIT_CARD');?>
 			</div>
 		</div>
-		
+
 		<div class="control-group">
 			<label for="" class="control-label"><?php echo JText::_( 'PLG_TRANSFIRST_CREDIT_CARD_TYPE' ) ?></label>
-			<div class="controls"><?php 
+			<div class="controls"><?php
 			$types = array();
 			$credit_cards=$this->params->get( 'credit_cards', '' );
 			$creditcardarray=array(JText::_( "PLG_TRANSFIRST_VISA" )=>'Visa', JText::_( "PLG_TRANSFIRST_MASTERCARD" )=>'Mastercard',JText::_( "PLG_TRANSFIRST_AMERICAN_EXPRESS" )=>'AmericanExpress',JText::_( "PLG_TRANSFIRST_DISCOVER" )=>'Discover',JText::_( "PLG_TRANSFIRST_DINERS_CLUB" )=>'DinersClub',JText::_( "PLG_TRANSFIRST_AUT_JCB" )=>'JCB');
@@ -107,7 +106,7 @@ function showcardtype(id)
 					}
 				}
 			}
-			else 
+			else
 			{
 				foreach($creditcardarray as $creditkey=>$credit_cardall)
 				{
@@ -132,8 +131,8 @@ function showcardtype(id)
 								$months[$i]->text = date("M", $timestamp);
 							}
 							$months = array_merge($all, $months);
-							echo JHTML::_('select.genericlist',$months, 'card_exp_month', 'class="inputbox input-small required" ', 'value', 'text', date('m'));
-							echo JHTML::_('select.integerlist',date('Y'), 2030, 1, 'card_exp_year', 'size="1" class="inputbox input-small" ');
+							echo JHtml::_('select.genericlist',$months, 'card_exp_month', 'class="inputbox input-small required" ', 'value', 'text', date('m'));
+							echo JHtml::_('select.integerlist',date('Y'), 2030, 1, 'card_exp_year', 'size="1" class="inputbox input-small" ');
 						?>
 					</div>
 		</div>
