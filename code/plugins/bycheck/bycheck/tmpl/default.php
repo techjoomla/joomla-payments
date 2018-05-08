@@ -43,7 +43,7 @@ else
 			<div class="controls">	<?php  echo JText::sprintf( 'ORDER_INFO', $vars->custom_name);?></div>
 		</div>
 		<?php $acc_nm =  $vars->acc_holder_name;
-		  if(!empty($acc_nm)) 
+		  if(!empty($acc_nm))
 		  { ?>
 		<div class="control-group">
 			<label for="cardfname" class="control-label"><?php  echo JText::_( 'PLG_CHEQUE_ACC_HOLDER_NAME');?></label>
@@ -51,12 +51,12 @@ else
 		</div>
 		<?php } ?>
 		<?php $acc_dtl =  $vars->acc_details;
-		  if(!empty($acc_dtl)) 
+		  if(!empty($acc_dtl))
 		  { ?>
 		<div class="control-group">
 			<label for="cardlname" class="control-label"><?php echo JText::_( 'PLG_ACC_DETAILS' ); ?></label>
 			<div class="controls">
-				<?php echo $acc_dtl;?>
+				<?php echo nl2br($acc_dtl);?>
 			</div>
 		</div>
 		<?php } ?>
