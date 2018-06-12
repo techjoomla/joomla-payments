@@ -86,11 +86,28 @@ class PlgPayment2CheckoutHelper
 	 */
 	public function validateIPN($data, $secret)
 	{
+		$input = JFactory::getApplication()->input;
 		$incoming_md5   = strtoupper($data['md5_hash']);
 		$calculated_md5 = md5($data['sale_id'] . $data['vendor_id'] . $data['invoice_id'] . $secret);
 		$calculated_md5 = strtoupper($calculated_md5);
 
-		return ($calculated_md5 == $incoming_md5);
+		if ($calculated_md5 == $incoming_md5)
+		{
+			$status = true;
+		}
+		else
+		{
+			$data['ins_check_failure'] = JText::_("PLG_PAYMENT_2CHECKOUT_ERR_INVALID_INS");
+
+			$status = false;
+		}
+
+		$logData = array();
+		$logData["JT_CLIENT"] = $input->get("option", '', "STRING");
+		$logData["raw_data"] = $data;
+		self::Storelog("2checkout", $logData);
+
+		return $status;
 	}
 
 	/**

@@ -233,6 +233,20 @@ class PlgPayment2checkout extends JPlugin
 			}
 		}
 
+		// Validate INS (IPN)
+		if ($isValid)
+		{
+			if (!empty($vars) && !empty($data))
+			{
+				$isValid = plgPayment2checkoutHelper::validateIPN($data, $secret);
+
+				if (!$isValid)
+				{
+					throw new Exception(JText::_('PLG_PAYMENT_2CHECKOUT_ERR_INVALID_INS'));
+				}
+			}
+		}
+
 		$message_type = $data['message_type'];
 
 		if ($trxnstatus == 'ERROR')
