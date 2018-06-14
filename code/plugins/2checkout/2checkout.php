@@ -238,7 +238,8 @@ class PlgPayment2checkout extends JPlugin
 		{
 			if (!empty($vars) && !empty($data))
 			{
-				$isValid = plgPayment2checkoutHelper::validateIPN($data, $secret);
+				$plgPayment2checkoutHelper = new plgPayment2checkoutHelper;
+				$isValid = $plgPayment2checkoutHelper->validateIPN($data, $secret);
 
 				if (!$isValid)
 				{
@@ -286,7 +287,7 @@ class PlgPayment2checkout extends JPlugin
 	/**
 	 * translateResponse
 	 *
-	 * @param   object  $invoice_status  invoice_status
+	 * @param   STRING  $invoice_status  invoice_status
 	 *
 	 * @since   2.2
 	 *
@@ -318,7 +319,8 @@ class PlgPayment2checkout extends JPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPayment2checkoutHelper::Storelog($this->_name, $data);
+			$plgPayment2checkoutHelper = new plgPayment2checkoutHelper;
+			$plgPayment2checkoutHelper->Storelog($this->_name, $data);
 		}
 	}
 }

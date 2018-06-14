@@ -77,12 +77,12 @@ class PlgPayment2CheckoutHelper
 	/**
 	 * ValidateIPN
 	 *
-	 * @param   string  $data    data
-	 * @param   string  $secret  Component Name
+	 * @param   ARRAY   $data    data
+	 * @param   STRING  $secret  Component Name
 	 *
 	 * @since   2.2
 	 *
-	 * @return   string  data
+	 * @return   Boolean
 	 */
 	public function validateIPN($data, $secret)
 	{
@@ -105,7 +105,7 @@ class PlgPayment2CheckoutHelper
 		$logData = array();
 		$logData["JT_CLIENT"] = $input->get("option", '', "STRING");
 		$logData["raw_data"] = $data;
-		self::Storelog("2checkout", $logData);
+		$this->Storelog("2checkout", $logData);
 
 		return $status;
 	}
