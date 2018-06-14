@@ -190,6 +190,12 @@ class PlgPayment2checkout extends JPlugin
 	 */
 	public function onTP_Processpayment($data, $vars = array())
 	{
+		// If data is not posted then maybe its phishing or spam attack
+		if (empty($vars) || empty($data))
+		{
+			throw new Exception(JText::_('PLG_PAYMENT_2CHECKOUT_ERR_SPAM'));
+		}
+
 		$isValid = true;
 		$error = array();
 		$error['code'] = '';
@@ -233,6 +239,18 @@ class PlgPayment2checkout extends JPlugin
 			}
 		}
 
+		// Validate INS (IPN)
+		if ($isValid)
+		{
+			$plgPayment2checkoutHelper = new plgPayment2checkoutHelper;
+			$isValid = $plgPayment2checkoutHelper->validateIPN($data, $secret);
+
+			if (!$isValid)
+			{
+				throw new Exception(JText::_('PLG_PAYMENT_2CHECKOUT_ERR_INVALID_INS'));
+			}
+		}
+
 		$message_type = $data['message_type'];
 
 		if ($trxnstatus == 'ERROR')
@@ -272,7 +290,7 @@ class PlgPayment2checkout extends JPlugin
 	/**
 	 * translateResponse
 	 *
-	 * @param   object  $invoice_status  invoice_status
+	 * @param   STRING  $invoice_status  invoice_status
 	 *
 	 * @since   2.2
 	 *
@@ -304,7 +322,8 @@ class PlgPayment2checkout extends JPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPayment2checkoutHelper::Storelog($this->_name, $data);
+			$plgPayment2checkoutHelper = new plgPayment2checkoutHelper;
+			$plgPayment2checkoutHelper->Storelog($this->_name, $data);
 		}
 	}
 }
