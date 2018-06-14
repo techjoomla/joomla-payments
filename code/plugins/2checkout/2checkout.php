@@ -193,10 +193,7 @@ class PlgPayment2checkout extends JPlugin
 		// If data is not posted then maybe its phishing or spam attack
 		if (empty($vars) || empty($data))
 		{
-			if (!$isValid)
-			{
-				throw new Exception(JText::_('PLG_PAYMENT_2CHECKOUT_ERR_SPAM'));
-			}
+			throw new Exception(JText::_('PLG_PAYMENT_2CHECKOUT_ERR_SPAM'));
 		}
 
 		$isValid = true;
