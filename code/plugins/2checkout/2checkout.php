@@ -190,6 +190,14 @@ class PlgPayment2checkout extends JPlugin
 	 */
 	public function onTP_Processpayment($data, $vars = array())
 	{
+		if (empty($vars) || empty($data))
+		{
+			if (!$isValid)
+			{
+				throw new Exception(JText::_('PLG_PAYMENT_2CHECKOUT_ERR_SPAM'));
+			}
+		}
+
 		$isValid = true;
 		$error = array();
 		$error['code'] = '';
@@ -236,15 +244,12 @@ class PlgPayment2checkout extends JPlugin
 		// Validate INS (IPN)
 		if ($isValid)
 		{
-			if (!empty($vars) && !empty($data))
-			{
-				$plgPayment2checkoutHelper = new plgPayment2checkoutHelper;
-				$isValid = $plgPayment2checkoutHelper->validateIPN($data, $secret);
+			$plgPayment2checkoutHelper = new plgPayment2checkoutHelper;
+			$isValid = $plgPayment2checkoutHelper->validateIPN($data, $secret);
 
-				if (!$isValid)
-				{
-					throw new Exception(JText::_('PLG_PAYMENT_2CHECKOUT_ERR_INVALID_INS'));
-				}
+			if (!$isValid)
+			{
+				throw new Exception(JText::_('PLG_PAYMENT_2CHECKOUT_ERR_INVALID_INS'));
 			}
 		}
 
