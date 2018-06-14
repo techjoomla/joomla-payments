@@ -77,7 +77,7 @@ class PlgPayment2CheckoutHelper
 	/**
 	 * ValidateIPN
 	 *
-	 * @param   ARRAY   $data    data
+	 * @param   OBJECT  $data    data
 	 * @param   STRING  $secret  Component Name
 	 *
 	 * @since   2.2
