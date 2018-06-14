@@ -190,6 +190,7 @@ class PlgPayment2checkout extends JPlugin
 	 */
 	public function onTP_Processpayment($data, $vars = array())
 	{
+		// If data is not posted then maybe its phishing or spam attack
 		if (empty($vars) || empty($data))
 		{
 			if (!$isValid)
