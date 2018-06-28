@@ -17,7 +17,7 @@ defined('_JEXEC') or die('Restricted access');
 	<input type="hidden" name="merchant_order_id" value="<?php echo $vars->order_id ?>" />
 	<input type="hidden" name="fixed" value="Y" />
 	<input type="hidden" name="lang" value="<?php echo $vars->lang; ?>" />
-	<input type='hidden' name='x_receipt_link_url' value="<?php echo $vars->notify_url;?>" >
+	<input type='hidden' name='x_receipt_link_url' value="<?php echo $vars->return;?>" >
 	<input type="hidden" name="pay_method" value="<?php echo strtoupper($vars->pay_method); ?>" />
 	<input type="hidden" name="card_holder_name" value="<?php echo $vars->user_firstname . " " . $vars->user_lastname?>" />
 	<input type="hidden" name="email" value="<?php echo $vars->user_email?>" />
