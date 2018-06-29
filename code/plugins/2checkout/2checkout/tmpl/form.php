@@ -1,10 +1,11 @@
 <?php
 /**
- * @package    Joomla Payments
- * @author     TechJoomla <extensions@techjoomla.com>
- * @website    http://techjoomla.com
- * @copyright  Copyright (c) 2009-2018 TechJoomla. All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package     Joomla_Payments
+ * @subpackage  plg_payments_2checkout
+ *
+ * @author      Techjoomla <extensions@techjoomla.com>
+ * @copyright   Copyright (C) 2009 - 2018 Techjoomla. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 ?>
@@ -12,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 <form action="<?php echo $vars->action_url ?>" class="form-horizontal" method="post" id="paymentForm">
 	<input type="hidden" name="sid" value="<?php echo $vars->sid?>" />
 	<input type="hidden" name="cart_order_id" value="<?php echo $vars->order_id ?>" />
-	<input type="hidden" name="total" value="<?php echo sprintf('%02.2f',$vars->amount) ?>" />
+	<input type="hidden" name="total" value="<?php echo sprintf('%02.2f', $vars->amount) ?>" />
 	<input type="hidden" name="demo" value="<?php echo  $vars->demo; ?>" />
 	<input type="hidden" name="merchant_order_id" value="<?php echo $vars->order_id ?>" />
 	<input type="hidden" name="fixed" value="Y" />

@@ -1,10 +1,11 @@
 <?php
 /**
- * @package    Joomla Payments
- * @author     TechJoomla <extensions@techjoomla.com>
- * @website    http://techjoomla.com
- * @copyright  Copyright (c) 2009-2018 TechJoomla. All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package     Joomla_Payments
+ * @subpackage  plg_payments_2checkout
+ *
+ * @author      Techjoomla <extensions@techjoomla.com>
+ * @copyright   Copyright (C) 2009 - 2018 Techjoomla. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // No direct access
