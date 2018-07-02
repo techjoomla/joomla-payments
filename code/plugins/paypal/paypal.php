@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ * @copyright  Copyright (c) 2009-2018 TechJoomla. All rights reserved.
  * @license    GNU General Public License version 2, or later
  */
 // No direct access
@@ -199,7 +199,7 @@ class PlgPaymentPaypal extends JPlugin
 			$submitVaues['cmd'] = $vars->cmd;
 		}
 
-		$submitVaues['custom']        = $vars->order_id;
+		$submitVaues['order_id']        = $vars->order_id;
 		$submitVaues['item_name']     = $vars->item_name;
 		$submitVaues['return']        = $vars->return;
 		$submitVaues['cancel_return'] = $vars->cancel_return;
@@ -208,12 +208,22 @@ class PlgPaymentPaypal extends JPlugin
 		$submitVaues['no_note']       = '1';
 		$submitVaues['rm']            = '2';
 		$submitVaues['amount']        = $vars->amount;
-		$submitVaues['lc']            = $vars->country_code;
+		$submitVaues['country_code']            = $vars->country_code;
 		$plgPaymentPaypalHelper       = new plgPaymentPaypalHelper;
 		$postaction                   = $plgPaymentPaypalHelper->buildPaypalUrl();
-		/* for offsite plugin */
-		$postvalues                   = http_build_query($submitVaues);
-		header('Location: ' . $postaction . '?' . $postvalues);
+
+		// Add PayPal URL as action_url/submiturl so that the data can be posted to PayPal - used in layout file of the plugin
+		$submitVaues['action_url'] = $postaction;
+		$submitVaues['submiturl'] = $postaction;
+
+		$vars = new stdclass;
+		$vars = (object) $submitVaues;
+
+		ob_start();
+		include dirname(__FILE__) . '/paypal/tmpl/recurring.php';
+		$html = ob_get_clean();
+
+		echo $html;
 	}
 
 	// ***************************Recurring Payment ***************************
@@ -250,7 +260,7 @@ class PlgPaymentPaypal extends JPlugin
 			$submitVaues['cmd'] = $vars->cmd;
 		}
 
-		$submitVaues['custom']        = $vars->order_id;
+		$submitVaues['order_id']        = $vars->order_id;
 		$submitVaues['item_name']     = $vars->item_name;
 		$submitVaues['return']        = $vars->return;
 		$submitVaues['cancel_return'] = $vars->cancel_return;
@@ -258,7 +268,7 @@ class PlgPaymentPaypal extends JPlugin
 		$submitVaues['currency_code'] = $vars->currency_code;
 		$submitVaues['no_note']       = '1';
 		$submitVaues['rm']            = '2';
-		$submitVaues['a3']            = $vars->amount;
+		$submitVaues['amount']            = $vars->amount;
 
 		if ($vars->recurring_frequency == 'QUARTERLY')
 		{
@@ -268,20 +278,28 @@ class PlgPaymentPaypal extends JPlugin
 		else
 		{
 			$submitVaues['p3'] = 1;
-			$submitVaues['t3'] = $vars->recurring_frequency;
+			$submitVaues['recurring_frequency'] = $vars->recurring_frequency;
 		}
 
-		$submitVaues['srt']     = $vars->recurring_count;
+		$submitVaues['recurring_count']     = $vars->recurring_count;
 		$submitVaues['src']     = 1;
 		$submitVaues['sra']     = 1;
 
-		// $submitVaues['TRIALBILLINGPERIOD']='DAY'; //Parameters to test Recurring payment
-		// $submitVaues['TRIALBILLINGFREQUENCY']=3; //Parameters to test Recurring payment
 		$plgPaymentPaypalHelper = new plgPaymentPaypalHelper;
 		$postaction             = $plgPaymentPaypalHelper->buildPaypalUrl();
-		/* for offsite plugin */
-		$postvalues             = http_build_query($submitVaues);
-		header('Location: ' . $postaction . '?' . $postvalues);
+
+		// Add PayPal URL as action_url/submiturl so that the data can be posted to PayPal - used in layout file of the plugin
+		$submitVaues['action_url'] = $postaction;
+		$submitVaues['submiturl'] = $postaction;
+
+		$vars = new stdclass;
+		$vars = (object) $submitVaues;
+
+		ob_start();
+		include dirname(__FILE__) . '/paypal/tmpl/recurring.php';
+		$html = ob_get_clean();
+
+		echo $html;
 	}
 
 	/**

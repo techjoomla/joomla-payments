@@ -1,14 +1,12 @@
-<?php 
+<?php
 /**
- *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @copyright  Copyright (c) 2009-2018 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
-defined('_JEXEC') or die('Restricted access'); 
-
+defined('_JEXEC') or die('Restricted access');
 ?>
-
 <div class="tjcpg-wrapper">
-	<form action="<?php echo $vars->submiturl; //$vars->action_url ?>" class="form-horizontal" method="post">
+	<form action="<?php echo $vars->action_url; //$vars->submiturl; ?>" class="form-horizontal" method="post">
 		<input type="hidden" name="business" value="<?php echo $vars->business; ?>" />
 		<input type="hidden" name="custom" value="<?php echo $vars->order_id; ?>" />
 		<input type="hidden" name="item_name" value="<?php echo $vars->item_name; ?>" />
@@ -20,19 +18,23 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="hidden" name="rm" value="2" />
 
 		<input type="hidden" name="a3" value="<?php echo $vars->amount; ?>" />
-		
-		<?php if($vars->recurring_frequency=='QUARTERLY') //For QUARTERLY recurring payment
-		{ ?>
+
+		<?php
+		if($vars->recurring_frequency=='QUARTERLY') //For QUARTERLY recurring payment
+		{	?>
 			<input type="hidden" name="p3" value="3">
-			<input type="hidden" name="t3" value="MONTH"> 
-		<?php 
-		}else {
-		 ?>
+			<input type="hidden" name="t3" value="MONTH">
+			<?php
+		}
+		else
+		{
+			?>
 			<input type="hidden" name="p3" value="1">
-			<input type="hidden" name="t3" value="<?php echo $vars->recurring_frequency;?>"> 
-		<?php 
-		}?>
-		<input type="hidden" name="srt" value="<?php echo $vars->recurring_count; ?>"> 
+			<input type="hidden" name="t3" value="<?php echo $vars->recurring_frequency;?>">
+			<?php
+		}
+		?>
+		<input type="hidden" name="srt" value="<?php echo $vars->recurring_count; ?>">
 		<input type="hidden" name="src" value="1">
 		<input type="hidden" name="sra" value="1">
 		<input type="hidden" name="no_shipping" value="1">
