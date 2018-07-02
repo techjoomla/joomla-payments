@@ -13,12 +13,12 @@
 		<filename plugin="ewayrapid3">ewayrapid3.php</filename>
 		<folder>ewayrapid3</folder>
 	</files>
-	<languages> 
+	<languages>
 		<language tag="en-GB">en-GB/en-GB.plg_payment_ewayrapid3.ini</language>
 		<language tag="en-GB">en-GB/en-GB.plg_payment_ewayrapid3.sys.ini</language>
-		
+
 	</languages>
-	
+
 	<!-- Fields for Joomla 1.6.x and onwards -->
 
 	<config>
@@ -26,8 +26,8 @@
 			<fieldset name="basic">
 				<field name="plugin_name" type="text" size="50" default="" label="PLG_PAYMENT_EWAYRAPID3_TITLE_LABEL" description="PLG_PAYMENT_EWAYRAPID3_TITLE_DESC"/>
 				<field name="ppimage" type="text" size="50" default="" label="PLG_PAYMENT_EWAYRAPID3_PPIMAGE_LABEL" description="PLG_PAYMENT_EWAYRAPID3_PPIMAGE_DESC" />
-				
-	
+
+
 				<field type="spacer" />
 				<field name="key" type="text" size="50" default="" label="PLG_PAYMENT_EWAYRAPID3_KEY_LABEL" description="PLG_PAYMENT_EWAYRAPID3_KEY_DESC"/>
 				<field name="password" type="text" size="50" default="" label="PLG_PAYMENT_EWAYRAPID3_PASSWORD_LABEL" description="PLG_PAYMENT_EWAYRAPID3_PASSWORD_DESC"/>
@@ -39,9 +39,13 @@
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-				
+				<field name="log_write" type="radio" default="0" label="PLG_AUTHONET_WRITE_LOG"	description="PLG_AUTHONET_WRITE_LOG_DESC">
+					<option value="0">P_NO</option>
+					<option value="1">P_YES</option>
+				</field>
+
 			</fieldset>
 		</fields>
 	</config>
-	
+
 </extension>

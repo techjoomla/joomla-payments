@@ -1,45 +1,72 @@
 <?php
-	jimport('joomla.html.html');
-	jimport( 'joomla.plugin.helper' );
-class plgPaymentTransfirstHelper
-{ 	
-	
-	//gets the paypal URL
-	function buildTransfirstUrl()
+/**
+ * @version    SVN: <svn_id>
+ * @package    CPG
+ * @author     Techjoomla <extensions@techjoomla.com>
+ * @copyright  Copyright (c) 2009-2015 TechJoomla. All rights reserved.
+ * @license    GNU General Public License version 2 or later.
+ */
+jimport('joomla.html.html');
+jimport('joomla.plugin.helper');
+
+/**
+ * plgPaymentTransfirstHelper
+ *
+ * @package     CPG
+ * @subpackage  site
+ * @since       2.2
+ */
+class PlgPaymentTransfirstHelper
+{
+	/**
+	 * Build submit URL according to plugin configuration.
+	 *
+	 * @since   2.2
+	 *
+	 * @return   string url
+	 */
+	public function buildTransfirstUrl()
 	{
 		$plugin = JPluginHelper::getPlugin('payment', 'transfirst');
 		$params = json_decode($plugin->params);
-		$url = $params->sandbox ? 'https://ws.cert.processnow.com:443/portal/merchantframework/MerchantWebServices-v1?wsdl' : 'https://ws.processnow.com/portal/merchantframework/MerchantWebServices-v1?wsdl';
+		$sandboxUrl = 'https://ws.cert.processnow.com:443/portal/merchantframework/MerchantWebServices-v1?wsdl';
+		$url    = $params->sandbox ? $sandboxUrl : 'https://ws.processnow.com/portal/merchantframework/MerchantWebServices-v1?wsdl';
+
 		return $url;
 	}
-	
-	function Storelog($name,$logdata)
+
+	/**
+	 * Log the payment response.
+	 *
+	 * @param   object  $name     name
+	 *
+	 * @param   string  $logdata  logdata
+	 *
+	 * @since   2.2
+	 *
+	 * @return   string  Layout Path
+	 */
+	public function Storelog($name, $logdata)
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		$path = dirname(__FILE__);
-		$my = JFactory::getUser();     
-	
+		$my      = JFactory::getUser();
+
 		JLog::addLogger(
 			array(
-				'text_file' => $logdata['JT_CLIENT'].'_'.$name.'.log',
-				'text_entry_format' => $options ,
-				'text_file_path' => $path
+			'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
+			'text_entry_format' => $options
 			),
-			JLog::INFO,
-			$logdata['JT_CLIENT']
+			JLog::INFO, $logdata['JT_CLIENT']
 		);
 
-		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
-		$logEntry->user = $my->name.'('.$my->id.')';
+		$logEntry       = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
 
 		JLog::add($logEntry);
-     
-//		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
-//    $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
+
+		// $logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
+		// $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
 	}
-	
-		
-		
 }

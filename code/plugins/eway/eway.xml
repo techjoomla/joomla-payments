@@ -13,12 +13,12 @@
 		<filename plugin="eway">eway.php</filename>
 		<folder>eway</folder>
 	</files>
-	<languages> 
+	<languages>
 		<language tag="en-GB">en-GB/en-GB.plg_payment_eway.ini</language>
 		<language tag="en-GB">en-GB/en-GB.plg_payment_eway.sys.ini</language>
-		
+
 	</languages>
-	
+
 	<!-- Fields for Joomla 1.6.x and onwards -->
 
 	<config>
@@ -26,14 +26,14 @@
 			<fieldset name="basic">
 				<field name="plugin_name" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_TITLE_LABEL" description="PLG_PAYMENT_EWAY_TITLE_DESC"/>
 				<field name="ppimage" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_PPIMAGE_LABEL" description="PLG_PAYMENT_EWAY_PPIMAGE_DESC" />
-				
+
 				<field type="spacer" />
 				<field name="site" type="radio" default="0" label="PLG_PAYMENT_EWAY_SITE_LABEL" description="PLG_PAYMENT_EWAY_SITE_DESC">
 					<option value="0">PLG_PAYMENT_EWAY_SITE_AUSTRALIA</option>
 					<option value="1">PLG_PAYMENT_EWAY_SITE_UK</option>
 					<option value="2">PLG_PAYMENT_EWAY_SITE_NZ</option>
 				</field>
-				
+
 				<field type="spacer" />
 				<field name="customerid" type="text" size="50" default="87654321" label="PLG_PAYMENT_EWAY_CUSTOMERID_LABEL" description="PLG_PAYMENT_EWAY_CUSTOMERID_DESC"/>
 				<field name="username" type="text" size="50" default="TestAccount" label="PLG_PAYMENT_EWAY_USERNAME_LABEL" description="PLG_PAYMENT_EWAY_USERNAME_DESC"/>
@@ -50,8 +50,12 @@
 				<field name="pagetitle" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_PAGETITLE_LABEL" description="PLG_PAYMENT_EWAY_PAGETITLE_DESC"/>
 				<field name="pagedescription" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_PAGEDESCRIPTION_LABEL" description="PLG_PAYMENT_EWAY_PAGEDESCRIPTION_DESC"/>
 				<field name="pagefooter" type="text" size="50" default="" label="PLG_PAYMENT_EWAY_PAGEFOOTER_LABEL" description="PLG_PAYMENT_EWAY_PAGEFOOTER_DESC"/>
+				<field name="log_write" type="radio" default="0" label="PLG_AUTHONET_WRITE_LOG"	description="PLG_AUTHONET_WRITE_LOG_DESC">
+					<option value="0">P_NO</option>
+					<option value="1">P_YES</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
-	
+
 </extension>

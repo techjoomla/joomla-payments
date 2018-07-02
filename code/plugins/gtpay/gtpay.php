@@ -23,8 +23,8 @@ class plgPaymentGtpay extends JPlugin
 		$status_code = $jinput->get('gtpay_tranx_status_code', null, null);
 		$status_msg = $jinput->get('gtpay_tranx_status_msg', null, null);
 		$db = JFactory::getDBO();
-		if($status_code == '00') 
-		{ 
+		if($status_code == '00')
+		{
 			$application = JFactory::getApplication();
 			$application->enqueueMessage(JText::_('SUCCESSFUL_TRANSACTION'). ' '.$status_msg);
 			$sql = "UPDATE #__jg_orders SET status = 'C' WHERE status = 'P' ORDER BY id DESC LIMIT 1";
@@ -36,8 +36,8 @@ class plgPaymentGtpay extends JPlugin
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
 		$app = JFactory::getApplication();
-		$core_file 	= dirname(__FILE__).DS.$this->_name.DS.'tmpl'.DS.'default.php';
-		$override		= JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$this->_type.DS.$this->_name.DS.'recurring.php';
+		$core_file 	= dirname(__FILE__). '/' . $this->_name . '/tmpl/default.php';
+		$override = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . 'recurring.php';
 		if(JFile::exists($override))
 		{
 			return $override;

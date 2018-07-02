@@ -3,10 +3,9 @@
  *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
- 
+
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-//require_once JPATH_COMPONENT . DS . 'helper.php';
 $lang = JFactory::getLanguage();
 $lang->load('plg_payment_ewallet', JPATH_ADMINISTRATOR);
 require_once(dirname(__FILE__) . '/ewallet/helper.php');
@@ -151,9 +150,13 @@ class plgpaymentewallet extends JPlugin
 	}
 	function onTP_Storelog($data)
 	{
-		$plgPaymentEwalletHelper = new plgPaymentEwalletHelper();
-			$log = $plgPaymentEwalletHelper->Storelog($this->_name,$data);
+		$log_write = $this->params->get('log_write', '0');
 
+		if($log_write == 1)
+		{
+			$plgPaymentEwalletHelper = new plgPaymentEwalletHelper();
+			$log = $plgPaymentEwalletHelper->Storelog($this->_name,$data);
+		}
 	}
 
 	// Manoj - added refund function start.

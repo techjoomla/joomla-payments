@@ -1,6 +1,6 @@
 <?php
 /**
- *  @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
+ *  @copyright  Copyright (c) 2009-2015 TechJoomla. All rights reserved.
  *  @license    GNU General Public License version 2, or later
  */
 
@@ -10,7 +10,7 @@
 $document =JFactory::getDocument();
 defined('_JEXEC') or die('Restricted access');
 
-	JHTML::_('behavior.formvalidation');
+	JHtml::_('behavior.formvalidation');
 
 	if($vars->custom_email=="")
 		$email = JText::_('NO_ADDRS');
@@ -38,7 +38,7 @@ if (document.formvalidator.isValid(f)) {
 
 
 </script>
-<div class="akeeba-bootstrap">
+<div class="tjcpg-wrapper">
 <form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);" class="form-validate form-horizontal"  method="post">
 	<div>
 		<div class="control-group">
