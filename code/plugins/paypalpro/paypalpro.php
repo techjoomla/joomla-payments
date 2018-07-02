@@ -167,7 +167,7 @@ class Plgpaymentpaypalpro extends JPlugin
 	 * onTP_Processpayment
 	 *
 	 * @param   object  $data  Data
-	 * @param   string  $vars  array
+	 * @param   object  $vars  array
 	 *
 	 * @since   2.2
 	 *
@@ -300,22 +300,19 @@ class Plgpaymentpaypalpro extends JPlugin
 		}*/
 
 		// Amount check
-		if ($isValid)
+		if (!empty($vars))
 		{
-			if (!empty($vars))
-			{
-				// Check that the amount is correct
-				$order_amount = (float) $vars->amount;
-				$retrunamount = (float) $final_res['AMT'];
-				$epsilon      = 0.01;
+			// Check that the amount is correct
+			$order_amount = (float) $vars->amount;
+			$retrunamount = (float) $final_res['AMT'];
+			$epsilon      = 0.01;
 
-				if (($order_amount - $retrunamount) > $epsilon)
-				{
-					// Change response status to ERROR FOR AMOUNT ONLY
-					$trxnstatus = 'ERROR';
-					$isValid    = false;
-					$error['desc'] .= "ORDER_AMOUNT_MISTMATCH - order amount= " . $order_amount . ' response order amount = ' . $retrunamount;
-				}
+			if (($order_amount - $retrunamount) > $epsilon)
+			{
+				// Change response status to ERROR FOR AMOUNT ONLY
+				$trxnstatus = 'ERROR';
+				$isValid    = false;
+				$error['desc'] .= "ORDER_AMOUNT_MISTMATCH - order amount= " . $order_amount . ' response order amount = ' . $retrunamount;
 			}
 		}
 
