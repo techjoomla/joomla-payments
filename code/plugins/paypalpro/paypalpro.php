@@ -287,8 +287,7 @@ class Plgpaymentpaypalpro extends JPlugin
 		$res_orderid = '';
 		$res_orderid = $data['order_id'];
 
-		/* As we are not sending notify URL to PayPal Pro*/
-		/*
+
 		if ($isValid)
 		{
 			if (!empty($vars) && $res_orderid != $vars->order_id)
@@ -297,22 +296,25 @@ class Plgpaymentpaypalpro extends JPlugin
 				$isValid    = false;
 				$error['desc'] .= "ORDER_MISMATCH " . " Invalid ORDERID; notify order_is " . $vars->order_id . ", and response " . $res_orderid;
 			}
-		}*/
+		}
 
 		// Amount check
-		if (!empty($vars))
+		if ($isValid)
 		{
-			// Check that the amount is correct
-			$order_amount = (float) $vars->amount;
-			$retrunamount = (float) $final_res['AMT'];
-			$epsilon      = 0.01;
-
-			if (($order_amount - $retrunamount) > $epsilon)
+			if (!empty($vars))
 			{
-				// Change response status to ERROR FOR AMOUNT ONLY
-				$trxnstatus = 'ERROR';
-				$isValid    = false;
-				$error['desc'] .= "ORDER_AMOUNT_MISTMATCH - order amount= " . $order_amount . ' response order amount = ' . $retrunamount;
+				// Check that the amount is correct
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float) $final_res['AMT'];
+				$epsilon      = 0.01;
+
+				if (($order_amount - $retrunamount) > $epsilon)
+				{
+					// Change response status to ERROR FOR AMOUNT ONLY
+					$trxnstatus = 'ERROR';
+					$isValid    = false;
+					$error['desc'] .= "ORDER_AMOUNT_MISTMATCH - order amount= " . $order_amount . ' response order amount = ' . $retrunamount;
+				}
 			}
 		}
 
