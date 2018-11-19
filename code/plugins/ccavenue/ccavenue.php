@@ -123,7 +123,7 @@ class  PlgPaymentCcavenue extends JPlugin
 	 * Method to Constructs the Payment form in case of On Site Payment gateways like Auth.net
 	 * & constructs the Submit button in case of offsite ones like Amazon.
 	 *
-	 * @param   String  $vars  Var
+	 * @param   object  $vars  Payment gateway vars
 	 *
 	 * @return  html
 	 *
