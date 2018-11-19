@@ -167,7 +167,7 @@ class  PlgPaymentCcavenue extends JPlugin
 		*/
 		if (trim($vars->url) != '')
 		{
-			$gatewaydata['redirect_url']		= $vars->url;
+			$gatewaydata['redirect_url'] = $vars->url;
 		}
 
 		// Notify URL set for notify url parameter of payment gateway
