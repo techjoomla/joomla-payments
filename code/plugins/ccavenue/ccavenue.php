@@ -153,13 +153,13 @@ class  PlgPaymentCcavenue extends JPlugin
 
 		/* $vars->checksumval = $this->getCheckSum($vars->merchant_id,$vars->amount,$vars->order_id,$vars->notify_url,$vars->working_key);
 		*/
-		$merchant_data						= '';
+		$merchant_data = '';
 
-		$gatewaydata						= array();
-		$gatewaydata['merchant_id']  		= $vars->merchant_id;
-		$gatewaydata['amount']  	  		= $vars->amount;
-		$gatewaydata['order_id']  			= $vars->order_id;
-		$gatewaydata['redirect_url'] 		= $vars->notify_url;
+		$gatewaydata                 = array();
+		$gatewaydata['merchant_id']  = $vars->merchant_id;
+		$gatewaydata['amount']       = $vars->amount;
+		$gatewaydata['order_id']     = $vars->order_id;
+		$gatewaydata['redirect_url'] = $vars->notify_url;
 
 		/*
 		 * Redirect URL should be return url so, check URL set in $var or not
@@ -171,16 +171,16 @@ class  PlgPaymentCcavenue extends JPlugin
 		}
 
 		// Notify URL set for notify url parameter of payment gateway
-		$gatewaydata['notify_url'] 			= $vars->notify_url;
-		$gatewaydata['billing_name']  		= $vars->userInfo['firstname'] . ' ' . $vars->userInfo['lastname'];
-		$gatewaydata['billing_address']  	= $vars->userInfo['add_line1'];
-		$gatewaydata['billing_city']		= $vars->userInfo['city'];
-		$gatewaydata['billing_state']		= $vars->userInfo['state_code'];
-		$gatewaydata['billing_zip']		    = $vars->userInfo['zipcode'];
-		$gatewaydata['billing_country']	    = $vars->userInfo['country_code'];
-		$gatewaydata['billing_tel']  		= $vars->phone;
-		$gatewaydata['billing_email']  		= $vars->user_email;
-		$gatewaydata['currency']  			= $vars->currency_code;
+		$gatewaydata['notify_url']      = $vars->notify_url;
+		$gatewaydata['billing_name']    = $vars->userInfo['firstname'] . ' ' . $vars->userInfo['lastname'];
+		$gatewaydata['billing_address'] = $vars->userInfo['add_line1'];
+		$gatewaydata['billing_city']    = $vars->userInfo['city'];
+		$gatewaydata['billing_state']   = $vars->userInfo['state_code'];
+		$gatewaydata['billing_zip']     = $vars->userInfo['zipcode'];
+		$gatewaydata['billing_country'] = $vars->userInfo['country_code'];
+		$gatewaydata['billing_tel']     = $vars->phone;
+		$gatewaydata['billing_email']   = $vars->user_email;
+		$gatewaydata['currency']        = $vars->currency_code;
 
 		foreach ($gatewaydata as $key => $value)
 		{
