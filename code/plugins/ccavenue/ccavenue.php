@@ -160,6 +160,18 @@ class  PlgPaymentCcavenue extends JPlugin
 		$gatewaydata['amount']  	  		= $vars->amount;
 		$gatewaydata['order_id']  			= $vars->order_id;
 		$gatewaydata['redirect_url'] 		= $vars->notify_url;
+
+		/*
+		 * Redirect URL should be return url so, check URL set in $var or not
+		 * if URL exist then assign to redirect URL parameter of ccavenue payment gateway
+		*/
+		if (trim($vars->url) != '')
+		{
+			$gatewaydata['redirect_url']		= $vars->url;
+		}
+
+		// Notify URL set for notify url parameter of payment gateway
+		$gatewaydata['notify_url'] 			= $vars->notify_url;
 		$gatewaydata['billing_name']  		= $vars->userInfo['firstname'] . ' ' . $vars->userInfo['lastname'];
 		$gatewaydata['billing_address']  	= $vars->userInfo['add_line1'];
 		$gatewaydata['billing_city']		= $vars->userInfo['city'];
