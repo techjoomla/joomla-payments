@@ -22,7 +22,8 @@ if(!empty($vars->userInfo))
 				<input type="hidden" name="amount" value="<?php echo (float)$vars->amount; ?>" />
 				<input type="hidden" name="order_id" value="<?php echo $vars->order_id; ?>" />
 				<input type="hidden" name="currency" value="<?php echo $vars->currency_code; ?>" />
-				<input type="hidden" name="redirect_url" value="<?php echo $vars->notify_url; ?>" />
+				<input type="hidden" name="redirect_url" value="<?php echo $vars->url; ?>" />
+				<input type="hidden" name="notify_url" value="<?php echo $vars->notify_url; ?>" />
 				<input type="hidden" name="billing_name" value="<?php echo $vars->user_firstname; ?>" />
 				<input type="hidden" name="billing_address" value="<?php echo $wholeAddress; ?>" />
 				<input type="hidden" name="billing_email" value="<?php echo $vars->user_email; ?>" />
