@@ -95,7 +95,7 @@
 			</div>
 			<div class="form-group">
 			   <label for="cardcity" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'CITY' ) ?></label>
-			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardcity" type="text" name="cardcity" size="35" value="<?php echo !empty($userInfo['city']) ?$userInfo['city']:'' ;?>" /></div>
+			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox" id="cardcity" type="text" name="cardcity" size="35" value="<?php echo !empty($userInfo['city']) ?$userInfo['city']:'' ;?>" /></div>
 			</div>
 			<div class="form-group">
 			   <label for="cardstate" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'STATE' ) ?></label>

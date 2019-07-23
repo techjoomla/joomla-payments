@@ -124,7 +124,7 @@ if (!empty($vars->userInfo))
 						<?php echo JText::_('CITY'); ?>
 					</label>
 					<div class="controls">
-						<input class="inputbox required" id="cardcity" type="text" name="cardcity" size="35" value="<?php echo !empty($userInfo['city']) ?$userInfo['city']:''; ?>" />
+						<input class="inputbox" id="cardcity" type="text" name="cardcity" size="35" value="<?php echo !empty($userInfo['city']) ?$userInfo['city']:''; ?>" />
 					</div>
 				</div>
 
