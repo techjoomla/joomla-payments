@@ -30,6 +30,7 @@
 	else {
 		var msg = 'Some values are not acceptable.  Please retry.';
 		alert(msg);
+		plg_auth_showHide();
 	}
 	return false;
    }
@@ -78,15 +79,15 @@
 			} ?>
 		 <div id="tj_payGway_billInfo" style="display:<?php echo $plg_billStyle; ?>">
 			<div class="form-group">
-			   <label for="cardfname" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'FIRST_NAME' ) ?></label>
+			   <label for="cardfname" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'FIRST_NAME' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
 			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardfname" type="text" name="cardfname" size="35" value="<?php echo !empty($userInfo['firstname']) ?$userInfo['firstname']:'' ;?>" /></div>
 			</div>
 			<div class="form-group">
-			   <label for="cardlname" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'LAST_NAME' ) ?></label>
+			   <label for="cardlname" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'LAST_NAME' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
 			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardlname" type="text" name="cardlname" size="35" value="<?php echo !empty($userInfo['lastname']) ?$userInfo['lastname']:'' ;?>" /></div>
 			</div>
 			<div class="form-group">
-			   <label for="cardaddress1" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'STREET_ADDRESS' ) ?></label>
+			   <label for="cardaddress1" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'STREET_ADDRESS' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
 			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardaddress1" type="text" name="cardaddress1" size="" value="<?php echo !empty($userInfo['add_line1']) ?$userInfo['add_line1']:'' ;?>" /></div>
 			</div>
 			<div class="form-group">
@@ -94,23 +95,23 @@
 			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox" id="cardaddress2"  type="text" name="cardaddress2" size="45" value="<?php echo !empty($userInfo['add_line2']) ?$userInfo['add_line2']:'' ;?>" /></div>
 			</div>
 			<div class="form-group">
-			   <label for="cardcity" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'CITY' ) ?></label>
+			   <label for="cardcity" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'CITY' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
 			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardcity" type="text" name="cardcity" size="35" value="<?php echo !empty($userInfo['city']) ?$userInfo['city']:'' ;?>" /></div>
 			</div>
 			<div class="form-group">
-			   <label for="cardstate" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'STATE' ) ?></label>
+			   <label for="cardstate" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'STATE' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
 			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardstate" type="text" name="cardstate" size="10" value="<?php echo !empty($userInfo['state_code']) ?$userInfo['state_code']:'' ;?>" /></div>
 			</div>
 			<div class="form-group">
-			   <label for="cardzip" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'POSTAL_CODE' ) ?></label>
+			   <label for="cardzip" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'POSTAL_CODE' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
 			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardzip" type="text" name="cardzip" size="10" value="<?php echo !empty($userInfo['zipcode']) ?$userInfo['zipcode']:'' ;?>" /></div>
 			</div>
 			<div class="form-group">
-			   <label for="cardcountry" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'COUNTRY' ) ?></label>
+			   <label for="cardcountry" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'COUNTRY' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
 			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardcountry" type="text" name="cardcountry" size="35" value="<?php echo !empty($userInfo['country_code']) ?$userInfo['country_code']:'' ;?>" /></div>
 			</div>
 			<div class="form-group">
-			   <label for="email" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'EMAIL_ADDRESS' ) ?></label>
+			   <label for="email" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'EMAIL_ADDRESS' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
 			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="email" type="text" name="email" size="35" value="<?php echo $vars->user_email;?>" /></div>
 			</div>
 		 </div>
@@ -154,15 +155,15 @@
 			</div>
 		 </div>
 		 <div class="form-group">
-			<label for="cardnum" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'CARD_NUMBER' ) ?></label>
+			<label for="cardnum" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'CARD_NUMBER' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
 			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardnum" type="text" name="cardnum" size="35" value="" /></div>
 		 </div>
 		 <div class="form-group">
-			<label for="cardexp" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'EXPIRATION_DATE_IN_FORMAT_MMYY' ) ?></label>
+			<label for="cardexp" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'EXPIRATION_DATE_IN_FORMAT_MMYY' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
 			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardexp" type="text" name="cardexp" size="10" value="" /></div>
 		 </div>
 		 <div class="form-group">
-			<label for="cardcvv" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'CARD_CVV_NUMBER' ) ?></label>
+			<label for="cardcvv" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'CARD_CVV_NUMBER' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
 			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardcvv" type="text" name="cardcvv" size="10" value="" /></div>
 		 </div>
 		 <div class="form-actions">
