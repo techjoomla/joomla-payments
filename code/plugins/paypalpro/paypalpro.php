@@ -167,7 +167,7 @@ class Plgpaymentpaypalpro extends JPlugin
 	 * onTP_Processpayment
 	 *
 	 * @param   object  $data  Data
-	 * @param   string  $vars  array
+	 * @param   object  $vars  array
 	 *
 	 * @since   2.2
 	 *
@@ -201,6 +201,7 @@ class Plgpaymentpaypalpro extends JPlugin
 			$pro_values = array(
 				"METHOD" => 'CreateRecurringPaymentsProfile',
 				"AMT" => $data['chargetotal'],
+				"CURRENCYCODE" => $data['currency_code'],
 				"CREDITCARDTYPE" => $data['credit_card_type'],
 				"ACCT" => $data['cardnum'],
 				"CVV2" => $data['cardcsc'],
@@ -228,6 +229,7 @@ class Plgpaymentpaypalpro extends JPlugin
 				"PAYMENTACTION" => "Sale",
 				"IPADDRESS" => $_SERVER['REMOTE_ADDR'],
 				"AMT" => $data['chargetotal'],
+				"CURRENCYCODE" => $data['currency_code'],
 				"CREDITCARDTYPE" => $data['credit_card_type'],
 				"ACCT" => $data['cardnum'],
 				"EXPDATE" => $data['cardexp'],
@@ -284,6 +286,7 @@ class Plgpaymentpaypalpro extends JPlugin
 		// Compare response order id and send order id in notify URL
 		$res_orderid = '';
 		$res_orderid = $data['order_id'];
+
 
 		if ($isValid)
 		{
