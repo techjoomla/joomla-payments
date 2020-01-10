@@ -23,8 +23,6 @@ else
 	{
 		if (document.formvalidator.isValid(f))
 		{
-			f.check.value = '<?php echo JSession::getFormToken(); ?>';
-
 			return true;
 		}
 		else
@@ -82,6 +80,7 @@ else
 				<input type="hidden" name="plugin_payment_method" value="onsite" />
 				<input type='submit' name='btn_check' id='btn_check' class="btn btn-success btn-large"
 				value="<?php echo JText::_('SUBMIT'); ?>">
+				<?php echo JHtml::_('form.token'); ?>
 			</div>
 	</form>
 </div>

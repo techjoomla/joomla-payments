@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 function myValidate(f)
 {
 if (document.formvalidator.isValid(f)) {
-		f.check.value='<?php echo JSession::getFormToken(); ?>';
+
 		return true;
 	}
 	else {
@@ -64,6 +64,7 @@ if (document.formvalidator.isValid(f)) {
 					<input type='hidden' name='return' value="<?php echo $vars->return;?>" >
 					<input type="hidden" name="plugin_payment_method" value="onsite" />
 					<input type='submit' name='btn_check' id='btn_check' class="btn btn-success btn-large"  value="<?php echo JText::_('SUBMIT'); ?>">
+					<?php echo JHtml::_('form.token'); ?>
 				</div>
 
 	</div>
