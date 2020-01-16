@@ -23,19 +23,17 @@ if (!empty($vars->userInfo))
 
 <script type="text/javascript">
 	function myValidate(f)
-	{
-		if (document.formvalidator.isValid(f))
-		{
-			return true;
-		}
-		else
-		{
-			var msg = 'Some values are not acceptable.  Please retry.';
-			alert(msg);
-			plg_auth_showHide();
-		}
+   {
+	if (!document.formvalidator.isValid(f)) {
+		var msg = "<?php echo JText::_('PLG_BYORDER_VALIDATION_MSG'); ?>";
+		alert(msg);
+		plg_auth_showHide();
+
 		return false;
 	}
+
+	return true;
+   }
 
 	function plg_auth_showHide()
 	{

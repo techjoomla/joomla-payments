@@ -21,17 +21,15 @@ else
 <script type="text/javascript">
 	function myValidate(f)
 	{
-		if (document.formvalidator.isValid(f))
+		if (!document.formvalidator.isValid(f))
 		{
-			return true;
-		}
-		else
-		{
-			alert("<?php echo JText::_('PLG_PAYMENT_BYCHECK_ALERT_MSG'); ?>");
+			var msg = "<?php echo JText::_('PLG_BYORDER_VALIDATION_MSG'); ?>";
+			alert(msg);
+			return false;
 		}
 
-		return false;
-}
+		return true;
+	}
 </script>
 <div class="tjcpg-wrapper">
 <form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);" class="form-validate form-horizontal"  method="post">
