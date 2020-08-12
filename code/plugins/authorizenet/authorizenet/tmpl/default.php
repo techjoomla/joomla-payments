@@ -91,7 +91,7 @@ if (!empty($vars->userInfo))
 						<?php echo JText::_('FIRST_NAME') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 					</label>
 					<div class="controls">
-						<input class="inputbox required" id="cardfname" type="text" name="cardfname" size="35" value="<?php echo !empty($userInfo['firstname']) ?$userInfo['firstname']:'';?>" />
+						<input class="inputbox required" id="cardfname" type="text" name="cardfname" size="35" value="<?php echo !empty($userInfo['firstname']) ?$userInfo['firstname']:'';?>" pattern="[a-zA-Z0-9\s\.]+"/>
 					</div>
 				</div>
 
@@ -99,7 +99,7 @@ if (!empty($vars->userInfo))
 					<label for="cardlname" class="control-label">
 						<?php echo JText::_('LAST_NAME') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 					</label>
-					<div class="controls"><input class="inputbox required" id="cardlname" type="text" name="cardlname" size="35" value="<?php echo !empty($userInfo['lastname']) ?$userInfo['lastname']:''; ?>" /></div>
+					<div class="controls"><input class="inputbox required" id="cardlname" type="text" name="cardlname" size="35" value="<?php echo !empty($userInfo['lastname']) ?$userInfo['lastname']:''; ?>" pattern="[a-zA-Z0-9\s\.]+"/></div>
 				</div>
 
 				<div class="control-group">
