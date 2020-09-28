@@ -1,11 +1,19 @@
 <?php
 /**
- * @copyright  Copyright (c) 2009 - 2015 TechJoomla. All rights reserved.
- * @license    GNU General Public License version 2, or later
+ * @package     Joomla_Payments
+ * @subpackage  PayuMoney
+ *
+ * @author      Techjoomla <extensions@techjoomla.com>
+ * @copyright   Copyright (C) 2009 - 2020 Techjoomla. All rights reserved.
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
+
 defined('_JEXEC') or die('Restricted access');
 
-$vars->item_name = JText::sprintf('PAYUMONEY_PINFO', $vars->order_id);
+use Joomla\CMS\Language\Text;
+
+/** @var $vars stdClass */
+$vars->item_name = Text::sprintf('PAYUMONEY_PINFO', $vars->order_id);
 $txnid = $vars->order_id;
 
 $posted = array();
@@ -17,7 +25,7 @@ $posted['firstname'] = isset($vars->user_firstname) ? trim($vars->user_firstname
 $posted['email'] = $vars->user_email;
 $posted['phone'] = $vars->phone;
 $posted['curl'] = $vars->cancel_return;
-$posted['surl'] = $vars->url;
+$posted['surl'] = $vars->cancel_return;
 $posted['furl'] = $vars->url;
 
 $posted['udf1'] = $vars->order_id;
@@ -80,7 +88,7 @@ $hash = strtolower(hash('sha512', $hash_string));
 
 	<input type="hidden" name="hash" value="<?php echo $hash; ?>" />
 	<div class="form-actions">
-		<input type="submit" class="btn btn-success btn-large" border="0"  value="<?php echo JText::_('PAYUMONEY_SUBMIT'); ?>" alt="PayU India" />
+		<input type="submit" class="btn btn-success btn-large" border="0"  value="<?php echo Text::_('PAYUMONEY_SUBMIT'); ?>" alt="PayU India" />
 	</div>
 </form>
 </div>
