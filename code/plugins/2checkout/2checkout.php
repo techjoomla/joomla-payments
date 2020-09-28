@@ -138,6 +138,9 @@ class PlgPayment2checkout extends JPlugin
 	 */
 	public function onTP_GetHTML($vars)
 	{
+		// Fix for sameSite cookie attribute in chrome.
+		header('Set-Cookie: ' . session_name() . '=' . JFactory::getApplication()->input->cookie->get(session_name()) .
+			'; SameSite=None; Secure; HttpOnly');
 		$vars->action_url = $this->params->get('demo', 0) ? 'https://sandbox.2checkout.com/checkout/purchase' :
 		'https://www.2checkout.com/checkout/purchase';
 		$vars->sid = $this->params->get('sid', '');

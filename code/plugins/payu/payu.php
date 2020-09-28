@@ -125,6 +125,9 @@ class PlgPaymentPayu extends JPlugin
 	 */
 	public function onTP_GetHTML($vars)
 	{
+		// Fix for sameSite cookie attribute in chrome.
+		header('Set-Cookie: ' . session_name() . '=' . JFactory::getApplication()->input->cookie->get(session_name()) .
+			'; SameSite=None; Secure; HttpOnly');
 		$plgPaymentPayuHelper = new plgPaymentPayuHelper;
 		$vars->action_url     = $plgPaymentPayuHelper->buildPayuUrl();
 		$vars->key  = $this->params->get('key');
