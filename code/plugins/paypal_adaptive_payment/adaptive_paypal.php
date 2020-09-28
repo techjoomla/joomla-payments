@@ -153,6 +153,8 @@ class PlgPaymentAdaptive_Paypal extends JPlugin
 	 */
 	public function onTP_GetHTML($vars)
 	{
+		header('Set-Cookie: ' . session_name() . '=' . JFactory::getApplication()->input->cookie->get(session_name()) .
+			'; SameSite=None; Secure; HttpOnly');
 		$plgPaymentAdaptivePaypalHelper = new plgPaymentAdaptivePaypalHelper;
 		$vars->action_url               = $plgPaymentAdaptivePaypalHelper->buildPaypalUrl();
 
