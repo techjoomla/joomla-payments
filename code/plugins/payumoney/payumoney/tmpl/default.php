@@ -25,7 +25,7 @@ $posted['firstname'] = isset($vars->user_firstname) ? trim($vars->user_firstname
 $posted['email'] = $vars->user_email;
 $posted['phone'] = $vars->phone;
 $posted['curl'] = $vars->cancel_return;
-$posted['surl'] = $vars->cancel_return;
+$posted['surl'] = $vars->url;
 $posted['furl'] = $vars->url;
 
 $posted['udf1'] = $vars->order_id;

@@ -283,7 +283,7 @@ class PlgPaymentPayuMoney extends CMSPlugin
 	public function onTP_ProcessInputData()
 	{
 		$data = Factory::getApplication()->input->json->getArray();
-		$data['transaction_id'] = $data['paymentId'];
+		$data['order_id'] = $data['udf1'];
 
 		return $data;
 	}
