@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\String\StringHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 require_once JPATH_SITE . '/plugins/payment/payumoney/payumoney/helper.php';
 
@@ -53,7 +54,8 @@ class PlgPaymentPayuMoney extends CMSPlugin
 	public function buildLayoutPath($layout)
 	{
 		$app       = Factory::getApplication();
-		$coreFile = dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
+
+		$coreFile = dirname(__FILE__) . '/' . $this->_name . '/tmpl/' . $layout . '.php';
 
 		$override  = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' .
 				$this->_type . '/' . $this->_name . '/' . $layout . '.php';
@@ -81,6 +83,8 @@ class PlgPaymentPayuMoney extends CMSPlugin
 	public function buildLayout($vars, $layout = 'default')
 	{
 		// Load the layout & push variables
+		$layout = $this->params->get('layout', 'default');
+
 		ob_start();
 		$layout = $this->buildLayoutPath($layout);
 
