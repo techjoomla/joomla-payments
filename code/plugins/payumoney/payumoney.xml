@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <extension version="3.0" type="plugin" group="payment" method="upgrade">
 	<name>Payment - PayU Biz</name>
 	<author>Techjoomla</author>
 	<creationDate>28th Aug 2016</creationDate>
-	<copyright></copyright>
+	<copyright />
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<authorEmail></authorEmail>
-	<authorUrl></authorUrl>
+	<authorEmail />
+	<authorUrl />
 	<version>1.0</version>
 	<description>PayU payment plugin</description>
 	<files>
@@ -16,34 +16,36 @@
 	<languages>
 		<language tag="en-GB">en-GB/en-GB.plg_payment_payumoney.ini</language>
 	</languages>
-
-
-		<params>
+	<params>
 		<param name="plugin_name" type="text" default="Payu Credit Card/Debit Card/Net Banking" label="PAYUMONEY_PLG_NAME" description="" />
-  		<param name="key" type="text" default="" label="PAYUMONEY_EMAIL" description="PAYUMONEY_EMAIL_DESC"/>
-  		<param name="salt" type="text" default="" label="PAYUMONEY_SALT" description="PAYUMONEY_SALT_DESC"/>
-  		<param type="spacer" />
+		<param name="key" type="text" default="" label="PAYUMONEY_EMAIL" description="PAYUMONEY_EMAIL_DESC" />
+		<param name="salt" type="text" default="" label="PAYUMONEY_SALT" description="PAYUMONEY_SALT_DESC" />
+		<param type="spacer" />
 		<param name="sandbox" type="radio" default="0" label="PAYUMONEY_SANDBOX" description="PAYUMONEY_SANDBOX_DESC">
-		  <option value="0">PAYUMONEY_NO</option>
-		  <option value="1">PAYUMONEY_YES</option>
+			<option value="0">PAYUMONEY_NO</option>
+			<option value="1">PAYUMONEY_YES</option>
 		</param>
 	</params>
-
- 	<config>
+	<config>
 		<fields name="params">
 			<fieldset name="basic">
-					<field name="plugin_name" type="text" default="Payu Credit Card/Debit Card/Net Banking" label="PAYUMONEY_PLG_NAME" description="" />
-					<field name="key" type="text" default="" label="PAYUMONEY_KEY" description="PAYUMONEY_KEY_DESC"/>
-			  		<field name="salt" type="text" default="" label="PAYUMONEY_SALT" description="PAYUMONEY_SALT_DESC"/>
-					<field name="sandbox" type="radio" default="0" label="PAYUMONEY_SANDBOX" description="PAYUMONEY_SANDBOX_DESC">
-						<option value="0">PAYUMONEY_NO</option>
-						<option value="1">PAYUMONEY_YES</option>
-					</field>
-					<field name="log_write" type="radio" default="0" label="PLG_PAYUMONEY_WRITE_LOG"	description="PLG_PAYUMONEY_WRITE_LOG_DESC">
-						<option value="0">PLG_PAYUMONEY_NO</option>
-						<option value="1">PLG_PAYUMONEY_YES</option>
-					</field>
-				</fieldset>
+				<field name="plugin_name" type="text" default="Payu Credit Card/Debit Card/Net Banking" label="PAYUMONEY_PLG_NAME" description="" />
+				<field name="key" type="text" default="" label="PAYUMONEY_KEY" description="PAYUMONEY_KEY_DESC" />
+				<field name="salt" type="text" default="" label="PAYUMONEY_SALT" description="PAYUMONEY_SALT_DESC" />
+				<field name="sandbox" type="radio" default="0" label="PAYUMONEY_SANDBOX" description="PAYUMONEY_SANDBOX_DESC">
+					<option value="0">PAYUMONEY_NO</option>
+					<option value="1">PAYUMONEY_YES</option>
+				</field>
+				<field name="log_write" type="radio" default="0" label="PLG_PAYUMONEY_WRITE_LOG" description="PLG_PAYUMONEY_WRITE_LOG_DESC">
+					<option value="0">PLG_PAYUMONEY_NO</option>
+					<option value="1">PLG_PAYUMONEY_YES</option>
+				</field>
+				<field name="layout" type="list" default="bolt" label="PAYUMONEY_LAYOUT" description="PAYUMONEY_LAYOUT_DESC">
+					<option value="default">PAYUMONEY_LAYOUT_REDIRECTION</option>
+					<option value="bolt">PAYUMONEY_LAYOUT_BOLT</option>
+				</field>
+			</fieldset>
 		</fields>
 	</config>
 </extension>
+

@@ -1,16 +1,24 @@
 <?php
 /**
- * @copyright  Copyright (c) 2009 - 2013 TechJoomla. All rights reserved.
- * @license    GNU General Public License version 2, or later
+ * @package     Joomla_Payments
+ * @subpackage  PayuMoney
+ *
+ * @author      Techjoomla <extensions@techjoomla.com>
+ * @copyright   Copyright (C) 2009 - 2020 Techjoomla. All rights reserved.
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.plugin.plugin');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\String\StringHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 require_once JPATH_SITE . '/plugins/payment/payumoney/payumoney/helper.php';
 
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_payumoney', JPATH_ADMINISTRATOR);
 
 /**
@@ -20,29 +28,19 @@ $lang->load('plg_payment_payumoney', JPATH_ADMINISTRATOR);
  * @subpackage  site
  * @since       2.2
  */
-class PlgPaymentPayuMoney extends JPlugin
+class PlgPaymentPayuMoney extends CMSPlugin
 {
 	/**
-	 * Constructor
+	 * Supported payumoney payment statuses
 	 *
-	 * @param   string  &$subject  subject
-	 *
-	 * @param   string  $config    config
+	 * @var    array
+	 * @since  1.0.0
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		// Set the language in the class
-		$config = JFactory::getConfig();
-
-		// Define Payment Status codes in payu  And Respective Alias in Framework
-		$this->responseStatus = array(
+	private $responseStatus = array(
 			'success' => 'C',
 			'pending' => 'P',
 			'failure' => 'E'
-		);
-	}
+	);
 
 	/**
 	 * Build Layout path
@@ -55,20 +53,21 @@ class PlgPaymentPayuMoney extends JPlugin
 	 */
 	public function buildLayoutPath($layout)
 	{
-		$app       = JFactory::getApplication();
-		$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
+		$app       = Factory::getApplication();
+
+		$coreFile = dirname(__FILE__) . '/' . $this->_name . '/tmpl/' . $layout . '.php';
 
 		$override  = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' .
-		$this->_type . '/' . $this->_name . '/' . $layout . '.php';
+				$this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
-		{
-			return $override;
-		}
-		else
-		{
-			return $core_file;
-		}
+				if (File::exists($override))
+				{
+					return $override;
+				}
+				else
+				{
+					return $coreFile;
+				}
 	}
 
 	/**
@@ -84,6 +83,8 @@ class PlgPaymentPayuMoney extends JPlugin
 	public function buildLayout($vars, $layout = 'default')
 	{
 		// Load the layout & push variables
+		$layout = $this->params->get('layout', 'default');
+
 		ob_start();
 		$layout = $this->buildLayoutPath($layout);
 
@@ -160,16 +161,16 @@ class PlgPaymentPayuMoney extends JPlugin
 		$error['desc'] = '';
 
 		// Compare response order id and send order id in notify URL
-		$res_orderid = '';
+		$resOrderid = '';
 
 		if ($isValid)
 		{
-			$res_orderid = $data['udf1'];
+			$resOrderid = $data['udf1'];
 
-			if (!empty($vars) && $res_orderid != $vars->order_id)
+			if (!empty($vars) && $resOrderid != $vars->order_id)
 			{
 				$isValid       = false;
-				$error['desc'] = "ORDER_MISMATCH" . "Invalid ORDERID; notify order_is " . $vars->order_id . ", and response " . $res_orderid;
+				$error['desc'] = "ORDER_MISMATCH" . "Invalid ORDERID; notify order_is " . $vars->order_id . ", and response " . $resOrderid;
 			}
 		}
 
@@ -179,16 +180,16 @@ class PlgPaymentPayuMoney extends JPlugin
 			if (!empty($vars))
 			{
 				// Check that the amount is correct
-				$order_amount = (float) $vars->amount;
+				$orderAmount = (float) $vars->amount;
 				$retrunamount = (float) $data['amount'];
 				$epsilon      = 0.01;
 
-				if (($order_amount - $retrunamount) > $epsilon)
+				if (($orderAmount - $retrunamount) > $epsilon)
 				{
 					// Change response status to ERROR FOR AMOUNT ONLY
 					$data['status'] = 'failure';
 					$isValid        = false;
-					$error['desc']  = "ORDER_AMOUNT_MISTMATCH - order amount= " . $order_amount . ' response order amount = ' . $retrunamount;
+					$error['desc']  = "ORDER_AMOUNT_MISTMATCH - order amount= " . $orderAmount . ' response order amount = ' . $retrunamount;
 				}
 			}
 		}
@@ -203,14 +204,14 @@ class PlgPaymentPayuMoney extends JPlugin
 		$error['desc'] = (isset($data['field9']) ? $data['field9'] : '');
 
 		$result = array(
-			'order_id' => $data['udf1'],
-			'transaction_id' => $data['mihpayid'],
-			'buyer_email' => $data['email'],
-			'status' => $data['status'],
-			'txn_type' => $data['mode'],
-			'total_paid_amt' => $data['amount'],
-			'raw_data' => $data,
-			'error' => $error
+				'order_id' => $data['udf1'],
+				'transaction_id' => $data['mihpayid'],
+				'buyer_email' => $data['email'],
+				'status' => $data['status'],
+				'txn_type' => $data['mode'],
+				'total_paid_amt' => $data['amount'],
+				'raw_data' => $data,
+				'error' => $error
 		);
 
 		return $result;
@@ -219,17 +220,17 @@ class PlgPaymentPayuMoney extends JPlugin
 	/**
 	 * This function transalate the response got from payment getway
 	 *
-	 * @param   object  $payment_status  payment_status
+	 * @param   object  $paymentStatus  payment_status
 	 *
 	 * @since   2.2
 	 *
 	 * @return   string  value
 	 */
-	public function translateResponse($payment_status)
+	public function translateResponse($paymentStatus)
 	{
 		foreach ($this->responseStatus as $key => $value)
 		{
-			if ($key == $payment_status)
+			if ($key == StringHelper::strtolower($paymentStatus))
 			{
 				return $value;
 			}
@@ -246,12 +247,12 @@ class PlgPaymentPayuMoney extends JPlugin
 	 */
 	public function onTP_Storelog($data)
 	{
-		$log_write = $this->params->get('log_write', '0');
+		$logWrite = $this->params->get('log_write', '0');
 
-		if ($log_write == 1)
+		if ($logWrite == 1)
 		{
 			$plgPaymentPayuMoneyHelper = new plgPaymentPayuMoneyHelper;
-			$log                       = $plgPaymentPayuMoneyHelper->Storelog($this->_name, $data);
+			$plgPaymentPayuMoneyHelper->Storelog($this->_name, $data);
 		}
 	}
 
@@ -276,5 +277,18 @@ class PlgPaymentPayuMoney extends JPlugin
 				}
 			}
 		}
+	}
+
+	/**
+	 * Process Webhooks data and return the array
+	 *
+	 * @return  array  formatted webhooks data
+	 */
+	public function onTP_ProcessInputData()
+	{
+		$data = Factory::getApplication()->input->json->getArray();
+		$data['order_id'] = $data['udf1'];
+
+		return $data;
 	}
 }
