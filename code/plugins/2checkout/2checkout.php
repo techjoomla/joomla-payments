@@ -141,11 +141,13 @@ class PlgPayment2checkout extends JPlugin
 		// Fix for sameSite cookie attribute in chrome.
 		header('Set-Cookie: ' . session_name() . '=' . JFactory::getApplication()->input->cookie->get(session_name()) .
 			'; SameSite=None; Secure; HttpOnly');
-		$vars->action_url = $this->params->get('demo', 0) ? 'https://sandbox.2checkout.com/checkout/purchase' :
-		'https://www.2checkout.com/checkout/purchase';
+
+		// Removed Sandbox URL with this reference link -
+		// @ https://knowledgecenter.2checkout.com/API-Integration/Transition_guides/Transition_Guide_for_2CO_Sandbox
+		$vars->action_url = 'https://www.2checkout.com/checkout/purchase';
 		$vars->sid = $this->params->get('sid', '');
 
-		// $vars->demo = $this->params->get('demo',0) ? 'Y' : 'N';
+		$vars->demo = $this->params->get('demo', 0) ? 'Y' : 'N';
 		$vars->lang = $this->params->get('lang', 'en');
 		$vars->pay_method = $this->params->get('pay_method', 'cc');
 		$html = $this->buildLayout($vars);
