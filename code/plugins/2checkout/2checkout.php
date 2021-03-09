@@ -142,7 +142,7 @@ class PlgPayment2checkout extends JPlugin
 		header('Set-Cookie: ' . session_name() . '=' . JFactory::getApplication()->input->cookie->get(session_name()) .
 			'; SameSite=None; Secure; HttpOnly');
 
-		// Removed Sanbox URL with this reference link -
+		// Removed Sandbox URL with this reference link -
 		// @ https://knowledgecenter.2checkout.com/API-Integration/Transition_guides/Transition_Guide_for_2CO_Sandbox
 		$vars->action_url = 'https://www.2checkout.com/checkout/purchase';
 		$vars->sid = $this->params->get('sid', '');
