@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="payment" method="upgrade">
+	<name>Payment - EasySocial Points</name>
+
+	<author>TechJoomla</author>
+	<copyright>Techjoomla. All Rights Reserved.</copyright>
+	<authorEmail>extensions@techjoomla.com</authorEmail>
+	<authorUrl>http://www.techjoomla.com</authorUrl>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+
+	<creationDate>28th Aug 2014</creationDate>
+	<version>1.0</version>
+
+	<description>EasySocial Points Payments plugin for Common Payments Gateway by Techjoomla.</description>
+
+	<files>
+		<filename plugin="easysocialpoints">easysocialpoints.php</filename>
+		<folder>easysocialpoints</folder>
+	</files>
+
+	<languages>
+		<language tag="en-GB">en-GB/en-GB.plg_payment_easysocialpoints.ini</language>
+	</languages>
+
+	<config name="params">
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="conversion" type="text" size="10" default="10" label="PLG_EASYSOCIALPOINT_CON_AMT" description="PLG_EASYSOCIALPOINTCON_AMT_DESC"/>
+				<field name="points" type="hidden" default="point"/>
+				<field name="plugin_name" type="text" default="EasySocial Points" label="PLG_EASYSOCIALPOINT_NAME" description="PLG_EASYSOCIALPOINT_NAME_DESC" />
+				<field name="log_write" type="radio" default="0" label="PLG_AUTHONET_WRITE_LOG"	description="PLG_AUTHONET_WRITE_LOG_DESC">
+					<option value="0">P_NO</option>
+					<option value="1">P_YES</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
