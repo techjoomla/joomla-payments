@@ -21,18 +21,15 @@ else
 <script type="text/javascript">
 	function myValidate(f)
 	{
-		if (document.formvalidator.isValid(f))
+		if (!document.formvalidator.isValid(f))
 		{
-			f.check.value = '<?php echo JSession::getFormToken(); ?>';
-			return true;
-		}
-		else
-		{
-			alert("<?php echo JText::_('PLG_PAYMENT_BYCHECK_ALERT_MSG'); ?>");
+			var msg = "<?php echo JText::_('PLG_BYORDER_VALIDATION_MSG'); ?>";
+			alert(msg);
+			return false;
 		}
 
-		return false;
-}
+		return true;
+	}
 </script>
 <div class="tjcpg-wrapper">
 <form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);" class="form-validate form-horizontal"  method="post">
@@ -80,6 +77,7 @@ else
 				<input type='hidden' name='return' value="<?php echo $vars->return;?>" >
 				<input type="hidden" name="plugin_payment_method" value="onsite" />
 				<input type='submit' name='btn_check' id='btn_check' class="btn btn-success"  value="<?php echo JText::_('SUBMIT'); ?>">
+				<?php echo JHtml::_('form.token'); ?>
 			</div>
 		</div>
 	</form>

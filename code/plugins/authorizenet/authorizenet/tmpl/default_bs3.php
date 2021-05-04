@@ -23,16 +23,15 @@
 <script type="text/javascript">
    function myValidate(f)
    {
-	if (document.formvalidator.isValid(f)) {
-		f.check.value='<?php echo JSession::getFormToken(); ?>';
-		return true;
-	}
-	else {
-		var msg = 'Some values are not acceptable.  Please retry.';
+	if (!document.formvalidator.isValid(f)) {
+		var msg = "<?php echo JText::_('PLG_BYORDER_VALIDATION_MSG'); ?>";
 		alert(msg);
 		plg_auth_showHide();
+
+		return false;
 	}
-	return false;
+
+	return true;
    }
 
    function plg_auth_showHide()
@@ -173,6 +172,7 @@
 			<input type="hidden" name="order_id" size="10" value="<?php echo $vars->order_id;?>" />
 			<input type="hidden" name="plugin_payment_method" value="onsite" />
 			<input type="submit" name="submit" class="btn btn-success btn-large" value="<?php echo JText::_('SUBMIT');?>" />
+			<?php echo JHtml::_('form.token'); ?>
 		 </div>
 	  </div>
    </form>
