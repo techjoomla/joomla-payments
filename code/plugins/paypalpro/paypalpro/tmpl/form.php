@@ -13,6 +13,10 @@ JHtml::_('behavior.formvalidation');
 <script type="text/javascript">
 	function myValidate(f)
 	{
+		var parentDiv = jQuery('#jticketing-payHtmlDiv');
+		parentDiv.addClass('isloading');
+		jQuery("input[name='submit']").attr('disabled', true);
+
 		if (document.formvalidator.isValid(f))
 		{
 			f.check.value='<?php echo JSession::getFormToken(); ?>';
@@ -20,6 +24,8 @@ JHtml::_('behavior.formvalidation');
 		}
 		else
 		{
+			parentDiv.removeClass('isloading');
+			jQuery("input[name='submit']").attr('disabled', false);
 			var msg = 'Some values are not acceptable.  Please retry.';
 			alert(msg);
 		}
