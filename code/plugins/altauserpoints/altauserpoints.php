@@ -171,6 +171,8 @@ class Plgpaymentaltauserpoints extends JPlugin
 		$points_charge = $data['total'] * $convert_val;
 		$payment_status = '';
 
+		$user = JFactory::getUser();
+
 		if ($points_charge <= $points_count)
 		{
 			/*$count = $points_count - $points_charge;*/
@@ -181,7 +183,9 @@ class Plgpaymentaltauserpoints extends JPlugin
 			{
 				require_once $api_AUP;
 
-				if (AltaUserPointsHelper::newpoints($data['client'] . '_aup', '', '', JText::_("PUB_AD"), -$points_charge, true, '', JText::_("SUCCSESS")))
+				$referrerId = AltaUserPointsHelper::getAnyUserReferreID($user->id);
+
+				if (AltaUserPointsHelper::newpoints($data['client'] . '_aup', $referrerId, '', JText::_("PUB_AD"), -$points_charge, true, '', JText::_("SUCCSESS")))
 				{
 					$payment_status = 'Success';
 				}
