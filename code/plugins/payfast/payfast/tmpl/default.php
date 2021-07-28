@@ -5,6 +5,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 //$vars->item_name=JText::sprintf('PLG_PAYMENT_PAYFAST_PINFO',$vars->order_id);
 $txnid=$vars->order_id;
 //$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
@@ -53,7 +55,7 @@ $notify_url= $vars->notify_url;
 	?>
 	<input type="hidden" name="signature" value="<?php echo $vars->signature ?>" />
 	<div class="form-actions">
-		<input name='submit' type='submit' class="btn btn-success btn-large" value="<?php echo JText::_('PLG_PAYMENT_PAYFAST_SUBMIT'); ?>" >
+		<input name='submit' type='submit' class="btn btn-success btn-large" value="<?php echo Text::_('PLG_PAYMENT_PAYFAST_SUBMIT'); ?>" >
 	</div>
 </form>
 </p>

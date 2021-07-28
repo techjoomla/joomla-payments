@@ -1,6 +1,18 @@
 <?php
-	jimport('joomla.html.html');
-	jimport( 'joomla.plugin.helper' );
+/**
+ * @package pagseguro
+ * @copyright Copyright (C) 2009 -2021 Techjoomla, Tekdi Web Solutions . All rights reserved.
+ * @license GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
+ * @link     http://www.techjoomla.com
+ */
+defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+
+jimport('joomla.html.html');
+jimport('joomla.plugin.helper');
+
 class plgPaymentPagseguro_jticketingHelper
 { 	
 	
@@ -160,23 +172,23 @@ function Storelog($name,$logdata)
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 		$path = dirname(__FILE__);
-		$my = JFactory::getUser();     
+		$my = Factory::getUser();     
 	
-		JLog::addLogger(
+		Log::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'].'_'.$name.'.log',
 				'text_entry_format' => $options ,
 				'text_file_path' => $path
 			),
-			JLog::INFO,
+			Log::INFO,
 			$logdata['JT_CLIENT']
 		);
 
-		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry = new LogEntry('Transaction added', Log::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name.'('.$my->id.')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
 
-		JLog::add($logEntry);
+		Log::add($logEntry);
 //		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
 //    $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
 

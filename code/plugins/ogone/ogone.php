@@ -5,18 +5,24 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+
 jimport('joomla.plugin.plugin');
-$lang = JFactory::getLanguage();
+
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_ogone', JPATH_ADMINISTRATOR);
 require_once(JPATH_SITE . '/plugins/payment/ogone/ogone/helper.php');
 
-class plgPaymentOgone extends JPlugin
+class plgPaymentOgone extends CMSPlugin
 {
 	public function __construct($subject, $config)
 	{
 		parent::__construct($subject, $config);
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		/*
 		 * 5 Authorised
@@ -44,10 +50,10 @@ class plgPaymentOgone extends JPlugin
 	/* Internal use functions */
 	public function buildLayoutPath($layout)
 	{
-		$app       = JFactory::getApplication();
+		$app       = Factory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
 		$override  = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}

@@ -5,28 +5,36 @@
  */
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+
 jimport( 'joomla.plugin.plugin' );
-if(JVERSION >='1.6.0')
+
+if (JVERSION >= '1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/gtpay/gtpay/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/gtpay/helper.php');
-$lang =  JFactory::getLanguage();
+
+$lang =  Factory::getLanguage();
 $lang->load('plg_payment_gtpay', JPATH_ADMINISTRATOR);
 
-class plgPaymentGtpay extends JPlugin
+class plgPaymentGtpay extends CMSPlugin
 {
 	function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
-		$config = JFactory::getConfig();
-		$jinput = JFactory::getApplication()->input;
+		$config = Factory::getConfig();
+		$jinput = Factory::getApplication()->input;
 		$status_code = $jinput->get('gtpay_tranx_status_code', null, null);
 		$status_msg = $jinput->get('gtpay_tranx_status_msg', null, null);
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		if($status_code == '00')
 		{
-			$application = JFactory::getApplication();
-			$application->enqueueMessage(JText::_('SUCCESSFUL_TRANSACTION'). ' '.$status_msg);
+			$application = Factory::getApplication();
+			$application->enqueueMessage(Text::_('SUCCESSFUL_TRANSACTION'). ' '.$status_msg);
 			$sql = "UPDATE #__jg_orders SET status = 'C' WHERE status = 'P' ORDER BY id DESC LIMIT 1";
 			$db->setquery($sql);
 			$db->Query();
@@ -35,10 +43,10 @@ class plgPaymentGtpay extends JPlugin
 
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file 	= dirname(__FILE__). '/' . $this->_name . '/tmpl/default.php';
 		$override = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . 'recurring.php';
-		if(JFile::exists($override))
+		if(File::exists($override))
 		{
 			return $override;
 		}
@@ -76,7 +84,7 @@ class plgPaymentGtpay extends JPlugin
 	{
 		$plgPaymentGtpayHelper=new plgPaymentGtpayHelper();
 		$vars->action_url = $plgPaymentGtpayHelper->buildGtpayUrl();
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$session->set('amount', $vars->amount);
 		$session->set('email', $vars->paypal_email);
 		//Take this receiver email address from plugin if component not provided it

@@ -6,6 +6,10 @@
  */
 
 defined('_JEXEC') or die(';)');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+
 jimport('joomla.html.html');
 jimport('joomla.plugin.helper');
 
@@ -32,19 +36,19 @@ class PlgPaymentAltauserpointHelper
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		$my      = JFactory::getUser();
+		$my      = Factory::getUser();
 
-		JLog::addLogger(
+		Log::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
 				'text_entry_format' => $options
-			), JLog::INFO, $logdata['JT_CLIENT']
+			), Log::INFO, $logdata['JT_CLIENT']
 		);
 
-		$logEntry       = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry       = new LogEntry('Transaction added', Log::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
 
-		JLog::add($logEntry);
+		Log::add($logEntry);
 	}
 }

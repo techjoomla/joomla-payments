@@ -7,7 +7,10 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
 
-$document =JFactory::getDocument();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
+$document =Factory::getDocument();
 JHTML::_('behavior.formvalidation'); ?>
 <script type="text/javascript">
 function myValidate()
@@ -52,12 +55,12 @@ function myValidate()
 <form action="<?php echo $vars->url; ?>" name="adminForm" id="adminForm" onSubmit="return myValidate();"  class="form-validate form-horizontal"  method="post">			
 	<div>
 		<div class="control-group">
-			<label for="" class="control-label"><?php echo JText::_( 'CREDIT_CARD_TYPE' ) ?></label>
+			<label for="" class="control-label"><?php echo Text::_( 'CREDIT_CARD_TYPE' ) ?></label>
 			<div class="controls"><?php 
 			$types = array();
 			$credit_cards=$this->params->get( 'credit_cards', '' );
-			$creditcardarray=array(JText::_( "VISA" )=>'Visa', JText::_( "MASTERCARD" )=>'Mastercard',JText::_( "AMERICAN_EXPRESS" )=>'AmericanExpress',
-									JText::_( "DISCOVER" )=>'Discover',JText::_( "DINERS_CLUB" )=>'DinersClub',JText::_( "AUT_JCB" )=>'JCB');
+			$creditcardarray=array(Text::_( "VISA" )=>'Visa', Text::_( "MASTERCARD" )=>'Mastercard',Text::_( "AMERICAN_EXPRESS" )=>'AmericanExpress',
+									Text::_( "DISCOVER" )=>'Discover',Text::_( "DINERS_CLUB" )=>'DinersClub',Text::_( "AUT_JCB" )=>'JCB');
 			if(!empty($credit_cards))
 			{
 				foreach($credit_cards as $credit_card)
@@ -85,15 +88,15 @@ function myValidate()
 			</div>
 		</div>
 		<div class="control-group">
-			<label for="cardnum" class="control-label"><?php echo JText::_( 'CARD_NUMBER' ) ?></label>
+			<label for="cardnum" class="control-label"><?php echo Text::_( 'CARD_NUMBER' ) ?></label>
 			<div class="controls"><input class="inputbox required" id="cardnum" type="text" name="cardnum" size="35" value="" /></div>
 		</div>
 		<div class="control-group">
-			<label for="cardexp" class="control-label"><?php echo JText::_( 'EXPIRATION_DATE_IN_FORMAT_MMYY' ) ?></label>
+			<label for="cardexp" class="control-label"><?php echo Text::_( 'EXPIRATION_DATE_IN_FORMAT_MMYY' ) ?></label>
 			<div class="controls"><input class="inputbox required" id="cardexp" type="text" name="cardexp" size="10" value="" /></div>
 		</div>
 		<div class="control-group">
-			<label for="cardcvv" class="control-label"><?php echo JText::_( 'CARD_CVV_NUMBER' ) ?></label>
+			<label for="cardcvv" class="control-label"><?php echo Text::_( 'CARD_CVV_NUMBER' ) ?></label>
 			<div class="controls"><input class="inputbox required" id="cardcvv" type="text" name="cardcvv" size="10" value="" onclick=""/></div>
 		</div>
 
@@ -103,7 +106,7 @@ function myValidate()
 			<input type="hidden" name="return" size="10" value="<?php echo $vars->return;?>" />
 			<input type="hidden" name="order_id" size="10" value="<?php echo $vars->order_id;?>" />
 			<input type="hidden" name="plugin_payment_method" value="onsite" />
-			<input type="submit" name="submit" class="btn btn-success btn-large" value="<?php echo JText::_('SUBMIT');?>" />
+			<input type="submit" name="submit" class="btn btn-success btn-large" value="<?php echo Text::_('SUBMIT');?>" />
 		</div>			
 	</div>
 </form>

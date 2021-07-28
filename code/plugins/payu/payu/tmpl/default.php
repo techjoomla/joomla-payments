@@ -8,7 +8,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-$vars->item_name = JText::sprintf('PLG_PAYMENT_PAYU_PINFO', $vars->order_id);
+use Joomla\CMS\Language\Text;
+
+$vars->item_name = Text::sprintf('PLG_PAYMENT_PAYU_PINFO', $vars->order_id);
 $txnid=$vars->order_id;
 
 ?>
@@ -30,7 +32,7 @@ $txnid=$vars->order_id;
 ?>
 	<input type="hidden" name="Hash" value="<?php echo strtolower(hash('sha512',$text)); ?>" />
 	<div class="form-actions">
-		<input type="submit" class="btn btn-success btn-large" border="0"  value="<?php echo JText::_('PLG_PAYMENT_PAYU_SUBMIT'); ?>" alt="<?php echo JText::_('PLG_PAYMENT_PAYU_SUBMIT_ALT'); ?>" />
+		<input type="submit" class="btn btn-success btn-large" border="0"  value="<?php echo Text::_('PLG_PAYMENT_PAYU_SUBMIT'); ?>" alt="<?php echo Text::_('PLG_PAYMENT_PAYU_SUBMIT_ALT'); ?>" />
 	</div>
 </form>
 </div>

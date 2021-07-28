@@ -6,7 +6,13 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-$document = JFactory::getDocument();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+
+$document = Factory::getDocument();
 JHtml::_('behavior.formvalidation');
 ?>
 
@@ -19,7 +25,7 @@ JHtml::_('behavior.formvalidation');
 
 		if (document.formvalidator.isValid(f))
 		{
-			f.check.value='<?php echo JSession::getFormToken(); ?>';
+			f.check.value='<?php echo Session::getFormToken(); ?>';
 			return true;
 		}
 		else
@@ -38,24 +44,24 @@ JHtml::_('behavior.formvalidation');
 		<div id="paypalProDiv">
 			<div class="control-group">
 				<label for="cardtype" class="control-label">
-					<?php echo JText::_('CREDIT_CARD_TYPE'); ?>
+					<?php echo Text::_('CREDIT_CARD_TYPE'); ?>
 				</label>
 				<div class="controls">
 					<?php $types = array();
-							$types[] = JHtml::_('select.option', 'Visa', JText::_("VISA"));
-							$types[] = JHtml::_('select.option', 'Mastercard', JText::_("MASTERCARD"));
-							$types[] = JHtml::_('select.option', 'AmericanExpress', JText::_("AMERICAN_EXPRESS"));
-							$types[] = JHtml::_('select.option', 'Discover', JText::_("DISCOVER"));
-							$types[] = JHtml::_('select.option', 'DinersClub', JText::_("DINERS_CLUB"));
-							$types[] = JHtml::_('select.option', 'JCB', JText::_("AUT_JCB"));
+							$types[] = HTMLHelper::_('select.option', 'Visa', Text::_("VISA"));
+							$types[] = HTMLHelper::_('select.option', 'Mastercard', Text::_("MASTERCARD"));
+							$types[] = HTMLHelper::_('select.option', 'AmericanExpress', Text::_("AMERICAN_EXPRESS"));
+							$types[] = HTMLHelper::_('select.option', 'Discover', Text::_("DISCOVER"));
+							$types[] = HTMLHelper::_('select.option', 'DinersClub', Text::_("DINERS_CLUB"));
+							$types[] = HTMLHelper::_('select.option', 'JCB', Text::_("AUT_JCB"));
 
-							$return = JHtml::_('select.genericlist', $types, 'credit_card_type', null, 'value', 'text', 0);
+							$return = HTMLHelper::_('select.genericlist', $types, 'credit_card_type', null, 'value', 'text', 0);
 							echo $return; ?>
 				</div>
 			</div>
 			<div class="control-group">
 				<label for="cardnum" class="control-label">
-					<?php echo JText::_('CARD_NUMBER'); ?>
+					<?php echo Text::_('CARD_NUMBER'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="cardnum" type="text" name="cardnum" size="35" value="" />
@@ -63,7 +69,7 @@ JHtml::_('behavior.formvalidation');
 			</div>
 			<div class="control-group">
 				<label for="cardlname" class="control-label">
-					<?php echo JText::_('EXPIRATION_DATE_IN_FORMAT_MMYY'); ?>
+					<?php echo Text::_('EXPIRATION_DATE_IN_FORMAT_MMYY'); ?>
 				</label>
 				<div class="controls">
 					<?php
@@ -80,13 +86,13 @@ JHtml::_('behavior.formvalidation');
 						}
 
 						$months = array_merge($all, $months);
-						echo JHtml::_('select.genericlist', $months, 'expire_month', 'class="inputbox input-medium" ', 'value', 'text', date('m'));
-						echo JHtml::_('select.integerlist', date('Y'), 2030, 1, 'expire_year', 'size="1" class="inputbox input-medium" ');?>
+						echo HTMLHelper::_('select.genericlist', $months, 'expire_month', 'class="inputbox input-medium" ', 'value', 'text', date('m'));
+						echo HTMLHelper::_('select.integerlist', date('Y'), 2030, 1, 'expire_year', 'size="1" class="inputbox input-medium" ');?>
 				</div>
 			</div>
 			<div class="control-group">
 				<label for="cardcsc" class="control-label">
-					<?php echo JText::_('CARD_CSC_NUMBER'); ?>
+					<?php echo Text::_('CARD_CSC_NUMBER'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="cardcsc" type="text" name="cardcsc" size="10" value="" />
@@ -94,7 +100,7 @@ JHtml::_('behavior.formvalidation');
 			</div>
 			<div class="control-group">
 				<label for="cardfname" class="control-label">
-					<?php echo JText::_('FIRST_NAME'); ?>
+					<?php echo Text::_('FIRST_NAME'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="cardfname" type="text" name="cardfname" size="35" value="" />
@@ -102,7 +108,7 @@ JHtml::_('behavior.formvalidation');
 			</div>
 			<div class="control-group">
 				<label for="cardlname" class="control-label">
-					<?php echo JText::_('LAST_NAME'); ?>
+					<?php echo Text::_('LAST_NAME'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="cardlname" type="text" name="cardlname" size="35" value="" />
@@ -110,7 +116,7 @@ JHtml::_('behavior.formvalidation');
 			</div>
 			<div class="control-group">
 				<label for="cardaddress1" class="control-label">
-					<?php echo JText::_('STREET_ADDRESS'); ?>
+					<?php echo Text::_('STREET_ADDRESS'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="cardaddress1" type="text" name="cardaddress1" size="35" value="" />
@@ -118,7 +124,7 @@ JHtml::_('behavior.formvalidation');
 			</div>
 			<div class="control-group">
 				<label for="cardaddress2" class="control-label">
-					<?php echo JText::_('STREET_ADDRESS_CONTINUED'); ?>
+					<?php echo Text::_('STREET_ADDRESS_CONTINUED'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox" id="cardaddress2" type="text" name="cardaddress2" size="35" value="" />
@@ -126,7 +132,7 @@ JHtml::_('behavior.formvalidation');
 			</div>
 			<div class="control-group">
 				<label for="cardzip" class="control-label">
-					<?php echo JText::_('POSTAL_CODE'); ?>
+					<?php echo Text::_('POSTAL_CODE'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="cardzip" type="text" name="cardzip" size="10" value="" />
@@ -134,7 +140,7 @@ JHtml::_('behavior.formvalidation');
 			</div>
 			<div class="control-group">
 				<label for="cardcity" class="control-label">
-					<?php echo JText::_('CITY'); ?>
+					<?php echo Text::_('CITY'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="cardcity" type="text" name="cardcity" size="35" value="" />
@@ -142,7 +148,7 @@ JHtml::_('behavior.formvalidation');
 			</div>
 			<div class="control-group">
 				<label for="cardstate" class="control-label">
-					<?php echo JText::_('STATE'); ?>
+					<?php echo Text::_('STATE'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="cardstate" type="text" name="cardstate" size="20" value="" />
@@ -150,7 +156,7 @@ JHtml::_('behavior.formvalidation');
 			</div>
 			<div class="control-group">
 				<label for="cardcountry" class="control-label">
-					<?php echo JText::_('COUNTRY'); ?>
+					<?php echo Text::_('COUNTRY'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="cardcountry" type="text" name="cardcountry" size="35" value="" />
@@ -158,7 +164,7 @@ JHtml::_('behavior.formvalidation');
 			</div>
 			<div class="control-group">
 				<label for="email" class="control-label">
-					<?php echo JText::_('EMAIL_ADDRESS'); ?>
+					<?php echo Text::_('EMAIL_ADDRESS'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="email" type="text" name="email" size="35" value="" />
@@ -172,7 +178,7 @@ JHtml::_('behavior.formvalidation');
 				<input type="hidden" name="recurring_count" value="<?php echo $vars->recurring_count; ?>" />
 				<input type="hidden" name="recurring_frequency" value="<?php echo $vars->recurring_frequency; ?>" />
 				<input type="hidden" name="recurring_amount" value="<?php echo $vars->amount; ?>" />
-				<input type="submit" name="submit" class="btn btn-success btn-large"  value="<?php echo JText::_('SUBMIT'); ?>" />
+				<input type="submit" name="submit" class="btn btn-success btn-large"  value="<?php echo Text::_('SUBMIT'); ?>" />
 				<input type="hidden" name="order_id" value="<?php echo $vars->order_id; ?>" />
 				<input type="hidden" name="check" value="" />
 				<input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id; ?>" />

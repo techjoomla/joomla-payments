@@ -5,10 +5,16 @@
  */
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
+
 jimport('joomla.plugin.plugin');
 
 require_once JPATH_SITE . '/plugins/payment/paypal/paypal/helper.php';
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_paypal', JPATH_ADMINISTRATOR);
 
 /**
@@ -18,7 +24,7 @@ $lang->load('plg_payment_paypal', JPATH_ADMINISTRATOR);
  * @subpackage  site
  * @since       2.2
  */
-class PlgPaymentPaypal extends JPlugin
+class PlgPaymentPaypal extends CMSPlugin
 {
 	/**
 	 * Constructor
@@ -32,7 +38,7 @@ class PlgPaymentPaypal extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Define Payment Status codes in Paypal  And Respective Alias in Framework
 		$this->responseStatus = array(
@@ -57,7 +63,7 @@ class PlgPaymentPaypal extends JPlugin
 	 */
 	public function buildLayoutPath($layout)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		if ($layout == 'recurring')
 		{
@@ -70,7 +76,7 @@ class PlgPaymentPaypal extends JPlugin
 		$this->_type . '/' . $this->_name . '/' . 'recurring.php';
 		}
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -141,7 +147,7 @@ class PlgPaymentPaypal extends JPlugin
 	public function onTP_GetHTML($vars)
 	{
 		// Fix for sameSite cookie attribute in chrome.
-		header('Set-Cookie: ' . session_name() . '=' . JFactory::getApplication()->input->cookie->get(session_name()) .
+		header('Set-Cookie: ' . session_name() . '=' . Factory::getApplication()->input->cookie->get(session_name()) .
 			'; SameSite=None; Secure; HttpOnly');
 		$plgPaymentPaypalHelper = new plgPaymentPaypalHelper;
 		$vars->action_url       = $plgPaymentPaypalHelper->buildPaypalUrl();
@@ -316,14 +322,14 @@ class PlgPaymentPaypal extends JPlugin
 	 */
 	public function onTP_Processpayment($data)
 	{
-		$jinput    = JFactory::getApplication()->input;
+		$jinput    = Factory::getApplication()->input;
 		$componentName = $jinput->get("option", "cpg_");
 
 		$verify = plgPaymentPaypalHelper::validateIPN($data, $componentName);
 
 		if (!$verify)
 		{
-			throw new Exception(JText::_('PLG_PAYPAL_PAYMENT_ERR_INVALID_IPN'));
+			throw new Exception(Text::_('PLG_PAYPAL_PAYMENT_ERR_INVALID_IPN'));
 		}
 
 		$payment_status = $this->translateResponse($data['payment_status']);

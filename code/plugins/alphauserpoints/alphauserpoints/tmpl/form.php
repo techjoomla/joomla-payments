@@ -5,7 +5,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
- ?>
+use Joomla\CMS\Language\Text;
+
+?>
 <script type="text/javascript">
 function calculate(convert_val,count,user_points,not_enough_pts_message,success_message)
 {
@@ -40,24 +42,24 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 	<form action="<?php echo $vars->url ?>" class="form-validate form-horizontal"  method="post" id="paymentForm" name="paymentForm">
 		<div>
 			<div class="controls">
-				<?php echo JText::sprintf( 'CONVERSION_RATE_MESSAGE', $vars->convert_val, $vars->currency_code);?>
+				<?php echo Text::sprintf( 'CONVERSION_RATE_MESSAGE', $vars->convert_val, $vars->currency_code);?>
 			</div>
 			<div class="controls">
 				<?php
 					$charge_points = $vars->convert_val * $vars->amount;
-					echo JText::sprintf( 'TOTAL_POINTS_NEEDED_MESSAGE', $charge_points);?>
+					echo Text::sprintf( 'TOTAL_POINTS_NEEDED_MESSAGE', $charge_points);?>
 			</div>
 			<div class="controls">
-				<?php echo JText::sprintf( 'CURRENT_POINTS_SITUATION', $vars->user_points);?>
+				<?php echo Text::sprintf( 'CURRENT_POINTS_SITUATION', $vars->user_points);?>
 			</div>
-			<?php $not_enough_pts_message="'".JText::_('NOT_ENOUGH_POINTS_MESSAGE')."'";
+			<?php $not_enough_pts_message="'".Text::_('NOT_ENOUGH_POINTS_MESSAGE')."'";
 				/*if(!empty($vars->success_message))
 				$success_message="'".$vars->success_message."'";
 				else*/
-				$success_message="'".JText::sprintf( 'TOTAL_POINTS_DEDUCTED_MESSAGE',$charge_points)."'";
+				$success_message="'".Text::sprintf( 'TOTAL_POINTS_DEDUCTED_MESSAGE',$charge_points)."'";
 			?>
 			<div class="form-actions">
-				<input class="btn btn-success btn-large pull-right" id="js_buy" type="button" value="<?php echo JText::_('PLG_PAYMENT_ALPHAUSERPOINTS_SUBMIT');?>" onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $vars->amount;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?> );">
+				<input class="btn btn-success btn-large pull-right" id="js_buy" type="button" value="<?php echo Text::_('PLG_PAYMENT_ALPHAUSERPOINTS_SUBMIT');?>" onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $vars->amount;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?> );">
 				<input type="hidden" name="order_id" value="<?php echo $vars->order_id; ?>" />
 				<input type="hidden" name="client" value="<?php echo $vars->client; ?>" />
 				<input type="hidden" name="total" value="<?php echo sprintf('%02.2f',$vars->amount) ?>" />

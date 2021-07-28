@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$lang = JFactory::getLanguage();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_bycheck', JPATH_ADMINISTRATOR);
 
 require_once dirname(__FILE__) . '/bycheck/helper.php';
@@ -21,7 +25,7 @@ require_once dirname(__FILE__) . '/bycheck/helper.php';
  * @subpackage  site
  * @since       2.2
  */
-class Plgpaymentbycheck extends JPlugin
+class Plgpaymentbycheck extends CMSPlugin
 {
 	private  $payment_gateway = 'payment_bycheck';
 
@@ -39,7 +43,7 @@ class Plgpaymentbycheck extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Define Payment Status codes in Authorise  And Respective Alias in Framework
 		// 1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
@@ -62,12 +66,12 @@ class Plgpaymentbycheck extends JPlugin
 			$layout = "default";
 		}
 
-		$app       = JFactory::getApplication();
+		$app       = Factory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout . '.php';
 		$override  = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/'
 		. $this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -95,7 +99,7 @@ class Plgpaymentbycheck extends JPlugin
 			$newLayout = $layout . "_" . $vars->bootstrapVersion;
 			$core_file = dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $newLayout . '.php';
 
-			if (JFile::exists($core_file))
+			if (File::exists($core_file))
 			{
 				$layout = $newLayout;
 			}

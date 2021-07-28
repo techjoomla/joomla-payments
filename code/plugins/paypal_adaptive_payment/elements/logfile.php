@@ -1,9 +1,14 @@
 <?php
 
 defined('JPATH_BASE') or die();
+
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+
 jimport('joomla.form.formfield');
 
-class JFormFieldLogfile extends JFormField
+class FormFieldLogfile extends FormField
 {
 	/**
 	 * The form field type.
@@ -35,7 +40,7 @@ class JFormFieldLogfile extends JFormField
 			$hint = $this->hint;
 		}
 
-		$logFilePath = JRoute::_(JUri::root(true) . 'plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_' . $hint . '.log');
+		$logFilePath = Route::_(Uri::root(true) . 'plugins/payment/adaptive_paypal/adaptive_paypal/logBeforePayment_' . $hint . '.log');
 		$return	= '<div style="clear:both"><a href="' . $logFilePath.'">' . $hint . 'log file</a> <br></div>';
 		return $return;
 	}

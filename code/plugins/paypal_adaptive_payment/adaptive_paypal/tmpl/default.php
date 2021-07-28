@@ -4,6 +4,9 @@
  * @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+
 ?>
 <div class="tjcpg-wrapper">
 	<form action="<?php echo $vars->submiturl; //$vars->action_url ?>" class="form-horizontal" method="post">
@@ -22,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="hidden" name="cmd" value="<?php echo $vars->cmd; ?>" />
 		<div class="form-actions">
 			<input type="submit" class="btn btn-success btn-large" src="https://www.paypal.com/en_US/i/btn/x-click-but02.gif"
-				border="0"  value="<?php echo JText::_('SUBMIT'); ?>" alt="Make payments with PayPal - it's fast, free and secure!" />
+				border="0"  value="<?php echo Text::_('SUBMIT'); ?>" alt="Make payments with PayPal - it's fast, free and secure!" />
 		</div>
 	</form>
 </div>

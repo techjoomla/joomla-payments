@@ -1,22 +1,34 @@
-<?php 
-$jsonarr= json_encode($this->code_arr);
-if(JVERSION <= '3.0')
-		{
-				echo '<link href="plugins/payment/paymill/paymill/tmpl/paymill.css" rel="stylesheet">';
-				$urlme = JURI::base().'plugins/payment/paymill/paymill/tmpl/ajax_loader.gif';
-		}
-		else
-		{
-				$urlme = JURI::ROOT().'plugins/payment/paymill/paymill/tmpl/ajax_loader.gif';
-		}
-?>		
+<?php
+/**
+ * @package paymill
+ * @copyright Copyright (C) 2009 -2021 Techjoomla, Tekdi Web Solutions . All rights reserved.
+ * @license GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
+ * @link     http://www.techjoomla.com
+ */
+defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+
+$jsonarr = json_encode($this->code_arr);
+
+if (JVERSION <= '3.0')
+{
+	echo '<link href="plugins/payment/paymill/paymill/tmpl/paymill.css" rel="stylesheet">';
+	$urlme = JURI::base().'plugins/payment/paymill/paymill/tmpl/ajax_loader.gif';
+}
+else
+{
+	$urlme = JURI::ROOT().'plugins/payment/paymill/paymill/tmpl/ajax_loader.gif';
+}
+?>
 <style>
 .error
-{			padding : 5px;
-			margin : 5px;
-			background-color: #F2DEDE;
-			border-color: #EED3D7;
-			color: #B94A48;
+{
+	padding : 5px;
+	margin : 5px;
+	background-color: #F2DEDE;
+	border-color: #EED3D7;
+	color: #B94A48;
 }
 </style>
 
@@ -147,53 +159,53 @@ var PAYMILL_TEST_MODE  = <?php echo $t;?>;
 			<form id="card-tds-form" name="second" action="<?php echo $vars->url; ?>" method="POST" class="form-validate form-horizontal">
 				<div id="field">
 				<div class="control-group">
-						<label class="control-label"><?php echo JText::_('NAME') ;?></label>
+						<label class="control-label"><?php echo Text::_('NAME') ;?></label>
 						<div class="controls"><input class="card-holdername"  type="text" size="20" value="<?php echo $vars->user_firstname;?>" />
 						</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label"><?php echo JText::_('PAYMENT_TYPE') ;?></label>
+					<label class="control-label"><?php echo Text::_('PAYMENT_TYPE') ;?></label>
 						<div class="controls">
 								<select id="payment_type" onchange="ChangeDropdowns(this.value);">
-								<option value="cc" selected="true"><?php echo JText::_('CREDIT_CARD') ;?></option>
-								<option value="dc"><?php echo JText::_('DEBIT_CARD') ;?></option>
+								<option value="cc" selected="true"><?php echo Text::_('CREDIT_CARD') ;?></option>
+								<option value="dc"><?php echo Text::_('DEBIT_CARD') ;?></option>
 							</select>
 						</div>
 				</div>
 				<div id="cc">
 					<div class="control-group">
-							<label class="control-label"><?php echo JText::_('CREDIT_CARD_NUMBER') ;?></label>
+							<label class="control-label"><?php echo Text::_('CREDIT_CARD_NUMBER') ;?></label>
 							<div class="controls"><input class="card-number" type="text" maxlength="16" size="20" value="" />
 							</div>
 					</div>
 					<div class="control-group">
-							<label class="control-label"><?php echo JText::_('EXPIRY') ;?></label>
+							<label class="control-label"><?php echo Text::_('EXPIRY') ;?></label>
 							<div class="controls"> <input class="card-expiry-month" type="text" size="2" maxlength="2" style="width:20px;"/>/
 							<input class="card-expiry-year" type="text" size="4"  maxlength="4" style="margin-left: 0px;width:50px;"/>
-							&nbsp;<?php echo JText::_('CVC') ;?><input class="card-cvc" type="text" maxlength="4" size="4" value="" style="width:65px;"/>
+							&nbsp;<?php echo Text::_('CVC') ;?><input class="card-cvc" type="text" maxlength="4" size="4" value="" style="width:65px;"/>
 							</div>
 					</div>
 				</div>
 				<div id="bank" style="display:none;">
 							 <div class="control-group">
-									<label class="control-label"><?php echo JText::_('ACCOUNT_NUMBER') ;?></label>
+									<label class="control-label"><?php echo Text::_('ACCOUNT_NUMBER') ;?></label>
 									<div class="controls"> <input class="debit-number" maxlength="10" type="text" size="20" value="" /></div>
 							</div>
 							 <div class="control-group">
-									<label class="control-label"><?php echo JText::_('BANK_CODE_NUMBER') ;?></label>
+									<label class="control-label"><?php echo Text::_('BANK_CODE_NUMBER') ;?></label>
 									<div class="controls">  <input class="debit-bank" maxlength="8" type="text" size="20" value="" /></div>
 							</div>
 							<div class="control-group">
-									<label class="control-label"><?php echo JText::_('COUNTRY') ;?></label>
+									<label class="control-label"><?php echo Text::_('COUNTRY') ;?></label>
 									<div class="controls"><input class="debit-country" type="text" size="20" value="" /></div>
 							</div>
 				</div>
 				<div style="display:none;"class="control-group">
-						<label class="control-label"><?php echo JText::_('AMOUNT') ;?></label>
+						<label class="control-label"><?php echo Text::_('AMOUNT') ;?></label>
 						<div class="controls"><input class="card-amount" type="text" size="4" value="<?php echo $vars->amount;?>" /></div>
 				</div>
 				<div style="display:none;" class="control-group">
-					<label class="control-label"><?php echo JText::_('CURRENCY') ;?></label>
+					<label class="control-label"><?php echo Text::_('CURRENCY') ;?></label>
 					<div class="controls"><input class="card-currency" type="text" size="4" value="<?php echo $vars->currency_code;?>" /></div>
 			   <input name="token"  id="token" type="hidden" size="20" value="" />
 			   <input type="hidden" name="user_id" size="10" value="<?php echo $vars->user_id;?>" />
@@ -203,7 +215,7 @@ var PAYMILL_TEST_MODE  = <?php echo $t;?>;
 				
 			   </div></div>
 			   </div>
-			   <div class="form-actions"> <input id="paymill_button"  onclick="submitme();" type="button" value="<?php echo  JText::_('SUBMIT') ;?>"/></div>
+			   <div class="form-actions"> <input id="paymill_button"  onclick="submitme();" type="button" value="<?php echo  Text::_('SUBMIT') ;?>"/></div>
 		</form>
    </div>
 

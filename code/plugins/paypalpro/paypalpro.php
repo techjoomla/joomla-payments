@@ -4,10 +4,16 @@
  * @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+
 jimport('joomla.filesystem.file');
 jimport('joomla.plugin.plugin');
+
 require_once JPATH_SITE . '/plugins/payment/paypalpro/paypalpro/helper.php';
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_paypalpro', JPATH_ADMINISTRATOR);
 
 /**
@@ -17,7 +23,7 @@ $lang->load('plg_payment_paypalpro', JPATH_ADMINISTRATOR);
  * @subpackage  site
  * @since       2.2
  */
-class Plgpaymentpaypalpro extends JPlugin
+class Plgpaymentpaypalpro extends CMSPlugin
 {
 	protected $_payment_gateway = 'payment_paypalpro';
 
@@ -35,7 +41,7 @@ class Plgpaymentpaypalpro extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Define Payment Status codes in Authorise  And Respective Alias in Framework
 		/*1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review*/
@@ -61,11 +67,11 @@ class Plgpaymentpaypalpro extends JPlugin
 	 */
 	public function buildLayoutPath($layout)
 	{
-		$app       = JFactory::getApplication();
+		$app       = Factory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/form.php';
 		$override  = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -269,15 +275,15 @@ class Plgpaymentpaypalpro extends JPlugin
 			$final_res[$res[0]] = urldecode($res[1]);
 		}
 
-		JFactory::getApplication()->enqueueMessage('ACK Response : ' . $final_res['ACK']);
+		Factory::getApplication()->enqueueMessage('ACK Response : ' . $final_res['ACK']);
 
 		if ($final_res['ACK'] == 'Success')
 		{
-			JFactory::getApplication()->enqueueMessage('Recurring payments profile created Successfully.');
+			Factory::getApplication()->enqueueMessage('Recurring payments profile created Successfully.');
 		}
 		else
 		{
-			JFactory::getApplication()->enqueueMessage('Unable to create Recurring Payments Profile');
+			Factory::getApplication()->enqueueMessage('Unable to create Recurring Payments Profile');
 		}
 
 		$error['code'] .= $final_res['L_ERRORCODE0'];

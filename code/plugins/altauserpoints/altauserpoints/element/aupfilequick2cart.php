@@ -8,14 +8,16 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Language\Text;
 
 /**
  * AUP q2c rule file download link
  *
  * @since  1.0
  */
-class JFormFieldAupFileQuick2cart extends FormField
+class FormFieldAupFileQuick2cart extends FormField
 {
 	/**
 	 * The form field type.
@@ -37,10 +39,10 @@ class JFormFieldAupFileQuick2cart extends FormField
 		if ($this->id == 'jform_params_aupfilequick2cart')
 		{
 			$html = '<div style="float:left"><a href="' . JURI::root() . 'plugins/payment/altauserpoints/altauserpoints/quick2cart_aup.zip"> ' .
-				JText::_('AUP_CLK') . '</a><span> ' . JText::_('AUP_INST') . ' </span><a href="' .
-				JURI::base() . 'index.php?option=com_altauserpoints&task=plugins" target="_blank">' . JText::_('HERE') .
+				Text::_('AUP_CLK') . '</a><span> ' . Text::_('AUP_INST') . ' </span><a href="' .
+				JURI::base() . 'index.php?option=com_altauserpoints&task=plugins" target="_blank">' . Text::_('HERE') .
 				'</a>. <a href="https://techjoomla.com/documentation-for-quick2cart/configuring-common-payment-gateway.html" target="_blank">' .
-				JText::_('CLK_DOC') . '</a></div>';
+				Text::_('CLK_DOC') . '</a></div>';
 
 			return $html;
 		}

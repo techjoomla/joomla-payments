@@ -10,9 +10,15 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
+
 jimport('joomla.plugin.plugin');
 require_once dirname(__FILE__) . '/2checkout/helper.php';
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_2checkout', JPATH_ADMINISTRATOR);
 
 /**
@@ -22,7 +28,7 @@ $lang->load('plg_payment_2checkout', JPATH_ADMINISTRATOR);
  * @subpackage  site
  * @since       2.2
  */
-class PlgPayment2checkout extends JPlugin
+class PlgPayment2checkout extends CMSPlugin
 {
 	/**
 	 * Constructor
@@ -36,7 +42,7 @@ class PlgPayment2checkout extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Define Payment Status codes in Paypal  And Respective Alias in Framework
 		$this->responseStatus = array(
@@ -65,12 +71,12 @@ class PlgPayment2checkout extends JPlugin
 			$layout = 'default';
 		}
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout . '.php';
 		$override = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name .
 		'/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -139,7 +145,7 @@ class PlgPayment2checkout extends JPlugin
 	public function onTP_GetHTML($vars)
 	{
 		// Fix for sameSite cookie attribute in chrome.
-		header('Set-Cookie: ' . session_name() . '=' . JFactory::getApplication()->input->cookie->get(session_name()) .
+		header('Set-Cookie: ' . session_name() . '=' . Factory::getApplication()->input->cookie->get(session_name()) .
 			'; SameSite=None; Secure; HttpOnly');
 
 		// Removed Sandbox URL with this reference link -
@@ -202,7 +208,7 @@ class PlgPayment2checkout extends JPlugin
 		// If data is not posted then maybe its phishing or spam attack
 		if (empty($vars) || empty($data))
 		{
-			throw new Exception(JText::_('PLG_PAYMENT_2CHECKOUT_ERR_SPAM'));
+			throw new Exception(Text::_('PLG_PAYMENT_2CHECKOUT_ERR_SPAM'));
 		}
 
 		$isValid = true;
@@ -256,7 +262,7 @@ class PlgPayment2checkout extends JPlugin
 
 			if (!$isValid)
 			{
-				throw new Exception(JText::_('PLG_PAYMENT_2CHECKOUT_ERR_INVALID_INS'));
+				throw new Exception(Text::_('PLG_PAYMENT_2CHECKOUT_ERR_INVALID_INS'));
 			}
 		}
 

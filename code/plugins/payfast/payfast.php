@@ -6,10 +6,15 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+
 jimport('joomla.plugin.plugin');
 require_once JPATH_SITE . '/plugins/payment/payfast/payfast/helper.php';
 
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_payfast', JPATH_ADMINISTRATOR);
 
 /**
@@ -19,7 +24,7 @@ $lang->load('plg_payment_payfast', JPATH_ADMINISTRATOR);
  * @subpackage  site
  * @since       2.2
  */
-class PlgPaymentPayfast extends JPlugin
+class PlgPaymentPayfast extends CMSPlugin
 {
 	private $validHosts = array(
 		'www.payfast.co.za',
@@ -40,7 +45,7 @@ class PlgPaymentPayfast extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Define Payment Status codes in payfast  And Respective Alias in Framework
 		$this->responseStatus = array('COMPLETE'  => 'C',
@@ -59,12 +64,12 @@ class PlgPaymentPayfast extends JPlugin
 	 */
 	public function buildLayoutPath($layout)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
 		$override = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' .
 		$this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}

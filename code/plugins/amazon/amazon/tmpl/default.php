@@ -7,6 +7,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+
 if(JVERSION >='1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/amazon/amazon/lib/ButtonGenerationWithSignature/ButtonGenerator.php');
 else
@@ -82,7 +85,7 @@ else
 
 			echo $form;
 			?>
-		<div align="center">	<input type="submit" class="btn btn-success" value="<?php echo JText::_('SUBMIT');?>" ></div>
+		<div align="center">	<input type="submit" class="btn btn-success" value="<?php echo Text::_('SUBMIT');?>" ></div>
 	</form>
 </div>
 

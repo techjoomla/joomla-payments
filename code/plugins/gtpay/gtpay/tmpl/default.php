@@ -4,6 +4,9 @@
  *  @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+
 $plgPaymentGtpayHelper=new plgPaymentGtpayHelper();
 $vars->currency_val = $plgPaymentGtpayHelper->currencyConvert();
 $gtpay_tranx_id = rand();
@@ -20,7 +23,7 @@ $gtpay_cust_id = rand();
 	<input id="gtpay_tranx_memo" type="hidden" name="gtpay_tranx_memo" value="">
 	<input id="gtpay_tranx_noti_url" type="hidden" name="gtpay_tranx_noti_url" value="<?php echo $this->params->get( 'gtpay_tranx_noti_url' ); ?>"></div>
 	<div class="control-group">
-		<div class="controls"><input type="submit" name="btnContinue" value="<?php echo JText::_('GTPAY_CONTINUE'); ?>"></div>
+		<div class="controls"><input type="submit" name="btnContinue" value="<?php echo Text::_('GTPAY_CONTINUE'); ?>"></div>
 	</div>	
 </div>					
 <?php $shahash = $plgPaymentGtpayHelper->generateHash($gtpay_tranx_id, $vars->amount); ?>

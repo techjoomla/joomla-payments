@@ -33,17 +33,22 @@
  */
 
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.plugin.plugin' );
 
-if(JVERSION >='1.6.0')
 require_once(JPATH_SITE.'/plugins/payment/paymill/paymill/helper.php');
-else
-require_once(JPATH_SITE.'/plugins/payment/paymill/helper.php');
+
 //Set the language in the class
-$lang =  JFactory::getLanguage();
+$lang =  Factory::getLanguage();
 $lang->load('plg_payment_paymill', JPATH_ADMINISTRATOR);
-class plgpaymentpaymill extends JPlugin
+
+class plgpaymentpaymill extends CMSPlugin
 {
 	private $_payment_gateway = 'payment_paymill';
 	private $_log = null;
@@ -52,7 +57,7 @@ class plgpaymentpaymill extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 		//PUBLIC_KEY IN JS
 		//PRIVATE_KEY IN API KEY
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
@@ -64,22 +69,22 @@ class plgpaymentpaymill extends JPlugin
 			'open'=>'UR');
 		//error code in api error
 		$this->code_arr = array (
-		'internal_server_error'       => JText::_('INTERNAL_SERVER_ERROR'),
-		'invalid_public_key'    	  => JText::_('INVALID_PUBLIC_KEY'),
-		'unknown_error'               => JText::_('UNKNOWN_ERROR'),
-		'3ds_cancelled'               => JText::_('3DS_CANCELLED'),
-		'field_invalid_card_number'   => JText::_('FIELD_INVALID_CARD_NUMBER'),
-		'field_invalid_card_exp_year' => JText::_('FIELD_INVALID_CARD_EXP_YEAR'),
-		'field_invalid_card_exp_month'=> JText::_('FIELD_INVALID_CARD_EXP_MONTH'),
-		'field_invalid_card_exp'      => JText::_('FIELD_INVALID_CARD_EXP'),
-		'field_invalid_card_cvc'      => JText::_('FIELD_INVALID_CARD_CVC'),
-		'field_invalid_card_holder'   => JText::_('FIELD_INVALID_CARD_HOLDER'),
-		'field_invalid_amount_int'    => JText::_('FIELD_INVALID_AMOUNT_INT'),
-		'field_invalid_amount'        => JText::_('FIELD_INVALID_AMOUNT'),
-		'field_invalid_currency'      => JText::_('FIELD_INVALID_CURRENCY'),
-		'field_invalid_account_number'=> JText::_('FIELD_INVALID_AMOUNT_NUMBER'),
-		'field_invalid_account_holder'=> JText::_('FIELD_INVALID_ACCOUNT_HOLDER'),
-		'field_invalid_bank_code'     => JText::_('FIELD_INVALID_BANK_CODE')
+		'internal_server_error'       => Text::_('INTERNAL_SERVER_ERROR'),
+		'invalid_public_key'    	  => Text::_('INVALID_PUBLIC_KEY'),
+		'unknown_error'               => Text::_('UNKNOWN_ERROR'),
+		'3ds_cancelled'               => Text::_('3DS_CANCELLED'),
+		'field_invalid_card_number'   => Text::_('FIELD_INVALID_CARD_NUMBER'),
+		'field_invalid_card_exp_year' => Text::_('FIELD_INVALID_CARD_EXP_YEAR'),
+		'field_invalid_card_exp_month'=> Text::_('FIELD_INVALID_CARD_EXP_MONTH'),
+		'field_invalid_card_exp'      => Text::_('FIELD_INVALID_CARD_EXP'),
+		'field_invalid_card_cvc'      => Text::_('FIELD_INVALID_CARD_CVC'),
+		'field_invalid_card_holder'   => Text::_('FIELD_INVALID_CARD_HOLDER'),
+		'field_invalid_amount_int'    => Text::_('FIELD_INVALID_AMOUNT_INT'),
+		'field_invalid_amount'        => Text::_('FIELD_INVALID_AMOUNT'),
+		'field_invalid_currency'      => Text::_('FIELD_INVALID_CURRENCY'),
+		'field_invalid_account_number'=> Text::_('FIELD_INVALID_AMOUNT_NUMBER'),
+		'field_invalid_account_holder'=> Text::_('FIELD_INVALID_ACCOUNT_HOLDER'),
+		'field_invalid_bank_code'     => Text::_('FIELD_INVALID_BANK_CODE')
 		);
 		$this->public_key = $this->params->get('public_key');
 		$this->private_key = $this->params->get( 'private_key');
@@ -90,10 +95,10 @@ class plgpaymentpaymill extends JPlugin
 	public function buildLayoutPath($layout = "default") {
 		if(empty($layout))
 			$layout = "default";
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout.'.php';
 		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
-		if(JFile::exists($override))
+		if(File::exists($override))
 		{
 			return $override;
 		}
@@ -146,7 +151,7 @@ class plgpaymentpaymill extends JPlugin
 	//Constructs the Payment form in case of On Site Payment gateways like Auth.net & constructs the Submit button in case of offsite ones like Paypal
 	public function onTP_GetHTML($vars)
 	{
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$session->set('amount', $vars->amount);
 		$session->set('currency_code', $vars->currency_code);
 		if(!empty($vars->payment_type) and $vars->payment_type != '')
@@ -172,7 +177,7 @@ class plgpaymentpaymill extends JPlugin
 		set_include_path(implode(PATH_SEPARATOR, array(realpath(realpath(dirname(__FILE__)) . '/lib'),get_include_path(),)));
 		//CREATED TOKEN
 		$token = $data["token"];
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		if ($token)
 		{
 				// access lib folder

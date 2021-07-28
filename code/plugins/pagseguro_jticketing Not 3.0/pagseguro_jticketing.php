@@ -3,21 +3,25 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+
 jimport( 'joomla.plugin.plugin' );
-if(JVERSION >='1.6.0')
+
+if (JVERSION >= '1.6.0')
 	require_once(JPATH_SITE.'/plugins/payment/pagseguro_jticketing/pagseguro_jticketing/helper.php');
 else
 	require_once(JPATH_SITE.'/plugins/payment/pagseguro_jticketing/helper.php');
 
-
-class  plgPaymentPagseguro_jticketing extends JPlugin
+class  plgPaymentPagseguro_jticketing extends CMSPlugin
 {
 
 	function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 				/*
 		1	Waiting for payment : the buyer initiated the transaction, but so far the PagSeguro not received any payment information.
@@ -43,10 +47,10 @@ class  plgPaymentPagseguro_jticketing extends JPlugin
 
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file 	= dirname(__FILE__).'/'.$this->_name.'/tmpl/default.php';
 		$override	= JPATH_BASE.'/templates/'.$app->getTemplate().'/html/plugins/'.$this->_type.'/'.$this->_name.'/'.$layout.'.php';
-		if(JFile::exists($override))
+		if(File::exists($override))
 		{
 			return $override;
 		}

@@ -5,20 +5,26 @@
  */
 
 // no direct access
-	defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.formvalidation');
-$document =JFactory::getDocument();
-	if($vars->custom_email=="")
-		$email = JText::_('NO_ADDRS');
-	else
-		$email = $vars->custom_email;
+defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+
+JHtml::_('behavior.formvalidation');
+$document = Factory::getDocument();
+
+if($vars->custom_email == "")
+	$email = Text::_('NO_ADDRS');
+else
+	$email = $vars->custom_email;
 ?>
 <script type="text/javascript">
 function myValidate(f)
 {
 if (document.formvalidator.isValid(f)) {
-		f.check.value='<?php echo JSession::getFormToken(); ?>';
+		f.check.value='<?php echo Session::getFormToken(); ?>';
 		return true;
 	}
 	else {
@@ -34,12 +40,12 @@ if (document.formvalidator.isValid(f)) {
 	<div>
 		<!--
 		<div class="control-group">
-			<label for="cardfname" class="control-label"><?php  echo JText::_('PLG_PAYMENT_COD_ORDER_INFO_LEB');?></label>
-			<div class="controls">	<?php  echo JText::sprintf('PLG_PAYMENT_COD_ORDER_INFO_MSG', $vars->custom_name);?></div>
+			<label for="cardfname" class="control-label"><?php  echo Text::_('PLG_PAYMENT_COD_ORDER_INFO_LEB');?></label>
+			<div class="controls">	<?php  echo Text::sprintf('PLG_PAYMENT_COD_ORDER_INFO_MSG', $vars->custom_name);?></div>
 		</div>
 
 		<div class="control-group">
-			<label for="cardlname" class="control-label"><?php echo JText::_('PLG_PAYMENT_COD_COMMENT'); ?></label>
+			<label for="cardlname" class="control-label"><?php echo Text::_('PLG_PAYMENT_COD_COMMENT'); ?></label>
 			<div class="controls">
 				<textarea id='comment' name='comment' class="inputbox" rows='3' maxlength='135' size='28'><?php if(isset($vars->comment)){ echo $vars->comment; } ?></textarea>
 
@@ -61,7 +67,7 @@ if (document.formvalidator.isValid(f)) {
 					<input type="hidden" name="plugin_payment_method" value="onsite" />
 
 					<div class="" style="text-align:center;">
-						<input type='submit' name='btn_check' id='btn_check' class="btn btn-success btn-large"  value="<?php echo JText::_('PLG_PAYMENT_COD_SUBMIT'); ?>">
+						<input type='submit' name='btn_check' id='btn_check' class="btn btn-success btn-large"  value="<?php echo Text::_('PLG_PAYMENT_COD_SUBMIT'); ?>">
 					</div>
 				</div>
 

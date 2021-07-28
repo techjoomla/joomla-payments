@@ -9,8 +9,13 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+
 jimport('joomla.plugin.plugin');
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_amazon', JPATH_ADMINISTRATOR);
 require_once dirname(__FILE__) . '/amazon/helper.php';
 
@@ -20,7 +25,7 @@ require_once dirname(__FILE__) . '/amazon/helper.php';
  * @package  JGive
  * @since    1.8
  */
-class PlgPaymentAmazon extends JPlugin
+class PlgPaymentAmazon extends CMSPlugin
 {
 	/**
 	 * Method _construct
@@ -35,7 +40,7 @@ class PlgPaymentAmazon extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		/*
 		PS The payment transaction was successful.
@@ -85,13 +90,13 @@ class PlgPaymentAmazon extends JPlugin
 	 */
 	public function buildLayoutPath($layout)
 	{
-		$app       = JFactory::getApplication();
+		$app       = Factory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
 		$override  = JPATH_BASE . '/' . 'templates' . '/' .
 		$app->getTemplate() . '/html/plugins/' . $this->_type . '/' .
 		$this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}

@@ -8,6 +8,9 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Language\Text;
+
 /**
  * APU file field
  *
@@ -15,7 +18,7 @@ defined('JPATH_BASE') or die();
  * @subpackage  site
  * @since       1.0
  */
-class JFormFieldAupfile extends JFormField
+class FormFieldAupfile extends FormField
 {
 	/**
 	 * The form field type.
@@ -37,9 +40,9 @@ class JFormFieldAupfile extends JFormField
 	protected function getInput()
 	{
 		return '<a href="' . JURI::root() . 'plugins/payment/altauserpoints/altauserpoints/jticketing_aup.zip"> '
-		. JText::_('AUP_CLK') . '</a><span> ' . JText::_('AUP_INST') . ' </span><a href="'
-		. JURI::base() . 'index.php?option=com_altauserpoints&task=plugins" target="_blank">' . JText::_('HERE')
+		. Text::_('AUP_CLK') . '</a><span> ' . Text::_('AUP_INST') . ' </span><a href="'
+		. JURI::base() . 'index.php?option=com_altauserpoints&task=plugins" target="_blank">' . Text::_('HERE')
 		. '</a></br><a href="http://techjoomla.com/documentation-for-socialads/configuring-payment-plugins-for-socialads.html" target="_blank">'
-		. JText::_('CLK_DOC') . '</a>';
+		. Text::_('CLK_DOC') . '</a>';
 	}
 }

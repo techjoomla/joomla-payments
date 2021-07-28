@@ -8,7 +8,9 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Language\Text;
 
 /**
  * APU jticketing file field
@@ -17,7 +19,7 @@ use Joomla\CMS\Form\FormField;
  * @subpackage  site
  * @since       1.0
  */
-class JFormFieldAupfilesjticketing extends FormField
+class FormFieldAupfilesjticketing extends FormField
 {
 	/**
 	 * The form field type.
@@ -41,10 +43,10 @@ class JFormFieldAupfilesjticketing extends FormField
 		if ($this->id == 'jform_params_aupfilesjticketing')
 		{
 			$html = '<div style="float:left"><a href="' . JURI::root() . 'plugins/payment/alphauserpoints/alphauserpoints/jticketing_aup.zip"> '
-			. JText::_('AUP_CLK') . '</a><span> ' . JText::_('AUP_INST') . ' </span><a href="' . JURI::base()
-			. 'index.php?option=com_alphauserpoints&task=plugins" target="_blank">' . JText::_('HERE')
+			. Text::_('AUP_CLK') . '</a><span> ' . Text::_('AUP_INST') . ' </span><a href="' . JURI::base()
+			. 'index.php?option=com_alphauserpoints&task=plugins" target="_blank">' . Text::_('HERE')
 			. '</a>. <a href="http://techjoomla.com/documentation-for-jticketing/configuring-payment-plugins-for-jticketing.html" target="_blank">'
-			. JText::_('CLK_DOC') . '</a></div>';
+			. Text::_('CLK_DOC') . '</a></div>';
 
 			return $html;
 		}

@@ -4,6 +4,11 @@
  * @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die(';)');
+
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+
 jimport('joomla.html.html');
 jimport('joomla.plugin.helper');
 
@@ -27,7 +32,7 @@ class PlgPaymentAdaptivePaypalHelper
 	 */
 	public function buildPaypalUrl($secure = true)
 	{
-		$plugin = JPluginHelper::getPlugin('payment', 'adaptive_paypal');
+		$plugin = PluginHelper::getPlugin('payment', 'adaptive_paypal');
 		$params = json_decode($plugin->params);
 		$url    = $params->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
 
@@ -47,20 +52,20 @@ class PlgPaymentAdaptivePaypalHelper
 	{
 		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		$my      = JFactory::getUser();
+		$my      = Factory::getUser();
 
-		JLog::addLogger(
+		Log::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
 				'text_entry_format' => $options
-			), JLog::INFO, $logdata['JT_CLIENT']
+			), Log::INFO, $logdata['JT_CLIENT']
 		);
 
-		$logEntry       = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry       = new LogEntry('Transaction added', Log::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
 
-		JLog::add($logEntry);
+		Log::add($logEntry);
 	}
 
 	/**
@@ -91,22 +96,22 @@ class PlgPaymentAdaptivePaypalHelper
 			$path = JPATH_SITE . '/plugins/payment/' . $name . '/';
 		}
 
-		$my = JFactory::getUser();
+		$my = Factory::getUser();
 
-		JLog::addLogger(
+		Log::addLogger(
 			array(
 				'text_file' => 'logBeforePayment_' . $client . '.php',
 				'text_entry_format' => $options,
 				'text_file_path' => $path
-			), JLog::INFO, $logdata
+			), Log::INFO, $logdata
 		);
 
-		$logEntry       = new JLogEntry('Transaction added', JLog::INFO, $logdata);
+		$logEntry       = new LogEntry('Transaction added', Log::INFO, $logdata);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata);
 
 		// Write log
-		JLog::add($logEntry);
+		Log::add($logEntry);
 	}
 
 	/**

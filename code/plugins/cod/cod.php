@@ -9,9 +9,14 @@
 
 // Ensure this file is being included by a parent file.
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+
 jimport('joomla.plugin.plugin');
 
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_cod', JPATH_ADMINISTRATOR);
 // Load helper.
 if (JVERSION >= '1.6.0')
@@ -24,7 +29,7 @@ else
 }
 
 
-class plgpaymentcod extends JPlugin
+class plgpaymentcod extends CMSPlugin
 {
 	var $_payment_gateway = 'payment_cod';
 	var $_log = null;
@@ -34,7 +39,7 @@ class plgpaymentcod extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 		$this->responseStatus = array(
 			'Success' => 'C',
 			'Failure' => 'X',
@@ -52,11 +57,11 @@ class plgpaymentcod extends JPlugin
 			 $layout = "default";
 		}
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/' . $layout . '.php';
 		$override = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
