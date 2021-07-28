@@ -13,6 +13,10 @@ JHtml::_('behavior.formvalidation');
 <script type="text/javascript">
 	function myValidate(f)
 	{
+		var parentDiv = jQuery('#paypalProDiv');
+		parentDiv.addClass('isloading');
+		jQuery("input[name='submit']").attr('disabled', true);
+
 		if (document.formvalidator.isValid(f))
 		{
 			f.check.value='<?php echo JSession::getFormToken(); ?>';
@@ -20,6 +24,8 @@ JHtml::_('behavior.formvalidation');
 		}
 		else
 		{
+			parentDiv.removeClass('isloading');
+			jQuery("input[name='submit']").attr('disabled', false);
 			var msg = 'Some values are not acceptable.  Please retry.';
 			alert(msg);
 		}
@@ -29,7 +35,7 @@ JHtml::_('behavior.formvalidation');
 </script>
 <div class="tjcpg-wrapper">
 	<form action="<?php echo $vars->url;?>" class="form-validate form-horizontal" onSubmit="return myValidate(this);" method="post" >
-		<div>
+		<div id="paypalProDiv">
 			<div class="control-group">
 				<label for="cardtype" class="control-label">
 					<?php echo JText::_('CREDIT_CARD_TYPE'); ?>

@@ -33,6 +33,7 @@ if (!empty($vars->userInfo))
 		{
 			var msg = 'Some values are not acceptable.  Please retry.';
 			alert(msg);
+			plg_auth_showHide();
 		}
 		return false;
 	}
@@ -87,7 +88,7 @@ if (!empty($vars->userInfo))
 			<div id="tj_payGway_billInfo" style="display:<?php echo $plg_billStyle; ?>">
 				<div class="control-group">
 					<label for="cardfname" class="control-label">
-						<?php echo JText::_('FIRST_NAME'); ?>
+						<?php echo JText::_('FIRST_NAME') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 					</label>
 					<div class="controls">
 						<input class="inputbox required" id="cardfname" type="text" name="cardfname" size="35" value="<?php echo !empty($userInfo['firstname']) ?$userInfo['firstname']:'';?>" />
@@ -96,14 +97,14 @@ if (!empty($vars->userInfo))
 
 				<div class="control-group">
 					<label for="cardlname" class="control-label">
-						<?php echo JText::_('LAST_NAME'); ?>
+						<?php echo JText::_('LAST_NAME') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 					</label>
 					<div class="controls"><input class="inputbox required" id="cardlname" type="text" name="cardlname" size="35" value="<?php echo !empty($userInfo['lastname']) ?$userInfo['lastname']:''; ?>" /></div>
 				</div>
 
 				<div class="control-group">
 					<label for="cardaddress1" class="control-label">
-						<?php echo JText::_('STREET_ADDRESS'); ?>
+						<?php echo JText::_('STREET_ADDRESS') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 					</label>
 					<div class="controls">
 						<input class="inputbox required" id="cardaddress1" type="text" name="cardaddress1" size="" value="<?php echo !empty($userInfo['add_line1']) ?$userInfo['add_line1']:''; ?>" />
@@ -121,7 +122,7 @@ if (!empty($vars->userInfo))
 
 				<div class="control-group">
 					<label for="cardcity" class="control-label">
-						<?php echo JText::_('CITY'); ?>
+						<?php echo JText::_('CITY') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 					</label>
 					<div class="controls">
 						<input class="inputbox required" id="cardcity" type="text" name="cardcity" size="35" value="<?php echo !empty($userInfo['city']) ?$userInfo['city']:''; ?>" />
@@ -130,7 +131,7 @@ if (!empty($vars->userInfo))
 
 				<div class="control-group">
 					<label for="cardstate" class="control-label">
-						<?php echo JText::_('STATE'); ?>
+						<?php echo JText::_('STATE') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 					</label>
 					<div class="controls">
 						<input class="inputbox required" id="cardstate" type="text" name="cardstate" size="10" value="<?php echo !empty($userInfo['state_code']) ?$userInfo['state_code']:''; ?>" />
@@ -139,7 +140,7 @@ if (!empty($vars->userInfo))
 
 				<div class="control-group">
 					<label for="cardzip" class="control-label">
-						<?php echo JText::_('POSTAL_CODE'); ?>
+						<?php echo JText::_('POSTAL_CODE') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 					</label>
 					<div class="controls">
 						<input class="inputbox required" id="cardzip" type="text" name="cardzip" size="10" value="<?php echo !empty($userInfo['zipcode']) ?$userInfo['zipcode']:''; ?>" />
@@ -148,7 +149,7 @@ if (!empty($vars->userInfo))
 
 				<div class="control-group">
 					<label for="cardcountry" class="control-label">
-						<?php echo JText::_('COUNTRY'); ?>
+						<?php echo JText::_('COUNTRY') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 					</label>
 					<div class="controls">
 						<input class="inputbox required" id="cardcountry" type="text" name="cardcountry" size="35" value="<?php echo !empty($userInfo['country_code']) ?$userInfo['country_code']:''; ?>" />
@@ -157,7 +158,7 @@ if (!empty($vars->userInfo))
 
 				<div class="control-group">
 					<label for="email" class="control-label">
-						<?php echo JText::_('EMAIL_ADDRESS'); ?>
+						<?php echo JText::_('EMAIL_ADDRESS') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 					</label>
 					<div class="controls">
 						<input class="inputbox required" id="email" type="text" name="email" size="35" value="<?php echo $vars->user_email; ?>" />
@@ -218,7 +219,7 @@ if (!empty($vars->userInfo))
 
 			<div class="control-group">
 				<label for="cardnum" class="control-label">
-					<?php echo JText::_('CARD_NUMBER'); ?>
+					<?php echo JText::_('CARD_NUMBER') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="cardnum" type="text" name="cardnum" size="35" value="" />
@@ -227,7 +228,7 @@ if (!empty($vars->userInfo))
 
 			<div class="control-group">
 				<label for="cardexp" class="control-label">
-					<?php echo JText::_('EXPIRATION_DATE_IN_FORMAT_MMYY'); ?>
+					<?php echo JText::_('EXPIRATION_DATE_IN_FORMAT_MMYY') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="cardexp" type="text" name="cardexp" size="10" value="" />
@@ -236,7 +237,7 @@ if (!empty($vars->userInfo))
 
 			<div class="control-group">
 				<label for="cardcvv" class="control-label">
-					<?php echo JText::_('CARD_CVV_NUMBER'); ?>
+					<?php echo JText::_('CARD_CVV_NUMBER') . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?>
 				</label>
 				<div class="controls">
 					<input class="inputbox required" id="cardcvv" type="text" name="cardcvv" size="10" value="" />
