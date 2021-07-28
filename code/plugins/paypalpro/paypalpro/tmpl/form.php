@@ -13,7 +13,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 
 $document = Factory::getDocument();
-JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.formvalidator');
 ?>
 
 <script type="text/javascript">

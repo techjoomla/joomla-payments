@@ -11,7 +11,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 $document =Factory::getDocument();
-JHTML::_('behavior.formvalidation'); ?>
+JHTML::_('behavior.formvalidator'); ?>
 <script type="text/javascript">
 function myValidate()
 {

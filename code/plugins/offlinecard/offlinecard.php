@@ -84,7 +84,7 @@ class plgpaymentofflinecard extends CMSPlugin
 	function onTP_Processpayment($data) 
 	{
 		$db = Factory::getDBO();
-		$post = JRequest::get('post');
+		$post = JFactory::getApplication()->input->get('post');
 		$cardnum = substr($post['cardnum'], 0, 8);
 		$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_DEV_URANDOM);
 		$cardno = base64_encode($iv . mcrypt_encrypt(MCRYPT_RIJNDAEL_256,hash('sha256', $this->encryption_key, true), $cardnum, MCRYPT_MODE_CBC, $iv)); 

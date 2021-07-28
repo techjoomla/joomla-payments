@@ -8,7 +8,7 @@ use Joomla\CMS\Router\Route;
 
 jimport('joomla.form.formfield');
 
-class FormFieldLogfile extends FormField
+class JFormFieldLogfile extends JFormField
 {
 	/**
 	 * The form field type.

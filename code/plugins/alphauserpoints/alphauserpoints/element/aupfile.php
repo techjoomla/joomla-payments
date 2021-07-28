@@ -10,7 +10,7 @@ defined('JPATH_BASE') or die();
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 
-class FormFieldAupfile extends FormField
+class JFormFieldAupfile extends JFormField
 {
 	/**
 	 * The form field type.

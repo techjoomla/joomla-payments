@@ -14,7 +14,7 @@ use Joomla\CMS\Session\Session;
 
 $document =Factory::getDocument();
 
-HTMLHelper::_('behavior.formvalidation');
+HTMLHelper::_('behavior.formvalidator');
 
 if($vars->custom_email=="")
 	$email = Text::_('NO_ADDRS');

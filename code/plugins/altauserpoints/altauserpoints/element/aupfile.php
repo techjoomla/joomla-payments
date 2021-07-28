@@ -18,7 +18,7 @@ use Joomla\CMS\Language\Text;
  * @subpackage  site
  * @since       1.0
  */
-class FormFieldAupfile extends FormField
+class JFormFieldAupfile extends JFormField
 {
 	/**
 	 * The form field type.

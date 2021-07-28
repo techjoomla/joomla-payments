@@ -12,7 +12,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 
-JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.formvalidator');
 $document = Factory::getDocument();
 
 if ($vars->custom_email == "")

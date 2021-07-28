@@ -13,7 +13,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 
 $document =Factory::getDocument();
-HTMLHelper::_('behavior.formvalidation');
+HTMLHelper::_('behavior.formvalidator');
 $userInfo = array();
 $plg_billStyle = "block";
 $plg_billStyleMsg = Text::_('PLG_AUTHONET_HIDE_BILL_INFO');

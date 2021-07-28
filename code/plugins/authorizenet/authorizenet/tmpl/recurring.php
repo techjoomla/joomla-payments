@@ -12,7 +12,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 
 $document =& Factory::getDocument();
-HTMLHelper::_('behavior.formvalidation');
+HTMLHelper::_('behavior.formvalidator');
 ?>
 <script type="text/javascript">
 function myValidate(f)

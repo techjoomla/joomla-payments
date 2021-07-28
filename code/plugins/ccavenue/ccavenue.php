@@ -152,7 +152,7 @@ class  PlgPaymentCcavenue extends CMSPlugin
 		$access_code = $this->params->get('sandbox') ? trim($this->params->get('sandbox_access_code')) : trim($this->params->get('access_code'));
 		$vars->amount = (float) $vars->amount;
 
-		/* $vars->notify_url = JURI::base().'ccavenue.'.JRequest::getCmd('option').'.php'; */
+		/* $vars->notify_url = JURI::base().'ccavenue.'.JFactory::getApplication()->input->getCmd('option').'.php'; */
 
 		$vars->order_id = (string) $vars->order_id;
 

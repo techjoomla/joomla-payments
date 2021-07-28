@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
  *
  * @since  1.0
  */
-class FormFieldAupFileQuick2cart extends FormField
+class JFormFieldAupFileQuick2cart extends JFormField
 {
 	/**
 	 * The form field type.

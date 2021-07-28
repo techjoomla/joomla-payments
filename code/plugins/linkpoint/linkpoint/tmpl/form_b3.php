@@ -12,7 +12,7 @@ use Joomla\CMS\Session\Session;
 
 $session  = Factory::getSession();
 $document = Factory::getDocument();
-JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.formvalidator');
 
 // For billing info
 $userInfo         = array();
