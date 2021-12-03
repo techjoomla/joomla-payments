@@ -1,14 +1,19 @@
 <?php
 /**
- * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
- * @license    GNU General Public License version 2, or later
+ * @package     Joomla_Payments
+ * @subpackage  PayuMoney
+ *
+ * @author      Techjoomla <extensions@techjoomla.com>
+ * @copyright   Copyright (C) 2009 - 2020 Techjoomla. All rights reserved.
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
-jimport('joomla.html.parameter');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Log\LogEntry;
+use Joomla\CMS\Plugin\PluginHelper;
 
 /**
  * PlgPaymentBycheckHelper
@@ -30,9 +35,9 @@ class PlgPaymentPayuMoneyHelper
 	 */
 	public function buildPayuMoneyUrl($secure = true)
 	{
-		$plugin = JPluginHelper::getPlugin('payment', 'payumoney');
+		$plugin = PluginHelper::getPlugin('payment', 'payumoney');
 		$params = json_decode($plugin->params);
-		$url = $params->sandbox? 'test.payu.in/_payment' : 'secure.payu.in/_payment';
+		$url = $params->sandbox? 'sandboxsecure.payu.in/_payment' : 'secure.payu.in/_payment';
 
 		if ($secure)
 		{
@@ -49,28 +54,28 @@ class PlgPaymentPayuMoneyHelper
 	 *
 	 * @param   array   $logdata  data.
 	 *
-	 * @since   1.0
-	 * @return  list.
+	 * @since   1.0.0
+	 *
+	 * @return  void
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		$my = JFactory::getUser();
+		$my = Factory::getUser();
 
-		JLog::addLogger(
+		Log::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
 				'text_entry_format' => $options
 			),
-			JLog::INFO,
+			Log::INFO,
 			$logdata['JT_CLIENT']
 		);
 
-		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry = new LogEntry('Transaction added', Log::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
 
-		JLog::add($logEntry);
+		Log::add($logEntry);
 	}
 }
