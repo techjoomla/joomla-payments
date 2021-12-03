@@ -80,11 +80,11 @@
 		 <div id="tj_payGway_billInfo" style="display:<?php echo $plg_billStyle; ?>">
 			<div class="form-group">
 			   <label for="cardfname" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'FIRST_NAME' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
-			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardfname" type="text" name="cardfname" size="35" value="<?php echo !empty($userInfo['firstname']) ?$userInfo['firstname']:'' ;?>" /></div>
+			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardfname" type="text" name="cardfname" size="35" value="<?php echo !empty($userInfo['firstname']) ?$userInfo['firstname']:'' ;?>" pattern="[a-zA-Z0-9\s\.]+"/></div>
 			</div>
 			<div class="form-group">
 			   <label for="cardlname" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'LAST_NAME' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
-			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardlname" type="text" name="cardlname" size="35" value="<?php echo !empty($userInfo['lastname']) ?$userInfo['lastname']:'' ;?>" /></div>
+			   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12"><input class="inputbox required" id="cardlname" type="text" name="cardlname" size="35" value="<?php echo !empty($userInfo['lastname']) ?$userInfo['lastname']:'' ;?>" pattern="[a-zA-Z0-9\s\.]+"/></div>
 			</div>
 			<div class="form-group">
 			   <label for="cardaddress1" class="col-sm-3 col-xs-12 control-label"><?php echo JText::_( 'STREET_ADDRESS' ) . JText::_('PLG_PAYMENT_AUTHORIZENET_REQUIRED_MARK'); ?></label>
