@@ -4,8 +4,11 @@
  * @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die(';)');
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
+
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+use Joomla\Registry\Registry;
 
 /**
  * PlgPaymentBycheckHelper
@@ -27,7 +30,7 @@ class PlgPaymentPaypalHelper
 	 */
 	public function buildPaypalUrl($secure = true)
 	{
-		$plugin = JPluginHelper::getPlugin('payment', 'paypal');
+		$plugin = PluginHelper::getPlugin('payment', 'paypal');
 		$params = json_decode($plugin->params);
 		$url    = $params->sandbox ? 'www.sandbox.paypal.com/cgi-bin/webscr' : 'www.paypal.com/cgi-bin/webscr';
 		$url    = 'https://' . $url;
@@ -47,28 +50,27 @@ class PlgPaymentPaypalHelper
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		$my      = JFactory::getUser();
+		$my      = Factory::getUser();
 
 		if (empty($logdata['JT_CLIENT']))
 		{
 			$logdata['JT_CLIENT'] = "cpg_";
 		}
 
-		JLog::addLogger(
+		Log::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
 				'text_entry_format' => $options
 			),
-			JLog::INFO,
+			Log::INFO,
 			$logdata['JT_CLIENT']
 		);
 
-		$logEntry       = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry       = new LogEntry('Transaction added', Log::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
-		JLog::add($logEntry);
+		Log::add($logEntry);
 	}
 
 	/**
@@ -86,8 +88,8 @@ class PlgPaymentPaypalHelper
 	 */
 	public function validateIPN($data, $componentName)
 	{
-		$plugin = JPluginHelper::getPlugin('payment', 'paypal');
-		$params = new JRegistry($plugin->params);
+		$plugin = PluginHelper::getPlugin('payment', 'paypal');
+		$params = new Registry($plugin->params);
 		$sandBoxMode = $params->get('sandbox', '0', 'INT');
 		$url = ($sandBoxMode)?'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr':'https://ipnpb.paypal.com/cgi-bin/webscr';
 

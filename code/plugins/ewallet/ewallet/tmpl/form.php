@@ -5,7 +5,10 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
- ?>
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+
+?>
 <script type="text/javascript">
 function calculate(convert_val,count,user_points,not_enough_pts_message,success_message)
 {
@@ -36,33 +39,33 @@ function calculate(convert_val,count,user_points,not_enough_pts_message,success_
 }
 </script>
 <?php 
-$comparams = JComponentHelper::getParams( 'com_ewallet' );
+$comparams = ComponentHelper::getParams( 'com_ewallet' );
 $wallet_currency_nam = $comparams->get( "wallet_currency_nam" );
 ?>
 <div class="techjoomla-bootstrap">
 	<form action="<?php echo $vars->url ?>" class="form-validate form-horizontal"  method="post" id="paymentForm" name="paymentForm">
 		<div>
 			<div class="alert alert-info">
-				<?php echo JText::_("FULL_WALLET_PAYMENT_MSG_TEXT"); ?>
+				<?php echo Text::_("FULL_WALLET_PAYMENT_MSG_TEXT"); ?>
 			</div>
 			<div class="controls">
 				<?php 
-				echo JText::sprintf( 'CONVERSION_RATE_MESSAGE', $vars->convert_val,$wallet_currency_nam, $vars->currency_code);?>
+				echo Text::sprintf( 'CONVERSION_RATE_MESSAGE', $vars->convert_val,$wallet_currency_nam, $vars->currency_code);?>
 			</div>
 			<div class="controls">
 				<?php
 					$charge_points = $vars->convert_val * $vars->amount;
 					$charge_points = number_format($charge_points ,2);
-					echo JText::sprintf( 'TOTAL_POINTS_NEEDED_MESSAGE', $charge_points,$wallet_currency_nam);?>
+					echo Text::sprintf( 'TOTAL_POINTS_NEEDED_MESSAGE', $charge_points,$wallet_currency_nam);?>
 			</div>
 			<div class="controls">
-				<?php echo JText::sprintf( 'CURRENT_POINTS_SITUATION', $vars->user_points,$wallet_currency_nam);?>
+				<?php echo Text::sprintf( 'CURRENT_POINTS_SITUATION', $vars->user_points,$wallet_currency_nam);?>
 			</div>
-			<?php $not_enough_pts_message="'".JText::sprintf('NOT_ENOUGH_POINTS_MESSAGE',$wallet_currency_nam)."'";
-				$success_message="'".JText::sprintf( 'TOTAL_POINTS_DEDUCTED_MESSAGE',$charge_points,$wallet_currency_nam)."'";
+			<?php $not_enough_pts_message="'".Text::sprintf('NOT_ENOUGH_POINTS_MESSAGE',$wallet_currency_nam)."'";
+				$success_message="'".Text::sprintf( 'TOTAL_POINTS_DEDUCTED_MESSAGE',$charge_points,$wallet_currency_nam)."'";
 			?>
 			<div class="form-actions">
-				<input class="btn btn-success btn-large" id="js_buy" type="button" value="<?php echo JText::_('SUBMIT');?>" onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $vars->amount;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?> );">
+				<input class="btn btn-success btn-large" id="js_buy" type="button" value="<?php echo Text::_('SUBMIT');?>" onclick="calculate(<?php echo $vars->convert_val;?>,<?php echo $vars->amount;?>,<?php echo $vars->user_points;?>,<?php echo $not_enough_pts_message; ?>,<?php echo $success_message; ?> );">
 				<input type="hidden" name="order_id" value="<?php echo $vars->order_id; ?>" />
 				<input type="hidden" name="client" value="<?php echo $vars->client; ?>" />
 				<input type="hidden" name="total" value="<?php echo number_format($vars->amount ,2) ?>" />

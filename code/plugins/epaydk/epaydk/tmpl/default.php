@@ -4,8 +4,11 @@
  *  @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die('Restricted access'); 
+
+use Joomla\CMS\Language\Text;
+
 /*
-$vars->item_name=JText::sprintf('PLG_PAYMENT_PAYFAST_PINFO',$vars->order_id); 
+$vars->item_name=Text::sprintf('PLG_PAYMENT_PAYFAST_PINFO',$vars->order_id); 
 $txnid=$vars->order_id; */
 //$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
 
@@ -44,6 +47,6 @@ $notify_url=str_replace('&amp;','&',$vars->notify_url);*/
 	<input type="hidden" name="ownreceipt" value="<?php echo $data->ownreceipt ?>" />
 	<input type="hidden" name="hash" value="<?php echo $data->md5 ?>" />
 	<!--  -->
-	<input type="submit" id="payment-button" class="btn" value="<?php echo JText::_('PLG_PAYMENT_EWAYRAPID3_FORM_PAYBUTTON') ?>" />
+	<input type="submit" id="payment-button" class="btn" value="<?php echo Text::_('PLG_PAYMENT_EWAYRAPID3_FORM_PAYBUTTON') ?>" />
 </form>
 </p>

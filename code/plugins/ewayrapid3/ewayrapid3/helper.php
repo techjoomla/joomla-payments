@@ -5,9 +5,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
-jimport('joomla.html.parameter');
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * PlgPaymentEwayrapid3Helper
@@ -30,7 +30,7 @@ class PlgPaymentEwayrapid3Helper
 	public function buildEwayrapid3Url($secure = true)
 	{
 		/*
-		$plugin = JPluginHelper::getPlugin('payment', 'ewayrapid3');
+		$plugin = PluginHelper::getPlugin('payment', 'ewayrapid3');
 		$params=json_decode($plugin->params);
 		$sandbox=$params->sandbox;
 		if(!empty($sandbox)) {
@@ -57,24 +57,23 @@ class PlgPaymentEwayrapid3Helper
 	 */
 	public function Storelog($name,$logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 
-		$my = JFactory::getUser();
+		$my = Factory::getUser();
 
-		JLog::addLogger(
+		Log::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
 				'text_entry_format' => $options
 			),
-			JLog::INFO,
+			Log::INFO,
 			$logdata['JT_CLIENT']
 		);
 
-		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry = new LogEntry('Transaction added', Log::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
 
-		JLog::add($logEntry);
+		Log::add($logEntry);
 	}
 }

@@ -10,6 +10,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 $merchant_id = $this->params->get("merchant_id", "");
 $project_id = $this->params->get("project_id", "");
 $projectPassword = $this->params->get("project_password", "");
@@ -20,7 +24,7 @@ $field1_text = $this->params->get("field1_text", "");
 // After BIC was entered - we post to the current request URL to do the redirect then
 if (isset($_POST['submit']))
 {
-	$bic = JFactory::getApplication()->input->getCmd("bic", "");
+	$bic = Factory::getApplication()->input->getCmd("bic", "");
 
 	// Get the Giropay SDK
 	$request = new GiroCheckout_SDK_Request('giropayTransaction');
@@ -52,7 +56,7 @@ if (isset($_POST['submit']))
 	// Throw exception if status is not go! :-)
 	if ($result['rc'] != '0')
 	{
-		throw new Exception(JText::_("AN_ERROR_OCCURED") . " " . $result['rc'] . " " . $result['msg']);
+		throw new Exception(Text::_("AN_ERROR_OCCURED") . " " . $result['rc'] . " " . $result['msg']);
 	}
 
 	// Redirect to giropay :-)
@@ -66,14 +70,14 @@ if (isset($_POST['submit']))
 	<form name="tj_Plug_PaypalForm" action="<?php echo $_SERVER['REQUEST_URI']; ?>" class="form-horizontal" method="post">
 		<div class="row">
 			<div class="col-sm-12 margin-bottom-15 span12">
-			<?php echo JText::_("GIROPAY_INTRO"); ?>
-			<img src="<?php echo JUri::root(); ?>plugins/payment/giropay/GiroCheckout_SDK/logo/Logo_giropay_60_px.jpg" alt="Giropay.de"
+			<?php echo Text::_("GIROPAY_INTRO"); ?>
+			<img src="<?php echo Uri::root(); ?>plugins/payment/giropay/GiroCheckout_SDK/logo/Logo_giropay_60_px.jpg" alt="Giropay.de"
 				class="img-responsive" style="float: right" />
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-3 span3">
-				<label for="bic"><?php echo JText::_("YOUR_BIC"); ?></label>
+				<label for="bic"><?php echo Text::_("YOUR_BIC"); ?></label>
 			</div>
 			<div class="col-md-9 span9">
 				<input type="text" id="bic" name="bic" class="form-control required" required="required" value="" />
@@ -82,7 +86,7 @@ if (isset($_POST['submit']))
 
 		<div class="row">
 			<div class="col-sm-12">
-				<input type="submit" name="submit" class="btn btn-primary" value="<?php echo JText::_("PAY_NOW");?>" />
+				<input type="submit" name="submit" class="btn btn-primary" value="<?php echo Text::_("PAY_NOW");?>" />
 			</div>
 		</div>
 	</form>

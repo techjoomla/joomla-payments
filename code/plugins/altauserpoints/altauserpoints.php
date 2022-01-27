@@ -8,7 +8,12 @@
 // Ensure this file is being included by a parent file
 defined('_JEXEC') or die('Restricted access');
 
-$lang = JFactory::getLanguage();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
+
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_altauserpoints', JPATH_ADMINISTRATOR);
 
 require_once dirname(__FILE__) . '/altauserpoints/helper.php';
@@ -20,7 +25,7 @@ require_once dirname(__FILE__) . '/altauserpoints/helper.php';
  * @subpackage  site
  * @since       2.2
  */
-class Plgpaymentaltauserpoints extends JPlugin
+class Plgpaymentaltauserpoints extends CMSPlugin
 {
 	Protected $responseStatus;
 
@@ -55,12 +60,12 @@ class Plgpaymentaltauserpoints extends JPlugin
 	 */
 	public function buildLayoutPath($layout)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/form.php';
 		$override	= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate();
 		$override	.= '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -105,7 +110,7 @@ class Plgpaymentaltauserpoints extends JPlugin
 	 */
 	public function onTP_GetHTML($vars)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$api_AUP = JPATH_SITE . '/components/com_altauserpoints';
 
 		if (file_exists($api_AUP))
@@ -162,7 +167,7 @@ class Plgpaymentaltauserpoints extends JPlugin
 		$error['code']	= '';
 		$error['desc']	= '';
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = "SELECT points FROM #__alpha_userpoints where userid=" . $data['user_id'];
 		$db->setQuery($query);
 
@@ -170,6 +175,8 @@ class Plgpaymentaltauserpoints extends JPlugin
 		$convert_val = $this->params->get('conversion');
 		$points_charge = $data['total'] * $convert_val;
 		$payment_status = '';
+
+		$user = Factory::getUser();
 
 		if ($points_charge <= $points_count)
 		{
@@ -181,7 +188,9 @@ class Plgpaymentaltauserpoints extends JPlugin
 			{
 				require_once $api_AUP;
 
-				if (AltaUserPointsHelper::newpoints($data['client'] . '_aup', '', '', JText::_("PUB_AD"), -$points_charge, true, '', JText::_("SUCCSESS")))
+				$referrerId = AltaUserPointsHelper::getAnyUserReferreID($user->id);
+
+				if (AltaUserPointsHelper::newpoints($data['client'] . '_aup', $referrerId, '', Text::_("PUB_AD"), -$points_charge, true, '', Text::_("SUCCSESS")))
 				{
 					$payment_status = 'Success';
 				}

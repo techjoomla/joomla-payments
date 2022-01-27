@@ -9,6 +9,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+
 ?>
 
 <div class="tjcpg-wrapper">
@@ -34,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 	<input type="hidden" name="country" value="<?php echo $vars->countryName?>" />
 	<input type="hidden" name="id_type" value="1" />
 		<div class="form-actions">
-			<input name='submit' type='submit' class="btn btn-success btn-large" value="<?php echo JText::_('SUBMIT'); ?>" >
+			<input name='submit' type='submit' class="btn btn-success btn-large" value="<?php echo Text::_('SUBMIT'); ?>" >
 		</div>
 	</div>
 </form>

@@ -7,7 +7,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$lang = JFactory::getLanguage();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
+
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_alphauserpoints', JPATH_ADMINISTRATOR);
 
 require_once dirname(__FILE__) . '/alphauserpoints/helper.php';
@@ -19,7 +24,7 @@ require_once dirname(__FILE__) . '/alphauserpoints/helper.php';
  * @subpackage  site
  * @since       2.2
  */
-class Plgpaymentalphauserpoints extends JPlugin
+class Plgpaymentalphauserpoints extends CMSPlugin
 {
 	/**
 	 * Constructor
@@ -33,7 +38,7 @@ class Plgpaymentalphauserpoints extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		/*Define Payment Status codes in Authorise  And Respective Alias in Framework
 		1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review*/
@@ -55,12 +60,12 @@ class Plgpaymentalphauserpoints extends JPlugin
 	 */
 	public function buildLayoutPath($layout)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/form.php';
 		$override	= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate();
 		$override	.= '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -105,7 +110,7 @@ class Plgpaymentalphauserpoints extends JPlugin
 	 */
 	public function onTP_GetHTML($vars)
 	{
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$api_AUP = JPATH_SITE . '/components/com_alphauserpoints';
 
 		if (file_exists($api_AUP))
@@ -162,7 +167,7 @@ class Plgpaymentalphauserpoints extends JPlugin
 		$error['code']	= '';
 		$error['desc']	= '';
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = "SELECT points FROM #__alpha_userpoints where userid=" . $data['user_id'];
 		$db->setQuery($query);
 
@@ -181,7 +186,7 @@ class Plgpaymentalphauserpoints extends JPlugin
 			{
 				require_once $api_AUP;
 
-				if (AlphaUserPointsHelper::newpoints($data['client'] . '_aup', '', '', JText::_("PUB_AD"), -$points_charge, true, '', JText::_("SUCCSESS")))
+				if (AlphaUserPointsHelper::newpoints($data['client'] . '_aup', '', '', Text::_("PUB_AD"), -$points_charge, true, '', Text::_("SUCCSESS")))
 				{
 					$payment_status = 'Success';
 				}

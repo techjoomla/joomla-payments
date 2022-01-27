@@ -7,9 +7,12 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+
 require_once dirname(__FILE__) . '/epaydk/helper.php';
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_epaydk', JPATH_ADMINISTRATOR);
 
 /**
@@ -19,7 +22,7 @@ $lang->load('plg_payment_epaydk', JPATH_ADMINISTRATOR);
  * @subpackage  site
  * @since       2.2
  */
-class PlgPaymentEpaydk extends JPlugin
+class PlgPaymentEpaydk extends CMSPlugin
 {
 	/**
 	 * Constructor
@@ -57,12 +60,12 @@ class PlgPaymentEpaydk extends JPlugin
 	 */
 	public function buildLayoutPath($layout)
 	{
-		$app       = JFactory::getApplication();
+		$app       = Factory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
 		$override  = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' .
 		$this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -133,7 +136,7 @@ class PlgPaymentEpaydk extends JPlugin
 		$plgPaymentEpaydkHelper = new plgPaymentEpaydkHelper;
 
 		// Split the name in first and last name
-		$user                   = JFactory::getUser();
+		$user                   = Factory::getUser();
 		$nameParts              = $user->name;
 		$firstName              = $user->name;
 		$lastName               = $user->name;

@@ -9,54 +9,50 @@
 
 // Ensure this file is being included by a parent file.
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.plugin.plugin');
 
-$lang = JFactory::getLanguage();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Plugin\CMSPlugin;
+
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_cod', JPATH_ADMINISTRATOR);
+
 // Load helper.
-if (JVERSION >= '1.6.0')
-{
-	require_once (JPATH_SITE . '/plugins/payment/cod/cod/helper.php');
-}
-else
-{
-	require_once (JPATH_SITE . '/plugins/payment/cod/helper.php');
-}
+require_once JPATH_SITE . '/plugins/payment/cod/cod/helper.php';
 
-
-class plgpaymentcod extends JPlugin
+class plgpaymentcod extends CMSPlugin
 {
-	var $_payment_gateway = 'payment_cod';
-	var $_log = null;
+	public $_payment_gateway = 'payment_cod';
 
-	function __construct(&$subject, $config)
+	public $_log = null;
+
+	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config               = Factory::getConfig();
 		$this->responseStatus = array(
 			'Success' => 'C',
 			'Failure' => 'X',
 			'Pending' => 'P',
-			'ERROR' => 'E',
-			'COD' => 'COD',
+			'ERROR'   => 'E',
+			'COD'     => 'COD',
 		);
 	}
 
-
-	function buildLayoutPath($layout)
+	public function buildLayoutPath($layout)
 	{
 		if (empty($layout))
 		{
-			 $layout = "default";
+			$layout = "default";
 		}
 
-		$app = JFactory::getApplication();
+		$app       = Factory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/' . $layout . '.php';
-		$override = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
+		$override  = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -67,32 +63,35 @@ class plgpaymentcod extends JPlugin
 	}
 
 	// Builds the layout to be shown, along with hidden fields.
+
 	/**
 	 * Return basic payment gateway name.
 	 *
 	 * @param   mixed   $var  object sent by component.
+	 * @param mixed $vars
+	 * @param mixed $layout
 	 *
 	 * @since   1.0.0
 	 * @return  object payment gatways basic info.
 	 */
-
-	function buildLayout($vars, $layout = 'default')
+	public function buildLayout($vars, $layout = 'default')
 	{
 		if (JVERSION >= '1.6.0')
 		{
-			require_once (JPATH_SITE . '/plugins/payment/cod/cod/helper.php');
+			require_once JPATH_SITE . '/plugins/payment/cod/cod/helper.php';
 		}
 		else
 		{
-			 require_once (JPATH_SITE . '/plugins/payment/cod/helper.php');
+			require_once JPATH_SITE . '/plugins/payment/cod/helper.php';
 		}
 
 		// Load the layout & push variables
 		ob_start();
-			$layout = $this->buildLayoutPath($layout);
-			include ($layout);
-			$html = ob_get_contents();
+		$layout = $this->buildLayoutPath($layout);
+		include $layout;
+		$html = ob_get_contents();
 		ob_end_clean();
+
 		return $html;
 	}
 
@@ -100,15 +99,16 @@ class plgpaymentcod extends JPlugin
 	 * Return basic payment gateway name.
 	 *
 	 * @param   mixed   $var  object sent by component.
+	 * @param mixed $vars
 	 *
 	 * @since   1.0.0
 	 * @return  object payment gatways basic info.
 	 */
-	function onTP_GetHTML($vars)
+	public function onTP_GetHTML($vars)
 	{
 		$vars->custom_name = $this->params->get('plugin_name');
-		$html = $this->buildLayout($vars);
-		return $html;
+
+		return $this->buildLayout($vars);
 	}
 
 	/**
@@ -119,16 +119,17 @@ class plgpaymentcod extends JPlugin
 	 * @since   1.0.0
 	 * @return  object payment gatways basic info.
 	 */
-	function onTP_GetInfo($config)
+	public function onTP_GetInfo($config)
 	{
 		if (!in_array($this->_name, $config))
 		{
 			return;
 		}
 
-		$obj = new stdClass;
+		$obj       = new stdClass;
 		$obj->name = $this->params->get('plugin_name');
-		$obj->id = $this->_name;
+		$obj->id   = $this->_name;
+
 		return $obj;
 	}
 
@@ -141,13 +142,13 @@ class plgpaymentcod extends JPlugin
 	 * @since   1.0.0
 	 * @return  array Standared formatted payment response.
 	 */
-	function onTP_Processpayment($data, $vars)
+	public function onTP_Processpayment($data, $vars)
 	{
-		$isValid = true;
-		$error = array();
+		$isValid       = true;
+		$error         = array();
 		$error['code'] = '';
 		$error['desc'] = '';
-		$trxnstatus = "COD";
+		$trxnstatus    = "COD";
 
 		// Compare response order id and send order id in notify URL
 		$res_orderid = '';
@@ -157,8 +158,8 @@ class plgpaymentcod extends JPlugin
 		{
 			if (!empty($vars) && $res_orderid != $vars->order_id)
 			{
-				$trxnstatus = 'ERROR';
-				$isValid = false;
+				$trxnstatus    = 'ERROR';
+				$isValid       = false;
 				$error['desc'] = Text::sprintf('PLG_PAYMENT_COD_ORDER_ID_MISMATCH', $vars->order_id, $res_orderid);
 			}
 		}
@@ -170,32 +171,32 @@ class plgpaymentcod extends JPlugin
 			{
 
 				// Check whether amount is correct ?
-				$order_amount = (float)$vars->amount;
-				$retrunamount = (float)$data['total'];
-				$epsilon = 0.01;
+				$order_amount = (float) $vars->amount;
+				$retrunamount = (float) $data['total'];
+				$epsilon      = 0.01;
 
 				if (($order_amount - $retrunamount) > $epsilon)
 				{
-					$trxnstatus = 'ERROR';
-					$isValid = false;
+					$trxnstatus    = 'ERROR';
+					$isValid       = false;
 					$error['desc'] = Text::sprintf('PLG_PAYMENT_COD_ORDER_AMOUNT_MISMATCH', $order_amount, $retrunamount);
 				}
 			}
 		}
 		// END OF AMOUNT CHECK
 
-		$payment_status = $this->translateResponse($trxnstatus);
+		$payment_status         = $this->translateResponse($trxnstatus);
 		$data['payment_status'] = $payment_status;
-		$result = array(
+
+		return array(
 			'transaction_id' => '',
-			'order_id' => $data['order_id'],
-			'status' => $payment_status,
+			'order_id'       => $data['order_id'],
+			'status'         => $payment_status,
 			'total_paid_amt' => $data['total'],
-			'raw_data' => $data,
-			'error' => '',
-			'return' => $data['return'],
+			'raw_data'       => $data,
+			'error'          => '',
+			'return'         => $data['return'],
 		);
-		return $result;
 	}
 
 	/**
@@ -206,7 +207,7 @@ class plgpaymentcod extends JPlugin
 	 * @since   1.0.0
 	 * @return  string status.
 	 */
-	function translateResponse($resOrderStatus)
+	public function translateResponse($resOrderStatus)
 	{
 		foreach ($this->responseStatus as $key => $value)
 		{
@@ -225,14 +226,14 @@ class plgpaymentcod extends JPlugin
 	 * @since   1.0.0
 	 * @return  null
 	 */
-	function onTP_Storelog($data)
+	public function onTP_Storelog($data)
 	{
 		$log_write = $this->params->get('log_write', '0');
 
-		if($log_write == 1)
+		if ($log_write == 1)
 		{
 			$plgPaymentCodHelper = new plgPaymentCodHelper;
-			$log = $plgPaymentCodHelper->Storelog($this->_name, $data);
+			$log                 = $plgPaymentCodHelper->Storelog($this->_name, $data);
 		}
 	}
 }

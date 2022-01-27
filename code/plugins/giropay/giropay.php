@@ -11,7 +11,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
 
 // Include Helper
 require_once dirname(__FILE__) . '/giropay/helper.php';
@@ -20,19 +22,15 @@ require_once dirname(__FILE__) . '/giropay/helper.php';
 require_once dirname(__FILE__) . '/GiroCheckout_SDK/GiroCheckout_SDK.php';
 
 // Load language
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_giropay', JPATH_ADMINISTRATOR);
-
-// Import JFile (should normally be already there, but on some installations..
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
 
 /**
  * Class plgPaymentGiropay
  *
  * @since  1.0.0
  */
-class PlgPaymentGiropay extends JPlugin
+class PlgPaymentGiropay extends CMSPlugin
 {
 	/**
 	 * Builds and includes the layout file (normally giropay/giropay/default.php)
@@ -63,14 +61,14 @@ class PlgPaymentGiropay extends JPlugin
 	 */
 	public function buildLayoutPath()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
 
 		// Let's check if we have an template override
 		$override = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/'
 			. $this->_type . '/' . $this->_name . '/' . 'default.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}

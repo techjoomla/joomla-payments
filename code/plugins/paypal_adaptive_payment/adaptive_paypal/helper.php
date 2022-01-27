@@ -1,11 +1,15 @@
 <?php
 /**
- * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
- * @license    GNU General Public License version 2, or later
+ * @package payment plugin
+ * @copyright Copyright (C) 2009 -2022 Techjoomla, Tekdi Web Solutions . All rights reserved.
+ * @license GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
+ * @link     http://www.techjoomla.com
  */
 defined('_JEXEC') or die(';)');
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
+
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * PlgPaymentAdaptivePaypalHelper
@@ -27,7 +31,7 @@ class PlgPaymentAdaptivePaypalHelper
 	 */
 	public function buildPaypalUrl($secure = true)
 	{
-		$plugin = JPluginHelper::getPlugin('payment', 'adaptive_paypal');
+		$plugin = PluginHelper::getPlugin('payment', 'adaptive_paypal');
 		$params = json_decode($plugin->params);
 		$url    = $params->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
 
@@ -45,22 +49,21 @@ class PlgPaymentAdaptivePaypalHelper
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		$my      = JFactory::getUser();
+		$my      = Factory::getUser();
 
-		JLog::addLogger(
+		Log::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
 				'text_entry_format' => $options
-			), JLog::INFO, $logdata['JT_CLIENT']
+			), Log::INFO, $logdata['JT_CLIENT']
 		);
 
-		$logEntry       = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry       = new LogEntry('Transaction added', Log::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
 
-		JLog::add($logEntry);
+		Log::add($logEntry);
 	}
 
 	/**
@@ -79,34 +82,26 @@ class PlgPaymentAdaptivePaypalHelper
 		// Store item name
 		$logdata['item_name'] = $item_name;
 
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 
-		if (JVERSION >= '1.6.0')
-		{
-			$path = JPATH_SITE . '/plugins/payment/' . $name . '/' . $name . '/';
-		}
-		else
-		{
-			$path = JPATH_SITE . '/plugins/payment/' . $name . '/';
-		}
+		$path = JPATH_SITE . '/plugins/payment/' . $name . '/' . $name . '/';
 
-		$my = JFactory::getUser();
+		$my = Factory::getUser();
 
-		JLog::addLogger(
+		Log::addLogger(
 			array(
 				'text_file' => 'logBeforePayment_' . $client . '.php',
 				'text_entry_format' => $options,
 				'text_file_path' => $path
-			), JLog::INFO, $logdata
+			), Log::INFO, $logdata
 		);
 
-		$logEntry       = new JLogEntry('Transaction added', JLog::INFO, $logdata);
+		$logEntry       = new LogEntry('Transaction added', Log::INFO, $logdata);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata);
 
 		// Write log
-		JLog::add($logEntry);
+		Log::add($logEntry);
 	}
 
 	/**

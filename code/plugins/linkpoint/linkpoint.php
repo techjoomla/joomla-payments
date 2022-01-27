@@ -9,11 +9,16 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-$lang = JFactory::getLanguage();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_linkpoint', JPATH_ADMINISTRATOR);
-jimport('joomla.plugin.plugin');
+
 require_once dirname(__FILE__) . '/linkpoint/helper.php';
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_linkpoint', JPATH_ADMINISTRATOR);
 
 /**
@@ -23,7 +28,7 @@ $lang->load('plg_payment_linkpoint', JPATH_ADMINISTRATOR);
  * @subpackage  site
  * @since       2.2
  */
-class PlgPaymentLinkpoint extends JPlugin
+class PlgPaymentLinkpoint extends CMSPlugin
 {
 	private $cache = null;
 
@@ -86,12 +91,12 @@ class PlgPaymentLinkpoint extends JPlugin
 	 */
 	public function buildLayoutPath($layout)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/form.php';
 		$override	= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type
 		. '/' . $this->_name . '/' . $layout . '.php';
 
-		return (JFile::exists($override)) ? $override : $core_file;
+		return (File::exists($override)) ? $override : $core_file;
 	}
 
 	/**
@@ -112,7 +117,7 @@ class PlgPaymentLinkpoint extends JPlugin
 			$newLayout = $layout . "_" . $vars->bootstrapVersion;
 			$core_file = dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $newLayout . '.php';
 
-			if (JFile::exists($core_file))
+			if (File::exists($core_file))
 			{
 				$layout = $newLayout;
 			}

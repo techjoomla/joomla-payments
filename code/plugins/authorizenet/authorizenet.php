@@ -4,10 +4,14 @@
  * @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.filesystem.file');
-jimport('joomla.plugin.plugin');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
+
 require_once dirname(__FILE__) . '/authorizenet/helper.php';
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_authorizenet', JPATH_ADMINISTRATOR);
 
 /**
@@ -17,7 +21,7 @@ $lang->load('plg_payment_authorizenet', JPATH_ADMINISTRATOR);
  * @subpackage  site
  * @since       2.2
  */
-class PlgpaymentAuthorizenet extends JPlugin
+class PlgpaymentAuthorizenet extends CMSPlugin
 {
 	private $payment_gateway = 'payment_authorizenet';
 
@@ -35,7 +39,7 @@ class PlgpaymentAuthorizenet extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Define Payment Status codes in Authorise  And Respective Alias in Framework
 		// 1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review, ERROR=if amount mismatch
@@ -64,13 +68,13 @@ class PlgpaymentAuthorizenet extends JPlugin
 		if (empty($layout))
 		{
 			$layout = "default";
-		$app       = JFactory::getApplication();
+		$app       = Factory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout . '.php';
 		$override  = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/'
 		. $this->_type . '/' . $this->_name . '/' . $layout . '.php';
 		}
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -99,7 +103,7 @@ class PlgpaymentAuthorizenet extends JPlugin
 			$newLayout = $layout . "_" . $vars->bootstrapVersion;
 			$core_file = dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $newLayout . '.php';
 
-			if (JFile::exists($core_file))
+			if (File::exists($core_file))
 			{
 				$layout = $newLayout;
 			}
@@ -222,9 +226,9 @@ class PlgpaymentAuthorizenet extends JPlugin
 		$submitVaues['cardcvv']               = $data['cardcvv'];
 
 		/* for onsite plugin set the post data into session and redirect to the notify URL */
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$session->set('payment_submitpost', $submitVaues);
-		JFactory::getApplication()->redirect($vars->url);
+		Factory::getApplication()->redirect($vars->url);
 	}
 
 	/**
@@ -326,7 +330,7 @@ class PlgpaymentAuthorizenet extends JPlugin
 				if (($order_amount - $retrunamount) > $epsilon)
 				{
 					// Change response status to ERROR FOR AMOUNT ONLY
-					$app = JFactory::getApplication()->input;
+					$app = Factory::getApplication()->input;
 					$app->enqueuemessage($allresp->error_message, 'error');
 
 					$isValid = false;
@@ -436,12 +440,12 @@ class PlgpaymentAuthorizenet extends JPlugin
 		{
 			$payment_status = "P";
 
-			$error = JText::_('AUTH_SUB_FAIL') . $response->xml->messages->message->text;
+			$error = Text::_('AUTH_SUB_FAIL') . $response->xml->messages->message->text;
 		}
 		else
 		{
 			$payment_status = "C";
-			$success        = JText::_('AUTH_SUB_SUCCESS') . $subscription_id;
+			$success        = Text::_('AUTH_SUB_SUCCESS') . $subscription_id;
 		}
 
 		$result = array(
@@ -471,7 +475,7 @@ class PlgpaymentAuthorizenet extends JPlugin
 	 */
 	public function confirm_recurring_payment_Update($json)
 	{
-		$db             = JFactory::getDBO();
+		$db             = Factory::getDBO();
 		$data           = json_decode($json, true);
 		$payment_status = plgpaymentAuthorizenet::translateResponse($data['x_response_code']);
 
@@ -507,7 +511,7 @@ class PlgpaymentAuthorizenet extends JPlugin
 		$id      = $data['1'];
 		$gateway = $data['2'];
 		$ad_id   = $data['3'];
-		$db      = JFactory::getDBO();
+		$db      = Factory::getDBO();
 
 		if ($subid)
 		{
@@ -530,12 +534,12 @@ class PlgpaymentAuthorizenet extends JPlugin
 			if ($response->xml->messages->resultCode != 'Ok')
 			{
 				$payment_status = "P";
-				$error          = JText::_('AUTH_SUB_CANCEL_FAIL') . $response->xml->messages->message->text;
+				$error          = Text::_('AUTH_SUB_CANCEL_FAIL') . $response->xml->messages->message->text;
 			}
 			else
 			{
 				$payment_status = "C";
-				$success        = JText::_('AUTH_SUB_CANCEL_SUCCESS');
+				$success        = Text::_('AUTH_SUB_CANCEL_SUCCESS');
 				$paymentdata    = new stdClass;
 			}
 

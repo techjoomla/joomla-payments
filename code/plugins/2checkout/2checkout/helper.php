@@ -9,8 +9,10 @@
  */
 
 defined('_JEXEC') or die(';)');
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Language\Text;
 
 /**
  * plgPayment2CheckoutHelper
@@ -59,23 +61,22 @@ class PlgPayment2CheckoutHelper
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 
-		$my = JFactory::getUser();
+		$my = Factory::getUser();
 
-		JLog::addLogger(
+		Log::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'] . '_' .
 				$name . '.php', 'text_entry_format' => $options
-			), JLog::INFO, $logdata['JT_CLIENT']
+			), Log::INFO, $logdata['JT_CLIENT']
 		);
 
-		$logEntry       = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry       = new LogEntry('Transaction added', Log::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
 
-		JLog::add($logEntry);
+		Log::add($logEntry);
 	}
 
 	/**
@@ -90,7 +91,7 @@ class PlgPayment2CheckoutHelper
 	 */
 	public function validateIPN($data, $secret)
 	{
-		$input = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 		$incoming_md5   = strtoupper($data['md5_hash']);
 		$calculated_md5 = md5($data['sale_id'] . $data['vendor_id'] . $data['invoice_id'] . $secret);
 		$calculated_md5 = strtoupper($calculated_md5);
@@ -101,7 +102,7 @@ class PlgPayment2CheckoutHelper
 		}
 		else
 		{
-			$data['ins_check_failure'] = JText::_("PLG_PAYMENT_2CHECKOUT_ERR_INVALID_INS");
+			$data['ins_check_failure'] = Text::_("PLG_PAYMENT_2CHECKOUT_ERR_INVALID_INS");
 
 			$status = false;
 		}

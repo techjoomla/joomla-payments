@@ -1,12 +1,16 @@
 <?php
 /**
- * @author     Techjoomla <extensions@techjoomla.com>
+ * @package    CPG
+ * @author     TechJoomla <extensions@techjoomla.com>
  * @copyright  Copyright (c) 2009-2018 TechJoomla. All rights reserved.
- * @license    GNU General Public License version 2 or later.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+// No direct access
+defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Language\Text;
 
 /**
  * APU socialads file field
@@ -38,11 +42,13 @@ class JFormFieldAupfilesocialads extends JFormField
 	{
 		if ($this->id == 'jform_params_aupfilesocialads')
 		{
-			echo '<div style="float:left"><a href="' . JURI::root() . 'plugins/payment/altauserpoints/altauserpoints/socialads_aup.zip"> '
-			. JText::_('AUP_CLK') . '</a><span> ' . JText::_('AUP_INST') . ' </span><a href="'
-			. JURI::base() . 'index.php?option=com_altauserpoints&task=plugins" target="_blank">' . JText::_('HERE')
-			. '</a><a href="http://techjoomla.com/documentation-for-socialads/configuring-payment-plugins-for-socialads.html" target="_blank">'
-			. JText::_('CLK_DOC') . '</a></div>';
+			$html = '<div style="float:left"><a href="' . JURI::root() . 'plugins/payment/altauserpoints/altauserpoints/socialads_aup.zip"> '
+			. Text::_('AUP_CLK') . '</a><span> ' . Text::_('AUP_INST') . ' </span><a href="'
+			. JURI::base() . 'index.php?option=com_altauserpoints&task=plugins" target="_blank">' . Text::_('HERE')
+			. '</a>. <a href="http://techjoomla.com/documentation-for-socialads/configuring-payment-plugins-for-socialads.html" target="_blank">'
+			. Text::_('CLK_DOC') . '</a></div>';
+
+			return $html;
 		}
 	}
 }

@@ -6,7 +6,13 @@
 
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-$lang = JFactory::getLanguage();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
+
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_ewallet', JPATH_ADMINISTRATOR);
 require_once(dirname(__FILE__) . '/ewallet/helper.php');
 $api_wallet = JPATH_SITE . '/components/com_ewallet/ewallet.php';
@@ -20,7 +26,7 @@ if ( file_exists($api_wallet))
 	}
 }
 
-class plgpaymentewallet extends JPlugin
+class plgpaymentewallet extends CMSPlugin
 {
 	var $_payment_gateway = 'payment_ewallet';
 	var $_log = null;
@@ -29,7 +35,7 @@ class plgpaymentewallet extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		//Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		//Define Payment Status codes in Authorise  And Respective Alias in Framework
 		//1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
@@ -43,10 +49,10 @@ class plgpaymentewallet extends JPlugin
 	}
 
 	function buildLayoutPath($layout) {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/form.php';
 		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
-		if(JFile::exists($override))
+		if(File::exists($override))
 		{
 			return $override;
 		}
@@ -71,7 +77,7 @@ class plgpaymentewallet extends JPlugin
 
 	function onTP_GetHTML($vars)
 	{
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$api_wallet = JPATH_SITE . '/components/com_ewallet/ewallet.php';
 		if ( file_exists($api_wallet))
 		{
@@ -106,9 +112,9 @@ class plgpaymentewallet extends JPlugin
 		$submitVaues['payment_description'] = $vars->payment_description;
 
 		/* for onsite plugin set the post data into session and redirect to the notify URL */
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$session->set('payment_submitpost',$submitVaues);
-		JFactory::getApplication()->redirect($vars->url);
+		Factory::getApplication()->redirect($vars->url);
 	}
 
 	//Adds a row for the first time in the db, calls the layout view
@@ -167,7 +173,7 @@ class plgpaymentewallet extends JPlugin
 	$data['user_id']             = $orderData->donor_id;
 	$data['total']               = $orderData->amount;
 	$data['client']              = 'com_jgive';
-	$data['payment_description'] = JText::_('COM_JGIVE_PROCESS_REFUND_DEFAULT_MSG') . ' ' . $orderData->title;
+	$data['payment_description'] = Text::_('COM_JGIVE_PROCESS_REFUND_DEFAULT_MSG') . ' ' . $orderData->title;
 	$data['return']              = '';
 	*/
 	function onTP_ProcessRefund($data)

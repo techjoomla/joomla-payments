@@ -6,10 +6,15 @@
 
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-$lang = JFactory::getLanguage();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_blank', JPATH_ADMINISTRATOR);
 require_once(dirname(__FILE__) . '/blank/helper.php');
-class plgpaymentblank extends JPlugin
+class plgpaymentblank extends CMSPlugin
 {
 	var $_payment_gateway = 'payment_blank';
 	var $_log = null;
@@ -171,10 +176,10 @@ translate the status response depending upon you payment gateway*/
 
 /** Internal use functions  @TODO move to common helper*/
 	function buildLayoutPath($layout) {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
 		$override	= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
-		if(JFile::exists($override))
+		if(File::exists($override))
 		{
 			return $override;
 		}

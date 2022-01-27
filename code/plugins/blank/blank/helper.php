@@ -4,8 +4,9 @@
  * @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die(';)');
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * PlgPaymentBlankHelper
@@ -57,11 +58,10 @@ class PlgPaymentBlankHelper
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = array('format' => "{DATE}\t{TIME}\t{USER}\t{DESC}");
 
-		$my = JFactory::getUser();
-		$logs = JLog::getInstance($logdata['JT_CLIENT'] . '_' . $name . '.php', $options);
+		$my = Factory::getUser();
+		$logs = Log::getInstance($logdata['JT_CLIENT'] . '_' . $name . '.php', $options);
 		$logs->addEntry(
 			array(
 			'user' => $my->name . '(' . $my->id . ')',

@@ -8,7 +8,12 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-$lang = JFactory::getLanguage();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_jomsocialpoints', JPATH_ADMINISTRATOR);
 require_once dirname(__FILE__) . "/jomsocialpoints/helper.php";
 
@@ -17,7 +22,7 @@ require_once dirname(__FILE__) . "/jomsocialpoints/helper.php";
  *
  * @since  1.0.0
  */
-class Plgpaymentjomsocialpoints extends JPlugin
+class Plgpaymentjomsocialpoints extends CMSPlugin
 {
 	protected $payment_gateway = 'payment_jomsocialpoints';
 
@@ -36,7 +41,7 @@ class Plgpaymentjomsocialpoints extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Define Payment Status codes in Authorise  And Respective Alias in Framework 1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
 		$this->responseStatus = array(
@@ -56,12 +61,12 @@ class Plgpaymentjomsocialpoints extends JPlugin
 	 */
 	public function buildLayoutPath($layout)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/form.php';
 		$override_ext = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/';
 		$override = $override_ext . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -104,11 +109,10 @@ class Plgpaymentjomsocialpoints extends JPlugin
 	 */
 	public function onTP_GetHTML($vars)
 	{
-		jimport('joomla.filesystem.folder');
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$jspath = JPATH_ROOT . '/components/com_community';
 
-		if (JFolder::exists($jspath))
+		if (Folder::exists($jspath))
 		{
 			$query = "SELECT points FROM #__community_users where userid=$vars->user_id";
 			$db->setQuery($query);
@@ -141,7 +145,7 @@ class Plgpaymentjomsocialpoints extends JPlugin
 	{
 		$jspath = JPATH_ROOT . '/components/com_community';
 
-		if (JFolder::exists($jspath))
+		if (Folder::exists($jspath))
 		{
 			if (!in_array($this->_name, $config))
 			{
@@ -171,7 +175,7 @@ class Plgpaymentjomsocialpoints extends JPlugin
 		$error	 = array();
 		$error['code']	= '';
 		$error['desc']	= '';
-		$db    = JFactory::getDBO();
+		$db    = Factory::getDBO();
 		$query = "SELECT points FROM #__community_users where userid=" . $data['user_id'];
 		$db->setQuery($query);
 		$points_count  = $db->loadResult();

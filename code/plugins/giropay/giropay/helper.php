@@ -11,8 +11,6 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.helper');
-
 /**
  * Class PlgPaymentGiropayHelper
  *

@@ -7,11 +7,15 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+
 require_once(dirname(__FILE__) . '/eway/helper.php');
-$lang =  JFactory::getLanguage();
+$lang =  Factory::getLanguage();
 $lang->load('plg_payment_eway', JPATH_ADMINISTRATOR);
-class  plgPaymentEway extends JPlugin
+
+class  plgPaymentEway extends CMSPlugin
 {
 
 	private $responseCodes = array(
@@ -87,7 +91,7 @@ class  plgPaymentEway extends JPlugin
 			'ppImage'		=> '',
 		));
 		//Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 
 		//Define Payment Status codes in eway  And Respective Alias in Framework
@@ -97,10 +101,10 @@ class  plgPaymentEway extends JPlugin
 
 	/* Internal use functions */
 	function buildLayoutPath($layout) {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$core_file 	= dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
 		$override		= JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout.'.php';
-		if(JFile::exists($override))
+		if(File::exists($override))
 		{
 			return $override;
 		}
@@ -143,7 +147,7 @@ class  plgPaymentEway extends JPlugin
 	{
 			$plgPaymentEwayHelper = new plgPaymentEwayHelper();
 			// Split the name in first and last name
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 
 			$nameParts = $user->name; // explode(' ', $user->name, 2);
 			$firstName = $user->name;

@@ -9,10 +9,13 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.plugin.plugin');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
 
 require_once dirname(__FILE__) . '/payu/helper.php';
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_payu', JPATH_ADMINISTRATOR);
 
 /**
@@ -22,7 +25,7 @@ $lang->load('plg_payment_payu', JPATH_ADMINISTRATOR);
  * @subpackage  site
  * @since       2.2
  */
-class PlgPaymentPayu extends JPlugin
+class PlgPaymentPayu extends CMSPlugin
 {
 	/**
 	 * Constructor
@@ -34,7 +37,7 @@ class PlgPaymentPayu extends JPlugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Define Payment Status codes in payu  And Respective Alias in Framework
 		$this->responseStatus = array(
@@ -55,11 +58,11 @@ class PlgPaymentPayu extends JPlugin
 	 */
 	private function buildLayoutPath($layout)
 	{
-		$app       = JFactory::getApplication();
+		$app       = Factory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/default.php';
 		$override  = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -126,7 +129,7 @@ class PlgPaymentPayu extends JPlugin
 	public function onTP_GetHTML($vars)
 	{
 		// Fix for sameSite cookie attribute in chrome.
-		header('Set-Cookie: ' . session_name() . '=' . JFactory::getApplication()->input->cookie->get(session_name()) .
+		header('Set-Cookie: ' . session_name() . '=' . Factory::getApplication()->input->cookie->get(session_name()) .
 			'; SameSite=None; Secure; HttpOnly');
 		$plgPaymentPayuHelper = new plgPaymentPayuHelper;
 		$vars->action_url     = $plgPaymentPayuHelper->buildPayuUrl();

@@ -5,11 +5,15 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.plugin.plugin');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filesystem\File;
 
 require_once JPATH_SITE . '/plugins/payment/adaptive_paypal/adaptive_paypal/helper.php';
 
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_adaptive_paypal', JPATH_ADMINISTRATOR);
 
 /**
@@ -19,7 +23,7 @@ $lang->load('plg_payment_adaptive_paypal', JPATH_ADMINISTRATOR);
  * @subpackage  site
  * @since       2.2
  */
-class PlgPaymentAdaptive_Paypal extends JPlugin
+class PlgPaymentAdaptive_Paypal extends CMSPlugin
 {
 	/**
 	 * Constructor
@@ -33,7 +37,7 @@ class PlgPaymentAdaptive_Paypal extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Define Payment Status codes in Paypal  And Respective Alias in Framework
 		$this->responseStatus = array(
@@ -64,7 +68,7 @@ class PlgPaymentAdaptive_Paypal extends JPlugin
 			"errorLanguage" => "en_US",
 			"detailLevel" => "ReturnAll"
 		);
-		$plugin          = JPluginHelper::getPlugin('payment', 'adaptive_paypal');
+		$plugin          = PluginHelper::getPlugin('payment', 'adaptive_paypal');
 		$params          = json_decode($plugin->params);
 		$this->apiurl    = $params->sandbox ? 'https://svcs.sandbox.paypal.com/AdaptivePayments/' : 'https://svcs.paypal.com/AdaptivePayments/';
 		$this->paypalurl = $params->sandbox ? 'https://www.sandbox.paypal.com/websrc?cmd=_ap-payment&paykey=' : 'https://www.paypal.com/websrc?cmd=_ap-payment&paykey=';
@@ -81,7 +85,7 @@ class PlgPaymentAdaptive_Paypal extends JPlugin
 	 */
 	function buildLayoutPath($layout)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		if ($layout == 'recurring')
 			$core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/recurring.php';
 		else
@@ -89,7 +93,7 @@ class PlgPaymentAdaptive_Paypal extends JPlugin
 
 		$override = JPATH_BASE . '/' . 'templates' . '/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . 'recurring.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -154,7 +158,7 @@ class PlgPaymentAdaptive_Paypal extends JPlugin
 	public function onTP_GetHTML($vars)
 	{
 		// Fix for sameSite cookie attribute in chrome.
-		header('Set-Cookie: ' . session_name() . '=' . JFactory::getApplication()->input->cookie->get(session_name()) .
+		header('Set-Cookie: ' . session_name() . '=' . Factory::getApplication()->input->cookie->get(session_name()) .
 			'; SameSite=None; Secure; HttpOnly');
 		$plgPaymentAdaptivePaypalHelper = new plgPaymentAdaptivePaypalHelper;
 		$vars->action_url               = $plgPaymentAdaptivePaypalHelper->buildPaypalUrl();

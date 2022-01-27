@@ -7,12 +7,16 @@
  * @license    GNU General Public License version 2 or later.
  */
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.filesystem.file');
-jimport('joomla.plugin.plugin');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
+
 require_once dirname(__FILE__) . '/transfirst/helper.php';
 
 // Load language
-$lang         = JFactory::getLanguage();
+$lang         = Factory::getLanguage();
 $extension    = 'plg_payment_transfirst';
 $base_dir     = JPATH_ADMINISTRATOR;
 $language_tag = 'en-GB';
@@ -26,7 +30,7 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
  * @subpackage  site
  * @since       2.2
  */
-class PlgpaymentTransfirst extends JPlugin
+class PlgpaymentTransfirst extends CMSPlugin
 {
 	private $payment_gateway = 'payment_transfirst';
 
@@ -43,7 +47,7 @@ class PlgpaymentTransfirst extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Define Payment Status codes in Transfirst  And Respective Alias in Framework
 		// 00 = Approved, 16 = Declined, 06 = Error, 10 = Held for Review
@@ -96,11 +100,11 @@ class PlgpaymentTransfirst extends JPlugin
 			$layout = "default";
 		}
 
-		$app       = JFactory::getApplication();
+		$app       = Factory::getApplication();
 		$core_file = dirname(__FILE__) . '/' . $this->_name . '/' . 'tmpl' . '/' . $layout . '.php';
 		$override  = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -134,7 +138,7 @@ class PlgpaymentTransfirst extends JPlugin
 			$newLayout = $layout . "_" . $vars->bootstrapVersion;
 			print $core_file = dirname(__FILE__) . '/' . $this->_name . '/tmpl/' . $newLayout . '.php';
 
-			if (JFile::exists($core_file))
+			if (File::exists($core_file))
 			{
 				$layout = $newLayout;
 			}
@@ -377,7 +381,7 @@ class PlgpaymentTransfirst extends JPlugin
 
 			if ($resp->rspCode)
 			{
-				$error['desc'] .= JText::_('PLG_TRANSFIRST_RESP_CODE_' . $resp->rspCode);
+				$error['desc'] .= Text::_('PLG_TRANSFIRST_RESP_CODE_' . $resp->rspCode);
 			}
 		}
 

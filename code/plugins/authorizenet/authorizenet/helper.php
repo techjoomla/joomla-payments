@@ -3,10 +3,12 @@
  * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
  * @license    GNU General Public License version 2, or later
  */
-	defined('_JEXEC') or die('Restricted access');
 
-	jimport('joomla.html.html');
-	jimport('joomla.plugin.helper');
+defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * PlgPaymentAuthorizenetHelper
@@ -28,7 +30,7 @@ class PlgPaymentAuthorizenetHelper
 	 */
 	public function buildAuthorizenetUrl($secure = true)
 	{
-		$plugin = JPluginHelper::getPlugin('payment', 'authorizenet');
+		$plugin = PluginHelper::getPlugin('payment', 'authorizenet');
 		$params = json_decode($plugin->params);
 		$secure_post = $params->secure_post;
 		$url = $params->sandbox ? 'test.authorize.net' : 'secure.authorize.net';
@@ -59,25 +61,24 @@ class PlgPaymentAuthorizenetHelper
 	 */
 	public function Storelog($name,$logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 
-		$my = JFactory::getUser();
+		$my = Factory::getUser();
 
-		JLog::addLogger(
+		Log::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
 				'text_entry_format' => $options
 			),
-			JLog::INFO,
+			Log::INFO,
 			$logdata['JT_CLIENT']
 		);
 
-		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry = new LogEntry('Transaction added', Log::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
 
-		JLog::add($logEntry);
+		Log::add($logEntry);
 
 	// $logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
 	// $logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
@@ -92,7 +93,7 @@ class PlgPaymentAuthorizenetHelper
 	 */
 	public function isSandboxEnabled()
 	{
-		$plugin = JPluginHelper::getPlugin('payment', 'authorizenet');
+		$plugin = PluginHelper::getPlugin('payment', 'authorizenet');
 		$params = json_decode($plugin->params);
 
 		if ($params->sandbox)

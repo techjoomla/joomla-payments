@@ -9,10 +9,14 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.plugin.plugin');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+
 require_once dirname(__FILE__) . '/ccavenue/helper.php';
 require_once dirname(__FILE__) . '/ccavenue/Crypto.php';
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_ccavenue', JPATH_ADMINISTRATOR);
 
 /**
@@ -21,7 +25,7 @@ $lang->load('plg_payment_ccavenue', JPATH_ADMINISTRATOR);
  * @package  JGive
  * @since    1.8
  */
-class  PlgPaymentCcavenue extends JPlugin
+class  PlgPaymentCcavenue extends CMSPlugin
 {
 	/**
 	 * Method _construct
@@ -36,7 +40,7 @@ class  PlgPaymentCcavenue extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Define Payment Status codes in payu  And Respective Alias in Framework
 		$this->responseStatus = array('Success' => 'C', 'Failure' => 'P', 'Aborted' => 'E','ERROR' => 'E');
@@ -53,7 +57,7 @@ class  PlgPaymentCcavenue extends JPlugin
 	 */
 	public function buildLayoutPath($layout)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		if (empty($layout))
 		{
@@ -64,7 +68,7 @@ class  PlgPaymentCcavenue extends JPlugin
 		$override = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' .
 		$this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -147,7 +151,7 @@ class  PlgPaymentCcavenue extends JPlugin
 		$access_code = $this->params->get('sandbox') ? trim($this->params->get('sandbox_access_code')) : trim($this->params->get('access_code'));
 		$vars->amount = (float) $vars->amount;
 
-		/* $vars->notify_url = JURI::base().'ccavenue.'.JRequest::getCmd('option').'.php'; */
+		/* $vars->notify_url = JURI::base().'ccavenue.'.JFactory::getApplication()->input->getCmd('option').'.php'; */
 
 		$vars->order_id = (string) $vars->order_id;
 

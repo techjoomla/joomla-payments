@@ -11,17 +11,15 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$lang = JFactory::getLanguage();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+
+$lang = Factory::getLanguage();
 $lang->load('plg_payment_easysocialpoints', JPATH_ADMINISTRATOR);
 
-if (JVERSION >= '1.6.0')
-{
-	require_once JPATH_SITE . '/plugins/payment/easysocialpoints/easysocialpoints/helper.php';
-}
-else
-{
-	require_once JPATH_SITE . '/plugins/payment/easysocialpoints/helper.php';
-}
+require_once JPATH_SITE . '/plugins/payment/easysocialpoints/easysocialpoints/helper.php';
 
 /**
  * Easysocialpoints payment plg
@@ -30,7 +28,7 @@ else
  * @subpackage  site
  * @since       2.2
  */
-class Plgpaymenteasysocialpoints extends JPlugin
+class Plgpaymenteasysocialpoints extends CMSPlugin
 {
 	private $payment_gateway = 'payment_easysocialpoints';
 
@@ -48,7 +46,7 @@ class Plgpaymenteasysocialpoints extends JPlugin
 		parent::__construct($subject, $config);
 
 		// Set the language in the class
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 
 		// Define Payment Status codes in Authorise  And Respective Alias in Framework
 		// 1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
@@ -69,12 +67,11 @@ class Plgpaymenteasysocialpoints extends JPlugin
 	 */
 	Protected function buildLayoutPath($layout)
 	{
-		jimport('joomla.filesystem.file');
-		$app       = JFactory::getApplication();
+		$app       = Factory::getApplication();
 		$core_file = dirname(__FILE__) . "/" . $this->_name . '/tmpl/form.php';
 		$override  = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
 
-		if (JFile::exists($override))
+		if (File::exists($override))
 		{
 			return $override;
 		}
@@ -117,11 +114,10 @@ class Plgpaymenteasysocialpoints extends JPlugin
 	 */
 	Public function onTP_GetHTML($vars)
 	{
-		jimport('joomla.filesystem.folder');
-		$db     = JFactory::getDBO();
+		$db     = Factory::getDBO();
 		$jspath = JPATH_ROOT . '/components/com_easysocial';
 
-		if (JFolder::exists($jspath))
+		if (Folder::exists($jspath))
 		{
 			$query = "SELECT SUM(points) FROM #__social_points_history where user_id=" . $vars->user_id . " AND state = 1 ";
 			$db->setQuery($query);
@@ -179,7 +175,7 @@ class Plgpaymenteasysocialpoints extends JPlugin
 		$error         = array();
 		$error['code'] = '';
 		$error['desc'] = '';
-		$db            = JFactory::getDBO();
+		$db            = Factory::getDBO();
 		$query         = "SELECT SUM(points) FROM #__social_points_history where user_id=" . $data['user_id'] . " AND state = 1 ";
 		$db->setQuery($query);
 		$points_count  = $db->loadResult();

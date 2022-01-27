@@ -4,8 +4,10 @@
  * @license    GNU General Public License version 2, or later
  */
 defined('_JEXEC') or die(';)');
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
+
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * PlgPaymentLinkpointHelper
@@ -25,7 +27,7 @@ class PlgPaymentLinkpointHelper
 	 */
 	public function buildLinkpointUrl()
 	{
-		$plugin      = JPluginHelper::getPlugin('payment', 'payu');
+		$plugin      = PluginHelper::getPlugin('payment', 'payu');
 		$params      = json_decode($plugin->params);
 		$secure_post = $params->secure_post;
 		$url         = $params->sandbox ? 'staging.linkpt.net' : 'secure.linkpt.net';
@@ -55,19 +57,18 @@ class PlgPaymentLinkpointHelper
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
-		$my      = JFactory::getUser();
-		JLog::addLogger(
+		$my      = Factory::getUser();
+		Log::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
 				'text_entry_format' => $options
-			), JLog::INFO, $logdata['JT_CLIENT']
+			), Log::INFO, $logdata['JT_CLIENT']
 		);
-		$logEntry       = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry       = new LogEntry('Transaction added', Log::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
-		JLog::add($logEntry);
+		Log::add($logEntry);
 	}
 
 	/**

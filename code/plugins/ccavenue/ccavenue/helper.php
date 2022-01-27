@@ -7,8 +7,10 @@
  * @license    GNU General Public License version 2 or later.
  */
 defined('_JEXEC') or die(';)');
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
+
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * Helper for ccavenue
@@ -30,7 +32,7 @@ class PlgPaymentCcavenueHelper
 	 */
 	public function buildCcavenueUrl($secure = true)
 	{
-		$plugin = JPluginHelper::getPlugin('payment', 'ccavenue');
+		$plugin = PluginHelper::getPlugin('payment', 'ccavenue');
 		$params = json_decode($plugin->params);
 		$url = $params->sandbox ? 'test.ccavenue.com' : 'secure.ccavenue.com';
 
@@ -54,27 +56,26 @@ class PlgPaymentCcavenueHelper
 	 */
 	public function Storelog($name,$logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 
-		$my = JFactory::getUser();
+		$my = Factory::getUser();
 
-		JLog::addLogger(
+		Log::addLogger(
 			array(
 				'text_file' => $logdata['JT_CLIENT'] . '_' . $name . '.php',
 				'text_entry_format' => $options
 			),
-			JLog::INFO,
+			Log::INFO,
 			$logdata['JT_CLIENT']
 		);
 
-		$logEntry = new JLogEntry('Transaction added', JLog::INFO, $logdata['JT_CLIENT']);
+		$logEntry = new LogEntry('Transaction added', Log::INFO, $logdata['JT_CLIENT']);
 		$logEntry->user = $my->name . '(' . $my->id . ')';
 		$logEntry->desc = json_encode($logdata['raw_data']);
 
-		JLog::add($logEntry);
+		Log::add($logEntry);
 		/*
-		$logs = &JLog::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
+		$logs = &Log::getInstance($logdata['JT_CLIENT'].'_'.$name.'.log',$options,$path);
 		$logs->addEntry(array('user' => $my->name.'('.$my->id.')','desc'=>json_encode($logdata['raw_data'])));
 		*/
 	}
