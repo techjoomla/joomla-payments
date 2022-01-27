@@ -9,9 +9,6 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
-
 /**
  * PlgPaymentLinkpointHelper
  *
@@ -60,7 +57,6 @@ class PlgPaymentLinkpointHelper
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 		$my      = Factory::getUser();
 		Log::addLogger(

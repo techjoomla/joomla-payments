@@ -11,8 +11,6 @@ use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Filesystem\File;
 
-jimport('joomla.plugin.plugin');
-
 require_once JPATH_SITE . '/plugins/payment/adaptive_paypal/adaptive_paypal/helper.php';
 
 $lang = Factory::getLanguage();

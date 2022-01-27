@@ -10,9 +10,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
-
 class plgPaymentPagseguro_jticketingHelper
 { 	
 	
@@ -169,7 +166,6 @@ class plgPaymentPagseguro_jticketingHelper
 	
 function Storelog($name,$logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 		$path = dirname(__FILE__);
 		$my = Factory::getUser();     

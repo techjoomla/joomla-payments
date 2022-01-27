@@ -11,12 +11,7 @@ use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
 
-jimport( 'joomla.plugin.plugin' );
-
-if (JVERSION >= '1.6.0')
-	require_once(JPATH_SITE.'/plugins/payment/gtpay/gtpay/helper.php');
-else
-	require_once(JPATH_SITE.'/plugins/payment/gtpay/helper.php');
+require_once(JPATH_SITE.'/plugins/payment/gtpay/gtpay/helper.php');
 
 $lang =  Factory::getLanguage();
 $lang->load('plg_payment_gtpay', JPATH_ADMINISTRATOR);

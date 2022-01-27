@@ -9,9 +9,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Filesystem\File;
 
-jimport('joomla.filesystem.file');
-jimport('joomla.plugin.plugin');
-
 require_once JPATH_SITE . '/plugins/payment/paypalpro/paypalpro/helper.php';
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_paypalpro', JPATH_ADMINISTRATOR);

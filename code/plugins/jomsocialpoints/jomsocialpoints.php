@@ -109,7 +109,6 @@ class Plgpaymentjomsocialpoints extends CMSPlugin
 	 */
 	public function onTP_GetHTML($vars)
 	{
-		jimport('joomla.filesystem.folder');
 		$db = Factory::getDBO();
 		$jspath = JPATH_ROOT . '/components/com_community';
 

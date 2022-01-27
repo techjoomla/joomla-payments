@@ -14,9 +14,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
 
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
-
 /**
  * plgPayment2CheckoutHelper
  *
@@ -64,7 +61,6 @@ class PlgPayment2CheckoutHelper
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 
 		$my = Factory::getUser();

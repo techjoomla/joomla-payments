@@ -13,8 +13,6 @@ use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
 
-jimport('joomla.filesystem.file');
-jimport('joomla.plugin.plugin');
 require_once dirname(__FILE__) . '/transfirst/helper.php';
 
 // Load language

@@ -19,14 +19,7 @@ use Joomla\CMS\Filesystem\Folder;
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_easysocialpoints', JPATH_ADMINISTRATOR);
 
-if (JVERSION >= '1.6.0')
-{
-	require_once JPATH_SITE . '/plugins/payment/easysocialpoints/easysocialpoints/helper.php';
-}
-else
-{
-	require_once JPATH_SITE . '/plugins/payment/easysocialpoints/helper.php';
-}
+require_once JPATH_SITE . '/plugins/payment/easysocialpoints/easysocialpoints/helper.php';
 
 /**
  * Easysocialpoints payment plg
@@ -74,7 +67,6 @@ class Plgpaymenteasysocialpoints extends CMSPlugin
 	 */
 	Protected function buildLayoutPath($layout)
 	{
-		jimport('joomla.filesystem.file');
 		$app       = Factory::getApplication();
 		$core_file = dirname(__FILE__) . "/" . $this->_name . '/tmpl/form.php';
 		$override  = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/plugins/' . $this->_type . '/' . $this->_name . '/' . $layout . '.php';
@@ -122,7 +114,6 @@ class Plgpaymenteasysocialpoints extends CMSPlugin
 	 */
 	Public function onTP_GetHTML($vars)
 	{
-		jimport('joomla.filesystem.folder');
 		$db     = Factory::getDBO();
 		$jspath = JPATH_ROOT . '/components/com_easysocial';
 

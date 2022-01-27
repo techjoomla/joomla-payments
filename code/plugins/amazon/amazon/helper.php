@@ -11,9 +11,6 @@ defined('_JEXEC') or die(';)');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
-
 /**
  * Helper for amazon
  *
@@ -48,7 +45,6 @@ class PlgPaymentAmazonHelper
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 		$text_file = $logdata['JT_CLIENT'] . '_' . $name . '.php';
 		$my = Factory::getUser();

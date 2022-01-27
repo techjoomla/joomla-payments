@@ -12,7 +12,6 @@ use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\HTML\HTMLHelper;
 
-jimport('joomla.plugin.plugin');
 require_once dirname(__FILE__) . '/ewayrapid3/helper.php';
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_ewayrapid3', JPATH_ADMINISTRATOR);

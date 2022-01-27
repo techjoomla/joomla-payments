@@ -11,7 +11,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Filesystem\File;
 
-jimport( 'joomla.plugin.plugin' );
 require_once(dirname(__FILE__) . '/eway/helper.php');
 $lang =  Factory::getLanguage();
 $lang->load('plg_payment_eway', JPATH_ADMINISTRATOR);

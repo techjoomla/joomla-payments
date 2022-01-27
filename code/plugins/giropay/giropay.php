@@ -15,8 +15,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Filesystem\File;
 
-jimport('joomla.plugin.plugin');
-
 // Include Helper
 require_once dirname(__FILE__) . '/giropay/helper.php';
 
@@ -26,10 +24,6 @@ require_once dirname(__FILE__) . '/GiroCheckout_SDK/GiroCheckout_SDK.php';
 // Load language
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_giropay', JPATH_ADMINISTRATOR);
-
-// Import JFile (should normally be already there, but on some installations..
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
 
 /**
  * Class plgPaymentGiropay

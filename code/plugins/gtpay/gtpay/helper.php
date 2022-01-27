@@ -8,8 +8,6 @@ defined( '_JEXEC' ) or die( ';)' );
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-jimport('joomla.html.html');
-jimport( 'joomla.plugin.helper' );
 class plgPaymentGtpayHelper
 { 	
 	//gets the GTPay URL

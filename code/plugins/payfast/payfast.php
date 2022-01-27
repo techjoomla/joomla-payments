@@ -11,7 +11,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Filesystem\File;
 
-jimport('joomla.plugin.plugin');
 require_once JPATH_SITE . '/plugins/payment/payfast/payfast/helper.php';
 
 $lang = Factory::getLanguage();

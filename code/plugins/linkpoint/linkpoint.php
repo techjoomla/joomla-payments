@@ -16,7 +16,7 @@ use Joomla\CMS\Filesystem\File;
 
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_linkpoint', JPATH_ADMINISTRATOR);
-jimport('joomla.plugin.plugin');
+
 require_once dirname(__FILE__) . '/linkpoint/helper.php';
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_linkpoint', JPATH_ADMINISTRATOR);

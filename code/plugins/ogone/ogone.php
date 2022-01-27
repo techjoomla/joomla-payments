@@ -10,8 +10,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Filesystem\File;
 
-jimport('joomla.plugin.plugin');
-
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_ogone', JPATH_ADMINISTRATOR);
 require_once(JPATH_SITE . '/plugins/payment/ogone/ogone/helper.php');

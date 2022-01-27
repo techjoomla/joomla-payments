@@ -10,9 +10,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\Registry\Registry;
 
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
-
 /**
  * PlgPaymentBycheckHelper
  *
@@ -53,7 +50,6 @@ class PlgPaymentPaypalHelper
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 		$my      = Factory::getUser();
 

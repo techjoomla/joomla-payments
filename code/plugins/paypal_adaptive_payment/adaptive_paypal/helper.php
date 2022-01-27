@@ -1,16 +1,15 @@
 <?php
 /**
- * @copyright  Copyright (c) 2009-2013 TechJoomla. All rights reserved.
- * @license    GNU General Public License version 2, or later
+ * @package payment plugin
+ * @copyright Copyright (C) 2009 -2022 Techjoomla, Tekdi Web Solutions . All rights reserved.
+ * @license GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
+ * @link     http://www.techjoomla.com
  */
 defined('_JEXEC') or die(';)');
 
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
-
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
 
 /**
  * PlgPaymentAdaptivePaypalHelper
@@ -50,7 +49,6 @@ class PlgPaymentAdaptivePaypalHelper
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 		$my      = Factory::getUser();
 
@@ -84,17 +82,9 @@ class PlgPaymentAdaptivePaypalHelper
 		// Store item name
 		$logdata['item_name'] = $item_name;
 
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 
-		if (JVERSION >= '1.6.0')
-		{
-			$path = JPATH_SITE . '/plugins/payment/' . $name . '/' . $name . '/';
-		}
-		else
-		{
-			$path = JPATH_SITE . '/plugins/payment/' . $name . '/';
-		}
+		$path = JPATH_SITE . '/plugins/payment/' . $name . '/' . $name . '/';
 
 		$my = Factory::getUser();
 

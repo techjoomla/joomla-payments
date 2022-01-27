@@ -39,9 +39,6 @@ use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
 
-jimport( 'joomla.filesystem.file' );
-jimport( 'joomla.plugin.plugin' );
-
 require_once(JPATH_SITE.'/plugins/payment/paymill/paymill/helper.php');
 
 //Set the language in the class

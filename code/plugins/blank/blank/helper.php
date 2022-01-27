@@ -8,9 +8,6 @@ defined('_JEXEC') or die(';)');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
-
 /**
  * PlgPaymentBlankHelper
  *
@@ -61,7 +58,6 @@ class PlgPaymentBlankHelper
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = array('format' => "{DATE}\t{TIME}\t{USER}\t{DESC}");
 
 		$my = Factory::getUser();

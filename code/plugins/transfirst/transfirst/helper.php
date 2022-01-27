@@ -19,8 +19,6 @@ use Joomla\CMS\Log\Log;
  * @copyright  Copyright (c) 2009-2015 TechJoomla. All rights reserved.
  * @license    GNU General Public License version 2 or later.
  */
-jimport('joomla.html.html');
-jimport('joomla.plugin.helper');
 
 /**
  * plgPaymentTransfirstHelper
@@ -61,7 +59,6 @@ class PlgPaymentTransfirstHelper
 	 */
 	public function Storelog($name, $logdata)
 	{
-		jimport('joomla.error.log');
 		$options = "{DATE}\t{TIME}\t{USER}\t{DESC}";
 		$my      = Factory::getUser();
 

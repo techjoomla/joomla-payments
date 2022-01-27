@@ -11,8 +11,6 @@ use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
 
-jimport('joomla.plugin.plugin');
-
 require_once JPATH_SITE . '/plugins/payment/paypal/paypal/helper.php';
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_paypal', JPATH_ADMINISTRATOR);

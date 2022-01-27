@@ -16,7 +16,6 @@ use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
 
-jimport('joomla.plugin.plugin');
 require_once dirname(__FILE__) . '/2checkout/helper.php';
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_2checkout', JPATH_ADMINISTRATOR);

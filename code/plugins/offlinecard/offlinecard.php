@@ -12,8 +12,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Utility\Utility;
 
-jimport( 'joomla.filesystem.file' );
-jimport( 'joomla.plugin.plugin' );
 //$lang = & JFactory::getLanguage();
 //$lang->load('plg_offlinecard', JPATH_ADMINISTRATOR);
 JPlugin::loadLanguage('plg_offlinecard');

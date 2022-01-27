@@ -14,7 +14,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Filesystem\File;
 
-jimport('joomla.plugin.plugin');
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_amazon', JPATH_ADMINISTRATOR);
 require_once dirname(__FILE__) . '/amazon/helper.php';
