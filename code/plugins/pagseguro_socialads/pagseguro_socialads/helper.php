@@ -9,6 +9,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Log\LogEntry;
 
 class plgPaymentPagseguro_socialadsHelper
 { 	

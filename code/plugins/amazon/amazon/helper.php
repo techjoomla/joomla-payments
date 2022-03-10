@@ -10,6 +10,7 @@ defined('_JEXEC') or die(';)');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Log\LogEntry;
 
 /**
  * Helper for amazon

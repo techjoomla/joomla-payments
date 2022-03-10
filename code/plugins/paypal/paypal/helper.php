@@ -9,6 +9,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Log\LogEntry;
 
 /**
  * PlgPaymentBycheckHelper
