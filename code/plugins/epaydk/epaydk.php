@@ -546,7 +546,8 @@ class PlgPaymentEpaydk extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymentEpaydkHelper::Storelog($this->_name, $data);
+			$plgPaymentEpaydkHelper = new plgPaymentEpaydkHelper;
+			$log = $plgPaymentEpaydkHelper->Storelog($this->_name, $data);
 		}
 	}
 

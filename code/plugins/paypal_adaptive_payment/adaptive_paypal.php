@@ -352,7 +352,8 @@ class PlgPaymentAdaptive_Paypal extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymentAdaptivePaypalHelper::Storelog($this->_name, $data);
+			$plgPaymentAdaptivePaypalHelper = new plgPaymentAdaptivePaypalHelper;
+			$log = $plgPaymentAdaptivePaypalHelper->Storelog($this->_name, $data);
 		}
 	}
 
@@ -367,7 +368,8 @@ class PlgPaymentAdaptive_Paypal extends CMSPlugin
 	 */
 	public function _StorelogBeforePayment($data, $client, $item_name)
 	{
-		$log = plgPaymentAdaptivePaypalHelper::StorelogBeforePayment($this->_name, $data, $client, $item_name);
+		$plgPaymentAdaptivePaypalHelper = new plgPaymentAdaptivePaypalHelper;
+		$log = $plgPaymentAdaptivePaypalHelper->StorelogBeforePayment($this->_name, $data, $client, $item_name);
 	}
 
 	/**

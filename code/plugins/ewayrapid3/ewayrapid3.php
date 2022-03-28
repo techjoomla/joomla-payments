@@ -435,7 +435,8 @@ class  PlgPaymentEwayrapid3 extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymentEwayrapid3Helper::Storelog($this->_name, $data);
+			$plgPaymentEwayrapid3Helper = new plgPaymentEwayrapid3Helper;
+			$log = $plgPaymentEwayrapid3Helper->Storelog($this->_name, $data);
 		}
 	}
 

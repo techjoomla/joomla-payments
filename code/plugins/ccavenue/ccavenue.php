@@ -388,7 +388,8 @@ class  PlgPaymentCcavenue extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymentCcavenueHelper::Storelog($this->_name, $data);
+			$plgPaymentCcavenueHelper = new plgPaymentCcavenueHelper;
+			$log = $plgPaymentCcavenueHelper->Storelog($this->_name, $data);
 		}
 	}
 

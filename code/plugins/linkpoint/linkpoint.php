@@ -305,7 +305,8 @@ class PlgPaymentLinkpoint extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymentLinkpointHelper::Storelog($this->_name, $data);
+			$plgPaymentLinkpointHelper = new plgPaymentLinkpointHelper;
+			$log = $plgPaymentLinkpointHelper->Storelog($this->_name, $data);
 		}
 	}
 }

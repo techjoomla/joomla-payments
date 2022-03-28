@@ -290,7 +290,8 @@ class Plgpaymentalphauserpoints extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymentAlphauserpointHelper::Storelog($this->_name, $data);
+			$plgPaymentAlphauserpointHelper = new plgPaymentAlphauserpointHelper;
+			$log = $plgPaymentAlphauserpointHelper->Storelog($this->_name, $data);
 		}
 	}
 }

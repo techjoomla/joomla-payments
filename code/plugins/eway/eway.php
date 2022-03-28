@@ -388,7 +388,8 @@ class  plgPaymentEway extends CMSPlugin
 
 		if($log_write == 1)
 		{
-			$log = plgPaymentEwayHelper::Storelog($this->_name,$data);
+			$plgPaymentEwayHelper = new plgPaymentEwayHelper;
+			$log = $plgPaymentEwayHelper->Storelog($this->_name,$data);
 		}
 	}
 	/*

@@ -279,7 +279,8 @@ class Plgpaymentjomsocialpoints extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymentJomsocialpointsHelper::Storelog($this->_name, $data);
+			$plgPaymentJomsocialpointsHelper = new plgPaymentJomsocialpointsHelper;
+			$log = $plgPaymentJomsocialpointsHelper->Storelog($this->_name, $data);
 		}
 	}
 }

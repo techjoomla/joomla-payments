@@ -380,7 +380,8 @@ class Plgpaymentpaypalpro extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymentPaypalproHelper::Storelog($this->_name, $data);
+			$plgPaymentpaypalproHelper = new plgPaymentpaypalproHelper;
+			$log = $plgPaymentpaypalproHelper->Storelog($this->_name, $data);
 		}
 	}
 }
