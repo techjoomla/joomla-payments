@@ -323,7 +323,8 @@ class PlgPaymentPaypal extends CMSPlugin
 		$jinput    = Factory::getApplication()->input;
 		$componentName = $jinput->get("option", "cpg_");
 
-		$verify = plgPaymentPaypalHelper::validateIPN($data, $componentName);
+		$plgPaymentPaypalHelper = new plgPaymentPaypalHelper;
+		$verify = $plgPaymentPaypalHelper->validateIPN($data, $componentName);
 
 		if (!$verify)
 		{
@@ -383,7 +384,9 @@ class PlgPaymentPaypal extends CMSPlugin
 		if ($log_write == 1)
 		{
 			$logData["raw_data"] = $data;
-			$log = plgPaymentPaypalHelper::Storelog($this->_name, $data);
+
+			$plgPaymentPaypalHelper = new plgPaymentPaypalHelper;
+			$log = $plgPaymentPaypalHelper->Storelog($this->_name, $data);
 		}
 	}
 }

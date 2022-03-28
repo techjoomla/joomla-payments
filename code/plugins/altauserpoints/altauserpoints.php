@@ -292,7 +292,8 @@ class Plgpaymentaltauserpoints extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			plgPaymentAltauserpointHelper::Storelog($this->_name, $data);
+			$plgPaymentAltauserpointHelper = new plgPaymentAltauserpointHelper;
+			$plgPaymentAltauserpointHelper->Storelog($this->_name, $data);
 		}
 	}
 }

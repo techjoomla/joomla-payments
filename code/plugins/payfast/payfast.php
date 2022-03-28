@@ -386,7 +386,8 @@ class PlgPaymentPayfast extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymentPayfastHelper::Storelog($this->_name, $data);
+			$plgPaymentPayfastHelper = new plgPaymentPayfastHelper;
+			$log = $plgPaymentPayfastHelper->Storelog($this->_name, $data);
 		}
 	}
 

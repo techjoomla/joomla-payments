@@ -292,7 +292,8 @@ class Plgpaymenteasysocialpoints extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymenteasysocialpointsHelper::Storelog($this->_name, $data);
+			$plgPaymenteasysocialpointsHelper = new plgPaymenteasysocialpointsHelper;
+			$log = $plgPaymenteasysocialpointsHelper->Storelog($this->_name, $data);
 		}
 	}
 }

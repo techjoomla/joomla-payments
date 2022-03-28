@@ -287,7 +287,8 @@ class plgpaymentpaymill extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymentpaymillHelper::Storelog($this->_name,$data);
+			$plgPaymentpaymillHelper = new plgPaymentpaymillHelper;
+			$log = $plgPaymentpaymillHelper->Storelog($this->_name,$data);
 		}
 	}
 

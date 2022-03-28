@@ -185,7 +185,8 @@ class plgPaymentOgone extends CMSPlugin
 
 		if ($log_write == 1)
 		{
-			$log = plgPaymentOgoneHelper::Storelog($this->_name, $data);
+			$plgPaymentOgoneHelper = new plgPaymentOgoneHelper;
+			$log = $plgPaymentOgoneHelper->Storelog($this->_name, $data);
 		}
 	}
 }

@@ -180,7 +180,8 @@ class  plgPaymentPagseguro extends CMSPlugin
 
 		if($log_write == 1)
 		{
-			$log = plgPaymentPagseguroHelper::Storelog($this->_name,$data);
+			$plgPaymentPagseguroHelper = new plgPaymentPagseguroHelper;
+			$log = $plgPaymentPagseguroHelper->Storelog($this->_name,$data);
 		}
 	}
 }
