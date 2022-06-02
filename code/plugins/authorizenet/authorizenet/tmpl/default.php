@@ -35,7 +35,7 @@ if (!empty($vars->userInfo))
 
 		if (document.formvalidator.isValid(f))
 		{
-			f.check.value='<?php echo JSession::getFormToken(); ?>';
+			f.check.value='<?php echo Session::getFormToken(); ?>';
 			return true;
 		}
 		else
