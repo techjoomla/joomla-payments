@@ -29,6 +29,10 @@ if (!empty($vars->userInfo))
 <script type="text/javascript">
 	function myValidate(f)
 	{
+		var parentDiv = jQuery('#authorizenetDiv');
+		parentDiv.addClass('isloading');
+		jQuery("input[name='submit']").attr('disabled', true);
+
 		if (document.formvalidator.isValid(f))
 		{
 			f.check.value='<?php echo Session::getFormToken(); ?>';
@@ -36,6 +40,8 @@ if (!empty($vars->userInfo))
 		}
 		else
 		{
+			parentDiv.removeClass('isloading');
+			jQuery("input[name='submit']").attr('disabled', false);
 			var msg = 'Some values are not acceptable.  Please retry.';
 			alert(msg);
 			plg_auth_showHide();
@@ -71,7 +77,7 @@ if (!empty($vars->userInfo))
 
 <div class="tjcpg-wrapper">
 	<form action="<?php echo $vars->url; /* $vars->submiturl; // rollded back */  ?>" name="adminForm" id="adminForm" onSubmit="return myValidate(this);"  class="form-validate form-horizontal"  method="post">
-		<div>
+		<div id='authorizenetDiv'>
 			<?php
 			if (!empty($vars->userInfo))
 			{
