@@ -24,8 +24,8 @@ $txnid=$vars->order_id;
 	<input type="hidden" name="Email" value="<?php echo $vars->user_email; ?>" />
 	<input type="hidden" name="phone" value="<?php echo $vars->phone; ?>" />
 	<input type="hidden" name="curl" value="<?php echo $vars->cancel_return ?>" />
-	<input type="hidden" name="surl" value="<?php echo $vars->notify_url ?>" />
-	<input type="hidden" name="furl" value="<?php echo $vars->notify_url ?>" />
+	<input type="hidden" name="surl" value="<?php echo $vars->url ?>" />
+	<input type="hidden" name="furl" value="<?php echo $vars->url ?>" />
 	<input type="hidden" name="amount" value="<?php echo $vars->amount; ?>" />
 
 <?php $text = trim($vars->key).'|'.$txnid.'|'.$vars->amount.'|'.trim($vars->item_name).'|'.trim($vars->user_firstname).'|'.$vars->user_email.'|'.$vars->order_id.'||||||||||'.trim($vars->salt);
