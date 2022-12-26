@@ -94,10 +94,13 @@ class PlgPaymentPaypalHelper
 		$sandBoxMode = $params->get('sandbox', '0', 'INT');
 		$url = ($sandBoxMode)?'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr':'https://ipnpb.paypal.com/cgi-bin/webscr';
 
-		$newData = array(
-			'cmd'	=> '_notify-validate'
-		);
-		$newData = array_merge($newData, $data);
+		$newData = "cmd=_notify-validate";
+
+		foreach($data as $k => $v)
+		{
+			$ev = urlencode($v);
+			$newData .= "&{$k}={$ev}";
+		}
 
 		$options = array(
 			CURLOPT_SSL_VERIFYPEER => true,
@@ -111,7 +114,6 @@ class PlgPaymentPaypalHelper
 			CURLOPT_POST           => true,
 			CURLOPT_POSTFIELDS     => $newData,
 			CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-
 		);
 
 		/*
@@ -181,7 +183,7 @@ class PlgPaymentPaypalHelper
 		}
 
 		$logData = array();
-		$logData["JT_CLIENT"] = $componentNamel;
+		$logData["JT_CLIENT"] = $componentName;
 		$logData["raw_data"] = $data;
 		self::Storelog("paypal", $logData);
 
