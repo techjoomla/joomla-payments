@@ -143,10 +143,6 @@ class PlgPayment2checkout extends CMSPlugin
 	 */
 	public function onTP_GetHTML($vars)
 	{
-		// Fix for sameSite cookie attribute in chrome.
-		header('Set-Cookie: ' . session_name() . '=' . $_COOKIE[session_name()] .
-			'; SameSite=None; Secure; HttpOnly');
-
 		// Removed Sandbox URL with this reference link -
 		// @ https://knowledgecenter.2checkout.com/API-Integration/Transition_guides/Transition_Guide_for_2CO_Sandbox
 		$vars->action_url = 'https://www.2checkout.com/checkout/purchase';
