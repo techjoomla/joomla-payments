@@ -158,7 +158,7 @@ class PlgPaymentAdaptive_Paypal extends CMSPlugin
 	public function onTP_GetHTML($vars)
 	{
 		// Fix for sameSite cookie attribute in chrome.
-		header('Set-Cookie: ' . session_name() . '=' . Factory::getApplication()->input->cookie->get(session_name()) .
+		header('Set-Cookie: ' . session_name() . '=' . $_COOKIE[session_name()] .
 			'; SameSite=None; Secure; HttpOnly');
 		$plgPaymentAdaptivePaypalHelper = new plgPaymentAdaptivePaypalHelper;
 		$vars->action_url               = $plgPaymentAdaptivePaypalHelper->buildPaypalUrl();
