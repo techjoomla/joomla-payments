@@ -128,9 +128,6 @@ class PlgPaymentPayu extends CMSPlugin
 	 */
 	public function onTP_GetHTML($vars)
 	{
-		// Fix for sameSite cookie attribute in chrome.
-		header('Set-Cookie: ' . session_name() . '=' . $_COOKIE[session_name()] .
-			'; SameSite=None; Secure; HttpOnly');
 		$plgPaymentPayuHelper = new plgPaymentPayuHelper;
 		$vars->action_url     = $plgPaymentPayuHelper->buildPayuUrl();
 		$vars->key  = $this->params->get('key');
