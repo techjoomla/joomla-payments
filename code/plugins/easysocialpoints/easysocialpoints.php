@@ -30,6 +30,7 @@ require_once JPATH_SITE . '/plugins/payment/easysocialpoints/easysocialpoints/he
  */
 class Plgpaymenteasysocialpoints extends CMSPlugin
 {
+	public $responseStatus;
 	private $payment_gateway = 'payment_easysocialpoints';
 
 	private $log = null;

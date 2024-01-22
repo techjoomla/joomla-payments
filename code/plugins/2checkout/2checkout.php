@@ -29,6 +29,8 @@ $lang->load('plg_payment_2checkout', JPATH_ADMINISTRATOR);
  */
 class PlgPayment2checkout extends CMSPlugin
 {
+	public $responseStatus;
+	
 	/**
 	 * Constructor
 	 *
