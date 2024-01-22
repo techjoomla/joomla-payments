@@ -23,6 +23,7 @@ $lang->load('plg_payment_authorizenet', JPATH_ADMINISTRATOR);
  */
 class PlgpaymentAuthorizenet extends CMSPlugin
 {
+	public $responseStatus, $login_id, $tran_key;
 	private $payment_gateway = 'payment_authorizenet';
 
 	private $log = null;

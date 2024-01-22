@@ -24,6 +24,7 @@ require_once dirname(__FILE__) . '/byorder/helper.php';
  */
 class Plgpaymentbyorder extends CMSPlugin
 {
+	public $responseStatus;
 	protected  $payment_gateway = 'byorder';
 
 	protected  $log = null;

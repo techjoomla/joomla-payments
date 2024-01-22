@@ -24,6 +24,7 @@ $lang->load('plg_payment_paypal', JPATH_ADMINISTRATOR);
  */
 class PlgPaymentPaypal extends CMSPlugin
 {
+	public $responseStatus;
 	/**
 	 * Constructor
 	 *

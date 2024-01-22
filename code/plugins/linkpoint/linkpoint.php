@@ -30,6 +30,7 @@ $lang->load('plg_payment_linkpoint', JPATH_ADMINISTRATOR);
  */
 class PlgPaymentLinkpoint extends CMSPlugin
 {
+	public $responseStatus;
 	private $cache = null;
 
 	/**

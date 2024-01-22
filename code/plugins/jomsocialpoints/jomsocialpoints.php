@@ -24,6 +24,7 @@ require_once dirname(__FILE__) . "/jomsocialpoints/helper.php";
  */
 class Plgpaymentjomsocialpoints extends CMSPlugin
 {
+	public $responseStatus;
 	protected $payment_gateway = 'payment_jomsocialpoints';
 
 	protected $log = null;

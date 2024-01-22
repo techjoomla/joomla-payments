@@ -27,6 +27,7 @@ $lang->load('plg_payment_payu', JPATH_ADMINISTRATOR);
  */
 class PlgPaymentPayu extends CMSPlugin
 {
+	public $responseStatus;
 	/**
 	 * Constructor
 	 *

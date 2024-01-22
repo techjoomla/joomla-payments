@@ -27,6 +27,7 @@ require_once dirname(__FILE__) . '/bycheck/helper.php';
  */
 class Plgpaymentbycheck extends CMSPlugin
 {
+	public $responseStatus;
 	private  $payment_gateway = 'payment_bycheck';
 
 	private  $log = null;
