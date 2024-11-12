@@ -176,13 +176,13 @@ class  PlgPaymentCcavenue extends CMSPlugin
 
 		// Notify URL set for notify url parameter of payment gateway
 		$gatewaydata['notify_url']      = $vars->notify_url;
-		$gatewaydata['billing_name']    = $vars->userInfo['firstname'] . ' ' . $vars->userInfo['lastname'];
+		$gatewaydata['billing_name']    = $vars->user_firstname . ' ' . $vars->user_lastname;
 		$gatewaydata['billing_address'] = $vars->userInfo['add_line1'];
 		$gatewaydata['billing_city']    = $vars->userInfo['city'];
 		$gatewaydata['billing_state']   = $vars->userInfo['state_code'];
 		$gatewaydata['billing_zip']     = $vars->userInfo['zipcode'];
 		$gatewaydata['billing_country'] = $vars->userInfo['country_code'];
-		$gatewaydata['billing_tel']     = $vars->phone;
+		$gatewaydata['billing_tel']     = $vars->userInfo['phone'];
 		$gatewaydata['billing_email']   = $vars->user_email;
 		$gatewaydata['currency']        = $vars->currency_code;
 
