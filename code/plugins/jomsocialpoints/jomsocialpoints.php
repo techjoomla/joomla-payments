@@ -188,7 +188,7 @@ class Plgpaymentjomsocialpoints extends CMSPlugin
 			$count = $points_count - $points_charge;
 			$sql   = "UPDATE #__community_users SET points =" . $db->quote($count) . " WHERE userid=" . $data['user_id'];
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 			$payment_status = 'Success';
 		}
 		else
