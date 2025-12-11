@@ -7,16 +7,22 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Include the Razorpay PHP library
-require_once JPATH_SITE . '/plugins/payment/razorpay/razorpay/src/Razorpay.php';
+$razorpayLibPath = JPATH_SITE . '/plugins/payment/razorpay/razorpay/src/Razorpay.php';
+if (file_exists($razorpayLibPath)) {
+	require_once $razorpayLibPath;
+}
 
 use Razorpay\Api\Api;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-require_once JPATH_SITE . '/plugins/payment/razorpay/razorpay/helper.php';
+$razorpayHelperPath = JPATH_SITE . '/plugins/payment/razorpay/razorpay/helper.php';
+if (file_exists($razorpayHelperPath)) {
+	require_once $razorpayHelperPath;
+}
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_razorpay', JPATH_ADMINISTRATOR);
 

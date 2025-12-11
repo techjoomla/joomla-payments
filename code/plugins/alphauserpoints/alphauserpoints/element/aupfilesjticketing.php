@@ -19,7 +19,7 @@ use Joomla\CMS\Language\Text;
  * @subpackage  site
  * @since       1.0
  */
-class JFormFieldAupfilesjticketing extends JFormField
+class JFormFieldAupfilesjticketing extends FormField
 {
 	/**
 	 * The form field type.

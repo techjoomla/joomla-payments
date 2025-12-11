@@ -10,7 +10,7 @@ defined('JPATH_BASE') or die();
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 
-class JFormFieldAupfile extends JFormField
+class JFormFieldAupfile extends FormField
 {
 	/**
 	 * The form field type.
@@ -31,6 +31,6 @@ class JFormFieldAupfile extends JFormField
 	protected function getInput()
 	{
 		return '<a href="'.JURI::root().'plugins/payment/alphauserpoints/alphauserpoints/jticketing_aup.zip"> '.Text::_('AUP_CLK').'</a><span> '.Text::_('AUP_INST').' </span><a href="'.JURI::base().'index.php?option=com_alphauserpoints&task=plugins" target="_blank">'.Text::_('HERE').'</a>
-				</br><a href="http://techjoomla.com/documentation-for-socialads/configuring-payment-plugins-for-socialads.html" target="_blank">'.JText::_('CLK_DOC').'</a>';
+				</br><a href="http://techjoomla.com/documentation-for-socialads/configuring-payment-plugins-for-socialads.html" target="_blank">'.Text::_('CLK_DOC').'</a>';
 	}
 }
