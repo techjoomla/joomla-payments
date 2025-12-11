@@ -9,7 +9,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
 
 $lang = Factory::getLanguage();
@@ -110,14 +110,14 @@ class Plgpaymentalphauserpoints extends CMSPlugin
 	 */
 	public function onTP_GetHTML($vars)
 	{
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$api_AUP = JPATH_SITE . '/components/com_alphauserpoints';
 
 		if (file_exists($api_AUP))
 		{
 			$query = "SELECT points FROM #__alpha_userpoints where userid=" . $vars->user_id;
 			$db->setQuery($query);
-			$user_points = $db->loadResult();
+			$user_points = $db->loadColumn()[0] ?? null;
 			$vars->user_points = $user_points;
 			$vars->convert_val = $this->params->get('conversion');
 
@@ -167,11 +167,11 @@ class Plgpaymentalphauserpoints extends CMSPlugin
 		$error['code']	= '';
 		$error['desc']	= '';
 
-		$db = Factory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		$query = "SELECT points FROM #__alpha_userpoints where userid=" . $data['user_id'];
 		$db->setQuery($query);
 
-		$points_count = $db->loadResult();
+		$points_count = $db->loadColumn()[0] ?? null;
 		$convert_val = $this->params->get('conversion');
 		$points_charge = $data['total'] * $convert_val;
 		$payment_status = '';

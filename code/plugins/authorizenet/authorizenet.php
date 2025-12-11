@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
 
 require_once dirname(__FILE__) . '/authorizenet/helper.php';
@@ -476,7 +476,7 @@ class PlgpaymentAuthorizenet extends CMSPlugin
 	 */
 	public function confirm_recurring_payment_Update($json)
 	{
-		$db             = Factory::getDBO();
+		$db             = Factory::getContainer()->get('DatabaseDriver');
 		$data           = json_decode($json, true);
 		$payment_status = plgpaymentAuthorizenet::translateResponse($data['x_response_code']);
 
@@ -512,7 +512,7 @@ class PlgpaymentAuthorizenet extends CMSPlugin
 		$id      = $data['1'];
 		$gateway = $data['2'];
 		$ad_id   = $data['3'];
-		$db      = Factory::getDBO();
+		$db      = Factory::getContainer()->get('DatabaseDriver');
 
 		if ($subid)
 		{

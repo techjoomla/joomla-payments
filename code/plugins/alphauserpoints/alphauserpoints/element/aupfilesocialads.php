@@ -19,7 +19,7 @@ use Joomla\CMS\Language\Text;
  * @subpackage  site
  * @since       1.0
  */
-class JFormFieldAupfilesocialads extends JFormField
+class JFormFieldAupfilesocialads extends FormField
 {
 	/**
 	 * The form field type.

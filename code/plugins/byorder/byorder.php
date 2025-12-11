@@ -9,7 +9,8 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
+use Joomla\CMS\Date\Date;
 
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_byorder', JPATH_ADMINISTRATOR);
@@ -171,7 +172,6 @@ class Plgpaymentbyorder extends CMSPlugin
 	 */
 	public function onTP_Processpayment($data, $vars = array())
 	{
-		JLoader::import('joomla.utilities.date');
 		$isValid       = true;
 		$error         = array();
 		$error['code'] = '';

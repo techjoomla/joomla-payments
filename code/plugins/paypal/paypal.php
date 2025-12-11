@@ -8,10 +8,13 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
 
-require_once JPATH_SITE . '/plugins/payment/paypal/paypal/helper.php';
+$paypalHelperPath = JPATH_SITE . '/plugins/payment/paypal/paypal/helper.php';
+if (file_exists($paypalHelperPath)) {
+	require_once $paypalHelperPath;
+}
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_paypal', JPATH_ADMINISTRATOR);
 

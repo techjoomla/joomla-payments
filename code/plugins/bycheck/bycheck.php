@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 
 $lang = Factory::getLanguage();
 $lang->load('plg_payment_bycheck', JPATH_ADMINISTRATOR);
